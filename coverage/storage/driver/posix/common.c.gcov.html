@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>pgBackRest v2.06 C Code Coverage - storage/driver/posix/common.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">pgBackRest v2.06 C Code Coverage</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">storage/driver/posix</a> - common.c<span style="font-size: 80%;"> (source / <a href="common.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">all C unit</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">42</td>
+            <td class="headerCovTableEntry">42</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-11-02 15:04:05</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data    Line data  Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :         : /***********************************************************************************************************************************</a>
+<span class="lineNum">       2 </span>                :         : Posix Common File Routines
+<span class="lineNum">       3 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">       4 </span>                :         : // So fsync() will work on older glib versions
+<span class="lineNum">       5 </span>                :         : #ifndef _POSIX_C_SOURCE
+<span class="lineNum">       6 </span>                :         :     #define _POSIX_C_SOURCE 200112L
+<span class="lineNum">       7 </span>                :         : #endif
+<span class="lineNum">       8 </span>                :         : 
+<span class="lineNum">       9 </span>                :         : #include &lt;fcntl.h&gt;
+<span class="lineNum">      10 </span>                :         : #include &lt;unistd.h&gt;
+<span class="lineNum">      11 </span>                :         : 
+<span class="lineNum">      12 </span>                :         : #include &quot;common/assert.h&quot;
+<span class="lineNum">      13 </span>                :         : #include &quot;common/debug.h&quot;
+<span class="lineNum">      14 </span>                :         : #include &quot;storage/driver/posix/common.h&quot;
+<span class="lineNum">      15 </span>                :         : 
+<span class="lineNum">      16 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      17 </span>                :         : Open a file
+<span class="lineNum">      18 </span>                :         : 
+<span class="lineNum">      19 </span>                :         : Returns the handle of the open file, or -1 for reads if the file is missing and -1 for writes if the path is mssing.
+<a name="20"><span class="lineNum">      20 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      21 </span>                :         : int
+<span class="lineNum">      22 </span>                :<span class="lineCov">      82 : storageDriverPosixFileOpen(</span>
+<span class="lineNum">      23 </span>                :         :     const String *name, int flags, mode_t mode, bool ignoreMissing, bool file, const char *purpose)
+<span class="lineNum">      24 </span>                :         : {
+<span class="lineNum">      25 </span>                :<span class="lineCov">      82 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">      82 :         FUNCTION_TEST_PARAM(STRING, name);</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">      82 :         FUNCTION_TEST_PARAM(INT, flags);</span>
+<span class="lineNum">      28 </span>                :<span class="lineCov">      82 :         FUNCTION_TEST_PARAM(MODE, mode);</span>
+<span class="lineNum">      29 </span>                :<span class="lineCov">      82 :         FUNCTION_TEST_PARAM(BOOL, ignoreMissing);</span>
+<span class="lineNum">      30 </span>                :<span class="lineCov">      82 :         FUNCTION_TEST_PARAM(BOOL, file);                            //  Is this a file or a path?</span>
+<span class="lineNum">      31 </span>                :<span class="lineCov">      82 :         FUNCTION_TEST_PARAM(STRINGZ, purpose);</span>
+<span class="lineNum">      32 </span>                :         : 
+<span class="lineNum">      33 </span>                :<span class="lineCov">      82 :         FUNCTION_TEST_ASSERT(name != NULL);</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">      82 :         FUNCTION_TEST_ASSERT(purpose != NULL);</span>
+<span class="lineNum">      35 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">      36 </span>                :         : 
+<span class="lineNum">      37 </span>                :<span class="lineCov">      82 :     int result = -1;</span>
+<span class="lineNum">      38 </span>                :         : 
+<span class="lineNum">      39 </span>                :<span class="lineCov">      82 :     result = open(strPtr(name), flags, mode);</span>
+<span class="lineNum">      40 </span>                :         : 
+<span class="lineNum">      41 </span>        [<span class="branchCov" title="Branch 0 was taken 29 times"> + </span><span class="branchCov" title="Branch 1 was taken 53 times"> + </span>]:<span class="lineCov">      82 :     if (result == -1)</span>
+<span class="lineNum">      42 </span>                :         :     {
+<span class="lineNum">      43 </span>[<span class="branchCov" title="Branch 0 was taken 23 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 7 times"> + </span><span class="branchCov" title="Branch 3 was taken 16 times"> + </span>]:<span class="lineCov">      29 :         if (errno != ENOENT || !ignoreMissing)</span>
+<span class="lineNum">      44 </span>                :         :         {
+<span class="lineNum">      45 </span>                :<span class="lineCov">      13 :             THROWP_SYS_ERROR_FMT(</span>
+<span class="lineNum">      46 </span>                :         :                 errno == ENOENT ? (file ? &amp;FileMissingError : &amp;PathMissingError) : (file ? &amp;FileOpenError : &amp;PathOpenError),
+<span class="lineNum">      47 </span>                :         :                 &quot;unable to open '%s' for %s&quot;, strPtr(name), purpose);
+<span class="lineNum">      48 </span>                :         :         }
+<span class="lineNum">      49 </span>                :         :     }
+<span class="lineNum">      50 </span>                :         : 
+<span class="lineNum">      51 </span>                :<span class="lineCov">      69 :     FUNCTION_TEST_RESULT(INT, result);</span>
+<span class="lineNum">      52 </span>                :         : }
+<span class="lineNum">      53 </span>                :         : 
+<span class="lineNum">      54 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      55 </span>                :         : Sync a file/directory handle
+<a name="56"><span class="lineNum">      56 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      57 </span>                :         : void
+<span class="lineNum">      58 </span>                :<span class="lineCov">      40 : storageDriverPosixFileSync(int handle, const String *name, bool file, bool closeOnError)</span>
+<span class="lineNum">      59 </span>                :         : {
+<span class="lineNum">      60 </span>                :<span class="lineCov">      40 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">      40 :         FUNCTION_TEST_PARAM(INT, handle);</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">      40 :         FUNCTION_TEST_PARAM(STRING, name);</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">      40 :         FUNCTION_TEST_PARAM(BOOL, file);                            //  Is this a file or a path?</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">      40 :         FUNCTION_TEST_PARAM(BOOL, closeOnError);</span>
+<span class="lineNum">      65 </span>                :         : 
+<span class="lineNum">      66 </span>                :<span class="lineCov">      40 :         FUNCTION_TEST_ASSERT(handle != -1);</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">      40 :         FUNCTION_TEST_ASSERT(name != NULL);</span>
+<span class="lineNum">      68 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">      69 </span>                :         : 
+<span class="lineNum">      70 </span>        [<span class="branchCov" title="Branch 1 was taken 5 times"> + </span><span class="branchCov" title="Branch 2 was taken 35 times"> + </span>]:<span class="lineCov">      40 :     if (fsync(handle) == -1)</span>
+<span class="lineNum">      71 </span>                :         :     {
+<span class="lineNum">      72 </span>                :<span class="lineCov">       5 :         int errNo = errno;</span>
+<span class="lineNum">      73 </span>                :         : 
+<span class="lineNum">      74 </span>                :         :         // Close if requested but don't report errors -- we want to report the sync error instead
+<span class="lineNum">      75 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">       5 :         if (closeOnError)</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">       2 :             close(handle);</span>
+<span class="lineNum">      77 </span>                :         : 
+<span class="lineNum">      78 </span>                :<span class="lineCov">       5 :         THROWP_SYS_ERROR_CODE_FMT(errNo, file ? &amp;FileSyncError : &amp;PathSyncError, &quot;unable to sync '%s'&quot;, strPtr(name));</span>
+<span class="lineNum">      79 </span>                :         :     }
+<span class="lineNum">      80 </span>                :         : 
+<span class="lineNum">      81 </span>                :<span class="lineCov">      35 :     FUNCTION_TEST_RESULT_VOID();</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">      35 : }</span>
+<span class="lineNum">      83 </span>                :         : 
+<span class="lineNum">      84 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      85 </span>                :         : Close a file/directory handle
+<a name="86"><span class="lineNum">      86 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      87 </span>                :         : void
+<span class="lineNum">      88 </span>                :<span class="lineCov">      55 : storageDriverPosixFileClose(int handle, const String *name, bool file)</span>
+<span class="lineNum">      89 </span>                :         : {
+<span class="lineNum">      90 </span>                :<span class="lineCov">      55 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">      91 </span>                :<span class="lineCov">      55 :         FUNCTION_TEST_PARAM(INT, handle);</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">      55 :         FUNCTION_TEST_PARAM(STRING, name);</span>
+<span class="lineNum">      93 </span>                :<span class="lineCov">      55 :         FUNCTION_TEST_PARAM(BOOL, file);                            //  Is this a file or a path?</span>
+<span class="lineNum">      94 </span>                :         : 
+<span class="lineNum">      95 </span>                :<span class="lineCov">      55 :         FUNCTION_TEST_ASSERT(handle != -1);</span>
+<span class="lineNum">      96 </span>                :<span class="lineCov">      55 :         FUNCTION_TEST_ASSERT(name != NULL);</span>
+<span class="lineNum">      97 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">      98 </span>                :         : 
+<span class="lineNum">      99 </span>        [<span class="branchCov" title="Branch 1 was taken 4 times"> + </span><span class="branchCov" title="Branch 2 was taken 51 times"> + </span>]:<span class="lineCov">      55 :     if (close(handle) == -1)</span>
+<span class="lineNum">     100 </span>                :<span class="lineCov">       4 :         THROWP_SYS_ERROR_FMT(file ? &amp;FileCloseError : &amp;PathCloseError, &quot;unable to close '%s'&quot;, strPtr(name));</span>
+<span class="lineNum">     101 </span>                :         : 
+<span class="lineNum">     102 </span>                :<span class="lineCov">      51 :     FUNCTION_TEST_RESULT_VOID();</span>
+<span class="lineNum">     103 </span>                :<span class="lineCov">      51 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

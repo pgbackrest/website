@@ -1,0 +1,383 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>pgBackRest v2.06 C Code Coverage - command/archive/get/get.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">pgBackRest v2.06 C Code Coverage</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">command/archive/get</a> - get.c<span style="font-size: 80%;"> (source / <a href="get.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">all C unit</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">104</td>
+            <td class="headerCovTableEntry">105</td>
+            <td class="headerCovTableEntryHi">99.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-11-02 15:04:05</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">47</td>
+            <td class="headerCovTableEntry">48</td>
+            <td class="headerCovTableEntryHi">97.9 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data    Line data  Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :         : /***********************************************************************************************************************************</a>
+<span class="lineNum">       2 </span>                :         : Archive Get Command
+<span class="lineNum">       3 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">       4 </span>                :         : #include &lt;sys/types.h&gt;
+<span class="lineNum">       5 </span>                :         : #include &lt;unistd.h&gt;
+<span class="lineNum">       6 </span>                :         : 
+<span class="lineNum">       7 </span>                :         : #include &quot;command/archive/common.h&quot;
+<span class="lineNum">       8 </span>                :         : #include &quot;command/archive/get/file.h&quot;
+<span class="lineNum">       9 </span>                :         : #include &quot;command/command.h&quot;
+<span class="lineNum">      10 </span>                :         : #include &quot;common/assert.h&quot;
+<span class="lineNum">      11 </span>                :         : #include &quot;common/debug.h&quot;
+<span class="lineNum">      12 </span>                :         : #include &quot;common/fork.h&quot;
+<span class="lineNum">      13 </span>                :         : #include &quot;common/log.h&quot;
+<span class="lineNum">      14 </span>                :         : #include &quot;common/memContext.h&quot;
+<span class="lineNum">      15 </span>                :         : #include &quot;common/regExp.h&quot;
+<span class="lineNum">      16 </span>                :         : #include &quot;common/wait.h&quot;
+<span class="lineNum">      17 </span>                :         : #include &quot;config/config.h&quot;
+<span class="lineNum">      18 </span>                :         : #include &quot;config/load.h&quot;
+<span class="lineNum">      19 </span>                :         : #include &quot;perl/exec.h&quot;
+<span class="lineNum">      20 </span>                :         : #include &quot;postgres/interface.h&quot;
+<span class="lineNum">      21 </span>                :         : #include &quot;storage/helper.h&quot;
+<span class="lineNum">      22 </span>                :         : #include &quot;storage/helper.h&quot;
+<span class="lineNum">      23 </span>                :         : 
+<span class="lineNum">      24 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      25 </span>                :         : Clean the queue and prepare a list of WAL segments that the async process should get
+<a name="26"><span class="lineNum">      26 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      27 </span>                :         : static StringList *
+<span class="lineNum">      28 </span>                :<span class="lineCov">      73 : queueNeed(const String *walSegment, bool found, size_t queueSize, size_t walSegmentSize, unsigned int pgVersion)</span>
+<span class="lineNum">      29 </span>                :         : {
+<span class="lineNum">      30 </span>                :<span class="lineCov">      61 :     FUNCTION_DEBUG_BEGIN(logLevelDebug);</span>
+<span class="lineNum">      31 </span>                :<span class="lineCov">      61 :         FUNCTION_DEBUG_PARAM(STRING, walSegment);</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">      61 :         FUNCTION_DEBUG_PARAM(BOOL, found);</span>
+<span class="lineNum">      33 </span>                :<span class="lineCov">      61 :         FUNCTION_DEBUG_PARAM(SIZE, queueSize);</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">      61 :         FUNCTION_DEBUG_PARAM(SIZE, walSegmentSize);</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">      61 :         FUNCTION_DEBUG_PARAM(UINT, pgVersion);</span>
+<span class="lineNum">      36 </span>                :         : 
+<span class="lineNum">      37 </span>                :<span class="lineCov">      61 :         FUNCTION_DEBUG_ASSERT(walSegment != NULL);</span>
+<span class="lineNum">      38 </span>                :<span class="lineCov">      61 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">      39 </span>                :         : 
+<span class="lineNum">      40 </span>                :<span class="lineCov">      61 :     StringList *result = strLstNew();</span>
+<span class="lineNum">      41 </span>                :         : 
+<span class="lineNum">      42 </span>                :<span class="lineCov">     195 :     MEM_CONTEXT_TEMP_BEGIN()</span>
+<span class="lineNum">      43 </span>                :         :     {
+<span class="lineNum">      44 </span>                :         :         // Determine the first WAL segment for the async process to get.  If the WAL segment requested by
+<span class="lineNum">      45 </span>                :         :         // PostgreSQL was not found then use that.  If the segment was found but the queue is not full then
+<span class="lineNum">      46 </span>                :         :         // start with the next segment.
+<span class="lineNum">      47 </span>                :<span class="lineCov">      61 :         const String *walSegmentFirst =</span>
+<span class="lineNum">      48 </span>        [<span class="branchCov" title="Branch 0 was taken 13 times"> + </span><span class="branchCov" title="Branch 1 was taken 48 times"> + </span>]:<span class="lineCov">      61 :             found ? walSegmentNext(walSegment, walSegmentSize, pgVersion) : walSegment;</span>
+<span class="lineNum">      49 </span>                :         : 
+<span class="lineNum">      50 </span>                :         :         // Determine how many WAL segments should be in the queue.  The queue total must be at least 2 or it doesn't make sense to
+<span class="lineNum">      51 </span>                :         :         // have async turned on at all.
+<span class="lineNum">      52 </span>                :<span class="lineCov">      61 :         unsigned int walSegmentQueueTotal = (unsigned int)(queueSize / walSegmentSize);</span>
+<span class="lineNum">      53 </span>                :         : 
+<span class="lineNum">      54 </span>        [<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchCov" title="Branch 1 was taken 37 times"> + </span>]:<span class="lineCov">      61 :         if (walSegmentQueueTotal &lt; 2)</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">      24 :             walSegmentQueueTotal = 2;</span>
+<span class="lineNum">      56 </span>                :         : 
+<span class="lineNum">      57 </span>                :         :         // Build the ideal queue -- the WAL segments we want in the queue after the async process has run
+<span class="lineNum">      58 </span>                :<span class="lineCov">      61 :         StringList *idealQueue = walSegmentRange(walSegmentFirst, walSegmentSize, pgVersion, walSegmentQueueTotal);</span>
+<span class="lineNum">      59 </span>                :         : 
+<span class="lineNum">      60 </span>                :         :         // Get the list of files actually in the queue
+<span class="lineNum">      61 </span>                :<span class="lineCov">      61 :         StringList *actualQueue = strLstSort(</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">      61 :             storageListP(storageSpool(), strNew(STORAGE_SPOOL_ARCHIVE_IN), .errorOnMissing = true), sortOrderAsc);</span>
+<span class="lineNum">      63 </span>                :         : 
+<span class="lineNum">      64 </span>                :         :         // Only preserve files that match the ideal queue. '.error'/'.ok' files are deleted so the async process can try again.
+<span class="lineNum">      65 </span>                :<span class="lineCov">      49 :         RegExp *regExpPreserve = regExpNew(strNewFmt(&quot;^(%s)$&quot;, strPtr(strLstJoin(idealQueue, &quot;|&quot;))));</span>
+<span class="lineNum">      66 </span>                :         : 
+<span class="lineNum">      67 </span>                :         :         // Build a list of WAL segments that are being kept so we can later make a list of what is needed
+<span class="lineNum">      68 </span>                :<span class="lineCov">      49 :         StringList *keepQueue = strLstNew();</span>
+<span class="lineNum">      69 </span>                :         : 
+<span class="lineNum">      70 </span>        [<span class="branchCov" title="Branch 1 was taken 72 times"> + </span><span class="branchCov" title="Branch 2 was taken 49 times"> + </span>]:<span class="lineCov">     121 :         for (unsigned int actualQueueIdx = 0; actualQueueIdx &lt; strLstSize(actualQueue); actualQueueIdx++)</span>
+<span class="lineNum">      71 </span>                :         :         {
+<span class="lineNum">      72 </span>                :         :             // Get file from actual queue
+<span class="lineNum">      73 </span>                :<span class="lineCov">      72 :             const String *file = strLstGet(actualQueue, actualQueueIdx);</span>
+<span class="lineNum">      74 </span>                :         : 
+<span class="lineNum">      75 </span>                :         :             // Does this match a file we want to preserve?
+<span class="lineNum">      76 </span>        [<span class="branchCov" title="Branch 1 was taken 36 times"> + </span><span class="branchCov" title="Branch 2 was taken 36 times"> + </span>]:<span class="lineCov">      72 :             if (regExpMatch(regExpPreserve, file))</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">      36 :                 strLstAdd(keepQueue, file);</span>
+<span class="lineNum">      78 </span>                :         : 
+<span class="lineNum">      79 </span>                :         :             // Else delete it
+<span class="lineNum">      80 </span>                :         :             else
+<span class="lineNum">      81 </span>                :<span class="lineCov">      36 :                 storageRemoveNP(storageSpoolWrite(), strNewFmt(STORAGE_SPOOL_ARCHIVE_IN &quot;/%s&quot;, strPtr(file)));</span>
+<span class="lineNum">      82 </span>                :         :         }
+<span class="lineNum">      83 </span>                :         : 
+<span class="lineNum">      84 </span>                :         :         // Generate a list of the WAL that are needed by removing kept WAL from the ideal queue
+<span class="lineNum">      85 </span>        [<span class="branchCov" title="Branch 1 was taken 164 times"> + </span><span class="branchCov" title="Branch 2 was taken 49 times"> + </span>]:<span class="lineCov">     213 :         for (unsigned int idealQueueIdx = 0; idealQueueIdx &lt; strLstSize(idealQueue); idealQueueIdx++)</span>
+<span class="lineNum">      86 </span>                :         :         {
+<span class="lineNum">      87 </span>        [<span class="branchCov" title="Branch 2 was taken 128 times"> + </span><span class="branchCov" title="Branch 3 was taken 36 times"> + </span>]:<span class="lineCov">     164 :             if (!strLstExists(keepQueue, strLstGet(idealQueue, idealQueueIdx)))</span>
+<span class="lineNum">      88 </span>                :<span class="lineCov">     128 :                 strLstAdd(result, strLstGet(idealQueue, idealQueueIdx));</span>
+<span class="lineNum">      89 </span>                :         :         }
+<span class="lineNum">      90 </span>                :         :     }
+<span class="lineNum">      91 </span>                :<span class="lineCov">      73 :     MEM_CONTEXT_TEMP_END();</span>
+<span class="lineNum">      92 </span>                :         : 
+<span class="lineNum">      93 </span>                :<span class="lineCov">      49 :     FUNCTION_DEBUG_RESULT(STRING_LIST, result);</span>
+<span class="lineNum">      94 </span>                :         : }
+<span class="lineNum">      95 </span>                :         : 
+<span class="lineNum">      96 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      97 </span>                :         : Push a WAL segment to the repository
+<a name="98"><span class="lineNum">      98 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      99 </span>                :         : int
+<span class="lineNum">     100 </span>                :<span class="lineCov">      18 : cmdArchiveGet(void)</span>
+<span class="lineNum">     101 </span>                :         : {
+<span class="lineNum">     102 </span>                :<span class="lineCov">      12 :     FUNCTION_DEBUG_VOID(logLevelDebug);</span>
+<span class="lineNum">     103 </span>                :         : 
+<span class="lineNum">     104 </span>                :         :     // Set the result assuming the archive file will not be found
+<span class="lineNum">     105 </span>                :<span class="lineCov">      12 :     int result = 1;</span>
+<span class="lineNum">     106 </span>                :         : 
+<span class="lineNum">     107 </span>                :<span class="lineCov">      42 :     MEM_CONTEXT_TEMP_BEGIN()</span>
+<span class="lineNum">     108 </span>                :         :     {
+<span class="lineNum">     109 </span>                :         :         // Check the parameters
+<span class="lineNum">     110 </span>                :<span class="lineCov">      12 :         const StringList *commandParam = cfgCommandParam();</span>
+<span class="lineNum">     111 </span>                :         : 
+<span class="lineNum">     112 </span>        [<span class="branchCov" title="Branch 1 was taken 3 times"> + </span><span class="branchCov" title="Branch 2 was taken 9 times"> + </span>]:<span class="lineCov">      12 :         if (strLstSize(commandParam) != 2)</span>
+<span class="lineNum">     113 </span>                :         :         {
+<span class="lineNum">     114 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">       3 :             if (strLstSize(commandParam) == 0)</span>
+<span class="lineNum">     115 </span>                :<span class="lineCov">       1 :                 THROW(ParamRequiredError, &quot;WAL segment to get required&quot;);</span>
+<span class="lineNum">     116 </span>                :         : 
+<span class="lineNum">     117 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">       2 :             if (strLstSize(commandParam) == 1)</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">       1 :                 THROW(ParamRequiredError, &quot;path to copy WAL segment required&quot;);</span>
+<span class="lineNum">     119 </span>                :         : 
+<span class="lineNum">     120 </span>                :<span class="lineCov">       1 :             THROW(ParamInvalidError, &quot;extra parameters found&quot;);</span>
+<span class="lineNum">     121 </span>                :         :         }
+<span class="lineNum">     122 </span>                :         : 
+<span class="lineNum">     123 </span>                :         :         // Get the segment name
+<span class="lineNum">     124 </span>                :<span class="lineCov">       9 :         String *walSegment = strBase(strLstGet(commandParam, 0));</span>
+<span class="lineNum">     125 </span>                :         : 
+<span class="lineNum">     126 </span>                :         :         // Destination is wherever we were told to move the WAL segment.  In some cases the path that PostgreSQL passes will not be
+<span class="lineNum">     127 </span>                :         :         // absolute so prefix pg-path.
+<span class="lineNum">     128 </span>                :<span class="lineCov">       9 :         const String *walDestination = strLstGet(commandParam, 1);</span>
+<span class="lineNum">     129 </span>                :         : 
+<span class="lineNum">     130 </span>                :<span class="lineCov">       9 :         if (!strBeginsWithZ(walDestination, &quot;/&quot;))</span>
+<span class="lineNum">     131 </span>                :<span class="lineCov">       7 :             walDestination = strNewFmt(&quot;%s/%s&quot;, strPtr(cfgOptionStr(cfgOptPgPath)), strPtr(walDestination));</span>
+<span class="lineNum">     132 </span>                :         : 
+<span class="lineNum">     133 </span>                :         :         // Async get can only be performed on WAL segments, history or other files must use synchronous mode
+<span class="lineNum">     134 </span>                :<span class="lineCov">       9 :         bool asyncServer = false;</span>
+<span class="lineNum">     135 </span>                :         : 
+<span class="lineNum">     136 </span>[<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>][<span class="branchCov" title="Branch 4 was taken 7 times"> + </span><span class="branchCov" title="Branch 5 was taken 1 time"> + </span>]:<span class="lineCov">       9 :         if (cfgOptionBool(cfgOptArchiveAsync) &amp;&amp; walIsSegment(walSegment))</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">       6 :         {</span>
+<span class="lineNum">     138 </span>                :<span class="lineCov">       7 :             bool found = false;                                         // Has the WAL segment been found yet?</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">       7 :             bool queueFull = false;                                     // Is the queue half or more full?</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">       7 :             bool forked = false;                                        // Has the async process been forked yet?</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">       7 :             bool confessOnError = false;                                // Should we confess errors?</span>
+<span class="lineNum">     142 </span>                :         : 
+<span class="lineNum">     143 </span>                :         :             // Loop and wait for the WAL segment to be pushed
+<span class="lineNum">     144 </span>                :<span class="lineCov">       7 :             Wait *wait = waitNew(cfgOptionDbl(cfgOptArchiveTimeout));</span>
+<span class="lineNum">     145 </span>                :         : 
+<span class="lineNum">     146 </span>                :         :             do
+<span class="lineNum">     147 </span>                :         :             {
+<span class="lineNum">     148 </span>                :         :                 // Check for errors or missing files.  For archive-get '.ok' indicates that the process succeeded but there is no
+<span class="lineNum">     149 </span>                :         :                 // WAL file to download.
+<span class="lineNum">     150 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 16 times"> + </span>]:<span class="lineCov">      17 :                 if (archiveAsyncStatus(archiveModeGet, walSegment, confessOnError))</span>
+<span class="lineNum">     151 </span>                :         :                 {
+<span class="lineNum">     152 </span>                :<span class="lineCov">       1 :                     storageRemoveP(</span>
+<span class="lineNum">     153 </span>                :         :                         storageSpoolWrite(),
+<span class="lineNum">     154 </span>                :         :                         strNewFmt(STORAGE_SPOOL_ARCHIVE_IN &quot;/%s.ok&quot;, strPtr(walSegment)), .errorOnMissing = true);
+<span class="lineNum">     155 </span>                :<span class="lineCov">       1 :                     break;</span>
+<span class="lineNum">     156 </span>                :         :                 }
+<span class="lineNum">     157 </span>                :         : 
+<span class="lineNum">     158 </span>                :         :                 // Check if the WAL segment is already in the queue
+<span class="lineNum">     159 </span>                :<span class="lineCov">      16 :                 found = storageExistsNP(storageSpool(), strNewFmt(STORAGE_SPOOL_ARCHIVE_IN &quot;/%s&quot;, strPtr(walSegment)));</span>
+<span class="lineNum">     160 </span>                :         : 
+<span class="lineNum">     161 </span>                :         :                 // If found then move the WAL segment to the destination directory
+<span class="lineNum">     162 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>]:<span class="lineCov">      16 :                 if (found)</span>
+<span class="lineNum">     163 </span>                :         :                 {
+<span class="lineNum">     164 </span>                :         :                     // Source is the WAL segment in the spool queue
+<span class="lineNum">     165 </span>                :<span class="lineCov">       3 :                     StorageFileRead *source = storageNewReadNP(</span>
+<span class="lineNum">     166 </span>                :         :                         storageSpool(), strNewFmt(STORAGE_SPOOL_ARCHIVE_IN &quot;/%s&quot;, strPtr(walSegment)));
+<span class="lineNum">     167 </span>                :         : 
+<span class="lineNum">     168 </span>                :         :                     // A move will be attempted but if the spool queue and the WAL path are on different file systems then a copy
+<span class="lineNum">     169 </span>                :         :                     // will be performed instead.
+<span class="lineNum">     170 </span>                :         :                     //
+<span class="lineNum">     171 </span>                :         :                     // It looks scary that we are disabling syncs and atomicity (in case we need to copy intead of move) but this
+<span class="lineNum">     172 </span>                :         :                     // is safe because if the system crashes Postgres will not try to reuse a restored WAL segment but will instead
+<span class="lineNum">     173 </span>                :         :                     // request it again using the restore_command. In the case of a move this hardly matters since path syncs are
+<span class="lineNum">     174 </span>                :         :                     // cheap but if a copy is required we could save a lot of writes.
+<span class="lineNum">     175 </span>                :<span class="lineCov">       3 :                     StorageFileWrite *destination = storageNewWriteP(</span>
+<span class="lineNum">     176 </span>                :         :                         storageLocalWrite(), walDestination, .noCreatePath = true, .noSyncFile = true, .noSyncPath = true,
+<span class="lineNum">     177 </span>                :         :                         .noAtomic = true);
+<span class="lineNum">     178 </span>                :         : 
+<span class="lineNum">     179 </span>                :         :                     // Move (or copy if required) the file
+<span class="lineNum">     180 </span>                :<span class="lineCov">       3 :                     storageMoveNP(storageSpoolWrite(), source, destination);</span>
+<span class="lineNum">     181 </span>                :         : 
+<span class="lineNum">     182 </span>                :         :                     // Return success
+<span class="lineNum">     183 </span>                :<span class="lineCov">       3 :                     result = 0;</span>
+<span class="lineNum">     184 </span>                :         : 
+<span class="lineNum">     185 </span>                :         :                     // Get a list of WAL segments left in the queue
+<span class="lineNum">     186 </span>                :<span class="lineCov">       3 :                     StringList *queue = storageListP(</span>
+<span class="lineNum">     187 </span>                :         :                         storageSpool(), strNew(STORAGE_SPOOL_ARCHIVE_IN), .expression = strNew(WAL_SEGMENT_REGEXP));
+<span class="lineNum">     188 </span>                :         : 
+<span class="lineNum">     189 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">       3 :                     if (strLstSize(queue) &gt; 0)</span>
+<span class="lineNum">     190 </span>                :         :                     {
+<span class="lineNum">     191 </span>                :         :                         // Get size of the WAL segment
+<span class="lineNum">     192 </span>                :<span class="lineCov">       1 :                         size_t walSegmentSize = storageInfoNP(storageLocal(), walDestination).size;</span>
+<span class="lineNum">     193 </span>                :         : 
+<span class="lineNum">     194 </span>                :         :                         // Use WAL segment size to estimate queue size and determine if the async process should be launched
+<span class="lineNum">     195 </span>                :<span class="lineCov">       1 :                         queueFull =</span>
+<span class="lineNum">     196 </span>                :<span class="lineCov">       1 :                             strLstSize(queue) * walSegmentSize &gt; (size_t)cfgOptionInt64(cfgOptArchiveGetQueueMax) / 2;</span>
+<span class="lineNum">     197 </span>                :         :                     }
+<span class="lineNum">     198 </span>                :         :                 }
+<span class="lineNum">     199 </span>                :         : 
+<span class="lineNum">     200 </span>                :         :                 // If the WAL segment has not already been found then start the async process to get it.  There's no point in
+<span class="lineNum">     201 </span>                :         :                 // forking the async process off more than once so track that as well.  Use an archive lock to prevent forking if
+<span class="lineNum">     202 </span>                :         :                 // the async process was launched by another process.
+<span class="lineNum">     203 </span>[<span class="branchCov" title="Branch 0 was taken 11 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchCov" title="Branch 3 was taken 8 times"> + </span>]:<span class="lineCov">      26 :                 if (!forked &amp;&amp; (!found || !queueFull)  &amp;&amp;</span>
+<span class="lineNum">         </span>  [<span class="branchCov" title="Branch 4 was taken 2 times"> + </span><span class="branchCov" title="Branch 5 was taken 1 time"> + </span><span class="branchCov" title="Branch 6 was taken 4 times"> + </span><span class="branchCov" title="Branch 7 was taken 6 times"> + </span>]
+<span class="lineNum">     204 </span>                :<span class="lineCov">      10 :                     lockAcquire(cfgOptionStr(cfgOptLockPath), cfgOptionStr(cfgOptStanza), cfgLockType(), 0, false))</span>
+<span class="lineNum">     205 </span>                :         :                 {
+<span class="lineNum">     206 </span>                :         :                     // Release the lock and mark the async process as forked
+<span class="lineNum">     207 </span>                :<span class="lineCov">       4 :                     lockRelease(true);</span>
+<span class="lineNum">     208 </span>                :<span class="lineCov">       4 :                     forked = true;</span>
+<span class="lineNum">     209 </span>                :         : 
+<span class="lineNum">     210 </span>                :         :                     // Fork off the async process
+<span class="lineNum">     211 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">       4 :                     if (fork() == 0)</span>
+<span class="lineNum">     212 </span>                :         :                     {
+<span class="lineNum">     213 </span>                :         :                         // In the async server
+<span class="lineNum">     214 </span>                :<span class="lineCov">       2 :                         asyncServer = true;</span>
+<span class="lineNum">     215 </span>                :<span class="lineCov">       2 :                         result = 0;</span>
+<span class="lineNum">     216 </span>                :         : 
+<span class="lineNum">     217 </span>                :         :                         // Only run async if the lock can be reacquired.  We just held it so this should not be an issue unless
+<span class="lineNum">     218 </span>                :         :                         // another process sneaks in.  In general there should be only one archive-get process running but in
+<span class="lineNum">     219 </span>                :         :                         // theory there could be more than one.
+<span class="lineNum">     220 </span>        [<span class="branchCov" title="Branch 4 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>]:<span class="lineCov">       2 :                         if (lockAcquire(                                // {uncoverable - almost impossible to make this lock fail}</span>
+<span class="lineNum">     221 </span>                :         :                                 cfgOptionStr(cfgOptLockPath), cfgOptionStr(cfgOptStanza), cfgLockType(), 0, false))
+<span class="lineNum">     222 </span>                :         :                         {
+<span class="lineNum">     223 </span>                :         :                             // Get control info
+<span class="lineNum">     224 </span>                :<span class="lineCov">       2 :                             PgControl pgControl = pgControlFromFile(cfgOptionStr(cfgOptPgPath));</span>
+<span class="lineNum">     225 </span>                :         : 
+<span class="lineNum">     226 </span>                :         :                             // Create the queue
+<span class="lineNum">     227 </span>                :<span class="lineCov">       1 :                             storagePathCreateNP(storageSpoolWrite(), strNew(STORAGE_SPOOL_ARCHIVE_IN));</span>
+<span class="lineNum">     228 </span>                :         : 
+<span class="lineNum">     229 </span>                :         :                             // Clean the current queue using the list of WAL that we ideally want in the queue.  queueNeed()
+<span class="lineNum">     230 </span>                :         :                             // will return the list of WAL needed to fill the queue and this will be passed to the async process.
+<span class="lineNum">     231 </span>                :<span class="lineCov">       1 :                             cfgCommandParamSet(</span>
+<span class="lineNum">     232 </span>                :<span class="lineCov">       1 :                                 queueNeed(</span>
+<span class="lineNum">     233 </span>                :<span class="lineCov">       1 :                                     walSegment, found, (size_t)cfgOptionInt64(cfgOptArchiveGetQueueMax), pgControl.walSegmentSize,</span>
+<span class="lineNum">     234 </span>                :         :                                     pgControl.version));
+<span class="lineNum">     235 </span>                :         : 
+<span class="lineNum">     236 </span>                :         :                             // The async process should not output on the console at all
+<span class="lineNum">     237 </span>                :<span class="lineCov">       1 :                             cfgOptionSet(cfgOptLogLevelConsole, cfgSourceParam, varNewStrZ(&quot;off&quot;));</span>
+<span class="lineNum">     238 </span>                :<span class="lineCov">       1 :                             cfgOptionSet(cfgOptLogLevelStderr, cfgSourceParam, varNewStrZ(&quot;off&quot;));</span>
+<span class="lineNum">     239 </span>                :<span class="lineCov">       1 :                             cfgLoadLogSetting();</span>
+<span class="lineNum">     240 </span>                :         : 
+<span class="lineNum">     241 </span>                :         :                             // Open the log file
+<span class="lineNum">     242 </span>                :<span class="lineCov">       1 :                             logFileSet(</span>
+<span class="lineNum">     243 </span>                :<span class="lineCov">       1 :                                 strPtr(strNewFmt(&quot;%s/%s-%s-async.log&quot;, strPtr(cfgOptionStr(cfgOptLogPath)),</span>
+<span class="lineNum">     244 </span>                :         :                                 strPtr(cfgOptionStr(cfgOptStanza)), cfgCommandName(cfgCommand()))));
+<span class="lineNum">     245 </span>                :         : 
+<span class="lineNum">     246 </span>                :         :                             // Log command info since we are starting a new log
+<span class="lineNum">     247 </span>                :<span class="lineCov">       1 :                             cmdBegin(true);</span>
+<span class="lineNum">     248 </span>                :         : 
+<span class="lineNum">     249 </span>                :         :                             // Detach from parent process
+<span class="lineNum">     250 </span>                :<span class="lineCov">       1 :                             forkDetach();</span>
+<span class="lineNum">     251 </span>                :         : 
+<span class="lineNum">     252 </span>                :<span class="lineCov">       1 :                             perlExec();</span>
+<span class="lineNum">     253 </span>                :         :                         }
+<span class="lineNum">     254 </span>                :         : 
+<span class="lineNum">     255 </span>                :<span class="lineCov">       1 :                         break;                                          // {uncovered - async calls always return errors for now}</span>
+<span class="lineNum">     256 </span>                :         :                     }
+<span class="lineNum">     257 </span>                :         :                 }
+<span class="lineNum">     258 </span>                :         : 
+<span class="lineNum">     259 </span>                :         :                 // Exit loop if WAL was found
+<span class="lineNum">     260 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">      14 :                 if (found)</span>
+<span class="lineNum">     261 </span>                :<span class="lineCov">       2 :                     break;</span>
+<span class="lineNum">     262 </span>                :         : 
+<span class="lineNum">     263 </span>                :         :                 // Now that the async process has been launched, confess any errors that are found
+<span class="lineNum">     264 </span>                :<span class="lineCov">      12 :                 confessOnError = true;</span>
+<span class="lineNum">     265 </span>                :         :             }
+<span class="lineNum">     266 </span>        [<span class="branchCov" title="Branch 1 was taken 10 times"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">      12 :             while (waitMore(wait));</span>
+<span class="lineNum">     267 </span>                :         :         }
+<span class="lineNum">     268 </span>                :         :         // Else perform synchronous get
+<span class="lineNum">     269 </span>                :         :         else
+<span class="lineNum">     270 </span>                :         :         {
+<span class="lineNum">     271 </span>                :         :             // Disable async if it was enabled
+<span class="lineNum">     272 </span>                :<span class="lineCov">       2 :             cfgOptionSet(cfgOptArchiveAsync, cfgOptionSource(cfgOptArchiveAsync), varNewBool(false));</span>
+<span class="lineNum">     273 </span>                :         : 
+<span class="lineNum">     274 </span>                :         :             // If repo type is not s3 and repo server is not remote and not encrypted then this can be done entirely in C
+<span class="lineNum">     275 </span>                :<span class="lineCov">       4 :             if (!strEqZ(cfgOptionStr(cfgOptRepoType), STORAGE_TYPE_S3) &amp;&amp; !cfgOptionTest(cfgOptRepoHost) &amp;&amp;</span>
+<span class="lineNum">     276 </span>                :<span class="lineCov">       2 :                 strEqZ(cfgOptionStr(cfgOptRepoCipherType), &quot;none&quot;))</span>
+<span class="lineNum">     277 </span>                :         :             {
+<span class="lineNum">     278 </span>                :<span class="lineCov">       2 :                 result = archiveGetFile(walSegment, walDestination);</span>
+<span class="lineNum">     279 </span>                :         :             }
+<span class="lineNum">     280 </span>                :         :             // Else do it in Perl
+<span class="lineNum">     281 </span>                :         :             else
+<span class="lineNum">     282 </span>                :<span class="lineNoCov">       0 :                 result = perlExec();                                            // {uncovered - Perl code is covered in unit tests}</span>
+<span class="lineNum">     283 </span>                :         :         }
+<span class="lineNum">     284 </span>                :         : 
+<span class="lineNum">     285 </span>                :         :         // Log whether or not the file was found
+<span class="lineNum">     286 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">       6 :         if (!asyncServer)                                               // {uncovered - async calls always return errors for now}</span>
+<span class="lineNum">     287 </span>                :         :         {
+<span class="lineNum">     288 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">       5 :             if (result == 0)</span>
+<span class="lineNum">     289 </span>                :<span class="lineCov">       2 :                 LOG_INFO(&quot;found %s in the archive&quot;, strPtr(walSegment));</span>
+<span class="lineNum">     290 </span>                :         :             else
+<span class="lineNum">     291 </span>                :<span class="lineCov">       6 :                 LOG_INFO(&quot;unable to find %s in the archive&quot;, strPtr(walSegment));</span>
+<span class="lineNum">     292 </span>                :         :         }
+<span class="lineNum">     293 </span>                :         :     }
+<span class="lineNum">     294 </span>                :<span class="lineCov">      18 :     MEM_CONTEXT_TEMP_END();</span>
+<span class="lineNum">     295 </span>                :         : 
+<span class="lineNum">     296 </span>                :<span class="lineCov">       6 :     FUNCTION_DEBUG_RESULT(INT, result);</span>
+<span class="lineNum">     297 </span>                :         : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

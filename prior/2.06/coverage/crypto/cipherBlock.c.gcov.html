@@ -1,0 +1,385 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>pgBackRest v2.06 C Code Coverage - crypto/cipherBlock.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">pgBackRest v2.06 C Code Coverage</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">crypto</a> - cipherBlock.c<span style="font-size: 80%;"> (source / <a href="cipherBlock.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">all C unit</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">112</td>
+            <td class="headerCovTableEntry">115</td>
+            <td class="headerCovTableEntryHi">97.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-11-02 15:04:05</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">33</td>
+            <td class="headerCovTableEntry">36</td>
+            <td class="headerCovTableEntryHi">91.7 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data    Line data  Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :         : /***********************************************************************************************************************************</a>
+<span class="lineNum">       2 </span>                :         : Block Cipher
+<span class="lineNum">       3 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">       4 </span>                :         : #include &lt;string.h&gt;
+<span class="lineNum">       5 </span>                :         : 
+<span class="lineNum">       6 </span>                :         : #include &lt;openssl/evp.h&gt;
+<span class="lineNum">       7 </span>                :         : #include &lt;openssl/err.h&gt;
+<span class="lineNum">       8 </span>                :         : 
+<span class="lineNum">       9 </span>                :         : #include &quot;common/debug.h&quot;
+<span class="lineNum">      10 </span>                :         : #include &quot;common/log.h&quot;
+<span class="lineNum">      11 </span>                :         : #include &quot;common/memContext.h&quot;
+<span class="lineNum">      12 </span>                :         : #include &quot;crypto/cipherBlock.h&quot;
+<span class="lineNum">      13 </span>                :         : #include &quot;crypto/crypto.h&quot;
+<span class="lineNum">      14 </span>                :         : #include &quot;crypto/random.h&quot;
+<span class="lineNum">      15 </span>                :         : 
+<span class="lineNum">      16 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      17 </span>                :         : Header constants and sizes
+<span class="lineNum">      18 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">      19 </span>                :         : // Magic constant for salted encrypt.  Only salted encrypt is done here, but this constant is required for compatibility with the
+<span class="lineNum">      20 </span>                :         : // openssl command-line tool.
+<span class="lineNum">      21 </span>                :         : #define CIPHER_BLOCK_MAGIC                                          &quot;Salted__&quot;
+<span class="lineNum">      22 </span>                :         : #define CIPHER_BLOCK_MAGIC_SIZE                                     (sizeof(CIPHER_BLOCK_MAGIC) - 1)
+<span class="lineNum">      23 </span>                :         : 
+<span class="lineNum">      24 </span>                :         : // Total length of cipher header
+<span class="lineNum">      25 </span>                :         : #define CIPHER_BLOCK_HEADER_SIZE                                    (CIPHER_BLOCK_MAGIC_SIZE + PKCS5_SALT_LEN)
+<span class="lineNum">      26 </span>                :         : 
+<span class="lineNum">      27 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      28 </span>                :         : Track state during block encrypt/decrypt
+<span class="lineNum">      29 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">      30 </span>                :         : struct CipherBlock
+<span class="lineNum">      31 </span>                :         : {
+<span class="lineNum">      32 </span>                :         :     MemContext *memContext;                                         // Context to store data
+<span class="lineNum">      33 </span>                :         :     CipherMode mode;                                                // Mode encrypt/decrypt
+<span class="lineNum">      34 </span>                :         :     bool saltDone;                                                  // Has the salt been read/generated?
+<span class="lineNum">      35 </span>                :         :     bool processDone;                                               // Has any data been processed?
+<span class="lineNum">      36 </span>                :         :     size_t passSize;                                                // Size of passphrase in bytes
+<span class="lineNum">      37 </span>                :         :     unsigned char *pass;                                            // Passphrase used to generate encryption key
+<span class="lineNum">      38 </span>                :         :     size_t headerSize;                                              // Size of header read during decrypt
+<span class="lineNum">      39 </span>                :         :     unsigned char header[CIPHER_BLOCK_HEADER_SIZE];                 // Buffer to hold partial header during decrypt
+<span class="lineNum">      40 </span>                :         :     const EVP_CIPHER *cipher;                                       // Cipher object
+<span class="lineNum">      41 </span>                :         :     const EVP_MD *digest;                                           // Message digest object
+<span class="lineNum">      42 </span>                :         :     EVP_CIPHER_CTX *cipherContext;                                  // Encrypt/decrypt context
+<span class="lineNum">      43 </span>                :         : };
+<span class="lineNum">      44 </span>                :         : 
+<span class="lineNum">      45 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      46 </span>                :         : New block encrypt/decrypt object
+<a name="47"><span class="lineNum">      47 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      48 </span>                :         : CipherBlock *
+<span class="lineNum">      49 </span>                :<span class="lineCov">      12 : cipherBlockNew(CipherMode mode, const char *cipherName, const unsigned char *pass, size_t passSize, const char *digestName)</span>
+<span class="lineNum">      50 </span>                :         : {
+<span class="lineNum">      51 </span>                :<span class="lineCov">      12 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">      52 </span>                :<span class="lineCov">      12 :         FUNCTION_DEBUG_PARAM(ENUM, mode);</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">      12 :         FUNCTION_DEBUG_PARAM(STRINGZ, cipherName);</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">      12 :         FUNCTION_DEBUG_PARAM(UCHARP, pass);</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">      12 :         FUNCTION_DEBUG_PARAM(SIZE, passSize);</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">      12 :         FUNCTION_DEBUG_PARAM(STRINGZ, digestName);</span>
+<span class="lineNum">      57 </span>                :         : 
+<span class="lineNum">      58 </span>                :<span class="lineCov">      12 :         FUNCTION_DEBUG_ASSERT(cipherName != NULL);</span>
+<span class="lineNum">      59 </span>                :<span class="lineCov">      12 :         FUNCTION_DEBUG_ASSERT(pass != NULL);</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">      12 :         FUNCTION_DEBUG_ASSERT(passSize &gt; 0);</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">      12 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">      62 </span>                :         : 
+<span class="lineNum">      63 </span>                :         :     // Only need to init once.
+<span class="lineNum">      64 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 11 times"> + </span>]:<span class="lineCov">      12 :     if (!cryptoIsInit())</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">       1 :         cryptoInit();</span>
+<span class="lineNum">      66 </span>                :         : 
+<span class="lineNum">      67 </span>                :         :     // Lookup cipher by name.  This means the ciphers passed in must exactly match a name expected by OpenSSL.  This is a good
+<span class="lineNum">      68 </span>                :         :     // thing since the name required by the openssl command-line tool will match what is used by pgBackRest.
+<span class="lineNum">      69 </span>                :<span class="lineCov">      12 :     const EVP_CIPHER *cipher = EVP_get_cipherbyname(cipherName);</span>
+<span class="lineNum">      70 </span>                :         : 
+<span class="lineNum">      71 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 11 times"> + </span>]:<span class="lineCov">      12 :     if (!cipher)</span>
+<span class="lineNum">      72 </span>                :<span class="lineCov">       1 :         THROW_FMT(AssertError, &quot;unable to load cipher '%s'&quot;, cipherName);</span>
+<span class="lineNum">      73 </span>                :         : 
+<span class="lineNum">      74 </span>                :         :     // Lookup digest.  If not defined it will be set to sha1.
+<span class="lineNum">      75 </span>                :<span class="lineCov">      11 :     const EVP_MD *digest = NULL;</span>
+<span class="lineNum">      76 </span>                :         : 
+<span class="lineNum">      77 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">      11 :     if (digestName)</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">       1 :         digest = EVP_get_digestbyname(digestName);</span>
+<span class="lineNum">      79 </span>                :         :     else
+<span class="lineNum">      80 </span>                :<span class="lineCov">      10 :         digest = EVP_sha1();</span>
+<span class="lineNum">      81 </span>                :         : 
+<span class="lineNum">      82 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">      11 :     if (!digest)</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">       1 :         THROW_FMT(AssertError, &quot;unable to load digest '%s'&quot;, digestName);</span>
+<span class="lineNum">      84 </span>                :         : 
+<span class="lineNum">      85 </span>                :         :     // Allocate memory to hold process state
+<span class="lineNum">      86 </span>                :<span class="lineCov">      10 :     CipherBlock *this = NULL;</span>
+<span class="lineNum">      87 </span>                :         : 
+<span class="lineNum">      88 </span>                :<span class="lineCov">      30 :     MEM_CONTEXT_NEW_BEGIN(&quot;cipherBlock&quot;)</span>
+<span class="lineNum">      89 </span>                :         :     {
+<span class="lineNum">      90 </span>                :         :         // Allocate state and set context
+<span class="lineNum">      91 </span>                :<span class="lineCov">      10 :         this = memNew(sizeof(CipherBlock));</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">      10 :         this-&gt;memContext = MEM_CONTEXT_NEW();</span>
+<span class="lineNum">      93 </span>                :         : 
+<span class="lineNum">      94 </span>                :         :         // Set mode, encrypt or decrypt
+<span class="lineNum">      95 </span>                :<span class="lineCov">      10 :         this-&gt;mode = mode;</span>
+<span class="lineNum">      96 </span>                :         : 
+<span class="lineNum">      97 </span>                :         :         // Set cipher and digest
+<span class="lineNum">      98 </span>                :<span class="lineCov">      10 :         this-&gt;cipher = cipher;</span>
+<span class="lineNum">      99 </span>                :<span class="lineCov">      10 :         this-&gt;digest = digest;</span>
+<span class="lineNum">     100 </span>                :         : 
+<span class="lineNum">     101 </span>                :         :         // Store the passphrase
+<span class="lineNum">     102 </span>                :<span class="lineCov">      10 :         this-&gt;passSize = passSize;</span>
+<span class="lineNum">     103 </span>                :<span class="lineCov">      10 :         this-&gt;pass = memNewRaw(this-&gt;passSize);</span>
+<span class="lineNum">     104 </span>                :<span class="lineCov">      10 :         memcpy(this-&gt;pass, pass, this-&gt;passSize);</span>
+<span class="lineNum">     105 </span>                :         :     }
+<span class="lineNum">     106 </span>                :<span class="lineCov">      10 :     MEM_CONTEXT_NEW_END();</span>
+<span class="lineNum">     107 </span>                :         : 
+<span class="lineNum">     108 </span>                :<span class="lineCov">      10 :     FUNCTION_DEBUG_RESULT(CIPHER_BLOCK, this);</span>
+<span class="lineNum">     109 </span>                :         : }
+<span class="lineNum">     110 </span>                :         : 
+<span class="lineNum">     111 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     112 </span>                :         : Determine how large the destination buffer should be
+<a name="113"><span class="lineNum">     113 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     114 </span>                :         : size_t
+<span class="lineNum">     115 </span>                :<span class="lineCov">       3 : cipherBlockProcessSize(CipherBlock *this, size_t sourceSize)</span>
+<span class="lineNum">     116 </span>                :         : {
+<span class="lineNum">     117 </span>                :<span class="lineCov">       3 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">       3 :         FUNCTION_DEBUG_PARAM(CIPHER_BLOCK, this);</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">       3 :         FUNCTION_DEBUG_PARAM(SIZE, sourceSize);</span>
+<span class="lineNum">     120 </span>                :         : 
+<span class="lineNum">     121 </span>                :<span class="lineCov">       3 :         FUNCTION_DEBUG_ASSERT(this != NULL);</span>
+<span class="lineNum">     122 </span>                :<span class="lineCov">       3 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     123 </span>                :         : 
+<span class="lineNum">     124 </span>                :         :     // Destination size is source size plus one extra block
+<span class="lineNum">     125 </span>                :<span class="lineCov">       3 :     size_t destinationSize = sourceSize + EVP_MAX_BLOCK_LENGTH;</span>
+<span class="lineNum">     126 </span>                :         : 
+<span class="lineNum">     127 </span>                :         :     // On encrypt the header size must be included before the first block
+<span class="lineNum">     128 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>][<span class="branchCov" title="Branch 2 was taken 1 time"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">       3 :     if (this-&gt;mode == cipherModeEncrypt &amp;&amp; !this-&gt;saltDone)</span>
+<span class="lineNum">     129 </span>                :<span class="lineCov">       1 :         destinationSize += CIPHER_BLOCK_MAGIC_SIZE + PKCS5_SALT_LEN;</span>
+<span class="lineNum">     130 </span>                :         : 
+<span class="lineNum">     131 </span>                :<span class="lineCov">       3 :     FUNCTION_DEBUG_RESULT(SIZE, destinationSize);</span>
+<span class="lineNum">     132 </span>                :         : }
+<span class="lineNum">     133 </span>                :         : 
+<span class="lineNum">     134 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     135 </span>                :         : Encrypt/decrypt data
+<a name="136"><span class="lineNum">     136 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     137 </span>                :         : size_t
+<span class="lineNum">     138 </span>                :<span class="lineCov">      13 : cipherBlockProcess(CipherBlock *this, const unsigned char *source, size_t sourceSize, unsigned char *destination)</span>
+<span class="lineNum">     139 </span>                :         : {
+<span class="lineNum">     140 </span>                :<span class="lineCov">      13 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">      13 :         FUNCTION_DEBUG_PARAM(CIPHER_BLOCK, this);</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">      13 :         FUNCTION_DEBUG_PARAM(UCHARP, source);</span>
+<span class="lineNum">     143 </span>                :<span class="lineCov">      13 :         FUNCTION_DEBUG_PARAM(SIZE, sourceSize);</span>
+<span class="lineNum">     144 </span>                :<span class="lineCov">      13 :         FUNCTION_DEBUG_PARAM(UCHARP, destination);</span>
+<span class="lineNum">     145 </span>                :         : 
+<span class="lineNum">     146 </span>                :<span class="lineCov">      13 :         FUNCTION_DEBUG_ASSERT(this != NULL);</span>
+<span class="lineNum">     147 </span>                :<span class="lineCov">      13 :         FUNCTION_DEBUG_ASSERT(source != NULL);</span>
+<span class="lineNum">     148 </span>                :<span class="lineCov">      13 :         FUNCTION_DEBUG_ASSERT(destination != NULL);</span>
+<span class="lineNum">     149 </span>                :<span class="lineCov">      13 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     150 </span>                :         : 
+<span class="lineNum">     151 </span>                :         :     // Actual destination size
+<span class="lineNum">     152 </span>                :<span class="lineCov">      13 :     size_t destinationSize = 0;</span>
+<span class="lineNum">     153 </span>                :         : 
+<span class="lineNum">     154 </span>                :         :     // If the salt has not been generated/read yet
+<span class="lineNum">     155 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">      13 :     if (!this-&gt;saltDone)</span>
+<span class="lineNum">     156 </span>                :         :     {
+<span class="lineNum">     157 </span>                :<span class="lineCov">      10 :         const unsigned char *salt = NULL;</span>
+<span class="lineNum">     158 </span>                :         : 
+<span class="lineNum">     159 </span>                :         :         // On encrypt the salt is generated
+<span class="lineNum">     160 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">      10 :         if (this-&gt;mode == cipherModeEncrypt)</span>
+<span class="lineNum">     161 </span>                :         :         {
+<span class="lineNum">     162 </span>                :         :             // Add magic to the destination buffer so openssl knows the file is salted
+<span class="lineNum">     163 </span>                :<span class="lineCov">       2 :             memcpy(destination, CIPHER_BLOCK_MAGIC, CIPHER_BLOCK_MAGIC_SIZE);</span>
+<span class="lineNum">     164 </span>                :<span class="lineCov">       2 :             destination += CIPHER_BLOCK_MAGIC_SIZE;</span>
+<span class="lineNum">     165 </span>                :<span class="lineCov">       2 :             destinationSize += CIPHER_BLOCK_MAGIC_SIZE;</span>
+<span class="lineNum">     166 </span>                :         : 
+<span class="lineNum">     167 </span>                :         :             // Add salt to the destination buffer
+<span class="lineNum">     168 </span>                :<span class="lineCov">       2 :             randomBytes(destination, PKCS5_SALT_LEN);</span>
+<span class="lineNum">     169 </span>                :<span class="lineCov">       2 :             salt = destination;</span>
+<span class="lineNum">     170 </span>                :<span class="lineCov">       2 :             destination += PKCS5_SALT_LEN;</span>
+<span class="lineNum">     171 </span>                :<span class="lineCov">       2 :             destinationSize += PKCS5_SALT_LEN;</span>
+<span class="lineNum">     172 </span>                :         :         }
+<span class="lineNum">     173 </span>                :         :         // On decrypt the salt is read from the header
+<span class="lineNum">     174 </span>                :         :         else
+<span class="lineNum">     175 </span>                :         :         {
+<span class="lineNum">     176 </span>                :         :             // Check if the entire header has been read
+<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">       8 :             if (this-&gt;headerSize + sourceSize &gt;= CIPHER_BLOCK_HEADER_SIZE)</span>
+<span class="lineNum">     178 </span>                :         :             {
+<span class="lineNum">     179 </span>                :         :                 // Copy header (or remains of header) from source into the header buffer
+<span class="lineNum">     180 </span>                :<span class="lineCov">       6 :                 memcpy(this-&gt;header + this-&gt;headerSize, source, CIPHER_BLOCK_HEADER_SIZE - this-&gt;headerSize);</span>
+<span class="lineNum">     181 </span>                :<span class="lineCov">       6 :                 salt = this-&gt;header + CIPHER_BLOCK_MAGIC_SIZE;</span>
+<span class="lineNum">     182 </span>                :         : 
+<span class="lineNum">     183 </span>                :         :                 // Advance source and source size by the number of bytes read
+<span class="lineNum">     184 </span>                :<span class="lineCov">       6 :                 source += CIPHER_BLOCK_HEADER_SIZE - this-&gt;headerSize;</span>
+<span class="lineNum">     185 </span>                :<span class="lineCov">       6 :                 sourceSize -= CIPHER_BLOCK_HEADER_SIZE - this-&gt;headerSize;</span>
+<span class="lineNum">     186 </span>                :         : 
+<span class="lineNum">     187 </span>                :         :                 // The first bytes of the file to decrypt should be equal to the magic.  If not then this is not an
+<span class="lineNum">     188 </span>                :         :                 // encrypted file, or at least not in a format we recognize.
+<span class="lineNum">     189 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">       6 :                 if (memcmp(this-&gt;header, CIPHER_BLOCK_MAGIC, CIPHER_BLOCK_MAGIC_SIZE) != 0)</span>
+<span class="lineNum">     190 </span>                :<span class="lineCov">       1 :                     THROW(CipherError, &quot;cipher header invalid&quot;);</span>
+<span class="lineNum">     191 </span>                :         :             }
+<span class="lineNum">     192 </span>                :         :             // Else copy what was provided into the header buffer and return 0
+<span class="lineNum">     193 </span>                :         :             else
+<span class="lineNum">     194 </span>                :         :             {
+<span class="lineNum">     195 </span>                :<span class="lineCov">       2 :                 memcpy(this-&gt;header + this-&gt;headerSize, source, sourceSize);</span>
+<span class="lineNum">     196 </span>                :<span class="lineCov">       2 :                 this-&gt;headerSize += sourceSize;</span>
+<span class="lineNum">     197 </span>                :         : 
+<span class="lineNum">     198 </span>                :         :                 // Indicate that there is nothing left to process
+<span class="lineNum">     199 </span>                :<span class="lineCov">       2 :                 sourceSize = 0;</span>
+<span class="lineNum">     200 </span>                :         :             }
+<span class="lineNum">     201 </span>                :         :         }
+<span class="lineNum">     202 </span>                :         : 
+<span class="lineNum">     203 </span>                :         :         // If salt generation/read is done
+<span class="lineNum">     204 </span>        [<span class="branchCov" title="Branch 0 was taken 7 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">       9 :         if (salt)</span>
+<span class="lineNum">     205 </span>                :         :         {
+<span class="lineNum">     206 </span>                :         :             // Generate key and initialization vector
+<span class="lineNum">     207 </span>                :         :             unsigned char key[EVP_MAX_KEY_LENGTH];
+<span class="lineNum">     208 </span>                :         :             unsigned char initVector[EVP_MAX_IV_LENGTH];
+<span class="lineNum">     209 </span>                :         : 
+<span class="lineNum">     210 </span>                :<span class="lineCov">       7 :             EVP_BytesToKey(</span>
+<span class="lineNum">     211 </span>                :<span class="lineCov">      14 :                 this-&gt;cipher, this-&gt;digest, salt, (unsigned char *)this-&gt;pass, (int)this-&gt;passSize, 1, key, initVector);</span>
+<span class="lineNum">     212 </span>                :         : 
+<span class="lineNum">     213 </span>                :         :             // Create context to track cipher
+<span class="lineNum">     214 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 7 times"> + </span>]:<span class="lineCov">       7 :             if (!(this-&gt;cipherContext = EVP_CIPHER_CTX_new()))                  // {uncoverable - no failure condition known}</span>
+<span class="lineNum">     215 </span>                :<span class="lineNoCov">       0 :                 THROW(MemoryError, &quot;unable to create context&quot;);                 // {+uncoverable}</span>
+<span class="lineNum">     216 </span>                :         : 
+<span class="lineNum">     217 </span>                :         :             // Set free callback to ensure cipher context is freed
+<span class="lineNum">     218 </span>                :<span class="lineCov">       7 :             memContextCallback(this-&gt;memContext, (MemContextCallback)cipherBlockFree, this);</span>
+<span class="lineNum">     219 </span>                :         : 
+<span class="lineNum">     220 </span>                :         :             // Initialize cipher
+<span class="lineNum">     221 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 7 times"> + </span>]:<span class="lineCov">       7 :             if (EVP_CipherInit_ex(                                              // {uncoverable - no failure condition known}</span>
+<span class="lineNum">     222 </span>                :<span class="lineCov">       7 :                     this-&gt;cipherContext, this-&gt;cipher, NULL, key, initVector, this-&gt;mode == cipherModeEncrypt) != 1)</span>
+<span class="lineNum">     223 </span>                :         :             {
+<span class="lineNum">     224 </span>                :<span class="lineNoCov">       0 :                 THROW(MemoryError, &quot;unable to initialize cipher&quot;);              // {+uncoverable}</span>
+<span class="lineNum">     225 </span>                :         :             }
+<span class="lineNum">     226 </span>                :         : 
+<span class="lineNum">     227 </span>                :<span class="lineCov">       7 :             this-&gt;saltDone = true;</span>
+<span class="lineNum">     228 </span>                :         :         }
+<span class="lineNum">     229 </span>                :         :     }
+<span class="lineNum">     230 </span>                :         : 
+<span class="lineNum">     231 </span>                :         :     // Recheck that source size &gt; 0 as the bytes may have been consumed reading the header
+<span class="lineNum">     232 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">      12 :     if (sourceSize &gt; 0)</span>
+<span class="lineNum">     233 </span>                :         :     {
+<span class="lineNum">     234 </span>                :         :         // Process the data
+<span class="lineNum">     235 </span>                :<span class="lineCov">       6 :         size_t destinationUpdateSize = 0;</span>
+<span class="lineNum">     236 </span>                :         : 
+<span class="lineNum">     237 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">       6 :         if (!EVP_CipherUpdate(                                                  // {uncoverable - no failure condition known}</span>
+<span class="lineNum">     238 </span>                :         :                 this-&gt;cipherContext, destination, (int *)&amp;destinationUpdateSize, source, (int)sourceSize))
+<span class="lineNum">     239 </span>                :<span class="lineNoCov">       0 :             THROW(CipherError, &quot;unable to process&quot;);                            // {+uncoverable}</span>
+<span class="lineNum">     240 </span>                :         : 
+<span class="lineNum">     241 </span>                :<span class="lineCov">       6 :         destinationSize += destinationUpdateSize;</span>
+<span class="lineNum">     242 </span>                :         : 
+<span class="lineNum">     243 </span>                :         :         // Note that data has been processed so flush is valid
+<span class="lineNum">     244 </span>                :<span class="lineCov">       6 :         this-&gt;processDone = true;</span>
+<span class="lineNum">     245 </span>                :         :     }
+<span class="lineNum">     246 </span>                :         : 
+<span class="lineNum">     247 </span>                :         :     // Return actual destination size
+<span class="lineNum">     248 </span>                :<span class="lineCov">      12 :     FUNCTION_DEBUG_RESULT(SIZE, destinationSize);</span>
+<span class="lineNum">     249 </span>                :         : }
+<span class="lineNum">     250 </span>                :         : 
+<span class="lineNum">     251 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     252 </span>                :         : Flush the remaining data
+<a name="253"><span class="lineNum">     253 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     254 </span>                :         : size_t
+<span class="lineNum">     255 </span>                :<span class="lineCov">       8 : cipherBlockFlush(CipherBlock *this, unsigned char *destination)</span>
+<span class="lineNum">     256 </span>                :         : {
+<span class="lineNum">     257 </span>                :<span class="lineCov">       8 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     258 </span>                :<span class="lineCov">       8 :         FUNCTION_DEBUG_PARAM(CIPHER_BLOCK, this);</span>
+<span class="lineNum">     259 </span>                :<span class="lineCov">       8 :         FUNCTION_DEBUG_PARAM(UCHARP, destination);</span>
+<span class="lineNum">     260 </span>                :         : 
+<span class="lineNum">     261 </span>                :<span class="lineCov">       8 :         FUNCTION_DEBUG_ASSERT(this != NULL);</span>
+<span class="lineNum">     262 </span>                :<span class="lineCov">       8 :         FUNCTION_DEBUG_ASSERT(destination != NULL);</span>
+<span class="lineNum">     263 </span>                :<span class="lineCov">       8 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     264 </span>                :         : 
+<span class="lineNum">     265 </span>                :         :     // Actual destination size
+<span class="lineNum">     266 </span>                :<span class="lineCov">       8 :     size_t destinationSize = 0;</span>
+<span class="lineNum">     267 </span>                :         : 
+<span class="lineNum">     268 </span>                :         :     // If no header was processed then error
+<span class="lineNum">     269 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">       8 :     if (!this-&gt;saltDone)</span>
+<span class="lineNum">     270 </span>                :<span class="lineCov">       1 :         THROW(CipherError, &quot;cipher header missing&quot;);</span>
+<span class="lineNum">     271 </span>                :         : 
+<span class="lineNum">     272 </span>                :         :     // Only flush remaining data if some data was processed
+<span class="lineNum">     273 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 5 times"> + </span>]:<span class="lineCov">       7 :     if (!EVP_CipherFinal(this-&gt;cipherContext, destination, (int *)&amp;destinationSize))</span>
+<span class="lineNum">     274 </span>                :<span class="lineCov">       2 :         THROW(CipherError, &quot;unable to flush&quot;);</span>
+<span class="lineNum">     275 </span>                :         : 
+<span class="lineNum">     276 </span>                :         :     // Return actual destination size
+<span class="lineNum">     277 </span>                :<span class="lineCov">       5 :     FUNCTION_DEBUG_RESULT(SIZE, destinationSize);</span>
+<span class="lineNum">     278 </span>                :         : }
+<span class="lineNum">     279 </span>                :         : 
+<span class="lineNum">     280 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     281 </span>                :         : Free memory
+<a name="282"><span class="lineNum">     282 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     283 </span>                :         : void
+<span class="lineNum">     284 </span>                :<span class="lineCov">      16 : cipherBlockFree(CipherBlock *this)</span>
+<span class="lineNum">     285 </span>                :         : {
+<span class="lineNum">     286 </span>                :<span class="lineCov">      16 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     287 </span>                :<span class="lineCov">      16 :         FUNCTION_DEBUG_PARAM(CIPHER_BLOCK, this);</span>
+<span class="lineNum">     288 </span>                :         : 
+<span class="lineNum">     289 </span>                :<span class="lineCov">      16 :         FUNCTION_DEBUG_ASSERT(this != NULL);</span>
+<span class="lineNum">     290 </span>                :<span class="lineCov">      16 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     291 </span>                :         : 
+<span class="lineNum">     292 </span>                :         :     // Free cipher context
+<span class="lineNum">     293 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">      16 :     if (this-&gt;cipherContext)</span>
+<span class="lineNum">     294 </span>                :<span class="lineCov">      14 :         EVP_CIPHER_CTX_cleanup(this-&gt;cipherContext);</span>
+<span class="lineNum">     295 </span>                :         : 
+<span class="lineNum">     296 </span>                :         :     // Free mem context
+<span class="lineNum">     297 </span>                :<span class="lineCov">      16 :     memContextFree(this-&gt;memContext);</span>
+<span class="lineNum">     298 </span>                :         : 
+<span class="lineNum">     299 </span>                :<span class="lineCov">      16 :     FUNCTION_DEBUG_RESULT_VOID();</span>
+<span class="lineNum">     300 </span>                :<span class="lineCov">      16 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

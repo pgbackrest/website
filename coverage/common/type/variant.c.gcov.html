@@ -1,0 +1,1102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>pgBackRest v2.06 C Code Coverage - common/type/variant.c</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">pgBackRest v2.06 C Code Coverage</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">common/type</a> - variant.c<span style="font-size: 80%;"> (source / <a href="variant.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">all C unit</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">393</td>
+            <td class="headerCovTableEntry">393</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-11-02 15:04:05</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">30</td>
+            <td class="headerCovTableEntry">30</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data    Line data  Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :         : /***********************************************************************************************************************************</a>
+<span class="lineNum">       2 </span>                :         : Variant Data Type
+<span class="lineNum">       3 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">       4 </span>                :         : #include &lt;errno.h&gt;
+<span class="lineNum">       5 </span>                :         : #include &lt;inttypes.h&gt;
+<span class="lineNum">       6 </span>                :         : #include &lt;limits.h&gt;
+<span class="lineNum">       7 </span>                :         : #include &lt;stdio.h&gt;
+<span class="lineNum">       8 </span>                :         : #include &lt;stdlib.h&gt;
+<span class="lineNum">       9 </span>                :         : #include &lt;string.h&gt;
+<span class="lineNum">      10 </span>                :         : #include &lt;strings.h&gt;
+<span class="lineNum">      11 </span>                :         : 
+<span class="lineNum">      12 </span>                :         : #include &quot;common/assert.h&quot;
+<span class="lineNum">      13 </span>                :         : #include &quot;common/debug.h&quot;
+<span class="lineNum">      14 </span>                :         : #include &quot;common/memContext.h&quot;
+<span class="lineNum">      15 </span>                :         : #include &quot;common/type/convert.h&quot;
+<span class="lineNum">      16 </span>                :         : #include &quot;common/type/variant.h&quot;
+<span class="lineNum">      17 </span>                :         : 
+<span class="lineNum">      18 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      19 </span>                :         : Information about the variant
+<span class="lineNum">      20 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">      21 </span>                :         : struct Variant
+<span class="lineNum">      22 </span>                :         : {
+<span class="lineNum">      23 </span>                :         :     MemContext *memContext;                                         // Mem context
+<span class="lineNum">      24 </span>                :         :     unsigned int type:3;                                            // Variant Type
+<span class="lineNum">      25 </span>                :         : };
+<span class="lineNum">      26 </span>                :         : 
+<span class="lineNum">      27 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      28 </span>                :         : Variant type names
+<span class="lineNum">      29 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">      30 </span>                :         : static const char *variantTypeName[] =
+<span class="lineNum">      31 </span>                :         : {
+<span class="lineNum">      32 </span>                :         :     &quot;bool&quot;,                                                         // varTypeBool
+<span class="lineNum">      33 </span>                :         :     &quot;double&quot;,                                                       // varTypeDouble,
+<span class="lineNum">      34 </span>                :         :     &quot;int&quot;,                                                          // varTypeInt
+<span class="lineNum">      35 </span>                :         :     &quot;int64&quot;,                                                        // varTypeInt64
+<span class="lineNum">      36 </span>                :         :     &quot;KeyValue&quot;,                                                     // varTypeKeyValue
+<span class="lineNum">      37 </span>                :         :     &quot;String&quot;,                                                       // varTypeString
+<span class="lineNum">      38 </span>                :         :     &quot;VariantList&quot;,                                                  // varTypeVariantList
+<span class="lineNum">      39 </span>                :         :     &quot;uint64&quot;,                                                       // varTypeUInt64
+<span class="lineNum">      40 </span>                :         : };
+<span class="lineNum">      41 </span>                :         : 
+<span class="lineNum">      42 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      43 </span>                :         : New variant of any supported type
+<a name="44"><span class="lineNum">      44 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      45 </span>                :         : static Variant *
+<span class="lineNum">      46 </span>                :<span class="lineCov">     143 : varNewInternal(VariantType type, void *data, size_t dataSize)</span>
+<span class="lineNum">      47 </span>                :         : {
+<span class="lineNum">      48 </span>                :<span class="lineCov">     143 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">      49 </span>                :<span class="lineCov">     143 :         FUNCTION_TEST_PARAM(ENUM, type);</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">     143 :         FUNCTION_TEST_PARAM(VOIDP, data);</span>
+<span class="lineNum">      51 </span>                :<span class="lineCov">     143 :         FUNCTION_TEST_PARAM(SIZE, dataSize);</span>
+<span class="lineNum">      52 </span>                :         : 
+<span class="lineNum">      53 </span>                :<span class="lineCov">     143 :         FUNCTION_TEST_ASSERT(data != NULL);</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">     143 :         FUNCTION_TEST_ASSERT(dataSize &gt; 0);</span>
+<span class="lineNum">      55 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">      56 </span>                :         : 
+<span class="lineNum">      57 </span>                :         :     // Allocate memory for the variant and set the type
+<span class="lineNum">      58 </span>                :<span class="lineCov">     143 :     Variant *this = memNew(sizeof(Variant) + dataSize);</span>
+<span class="lineNum">      59 </span>                :<span class="lineCov">     143 :     this-&gt;memContext = memContextCurrent();</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">     143 :     this-&gt;type = type;</span>
+<span class="lineNum">      61 </span>                :         : 
+<span class="lineNum">      62 </span>                :         :     // Copy data
+<span class="lineNum">      63 </span>                :<span class="lineCov">     143 :     memcpy((unsigned char *)this + sizeof(Variant), data, dataSize);</span>
+<span class="lineNum">      64 </span>                :         : 
+<span class="lineNum">      65 </span>                :<span class="lineCov">     143 :     FUNCTION_TEST_RESULT(VARIANT, this);</span>
+<span class="lineNum">      66 </span>                :         : }
+<span class="lineNum">      67 </span>                :         : 
+<span class="lineNum">      68 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      69 </span>                :         : Get a pointer to the data stored in the variant.  This hides the complicated pointer arithmetic.
+<a name="70"><span class="lineNum">      70 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      71 </span>                :         : static void *
+<span class="lineNum">      72 </span>                :<span class="lineCov">     567 : varData(const Variant *this)</span>
+<span class="lineNum">      73 </span>                :         : {
+<span class="lineNum">      74 </span>                :<span class="lineCov">     567 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">     139 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">      76 </span>                :         : 
+<span class="lineNum">      77 </span>                :<span class="lineCov">     139 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">      78 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">      79 </span>                :         : 
+<span class="lineNum">      80 </span>                :<span class="lineCov">     567 :     FUNCTION_TEST_RESULT(VOIDP, (void *)((unsigned char *)this + sizeof(Variant)));</span>
+<span class="lineNum">      81 </span>                :         : }
+<span class="lineNum">      82 </span>                :         : 
+<span class="lineNum">      83 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      84 </span>                :         : Duplicate a variant
+<a name="85"><span class="lineNum">      85 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      86 </span>                :         : Variant *
+<span class="lineNum">      87 </span>                :<span class="lineCov">      19 : varDup(const Variant *this)</span>
+<span class="lineNum">      88 </span>                :         : {
+<span class="lineNum">      89 </span>                :<span class="lineCov">      19 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">      90 </span>                :<span class="lineCov">      19 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">      91 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">      92 </span>                :         : 
+<span class="lineNum">      93 </span>                :<span class="lineCov">      19 :     Variant *result = NULL;</span>
+<span class="lineNum">      94 </span>                :         : 
+<span class="lineNum">      95 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">      19 :     if (this != NULL)</span>
+<span class="lineNum">      96 </span>                :         :     {
+<span class="lineNum">      97 </span>                :<span class="lineCov">      18 :         switch (this-&gt;type)</span>
+<span class="lineNum">      98 </span>                :         :         {
+<span class="lineNum">      99 </span>                :<span class="lineCov">       3 :             case varTypeBool:</span>
+<span class="lineNum">     100 </span>                :         :             {
+<span class="lineNum">     101 </span>                :<span class="lineCov">       3 :                 result = varNewBool(varBool(this));</span>
+<span class="lineNum">     102 </span>                :<span class="lineCov">       3 :                 break;</span>
+<span class="lineNum">     103 </span>                :         :             }
+<span class="lineNum">     104 </span>                :         : 
+<span class="lineNum">     105 </span>                :<span class="lineCov">       1 :             case varTypeDouble:</span>
+<span class="lineNum">     106 </span>                :         :             {
+<span class="lineNum">     107 </span>                :<span class="lineCov">       1 :                 result = varNewDbl(varDbl(this));</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">       1 :                 break;</span>
+<span class="lineNum">     109 </span>                :         :             }
+<span class="lineNum">     110 </span>                :         : 
+<span class="lineNum">     111 </span>                :<span class="lineCov">       9 :             case varTypeInt:</span>
+<span class="lineNum">     112 </span>                :         :             {
+<span class="lineNum">     113 </span>                :<span class="lineCov">       9 :                 result = varNewInt(varInt(this));</span>
+<span class="lineNum">     114 </span>                :<span class="lineCov">       9 :                 break;</span>
+<span class="lineNum">     115 </span>                :         :             }
+<span class="lineNum">     116 </span>                :         : 
+<span class="lineNum">     117 </span>                :<span class="lineCov">       1 :             case varTypeInt64:</span>
+<span class="lineNum">     118 </span>                :         :             {
+<span class="lineNum">     119 </span>                :<span class="lineCov">       1 :                 result = varNewInt64(varInt64(this));</span>
+<span class="lineNum">     120 </span>                :<span class="lineCov">       1 :                 break;</span>
+<span class="lineNum">     121 </span>                :         :             }
+<span class="lineNum">     122 </span>                :         : 
+<span class="lineNum">     123 </span>                :<span class="lineCov">       1 :             case varTypeUInt64:</span>
+<span class="lineNum">     124 </span>                :         :             {
+<span class="lineNum">     125 </span>                :<span class="lineCov">       1 :                 result = varNewUInt64(varUInt64(this));</span>
+<span class="lineNum">     126 </span>                :<span class="lineCov">       1 :                 break;</span>
+<span class="lineNum">     127 </span>                :         :             }
+<span class="lineNum">     128 </span>                :         : 
+<span class="lineNum">     129 </span>                :<span class="lineCov">       1 :             case varTypeKeyValue:</span>
+<span class="lineNum">     130 </span>                :         :             {
+<span class="lineNum">     131 </span>                :<span class="lineCov">       1 :                 KeyValue *data = kvDup(varKv(this));</span>
+<span class="lineNum">     132 </span>                :<span class="lineCov">       1 :                 result = varNewInternal(varTypeKeyValue, (void *)&amp;data, sizeof(data));</span>
+<span class="lineNum">     133 </span>                :<span class="lineCov">       1 :                 break;</span>
+<span class="lineNum">     134 </span>                :         :             }
+<span class="lineNum">     135 </span>                :         : 
+<span class="lineNum">     136 </span>                :<span class="lineCov">       1 :             case varTypeString:</span>
+<span class="lineNum">     137 </span>                :         :             {
+<span class="lineNum">     138 </span>                :<span class="lineCov">       1 :                 result = varNewStr(varStr(this));</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">       1 :                 break;</span>
+<span class="lineNum">     140 </span>                :         :             }
+<span class="lineNum">     141 </span>                :         : 
+<span class="lineNum">     142 </span>                :<span class="lineCov">       1 :             case varTypeVariantList:</span>
+<span class="lineNum">     143 </span>                :         :             {
+<span class="lineNum">     144 </span>                :<span class="lineCov">       1 :                 result = varNewVarLst(varVarLst(this));</span>
+<span class="lineNum">     145 </span>                :<span class="lineCov">       1 :                 break;</span>
+<span class="lineNum">     146 </span>                :         :             }
+<span class="lineNum">     147 </span>                :         :         }
+<span class="lineNum">     148 </span>                :<span class="lineCov">       1 :     }</span>
+<span class="lineNum">     149 </span>                :         : 
+<span class="lineNum">     150 </span>                :<span class="lineCov">      19 :     FUNCTION_TEST_RESULT(VARIANT, result);</span>
+<span class="lineNum">     151 </span>                :         : }
+<span class="lineNum">     152 </span>                :         : 
+<span class="lineNum">     153 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     154 </span>                :         : Test if variants are equal
+<a name="155"><span class="lineNum">     155 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     156 </span>                :         : bool
+<span class="lineNum">     157 </span>                :<span class="lineCov">      24 : varEq(const Variant *this1, const Variant *this2)</span>
+<span class="lineNum">     158 </span>                :         : {
+<span class="lineNum">     159 </span>                :<span class="lineCov">      24 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     160 </span>                :<span class="lineCov">      24 :         FUNCTION_TEST_PARAM(VARIANT, this1);</span>
+<span class="lineNum">     161 </span>                :<span class="lineCov">      24 :         FUNCTION_TEST_PARAM(VARIANT, this2);</span>
+<span class="lineNum">     162 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     163 </span>                :         : 
+<span class="lineNum">     164 </span>                :<span class="lineCov">      24 :     bool result = false;</span>
+<span class="lineNum">     165 </span>                :         : 
+<span class="lineNum">     166 </span>                :         :     // Test if both variants are non-null
+<span class="lineNum">     167 </span>[<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 17 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">      24 :     if (this1 != NULL &amp;&amp; this2 != NULL)</span>
+<span class="lineNum">     168 </span>                :         :     {
+<span class="lineNum">     169 </span>                :         :         // Test if both variants are of the same type
+<span class="lineNum">     170 </span>        [<span class="branchCov" title="Branch 2 was taken 16 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">      31 :         if (varType(this1) == varType(this2))</span>
+<span class="lineNum">     171 </span>                :         :         {
+<span class="lineNum">     172 </span>                :<span class="lineCov">      16 :             switch (varType(this1))</span>
+<span class="lineNum">     173 </span>                :         :             {
+<span class="lineNum">     174 </span>                :<span class="lineCov">       2 :                 case varTypeBool:</span>
+<span class="lineNum">     175 </span>                :         :                 {
+<span class="lineNum">     176 </span>                :<span class="lineCov">       2 :                     result = varBool(this1) == varBool(this2);</span>
+<span class="lineNum">     177 </span>                :<span class="lineCov">       2 :                     break;</span>
+<span class="lineNum">     178 </span>                :         :                 }
+<span class="lineNum">     179 </span>                :         : 
+<span class="lineNum">     180 </span>                :<span class="lineCov">       2 :                 case varTypeDouble:</span>
+<span class="lineNum">     181 </span>                :         :                 {
+<span class="lineNum">     182 </span>                :<span class="lineCov">       2 :                     result = varDbl(this1) == varDbl(this2);</span>
+<span class="lineNum">     183 </span>                :<span class="lineCov">       2 :                     break;</span>
+<span class="lineNum">     184 </span>                :         :                 }
+<span class="lineNum">     185 </span>                :         : 
+<span class="lineNum">     186 </span>                :<span class="lineCov">       4 :                 case varTypeInt:</span>
+<span class="lineNum">     187 </span>                :         :                 {
+<span class="lineNum">     188 </span>                :<span class="lineCov">       4 :                     result = varInt(this1) == varInt(this2);</span>
+<span class="lineNum">     189 </span>                :<span class="lineCov">       4 :                     break;</span>
+<span class="lineNum">     190 </span>                :         :                 }
+<span class="lineNum">     191 </span>                :         : 
+<span class="lineNum">     192 </span>                :<span class="lineCov">       2 :                 case varTypeInt64:</span>
+<span class="lineNum">     193 </span>                :         :                 {
+<span class="lineNum">     194 </span>                :<span class="lineCov">       2 :                     result = varInt64(this1) == varInt64(this2);</span>
+<span class="lineNum">     195 </span>                :<span class="lineCov">       2 :                     break;</span>
+<span class="lineNum">     196 </span>                :         :                 }
+<span class="lineNum">     197 </span>                :         : 
+<span class="lineNum">     198 </span>                :<span class="lineCov">       2 :                 case varTypeUInt64:</span>
+<span class="lineNum">     199 </span>                :         :                 {
+<span class="lineNum">     200 </span>                :<span class="lineCov">       2 :                     result = varUInt64(this1) == varUInt64(this2);</span>
+<span class="lineNum">     201 </span>                :<span class="lineCov">       2 :                     break;</span>
+<span class="lineNum">     202 </span>                :         :                 }
+<span class="lineNum">     203 </span>                :         : 
+<span class="lineNum">     204 </span>                :<span class="lineCov">       2 :                 case varTypeString:</span>
+<span class="lineNum">     205 </span>                :         :                 {
+<span class="lineNum">     206 </span>                :<span class="lineCov">       2 :                     result = strEq(varStr(this1), varStr(this2));</span>
+<span class="lineNum">     207 </span>                :<span class="lineCov">       2 :                     break;</span>
+<span class="lineNum">     208 </span>                :         :                 }
+<span class="lineNum">     209 </span>                :         : 
+<span class="lineNum">     210 </span>                :<span class="lineCov">       2 :                 case varTypeKeyValue:</span>
+<span class="lineNum">     211 </span>                :         :                 case varTypeVariantList:
+<span class="lineNum">     212 </span>                :<span class="lineCov">       2 :                     THROW_FMT(AssertError, &quot;unable to test equality for %s&quot;, variantTypeName[this1-&gt;type]);</span>
+<span class="lineNum">     213 </span>                :         :             }
+<span class="lineNum">     214 </span>                :         :         }
+<span class="lineNum">     215 </span>                :         :     }
+<span class="lineNum">     216 </span>                :         :     // Else they are equal if they are both null
+<span class="lineNum">     217 </span>                :         :     else
+<span class="lineNum">     218 </span>[<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>][<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchCov" title="Branch 3 was taken 3 times"> + </span>]:<span class="lineCov">       7 :         result = this1 == NULL &amp;&amp; this2 == NULL;</span>
+<span class="lineNum">     219 </span>                :         : 
+<span class="lineNum">     220 </span>                :<span class="lineCov">      22 :     FUNCTION_TEST_RESULT(BOOL, result);</span>
+<span class="lineNum">     221 </span>                :         : }
+<span class="lineNum">     222 </span>                :         : 
+<span class="lineNum">     223 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     224 </span>                :         : Get variant type
+<a name="225"><span class="lineNum">     225 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     226 </span>                :         : VariantType
+<span class="lineNum">     227 </span>                :<span class="lineCov">     988 : varType(const Variant *this)</span>
+<span class="lineNum">     228 </span>                :         : {
+<span class="lineNum">     229 </span>                :<span class="lineCov">     988 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     230 </span>                :<span class="lineCov">      65 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     231 </span>                :         : 
+<span class="lineNum">     232 </span>                :<span class="lineCov">      65 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     233 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     234 </span>                :         : 
+<span class="lineNum">     235 </span>                :<span class="lineCov">     988 :     FUNCTION_TEST_RESULT(ENUM, this-&gt;type);</span>
+<span class="lineNum">     236 </span>                :         : }
+<span class="lineNum">     237 </span>                :         : 
+<span class="lineNum">     238 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     239 </span>                :         : New bool variant
+<a name="240"><span class="lineNum">     240 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     241 </span>                :         : Variant *
+<span class="lineNum">     242 </span>                :<span class="lineCov">      22 : varNewBool(bool data)</span>
+<span class="lineNum">     243 </span>                :         : {
+<span class="lineNum">     244 </span>                :<span class="lineCov">      22 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     245 </span>                :<span class="lineCov">      22 :         FUNCTION_TEST_PARAM(BOOL, data);</span>
+<span class="lineNum">     246 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     247 </span>                :         : 
+<span class="lineNum">     248 </span>                :<span class="lineCov">      22 :     FUNCTION_TEST_RESULT(VARIANT, varNewInternal(varTypeBool, (void *)&amp;data, sizeof(data)));</span>
+<span class="lineNum">     249 </span>                :         : }
+<span class="lineNum">     250 </span>                :         : 
+<span class="lineNum">     251 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     252 </span>                :         : Return bool
+<a name="253"><span class="lineNum">     253 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     254 </span>                :         : bool
+<span class="lineNum">     255 </span>                :<span class="lineCov">      91 : varBool(const Variant *this)</span>
+<span class="lineNum">     256 </span>                :         : {
+<span class="lineNum">     257 </span>                :<span class="lineCov">      91 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     258 </span>                :<span class="lineCov">      20 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     259 </span>                :         : 
+<span class="lineNum">     260 </span>                :<span class="lineCov">      20 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     261 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     262 </span>                :         : 
+<span class="lineNum">     263 </span>                :<span class="lineCov">      91 :     ASSERT(this-&gt;type == varTypeBool);</span>
+<span class="lineNum">     264 </span>                :         : 
+<span class="lineNum">     265 </span>                :<span class="lineCov">      90 :     FUNCTION_TEST_RESULT(BOOL, *((bool *)varData(this)));</span>
+<span class="lineNum">     266 </span>                :         : }
+<span class="lineNum">     267 </span>                :         : 
+<span class="lineNum">     268 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     269 </span>                :         : Return bool regardless of variant type
+<a name="270"><span class="lineNum">     270 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     271 </span>                :         : bool
+<span class="lineNum">     272 </span>                :<span class="lineCov">      11 : varBoolForce(const Variant *this)</span>
+<span class="lineNum">     273 </span>                :         : {
+<span class="lineNum">     274 </span>                :<span class="lineCov">      11 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     275 </span>                :<span class="lineCov">      11 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     276 </span>                :         : 
+<span class="lineNum">     277 </span>                :<span class="lineCov">      11 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     278 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     279 </span>                :         : 
+<span class="lineNum">     280 </span>                :<span class="lineCov">      11 :     bool result = false;</span>
+<span class="lineNum">     281 </span>                :         : 
+<span class="lineNum">     282 </span>                :<span class="lineCov">      11 :     switch (this-&gt;type)</span>
+<span class="lineNum">     283 </span>                :         :     {
+<span class="lineNum">     284 </span>                :<span class="lineCov">       1 :         case varTypeBool:</span>
+<span class="lineNum">     285 </span>                :<span class="lineCov">       1 :             result = varBool(this);</span>
+<span class="lineNum">     286 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     287 </span>                :         : 
+<span class="lineNum">     288 </span>                :<span class="lineCov">       1 :         case varTypeInt:</span>
+<span class="lineNum">     289 </span>                :<span class="lineCov">       1 :             result = varInt(this) != 0;</span>
+<span class="lineNum">     290 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     291 </span>                :         : 
+<span class="lineNum">     292 </span>                :<span class="lineCov">       1 :         case varTypeInt64:</span>
+<span class="lineNum">     293 </span>                :<span class="lineCov">       1 :             result = varInt64(this) != 0;</span>
+<span class="lineNum">     294 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     295 </span>                :         : 
+<span class="lineNum">     296 </span>                :<span class="lineCov">       1 :         case varTypeUInt64:</span>
+<span class="lineNum">     297 </span>                :<span class="lineCov">       1 :             result = varUInt64(this) != 0;</span>
+<span class="lineNum">     298 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     299 </span>                :         : 
+<span class="lineNum">     300 </span>                :<span class="lineCov">       6 :         case varTypeString:</span>
+<span class="lineNum">     301 </span>                :         :         {
+<span class="lineNum">     302 </span>                :         :             // List of false/true boolean string values.  Note that false/true values must be equal.
+<span class="lineNum">     303 </span>                :         :             static const char *boolString[] =
+<span class="lineNum">     304 </span>                :         :             {
+<span class="lineNum">     305 </span>                :         :                 &quot;n&quot;, &quot;f&quot;, &quot;0&quot;,  &quot;no&quot;, &quot;false&quot;, &quot;off&quot;,
+<span class="lineNum">     306 </span>                :         :                 &quot;y&quot;, &quot;t&quot;, &quot;1&quot;, &quot;yes&quot;,  &quot;true&quot;,  &quot;on&quot;,
+<span class="lineNum">     307 </span>                :         :             };
+<span class="lineNum">     308 </span>                :         : 
+<span class="lineNum">     309 </span>                :         :             // Search for the string
+<span class="lineNum">     310 </span>                :<span class="lineCov">       6 :             const char *string = strPtr(varStr(this));</span>
+<span class="lineNum">     311 </span>                :         :             unsigned int boolIdx;
+<span class="lineNum">     312 </span>                :         : 
+<span class="lineNum">     313 </span>        [<span class="branchCov" title="Branch 0 was taken 44 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">      45 :             for (boolIdx = 0; boolIdx &lt; sizeof(boolString) / sizeof(char *); boolIdx++)</span>
+<span class="lineNum">     314 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 39 times"> + </span>]:<span class="lineCov">      44 :                 if (strcasecmp(string, boolString[boolIdx]) == 0)</span>
+<span class="lineNum">     315 </span>                :<span class="lineCov">       5 :                     break;</span>
+<span class="lineNum">     316 </span>                :         : 
+<span class="lineNum">     317 </span>                :         :             // If string was not found then not a boolean
+<span class="lineNum">     318 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">       6 :             if (boolIdx == sizeof(boolString) / sizeof(char *))</span>
+<span class="lineNum">     319 </span>                :<span class="lineCov">       1 :                 THROW_FMT(FormatError, &quot;unable to convert str '%s' to bool&quot;, string);</span>
+<span class="lineNum">     320 </span>                :         : 
+<span class="lineNum">     321 </span>                :         :             // False if in first half of list, true if in second half
+<span class="lineNum">     322 </span>                :<span class="lineCov">       5 :             result = boolIdx / (sizeof(boolString) / sizeof(char *) / 2);</span>
+<span class="lineNum">     323 </span>                :         : 
+<span class="lineNum">     324 </span>                :<span class="lineCov">       5 :             break;</span>
+<span class="lineNum">     325 </span>                :         :         }
+<span class="lineNum">     326 </span>                :         : 
+<span class="lineNum">     327 </span>                :<span class="lineCov">       1 :         default:</span>
+<span class="lineNum">     328 </span>                :<span class="lineCov">       1 :             THROW_FMT(AssertError, &quot;unable to force %s to %s&quot;, variantTypeName[this-&gt;type], variantTypeName[varTypeBool]);</span>
+<span class="lineNum">     329 </span>                :         :     }
+<span class="lineNum">     330 </span>                :         : 
+<span class="lineNum">     331 </span>                :<span class="lineCov">       9 :     FUNCTION_TEST_RESULT(BOOL, result);</span>
+<span class="lineNum">     332 </span>                :         : }
+<span class="lineNum">     333 </span>                :         : 
+<span class="lineNum">     334 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     335 </span>                :         : New double variant
+<a name="336"><span class="lineNum">     336 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     337 </span>                :         : Variant *
+<span class="lineNum">     338 </span>                :<span class="lineCov">       9 : varNewDbl(double data)</span>
+<span class="lineNum">     339 </span>                :         : {
+<span class="lineNum">     340 </span>                :<span class="lineCov">       9 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     341 </span>                :<span class="lineCov">       9 :         FUNCTION_TEST_PARAM(DOUBLE, data);</span>
+<span class="lineNum">     342 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     343 </span>                :         : 
+<span class="lineNum">     344 </span>                :<span class="lineCov">       9 :     FUNCTION_TEST_RESULT(VARIANT, varNewInternal(varTypeDouble, (unsigned char *)&amp;data, sizeof(data)));</span>
+<span class="lineNum">     345 </span>                :         : }
+<span class="lineNum">     346 </span>                :         : 
+<span class="lineNum">     347 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     348 </span>                :         : Return double
+<a name="349"><span class="lineNum">     349 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     350 </span>                :         : double
+<span class="lineNum">     351 </span>                :<span class="lineCov">      43 : varDbl(const Variant *this)</span>
+<span class="lineNum">     352 </span>                :         : {
+<span class="lineNum">     353 </span>                :<span class="lineCov">      43 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     354 </span>                :<span class="lineCov">      10 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     355 </span>                :         : 
+<span class="lineNum">     356 </span>                :<span class="lineCov">      10 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     357 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     358 </span>                :         : 
+<span class="lineNum">     359 </span>                :<span class="lineCov">      43 :     ASSERT(this-&gt;type == varTypeDouble);</span>
+<span class="lineNum">     360 </span>                :         : 
+<span class="lineNum">     361 </span>                :<span class="lineCov">      42 :     FUNCTION_TEST_RESULT(DOUBLE, *((double *)varData(this)));</span>
+<span class="lineNum">     362 </span>                :         : }
+<span class="lineNum">     363 </span>                :         : 
+<span class="lineNum">     364 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     365 </span>                :         : Return double regardless of variant type
+<a name="366"><span class="lineNum">     366 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     367 </span>                :         : double
+<span class="lineNum">     368 </span>                :<span class="lineCov">      10 : varDblForce(const Variant *this)</span>
+<span class="lineNum">     369 </span>                :         : {
+<span class="lineNum">     370 </span>                :<span class="lineCov">      10 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     371 </span>                :<span class="lineCov">      10 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     372 </span>                :         : 
+<span class="lineNum">     373 </span>                :<span class="lineCov">      10 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     374 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     375 </span>                :         : 
+<span class="lineNum">     376 </span>                :<span class="lineCov">      10 :     double result = 0;</span>
+<span class="lineNum">     377 </span>                :         : 
+<span class="lineNum">     378 </span>                :<span class="lineCov">      10 :     switch (this-&gt;type)</span>
+<span class="lineNum">     379 </span>                :         :     {
+<span class="lineNum">     380 </span>                :<span class="lineCov">       1 :         case varTypeBool:</span>
+<span class="lineNum">     381 </span>                :         :         {
+<span class="lineNum">     382 </span>                :<span class="lineCov">       1 :             result = varBool(this);</span>
+<span class="lineNum">     383 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     384 </span>                :         :         }
+<span class="lineNum">     385 </span>                :         : 
+<span class="lineNum">     386 </span>                :<span class="lineCov">       1 :         case varTypeDouble:</span>
+<span class="lineNum">     387 </span>                :         :         {
+<span class="lineNum">     388 </span>                :<span class="lineCov">       1 :             result = varDbl(this);</span>
+<span class="lineNum">     389 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     390 </span>                :         :         }
+<span class="lineNum">     391 </span>                :         : 
+<span class="lineNum">     392 </span>                :<span class="lineCov">       1 :         case varTypeInt:</span>
+<span class="lineNum">     393 </span>                :         :         {
+<span class="lineNum">     394 </span>                :<span class="lineCov">       1 :             result = varInt(this);</span>
+<span class="lineNum">     395 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     396 </span>                :         :         }
+<span class="lineNum">     397 </span>                :         : 
+<span class="lineNum">     398 </span>                :<span class="lineCov">       1 :         case varTypeInt64:</span>
+<span class="lineNum">     399 </span>                :         :         {
+<span class="lineNum">     400 </span>                :<span class="lineCov">       1 :             result = (double)varInt64(this);</span>
+<span class="lineNum">     401 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     402 </span>                :         :         }
+<span class="lineNum">     403 </span>                :         : 
+<span class="lineNum">     404 </span>                :<span class="lineCov">       2 :         case varTypeUInt64:</span>
+<span class="lineNum">     405 </span>                :         :         {
+<span class="lineNum">     406 </span>                :<span class="lineCov">       2 :             result = (double)varUInt64(this);</span>
+<span class="lineNum">     407 </span>                :<span class="lineCov">       2 :             break;</span>
+<span class="lineNum">     408 </span>                :         :         }
+<span class="lineNum">     409 </span>                :         : 
+<span class="lineNum">     410 </span>                :<span class="lineCov">       3 :         case varTypeString:</span>
+<span class="lineNum">     411 </span>                :         :         {
+<span class="lineNum">     412 </span>                :<span class="lineCov">       3 :             result = cvtZToDouble(strPtr(varStr(this)));</span>
+<span class="lineNum">     413 </span>                :<span class="lineCov">       2 :             break;</span>
+<span class="lineNum">     414 </span>                :         :         }
+<span class="lineNum">     415 </span>                :         : 
+<span class="lineNum">     416 </span>                :<span class="lineCov">       1 :         default:</span>
+<span class="lineNum">     417 </span>                :<span class="lineCov">       1 :             THROW_FMT(AssertError, &quot;unable to force %s to %s&quot;, variantTypeName[this-&gt;type], variantTypeName[varTypeDouble]);</span>
+<span class="lineNum">     418 </span>                :         :     }
+<span class="lineNum">     419 </span>                :         : 
+<span class="lineNum">     420 </span>                :<span class="lineCov">       8 :     FUNCTION_TEST_RESULT(DOUBLE, result);</span>
+<span class="lineNum">     421 </span>                :         : }
+<span class="lineNum">     422 </span>                :         : 
+<span class="lineNum">     423 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     424 </span>                :         : New int variant
+<a name="425"><span class="lineNum">     425 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     426 </span>                :         : Variant *
+<span class="lineNum">     427 </span>                :<span class="lineCov">      31 : varNewInt(int data)</span>
+<span class="lineNum">     428 </span>                :         : {
+<span class="lineNum">     429 </span>                :<span class="lineCov">      31 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     430 </span>                :<span class="lineCov">      31 :         FUNCTION_TEST_PARAM(INT, data);</span>
+<span class="lineNum">     431 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     432 </span>                :         : 
+<span class="lineNum">     433 </span>                :<span class="lineCov">      31 :     FUNCTION_TEST_RESULT(VARIANT, varNewInternal(varTypeInt, (void *)&amp;data, sizeof(data)));</span>
+<span class="lineNum">     434 </span>                :         : }
+<span class="lineNum">     435 </span>                :         : 
+<span class="lineNum">     436 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     437 </span>                :         : Return int
+<a name="438"><span class="lineNum">     438 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     439 </span>                :         : int
+<span class="lineNum">     440 </span>                :<span class="lineCov">     146 : varInt(const Variant *this)</span>
+<span class="lineNum">     441 </span>                :         : {
+<span class="lineNum">     442 </span>                :<span class="lineCov">     146 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     443 </span>                :<span class="lineCov">      30 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     444 </span>                :         : 
+<span class="lineNum">     445 </span>                :<span class="lineCov">      30 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     446 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     447 </span>                :         : 
+<span class="lineNum">     448 </span>                :<span class="lineCov">     146 :     ASSERT(this-&gt;type == varTypeInt);</span>
+<span class="lineNum">     449 </span>                :         : 
+<span class="lineNum">     450 </span>                :<span class="lineCov">     145 :     FUNCTION_TEST_RESULT(INT, *((int *)varData(this)));</span>
+<span class="lineNum">     451 </span>                :         : }
+<span class="lineNum">     452 </span>                :         : 
+<span class="lineNum">     453 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     454 </span>                :         : Return int regardless of variant type
+<a name="455"><span class="lineNum">     455 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     456 </span>                :         : int
+<span class="lineNum">     457 </span>                :<span class="lineCov">      10 : varIntForce(const Variant *this)</span>
+<span class="lineNum">     458 </span>                :         : {
+<span class="lineNum">     459 </span>                :<span class="lineCov">      10 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     460 </span>                :<span class="lineCov">      10 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     461 </span>                :         : 
+<span class="lineNum">     462 </span>                :<span class="lineCov">      10 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     463 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     464 </span>                :         : 
+<span class="lineNum">     465 </span>                :<span class="lineCov">      10 :     int result = 0;</span>
+<span class="lineNum">     466 </span>                :         : 
+<span class="lineNum">     467 </span>                :<span class="lineCov">      10 :     switch (this-&gt;type)</span>
+<span class="lineNum">     468 </span>                :         :     {
+<span class="lineNum">     469 </span>                :<span class="lineCov">       1 :         case varTypeBool:</span>
+<span class="lineNum">     470 </span>                :         :         {
+<span class="lineNum">     471 </span>                :<span class="lineCov">       1 :             result = varBool(this);</span>
+<span class="lineNum">     472 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     473 </span>                :         :         }
+<span class="lineNum">     474 </span>                :         : 
+<span class="lineNum">     475 </span>                :<span class="lineCov">       1 :         case varTypeInt:</span>
+<span class="lineNum">     476 </span>                :         :         {
+<span class="lineNum">     477 </span>                :<span class="lineCov">       1 :             result = varInt(this);</span>
+<span class="lineNum">     478 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     479 </span>                :         :         }
+<span class="lineNum">     480 </span>                :         : 
+<span class="lineNum">     481 </span>                :<span class="lineCov">       3 :         case varTypeInt64:</span>
+<span class="lineNum">     482 </span>                :         :         {
+<span class="lineNum">     483 </span>                :<span class="lineCov">       3 :             int64_t resultTest = varInt64(this);</span>
+<span class="lineNum">     484 </span>                :         : 
+<span class="lineNum">     485 </span>                :         :             // Make sure the value fits into a normal 32-bit int range since 32-bit platforms are supported
+<span class="lineNum">     486 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>][<span class="branchCov" title="Branch 2 was taken 1 time"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">       3 :             if (resultTest &gt; INT32_MAX || resultTest &lt; INT32_MIN)</span>
+<span class="lineNum">     487 </span>                :<span class="lineCov">       2 :                 THROW_FMT(</span>
+<span class="lineNum">     488 </span>                :         :                     FormatError, &quot;unable to convert %s %&quot; PRId64 &quot; to %s&quot;, variantTypeName[this-&gt;type], resultTest,
+<span class="lineNum">     489 </span>                :         :                     variantTypeName[varTypeInt]);
+<span class="lineNum">     490 </span>                :         : 
+<span class="lineNum">     491 </span>                :<span class="lineCov">       1 :             result = (int)resultTest;</span>
+<span class="lineNum">     492 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     493 </span>                :         :         }
+<span class="lineNum">     494 </span>                :         : 
+<span class="lineNum">     495 </span>                :<span class="lineCov">       2 :         case varTypeUInt64:</span>
+<span class="lineNum">     496 </span>                :         :         {
+<span class="lineNum">     497 </span>                :<span class="lineCov">       2 :             uint64_t resultTest = varUInt64(this);</span>
+<span class="lineNum">     498 </span>                :         : 
+<span class="lineNum">     499 </span>                :         :             // Make sure the value fits into a normal 32-bit int range
+<span class="lineNum">     500 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">       2 :             if (resultTest &gt; INT32_MAX)</span>
+<span class="lineNum">     501 </span>                :<span class="lineCov">       1 :                 THROW_FMT(</span>
+<span class="lineNum">     502 </span>                :         :                     FormatError, &quot;unable to convert %s %&quot; PRIu64 &quot; to %s&quot;, variantTypeName[this-&gt;type], resultTest,
+<span class="lineNum">     503 </span>                :         :                     variantTypeName[varTypeInt]);
+<span class="lineNum">     504 </span>                :         : 
+<span class="lineNum">     505 </span>                :<span class="lineCov">       1 :             result = (int)resultTest;</span>
+<span class="lineNum">     506 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     507 </span>                :         :         }
+<span class="lineNum">     508 </span>                :         : 
+<span class="lineNum">     509 </span>                :<span class="lineCov">       2 :         case varTypeString:</span>
+<span class="lineNum">     510 </span>                :         :         {
+<span class="lineNum">     511 </span>                :<span class="lineCov">       2 :             result = cvtZToInt(strPtr(varStr(this)));</span>
+<span class="lineNum">     512 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     513 </span>                :         :         }
+<span class="lineNum">     514 </span>                :         : 
+<span class="lineNum">     515 </span>                :<span class="lineCov">       1 :         default:</span>
+<span class="lineNum">     516 </span>                :<span class="lineCov">       1 :             THROW_FMT(AssertError, &quot;unable to force %s to %s&quot;, variantTypeName[this-&gt;type], variantTypeName[varTypeInt]);</span>
+<span class="lineNum">     517 </span>                :         :     }
+<span class="lineNum">     518 </span>                :         : 
+<span class="lineNum">     519 </span>                :<span class="lineCov">       5 :     FUNCTION_TEST_RESULT(INT, result);</span>
+<span class="lineNum">     520 </span>                :         : }
+<span class="lineNum">     521 </span>                :         : 
+<span class="lineNum">     522 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     523 </span>                :         : New int64 variant
+<a name="524"><span class="lineNum">     524 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     525 </span>                :         : Variant *
+<span class="lineNum">     526 </span>                :<span class="lineCov">      16 : varNewInt64(int64_t data)</span>
+<span class="lineNum">     527 </span>                :         : {
+<span class="lineNum">     528 </span>                :<span class="lineCov">      16 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     529 </span>                :<span class="lineCov">      16 :         FUNCTION_TEST_PARAM(INT64, data);</span>
+<span class="lineNum">     530 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     531 </span>                :         : 
+<span class="lineNum">     532 </span>                :<span class="lineCov">      16 :     FUNCTION_TEST_RESULT(VARIANT, varNewInternal(varTypeInt64, (void *)&amp;data, sizeof(data)));</span>
+<span class="lineNum">     533 </span>                :         : }
+<span class="lineNum">     534 </span>                :         : 
+<span class="lineNum">     535 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     536 </span>                :         : Return int64
+<a name="537"><span class="lineNum">     537 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     538 </span>                :         : int64_t
+<span class="lineNum">     539 </span>                :<span class="lineCov">      72 : varInt64(const Variant *this)</span>
+<span class="lineNum">     540 </span>                :         : {
+<span class="lineNum">     541 </span>                :<span class="lineCov">      72 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     542 </span>                :<span class="lineCov">      17 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     543 </span>                :         : 
+<span class="lineNum">     544 </span>                :<span class="lineCov">      17 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     545 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     546 </span>                :         : 
+<span class="lineNum">     547 </span>                :<span class="lineCov">      72 :     ASSERT(this-&gt;type == varTypeInt64);</span>
+<span class="lineNum">     548 </span>                :         : 
+<span class="lineNum">     549 </span>                :<span class="lineCov">      71 :     FUNCTION_TEST_RESULT(INT64, *((int64_t *)varData(this)));</span>
+<span class="lineNum">     550 </span>                :         : }
+<span class="lineNum">     551 </span>                :         : 
+<span class="lineNum">     552 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     553 </span>                :         : Return int64 regardless of variant type
+<a name="554"><span class="lineNum">     554 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     555 </span>                :         : int64_t
+<span class="lineNum">     556 </span>                :<span class="lineCov">       8 : varInt64Force(const Variant *this)</span>
+<span class="lineNum">     557 </span>                :         : {
+<span class="lineNum">     558 </span>                :<span class="lineCov">       8 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     559 </span>                :<span class="lineCov">       8 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     560 </span>                :         : 
+<span class="lineNum">     561 </span>                :<span class="lineCov">       8 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     562 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     563 </span>                :         : 
+<span class="lineNum">     564 </span>                :<span class="lineCov">       8 :     int64_t result = 0;</span>
+<span class="lineNum">     565 </span>                :         : 
+<span class="lineNum">     566 </span>                :<span class="lineCov">       8 :     switch (this-&gt;type)</span>
+<span class="lineNum">     567 </span>                :         :     {
+<span class="lineNum">     568 </span>                :<span class="lineCov">       1 :         case varTypeBool:</span>
+<span class="lineNum">     569 </span>                :         :         {
+<span class="lineNum">     570 </span>                :<span class="lineCov">       1 :             result = varBool(this);</span>
+<span class="lineNum">     571 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     572 </span>                :         :         }
+<span class="lineNum">     573 </span>                :         : 
+<span class="lineNum">     574 </span>                :<span class="lineCov">       1 :         case varTypeInt:</span>
+<span class="lineNum">     575 </span>                :         :         {
+<span class="lineNum">     576 </span>                :<span class="lineCov">       1 :             result = (int64_t)varInt(this);</span>
+<span class="lineNum">     577 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     578 </span>                :         :         }
+<span class="lineNum">     579 </span>                :         : 
+<span class="lineNum">     580 </span>                :<span class="lineCov">       1 :         case varTypeInt64:</span>
+<span class="lineNum">     581 </span>                :         :         {
+<span class="lineNum">     582 </span>                :<span class="lineCov">       1 :             result = varInt64(this);</span>
+<span class="lineNum">     583 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     584 </span>                :         :         }
+<span class="lineNum">     585 </span>                :         : 
+<span class="lineNum">     586 </span>                :<span class="lineCov">       2 :         case varTypeUInt64:</span>
+<span class="lineNum">     587 </span>                :         :         {
+<span class="lineNum">     588 </span>                :<span class="lineCov">       2 :             uint64_t resultTest = varUInt64(this);</span>
+<span class="lineNum">     589 </span>                :         : 
+<span class="lineNum">     590 </span>                :         :             // If max number of unsigned 64-bit integer is greater than max 64-bit signed integer can hold, then error
+<span class="lineNum">     591 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">       2 :             if (resultTest &lt;= INT64_MAX)</span>
+<span class="lineNum">     592 </span>                :<span class="lineCov">       1 :                 result = (int64_t)resultTest;</span>
+<span class="lineNum">     593 </span>                :         :             else
+<span class="lineNum">     594 </span>                :         :             {
+<span class="lineNum">     595 </span>                :<span class="lineCov">       1 :                 THROW_FMT(</span>
+<span class="lineNum">     596 </span>                :         :                     FormatError, &quot;unable to convert %s %&quot; PRIu64 &quot; to %s&quot;, variantTypeName[this-&gt;type], resultTest,
+<span class="lineNum">     597 </span>                :         :                     variantTypeName[varTypeInt64]);
+<span class="lineNum">     598 </span>                :         :             }
+<span class="lineNum">     599 </span>                :         : 
+<span class="lineNum">     600 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     601 </span>                :         :         }
+<span class="lineNum">     602 </span>                :         : 
+<span class="lineNum">     603 </span>                :<span class="lineCov">       2 :         case varTypeString:</span>
+<span class="lineNum">     604 </span>                :         :         {
+<span class="lineNum">     605 </span>                :<span class="lineCov">       2 :             result = cvtZToInt64(strPtr(varStr(this)));</span>
+<span class="lineNum">     606 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     607 </span>                :         :         }
+<span class="lineNum">     608 </span>                :         : 
+<span class="lineNum">     609 </span>                :<span class="lineCov">       1 :         default:</span>
+<span class="lineNum">     610 </span>                :<span class="lineCov">       1 :             THROW_FMT(AssertError, &quot;unable to force %s to %s&quot;, variantTypeName[this-&gt;type], variantTypeName[varTypeInt64]);</span>
+<span class="lineNum">     611 </span>                :         :     }
+<span class="lineNum">     612 </span>                :         : 
+<span class="lineNum">     613 </span>                :<span class="lineCov">       5 :     FUNCTION_TEST_RESULT(INT64, result);</span>
+<span class="lineNum">     614 </span>                :         : }
+<span class="lineNum">     615 </span>                :         : 
+<span class="lineNum">     616 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     617 </span>                :         : New uint64 variant
+<a name="618"><span class="lineNum">     618 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     619 </span>                :         : Variant *
+<span class="lineNum">     620 </span>                :<span class="lineCov">      17 : varNewUInt64(uint64_t data)</span>
+<span class="lineNum">     621 </span>                :         : {
+<span class="lineNum">     622 </span>                :<span class="lineCov">      17 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     623 </span>                :<span class="lineCov">      17 :         FUNCTION_TEST_PARAM(UINT64, data);</span>
+<span class="lineNum">     624 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     625 </span>                :         : 
+<span class="lineNum">     626 </span>                :<span class="lineCov">      17 :     FUNCTION_TEST_RESULT(VARIANT, varNewInternal(varTypeUInt64, (void *)&amp;data, sizeof(data)));</span>
+<span class="lineNum">     627 </span>                :         : }
+<span class="lineNum">     628 </span>                :         : 
+<span class="lineNum">     629 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     630 </span>                :         : Return int64
+<a name="631"><span class="lineNum">     631 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     632 </span>                :         : uint64_t
+<span class="lineNum">     633 </span>                :<span class="lineCov">      76 : varUInt64(const Variant *this)</span>
+<span class="lineNum">     634 </span>                :         : {
+<span class="lineNum">     635 </span>                :<span class="lineCov">      76 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     636 </span>                :<span class="lineCov">      18 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     637 </span>                :         : 
+<span class="lineNum">     638 </span>                :<span class="lineCov">      18 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     639 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     640 </span>                :         : 
+<span class="lineNum">     641 </span>                :<span class="lineCov">      76 :     ASSERT(this-&gt;type == varTypeUInt64);</span>
+<span class="lineNum">     642 </span>                :         : 
+<span class="lineNum">     643 </span>                :<span class="lineCov">      75 :     FUNCTION_TEST_RESULT(UINT64, *((uint64_t *)varData(this)));</span>
+<span class="lineNum">     644 </span>                :         : }
+<span class="lineNum">     645 </span>                :         : 
+<span class="lineNum">     646 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     647 </span>                :         : Return uint64 regardless of variant type
+<a name="648"><span class="lineNum">     648 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     649 </span>                :         : uint64_t
+<span class="lineNum">     650 </span>                :<span class="lineCov">      11 : varUInt64Force(const Variant *this)</span>
+<span class="lineNum">     651 </span>                :         : {
+<span class="lineNum">     652 </span>                :<span class="lineCov">      11 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     653 </span>                :<span class="lineCov">      11 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     654 </span>                :         : 
+<span class="lineNum">     655 </span>                :<span class="lineCov">      11 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     656 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     657 </span>                :         : 
+<span class="lineNum">     658 </span>                :<span class="lineCov">      11 :     uint64_t result = 0;</span>
+<span class="lineNum">     659 </span>                :         : 
+<span class="lineNum">     660 </span>                :<span class="lineCov">      11 :     switch (this-&gt;type)</span>
+<span class="lineNum">     661 </span>                :         :     {
+<span class="lineNum">     662 </span>                :<span class="lineCov">       1 :         case varTypeBool:</span>
+<span class="lineNum">     663 </span>                :         :         {
+<span class="lineNum">     664 </span>                :<span class="lineCov">       1 :             result = varBool(this);</span>
+<span class="lineNum">     665 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     666 </span>                :         :         }
+<span class="lineNum">     667 </span>                :         : 
+<span class="lineNum">     668 </span>                :<span class="lineCov">       2 :         case varTypeInt:</span>
+<span class="lineNum">     669 </span>                :         :         {
+<span class="lineNum">     670 </span>                :<span class="lineCov">       2 :             int resultTest = varInt(this);</span>
+<span class="lineNum">     671 </span>                :         : 
+<span class="lineNum">     672 </span>                :         :             // If integer is a negative number, throw an error since the resulting conversion would be a different number
+<span class="lineNum">     673 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">       2 :             if (resultTest &gt;= 0)</span>
+<span class="lineNum">     674 </span>                :<span class="lineCov">       1 :                 result = (uint64_t)resultTest;</span>
+<span class="lineNum">     675 </span>                :         :             else
+<span class="lineNum">     676 </span>                :         :             {
+<span class="lineNum">     677 </span>                :<span class="lineCov">       1 :                 THROW_FMT(</span>
+<span class="lineNum">     678 </span>                :         :                     FormatError, &quot;unable to convert %s %d to %s&quot;, variantTypeName[this-&gt;type], resultTest,
+<span class="lineNum">     679 </span>                :         :                     variantTypeName[varTypeUInt64]);
+<span class="lineNum">     680 </span>                :         :             }
+<span class="lineNum">     681 </span>                :         : 
+<span class="lineNum">     682 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     683 </span>                :         :         }
+<span class="lineNum">     684 </span>                :         : 
+<span class="lineNum">     685 </span>                :<span class="lineCov">       2 :         case varTypeInt64:</span>
+<span class="lineNum">     686 </span>                :         :         {
+<span class="lineNum">     687 </span>                :<span class="lineCov">       2 :             int64_t resultTest = varInt64(this);</span>
+<span class="lineNum">     688 </span>                :         : 
+<span class="lineNum">     689 </span>                :         :             // If integer is a negative number, throw an error since the resulting conversion would be out of bounds
+<span class="lineNum">     690 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">       2 :             if (resultTest &gt;= 0)</span>
+<span class="lineNum">     691 </span>                :<span class="lineCov">       1 :                 result = (uint64_t)resultTest;</span>
+<span class="lineNum">     692 </span>                :         :             else
+<span class="lineNum">     693 </span>                :         :             {
+<span class="lineNum">     694 </span>                :<span class="lineCov">       1 :                 THROW_FMT(</span>
+<span class="lineNum">     695 </span>                :         :                     FormatError, &quot;unable to convert %s %&quot; PRId64 &quot; to %s&quot;, variantTypeName[this-&gt;type], resultTest,
+<span class="lineNum">     696 </span>                :         :                     variantTypeName[varTypeUInt64]);
+<span class="lineNum">     697 </span>                :         :             }
+<span class="lineNum">     698 </span>                :         : 
+<span class="lineNum">     699 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     700 </span>                :         :         }
+<span class="lineNum">     701 </span>                :         : 
+<span class="lineNum">     702 </span>                :<span class="lineCov">       2 :         case varTypeUInt64:</span>
+<span class="lineNum">     703 </span>                :         :         {
+<span class="lineNum">     704 </span>                :<span class="lineCov">       2 :             result = varUInt64(this);</span>
+<span class="lineNum">     705 </span>                :<span class="lineCov">       2 :             break;</span>
+<span class="lineNum">     706 </span>                :         :         }
+<span class="lineNum">     707 </span>                :         : 
+<span class="lineNum">     708 </span>                :<span class="lineCov">       3 :         case varTypeString:</span>
+<span class="lineNum">     709 </span>                :         :         {
+<span class="lineNum">     710 </span>                :<span class="lineCov">       3 :             result = cvtZToUInt64(strPtr(varStr(this)));</span>
+<span class="lineNum">     711 </span>                :<span class="lineCov">       1 :             break;</span>
+<span class="lineNum">     712 </span>                :         :         }
+<span class="lineNum">     713 </span>                :         : 
+<span class="lineNum">     714 </span>                :<span class="lineCov">       1 :         default:</span>
+<span class="lineNum">     715 </span>                :<span class="lineCov">       1 :             THROW_FMT(AssertError, &quot;unable to force %s to %s&quot;, variantTypeName[this-&gt;type], variantTypeName[varTypeUInt64]);</span>
+<span class="lineNum">     716 </span>                :         :     }
+<span class="lineNum">     717 </span>                :         : 
+<span class="lineNum">     718 </span>                :<span class="lineCov">       6 :     FUNCTION_TEST_RESULT(UINT64, result);</span>
+<span class="lineNum">     719 </span>                :         : }
+<span class="lineNum">     720 </span>                :         : 
+<span class="lineNum">     721 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     722 </span>                :         : New key/value variant
+<a name="723"><span class="lineNum">     723 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     724 </span>                :         : Variant *
+<span class="lineNum">     725 </span>                :<span class="lineCov">       5 : varNewKv(void)</span>
+<span class="lineNum">     726 </span>                :         : {
+<span class="lineNum">     727 </span>                :<span class="lineCov">       5 :     FUNCTION_TEST_VOID();</span>
+<span class="lineNum">     728 </span>                :         : 
+<span class="lineNum">     729 </span>                :         :     // Create a new kv for the variant
+<span class="lineNum">     730 </span>                :<span class="lineCov">       5 :     KeyValue *data = kvNew();</span>
+<span class="lineNum">     731 </span>                :         : 
+<span class="lineNum">     732 </span>                :<span class="lineCov">       5 :     FUNCTION_TEST_RESULT(VARIANT, varNewInternal(varTypeKeyValue, (void *)&amp;data, sizeof(data)));</span>
+<span class="lineNum">     733 </span>                :         : }
+<span class="lineNum">     734 </span>                :         : 
+<span class="lineNum">     735 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     736 </span>                :         : Return key/value
+<a name="737"><span class="lineNum">     737 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     738 </span>                :         : KeyValue *
+<span class="lineNum">     739 </span>                :<span class="lineCov">       9 : varKv(const Variant *this)</span>
+<span class="lineNum">     740 </span>                :         : {
+<span class="lineNum">     741 </span>                :<span class="lineCov">       9 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     742 </span>                :<span class="lineCov">       9 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     743 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     744 </span>                :         : 
+<span class="lineNum">     745 </span>                :<span class="lineCov">       9 :     KeyValue *result = NULL;</span>
+<span class="lineNum">     746 </span>                :         : 
+<span class="lineNum">     747 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">       9 :     if (this != NULL)</span>
+<span class="lineNum">     748 </span>                :         :     {
+<span class="lineNum">     749 </span>                :<span class="lineCov">       8 :         ASSERT(this-&gt;type == varTypeKeyValue);</span>
+<span class="lineNum">     750 </span>                :<span class="lineCov">       7 :         result = *((KeyValue **)varData(this));</span>
+<span class="lineNum">     751 </span>                :         :     }
+<span class="lineNum">     752 </span>                :         : 
+<span class="lineNum">     753 </span>                :<span class="lineCov">       8 :     FUNCTION_TEST_RESULT(KEY_VALUE, result);</span>
+<span class="lineNum">     754 </span>                :         : }
+<span class="lineNum">     755 </span>                :         : 
+<span class="lineNum">     756 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     757 </span>                :         : New string variant
+<a name="758"><span class="lineNum">     758 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     759 </span>                :         : Variant *
+<span class="lineNum">     760 </span>                :<span class="lineCov">      19 : varNewStr(const String *data)</span>
+<span class="lineNum">     761 </span>                :         : {
+<span class="lineNum">     762 </span>                :<span class="lineCov">      19 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     763 </span>                :<span class="lineCov">      19 :         FUNCTION_TEST_PARAM(STRING, data);</span>
+<span class="lineNum">     764 </span>                :         : 
+<span class="lineNum">     765 </span>                :<span class="lineCov">      19 :         FUNCTION_TEST_ASSERT(data != NULL);</span>
+<span class="lineNum">     766 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     767 </span>                :         : 
+<span class="lineNum">     768 </span>                :         :     // Create a copy of the string for the variant
+<span class="lineNum">     769 </span>                :<span class="lineCov">      18 :     String *dataCopy = strDup(data);</span>
+<span class="lineNum">     770 </span>                :         : 
+<span class="lineNum">     771 </span>                :<span class="lineCov">      18 :     FUNCTION_TEST_RESULT(VARIANT, varNewInternal(varTypeString, (void *)&amp;dataCopy, sizeof(dataCopy)));</span>
+<span class="lineNum">     772 </span>                :         : }
+<span class="lineNum">     773 </span>                :         : 
+<span class="lineNum">     774 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     775 </span>                :         : New string variant from a zero-terminated string
+<a name="776"><span class="lineNum">     776 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     777 </span>                :         : Variant *
+<span class="lineNum">     778 </span>                :<span class="lineCov">      14 : varNewStrZ(const char *data)</span>
+<span class="lineNum">     779 </span>                :         : {
+<span class="lineNum">     780 </span>                :<span class="lineCov">      14 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     781 </span>                :<span class="lineCov">      14 :         FUNCTION_TEST_PARAM(STRINGZ, data);</span>
+<span class="lineNum">     782 </span>                :         : 
+<span class="lineNum">     783 </span>                :<span class="lineCov">      14 :         FUNCTION_TEST_ASSERT(data != NULL);</span>
+<span class="lineNum">     784 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     785 </span>                :         : 
+<span class="lineNum">     786 </span>                :         :     // Create a string for the variant
+<span class="lineNum">     787 </span>                :<span class="lineCov">      13 :     String *dataCopy = strNew(data);</span>
+<span class="lineNum">     788 </span>                :         : 
+<span class="lineNum">     789 </span>                :<span class="lineCov">      13 :     FUNCTION_TEST_RESULT(VARIANT, varNewInternal(varTypeString, (void *)&amp;dataCopy, sizeof(dataCopy)));</span>
+<span class="lineNum">     790 </span>                :         : }
+<span class="lineNum">     791 </span>                :         : 
+<span class="lineNum">     792 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     793 </span>                :         : Return string
+<a name="794"><span class="lineNum">     794 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     795 </span>                :         : String *
+<span class="lineNum">     796 </span>                :<span class="lineCov">     125 : varStr(const Variant *this)</span>
+<span class="lineNum">     797 </span>                :         : {
+<span class="lineNum">     798 </span>                :<span class="lineCov">     125 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     799 </span>                :<span class="lineCov">      30 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     800 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     801 </span>                :         : 
+<span class="lineNum">     802 </span>                :<span class="lineCov">     125 :     String *result = NULL;</span>
+<span class="lineNum">     803 </span>                :         : 
+<span class="lineNum">     804 </span>        [<span class="branchCov" title="Branch 0 was taken 124 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">     125 :     if (this != NULL)</span>
+<span class="lineNum">     805 </span>                :         :     {
+<span class="lineNum">     806 </span>                :<span class="lineCov">     124 :         ASSERT(this-&gt;type == varTypeString);</span>
+<span class="lineNum">     807 </span>                :<span class="lineCov">     123 :         result = *((String **)varData(this));</span>
+<span class="lineNum">     808 </span>                :         :     }
+<span class="lineNum">     809 </span>                :         : 
+<span class="lineNum">     810 </span>                :<span class="lineCov">     124 :     FUNCTION_TEST_RESULT(STRING, result);</span>
+<span class="lineNum">     811 </span>                :         : }
+<span class="lineNum">     812 </span>                :         : 
+<span class="lineNum">     813 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     814 </span>                :         : Return string regardless of variant type
+<a name="815"><span class="lineNum">     815 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     816 </span>                :         : String *
+<span class="lineNum">     817 </span>                :<span class="lineCov">     438 : varStrForce(const Variant *this)</span>
+<span class="lineNum">     818 </span>                :         : {
+<span class="lineNum">     819 </span>                :<span class="lineCov">     438 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     820 </span>                :<span class="lineCov">      10 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     821 </span>                :         : 
+<span class="lineNum">     822 </span>                :<span class="lineCov">      10 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     823 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     824 </span>                :         : 
+<span class="lineNum">     825 </span>                :<span class="lineCov">     438 :     String *result = NULL;</span>
+<span class="lineNum">     826 </span>                :         : 
+<span class="lineNum">     827 </span>                :<span class="lineCov">     438 :     switch (varType(this))</span>
+<span class="lineNum">     828 </span>                :         :     {
+<span class="lineNum">     829 </span>                :<span class="lineCov">      74 :         case varTypeBool:</span>
+<span class="lineNum">     830 </span>                :         :         {
+<span class="lineNum">     831 </span>                :         :             char working[6];
+<span class="lineNum">     832 </span>                :         : 
+<span class="lineNum">     833 </span>                :<span class="lineCov">      74 :             cvtBoolToZ(varBool(this), working, sizeof(working));</span>
+<span class="lineNum">     834 </span>                :<span class="lineCov">      74 :             result = strNew(working);</span>
+<span class="lineNum">     835 </span>                :         : 
+<span class="lineNum">     836 </span>                :<span class="lineCov">      74 :             break;</span>
+<span class="lineNum">     837 </span>                :         :         }
+<span class="lineNum">     838 </span>                :         : 
+<span class="lineNum">     839 </span>                :<span class="lineCov">      34 :         case varTypeDouble:</span>
+<span class="lineNum">     840 </span>                :         :         {
+<span class="lineNum">     841 </span>                :         :             char working[64];
+<span class="lineNum">     842 </span>                :         : 
+<span class="lineNum">     843 </span>                :<span class="lineCov">      34 :             cvtDoubleToZ(varDbl(this), working, sizeof(working));</span>
+<span class="lineNum">     844 </span>                :<span class="lineCov">      34 :             result = strNew(working);</span>
+<span class="lineNum">     845 </span>                :         : 
+<span class="lineNum">     846 </span>                :<span class="lineCov">      34 :             break;</span>
+<span class="lineNum">     847 </span>                :         :         }
+<span class="lineNum">     848 </span>                :         : 
+<span class="lineNum">     849 </span>                :<span class="lineCov">     117 :         case varTypeInt:</span>
+<span class="lineNum">     850 </span>                :         :         {
+<span class="lineNum">     851 </span>                :         :             char working[64];
+<span class="lineNum">     852 </span>                :         : 
+<span class="lineNum">     853 </span>                :<span class="lineCov">     117 :             cvtIntToZ(varInt(this), working, sizeof(working));</span>
+<span class="lineNum">     854 </span>                :<span class="lineCov">     117 :             result = strNew(working);</span>
+<span class="lineNum">     855 </span>                :<span class="lineCov">     117 :             break;</span>
+<span class="lineNum">     856 </span>                :         :         }
+<span class="lineNum">     857 </span>                :         : 
+<span class="lineNum">     858 </span>                :<span class="lineCov">      56 :         case varTypeInt64:</span>
+<span class="lineNum">     859 </span>                :         :         {
+<span class="lineNum">     860 </span>                :         :             char working[64];
+<span class="lineNum">     861 </span>                :         : 
+<span class="lineNum">     862 </span>                :<span class="lineCov">      56 :             cvtInt64ToZ(varInt64(this), working, sizeof(working));</span>
+<span class="lineNum">     863 </span>                :<span class="lineCov">      56 :             result = strNew(working);</span>
+<span class="lineNum">     864 </span>                :<span class="lineCov">      56 :             break;</span>
+<span class="lineNum">     865 </span>                :         :         }
+<span class="lineNum">     866 </span>                :         : 
+<span class="lineNum">     867 </span>                :<span class="lineCov">      59 :         case varTypeUInt64:</span>
+<span class="lineNum">     868 </span>                :         :         {
+<span class="lineNum">     869 </span>                :<span class="lineCov">      59 :             result = strNewFmt(&quot;%&quot; PRIu64, varUInt64(this));</span>
+<span class="lineNum">     870 </span>                :<span class="lineCov">      59 :             break;</span>
+<span class="lineNum">     871 </span>                :         :         }
+<span class="lineNum">     872 </span>                :         : 
+<span class="lineNum">     873 </span>                :<span class="lineCov">      97 :         case varTypeString:</span>
+<span class="lineNum">     874 </span>                :         :         {
+<span class="lineNum">     875 </span>                :<span class="lineCov">      97 :             result = strDup(varStr(this));</span>
+<span class="lineNum">     876 </span>                :<span class="lineCov">      97 :             break;</span>
+<span class="lineNum">     877 </span>                :         :         }
+<span class="lineNum">     878 </span>                :         : 
+<span class="lineNum">     879 </span>                :<span class="lineCov">       1 :         case varTypeKeyValue:</span>
+<span class="lineNum">     880 </span>                :         :         case varTypeVariantList:
+<span class="lineNum">     881 </span>                :<span class="lineCov">       1 :             THROW_FMT(FormatError, &quot;unable to force %s to %s&quot;, variantTypeName[this-&gt;type], variantTypeName[varTypeString]);</span>
+<span class="lineNum">     882 </span>                :         :     }
+<span class="lineNum">     883 </span>                :         : 
+<span class="lineNum">     884 </span>                :<span class="lineCov">     437 :     FUNCTION_TEST_RESULT(STRING, result);</span>
+<span class="lineNum">     885 </span>                :         : }
+<span class="lineNum">     886 </span>                :         : 
+<span class="lineNum">     887 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     888 </span>                :         : New variant list variant
+<a name="889"><span class="lineNum">     889 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     890 </span>                :         : Variant *
+<span class="lineNum">     891 </span>                :<span class="lineCov">      11 : varNewVarLst(const VariantList *data)</span>
+<span class="lineNum">     892 </span>                :         : {
+<span class="lineNum">     893 </span>                :<span class="lineCov">      11 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     894 </span>                :<span class="lineCov">      11 :         FUNCTION_TEST_PARAM(VARIANT_LIST, data);</span>
+<span class="lineNum">     895 </span>                :         : 
+<span class="lineNum">     896 </span>                :<span class="lineCov">      11 :         FUNCTION_TEST_ASSERT(data != NULL);</span>
+<span class="lineNum">     897 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     898 </span>                :         : 
+<span class="lineNum">     899 </span>                :         :     // Copy variant list for the variant
+<span class="lineNum">     900 </span>                :<span class="lineCov">      11 :     VariantList *dataCopy = varLstDup(data);</span>
+<span class="lineNum">     901 </span>                :         : 
+<span class="lineNum">     902 </span>                :<span class="lineCov">      11 :     FUNCTION_TEST_RESULT(VARIANT, varNewInternal(varTypeVariantList, (void *)&amp;dataCopy, sizeof(dataCopy)));</span>
+<span class="lineNum">     903 </span>                :         : }
+<span class="lineNum">     904 </span>                :         : 
+<span class="lineNum">     905 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     906 </span>                :         : Return key/value
+<a name="907"><span class="lineNum">     907 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     908 </span>                :         : VariantList *
+<span class="lineNum">     909 </span>                :<span class="lineCov">      16 : varVarLst(const Variant *this)</span>
+<span class="lineNum">     910 </span>                :         : {
+<span class="lineNum">     911 </span>                :<span class="lineCov">      16 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     912 </span>                :<span class="lineCov">      16 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     913 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     914 </span>                :         : 
+<span class="lineNum">     915 </span>                :<span class="lineCov">      16 :     VariantList *result = NULL;</span>
+<span class="lineNum">     916 </span>                :         : 
+<span class="lineNum">     917 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">      16 :     if (this != NULL)</span>
+<span class="lineNum">     918 </span>                :         :     {
+<span class="lineNum">     919 </span>                :<span class="lineCov">      15 :         ASSERT(this-&gt;type == varTypeVariantList);</span>
+<span class="lineNum">     920 </span>                :<span class="lineCov">      14 :         result = *((VariantList **)varData(this));</span>
+<span class="lineNum">     921 </span>                :         :     }
+<span class="lineNum">     922 </span>                :         : 
+<span class="lineNum">     923 </span>                :<span class="lineCov">      15 :     FUNCTION_TEST_RESULT(VARIANT_LIST, result);</span>
+<span class="lineNum">     924 </span>                :         : }
+<span class="lineNum">     925 </span>                :         : 
+<span class="lineNum">     926 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     927 </span>                :         : Convert variant to a zero-terminated string for logging
+<a name="928"><span class="lineNum">     928 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     929 </span>                :         : String *
+<span class="lineNum">     930 </span>                :<span class="lineCov">     499 : varToLog(const Variant *this)</span>
+<span class="lineNum">     931 </span>                :         : {
+<span class="lineNum">     932 </span>                :<span class="lineCov">     499 :     String *string = NULL;</span>
+<span class="lineNum">     933 </span>                :         : 
+<span class="lineNum">     934 </span>                :<span class="lineCov">     499 :     switch (varType(this))</span>
+<span class="lineNum">     935 </span>                :         :     {
+<span class="lineNum">     936 </span>                :<span class="lineCov">      96 :         case varTypeString:</span>
+<span class="lineNum">     937 </span>                :         :         {
+<span class="lineNum">     938 </span>                :<span class="lineCov">      96 :             string = strNewFmt(&quot;\&quot;%s\&quot;&quot;, strPtr(varStrForce(this)));</span>
+<span class="lineNum">     939 </span>                :<span class="lineCov">      96 :             break;</span>
+<span class="lineNum">     940 </span>                :         :         }
+<span class="lineNum">     941 </span>                :         : 
+<span class="lineNum">     942 </span>                :<span class="lineCov">      26 :         case varTypeKeyValue:</span>
+<span class="lineNum">     943 </span>                :         :         {
+<span class="lineNum">     944 </span>                :<span class="lineCov">      26 :             string = strNew(&quot;KeyValue&quot;);</span>
+<span class="lineNum">     945 </span>                :<span class="lineCov">      26 :             break;</span>
+<span class="lineNum">     946 </span>                :         :         }
+<span class="lineNum">     947 </span>                :         : 
+<span class="lineNum">     948 </span>                :<span class="lineCov">      43 :         case varTypeVariantList:</span>
+<span class="lineNum">     949 </span>                :         :         {
+<span class="lineNum">     950 </span>                :<span class="lineCov">      43 :             string = strNew(&quot;VariantList&quot;);</span>
+<span class="lineNum">     951 </span>                :<span class="lineCov">      43 :             break;</span>
+<span class="lineNum">     952 </span>                :         :         }
+<span class="lineNum">     953 </span>                :         : 
+<span class="lineNum">     954 </span>                :<span class="lineCov">     334 :         case varTypeBool:</span>
+<span class="lineNum">     955 </span>                :         :         case varTypeDouble:
+<span class="lineNum">     956 </span>                :         :         case varTypeInt:
+<span class="lineNum">     957 </span>                :         :         case varTypeInt64:
+<span class="lineNum">     958 </span>                :         :         case varTypeUInt64:
+<span class="lineNum">     959 </span>                :         :         {
+<span class="lineNum">     960 </span>                :<span class="lineCov">     334 :             string = varStrForce(this);</span>
+<span class="lineNum">     961 </span>                :<span class="lineCov">     334 :             break;</span>
+<span class="lineNum">     962 </span>                :         :         }
+<span class="lineNum">     963 </span>                :         :     }
+<span class="lineNum">     964 </span>                :         : 
+<span class="lineNum">     965 </span>                :<span class="lineCov">     499 :     return strNewFmt(&quot;{%s}&quot;, strPtr(string));</span>
+<span class="lineNum">     966 </span>                :         : }
+<span class="lineNum">     967 </span>                :         : 
+<span class="lineNum">     968 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     969 </span>                :         : Free variant
+<a name="970"><span class="lineNum">     970 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     971 </span>                :         : void
+<span class="lineNum">     972 </span>                :<span class="lineCov">      12 : varFree(Variant *this)</span>
+<span class="lineNum">     973 </span>                :         : {
+<span class="lineNum">     974 </span>                :<span class="lineCov">      12 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     975 </span>                :<span class="lineCov">      12 :         FUNCTION_TEST_PARAM(VARIANT, this);</span>
+<span class="lineNum">     976 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     977 </span>                :         : 
+<span class="lineNum">     978 </span>        [<span class="branchCov" title="Branch 0 was taken 11 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">      12 :     if (this != NULL)</span>
+<span class="lineNum">     979 </span>                :         :     {
+<span class="lineNum">     980 </span>                :<span class="lineCov">      33 :         MEM_CONTEXT_BEGIN(this-&gt;memContext)</span>
+<span class="lineNum">     981 </span>                :         :         {
+<span class="lineNum">     982 </span>                :<span class="lineCov">      11 :             switch (this-&gt;type)</span>
+<span class="lineNum">     983 </span>                :         :             {
+<span class="lineNum">     984 </span>                :<span class="lineCov">       2 :                 case varTypeKeyValue:</span>
+<span class="lineNum">     985 </span>                :         :                 {
+<span class="lineNum">     986 </span>                :<span class="lineCov">       2 :                     kvFree(varKv(this));</span>
+<span class="lineNum">     987 </span>                :<span class="lineCov">       2 :                     break;</span>
+<span class="lineNum">     988 </span>                :         :                 }
+<span class="lineNum">     989 </span>                :         : 
+<span class="lineNum">     990 </span>                :<span class="lineCov">       2 :                 case varTypeString:</span>
+<span class="lineNum">     991 </span>                :         :                 {
+<span class="lineNum">     992 </span>                :<span class="lineCov">       2 :                     strFree(varStr(this));</span>
+<span class="lineNum">     993 </span>                :<span class="lineCov">       2 :                     break;</span>
+<span class="lineNum">     994 </span>                :         :                 }
+<span class="lineNum">     995 </span>                :         : 
+<span class="lineNum">     996 </span>                :<span class="lineCov">       2 :                 case varTypeVariantList:</span>
+<span class="lineNum">     997 </span>                :         :                 {
+<span class="lineNum">     998 </span>                :<span class="lineCov">       2 :                     varLstFree(varVarLst(this));</span>
+<span class="lineNum">     999 </span>                :<span class="lineCov">       2 :                     break;</span>
+<span class="lineNum">    1000 </span>                :         :                 }
+<span class="lineNum">    1001 </span>                :         : 
+<span class="lineNum">    1002 </span>                :         :                 // Nothing additional to free for these types
+<span class="lineNum">    1003 </span>                :<span class="lineCov">       5 :                 case varTypeBool:</span>
+<span class="lineNum">    1004 </span>                :         :                 case varTypeDouble:
+<span class="lineNum">    1005 </span>                :         :                 case varTypeInt:
+<span class="lineNum">    1006 </span>                :         :                 case varTypeInt64:
+<span class="lineNum">    1007 </span>                :         :                 case varTypeUInt64:
+<span class="lineNum">    1008 </span>                :<span class="lineCov">       5 :                     break;</span>
+<span class="lineNum">    1009 </span>                :         :             }
+<span class="lineNum">    1010 </span>                :         : 
+<span class="lineNum">    1011 </span>                :<span class="lineCov">      11 :             memFree(this);</span>
+<span class="lineNum">    1012 </span>                :         :         }
+<span class="lineNum">    1013 </span>                :<span class="lineCov">      11 :         MEM_CONTEXT_END();</span>
+<span class="lineNum">    1014 </span>                :         :     }
+<span class="lineNum">    1015 </span>                :         : 
+<span class="lineNum">    1016 </span>                :<span class="lineCov">      12 :     FUNCTION_TEST_RESULT_VOID();</span>
+<span class="lineNum">    1017 </span>                :<span class="lineCov">      12 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
