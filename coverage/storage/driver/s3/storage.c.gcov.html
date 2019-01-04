@@ -1,0 +1,787 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>pgBackRest v2.08 C Code Coverage - storage/driver/s3/storage.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">pgBackRest v2.08 C Code Coverage</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">storage/driver/s3</a> - storage.c<span style="font-size: 80%;"> (source / <a href="storage.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">all C unit</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">293</td>
+            <td class="headerCovTableEntry">294</td>
+            <td class="headerCovTableEntryHi">99.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-01-02 19:22:46</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">63</td>
+            <td class="headerCovTableEntry">64</td>
+            <td class="headerCovTableEntryHi">98.4 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data    Line data  Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :      : /***********************************************************************************************************************************</a>
+<span class="lineNum">       2 </span>                :      : S3 Storage Driver
+<span class="lineNum">       3 </span>                :      : ***********************************************************************************************************************************/
+<span class="lineNum">       4 </span>                :      : #include &lt;time.h&gt;
+<span class="lineNum">       5 </span>                :      : 
+<span class="lineNum">       6 </span>                :      : #include &quot;common/assert.h&quot;
+<span class="lineNum">       7 </span>                :      : #include &quot;common/debug.h&quot;
+<span class="lineNum">       8 </span>                :      : #include &quot;common/io/http/common.h&quot;
+<span class="lineNum">       9 </span>                :      : #include &quot;common/log.h&quot;
+<span class="lineNum">      10 </span>                :      : #include &quot;common/memContext.h&quot;
+<span class="lineNum">      11 </span>                :      : #include &quot;common/regExp.h&quot;
+<span class="lineNum">      12 </span>                :      : #include &quot;common/type/xml.h&quot;
+<span class="lineNum">      13 </span>                :      : #include &quot;crypto/hash.h&quot;
+<span class="lineNum">      14 </span>                :      : #include &quot;storage/driver/s3/fileRead.h&quot;
+<span class="lineNum">      15 </span>                :      : #include &quot;storage/driver/s3/storage.h&quot;
+<span class="lineNum">      16 </span>                :      : 
+<span class="lineNum">      17 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">      18 </span>                :      : Driver type constant string
+<span class="lineNum">      19 </span>                :      : ***********************************************************************************************************************************/
+<span class="lineNum">      20 </span>                :      : STRING_EXTERN(STORAGE_DRIVER_S3_TYPE_STR,                           STORAGE_DRIVER_S3_TYPE);
+<span class="lineNum">      21 </span>                :      : 
+<span class="lineNum">      22 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">      23 </span>                :      : S3 http headers
+<span class="lineNum">      24 </span>                :      : ***********************************************************************************************************************************/
+<span class="lineNum">      25 </span>                :      : STRING_STATIC(S3_HEADER_AUTHORIZATION_STR,                          &quot;authorization&quot;);
+<span class="lineNum">      26 </span>                :      : STRING_STATIC(S3_HEADER_CONTENT_SHA256_STR,                         &quot;x-amz-content-sha256&quot;);
+<span class="lineNum">      27 </span>                :      : STRING_STATIC(S3_HEADER_DATE_STR,                                   &quot;x-amz-date&quot;);
+<span class="lineNum">      28 </span>                :      : STRING_STATIC(S3_HEADER_HOST_STR,                                   &quot;host&quot;);
+<span class="lineNum">      29 </span>                :      : STRING_STATIC(S3_HEADER_TOKEN_STR,                                  &quot;x-amz-security-token&quot;);
+<span class="lineNum">      30 </span>                :      : 
+<span class="lineNum">      31 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">      32 </span>                :      : S3 query tokens
+<span class="lineNum">      33 </span>                :      : ***********************************************************************************************************************************/
+<span class="lineNum">      34 </span>                :      : STRING_STATIC(S3_QUERY_CONTINUATION_TOKEN_STR,                      &quot;continuation-token&quot;);
+<span class="lineNum">      35 </span>                :      : STRING_STATIC(S3_QUERY_DELIMITER_STR,                               &quot;delimiter&quot;);
+<span class="lineNum">      36 </span>                :      : STRING_STATIC(S3_QUERY_LIST_TYPE_STR,                               &quot;list-type&quot;);
+<span class="lineNum">      37 </span>                :      : STRING_STATIC(S3_QUERY_PREFIX_STR,                                  &quot;prefix&quot;);
+<span class="lineNum">      38 </span>                :      : 
+<span class="lineNum">      39 </span>                :      : STRING_STATIC(S3_QUERY_VALUE_LIST_TYPE_2_STR,                       &quot;2&quot;);
+<span class="lineNum">      40 </span>                :      : 
+<span class="lineNum">      41 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">      42 </span>                :      : XML tags
+<span class="lineNum">      43 </span>                :      : ***********************************************************************************************************************************/
+<span class="lineNum">      44 </span>                :      : STRING_STATIC(S3_XML_TAG_COMMON_PREFIXES_STR,                       &quot;CommonPrefixes&quot;);
+<span class="lineNum">      45 </span>                :      : STRING_STATIC(S3_XML_TAG_CONTENTS_STR,                              &quot;Contents&quot;);
+<span class="lineNum">      46 </span>                :      : STRING_STATIC(S3_XML_TAG_KEY_STR,                                   &quot;Key&quot;);
+<span class="lineNum">      47 </span>                :      : STRING_STATIC(S3_XML_TAG_NEXT_CONTINUATION_TOKEN_STR,               &quot;NextContinuationToken&quot;);
+<span class="lineNum">      48 </span>                :      : STRING_STATIC(S3_XML_TAG_PREFIX_STR,                                &quot;Prefix&quot;);
+<span class="lineNum">      49 </span>                :      : 
+<span class="lineNum">      50 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">      51 </span>                :      : AWS authentication v4 constants
+<span class="lineNum">      52 </span>                :      : ***********************************************************************************************************************************/
+<span class="lineNum">      53 </span>                :      : #define S3                                                          &quot;s3&quot;
+<span class="lineNum">      54 </span>                :      : #define AWS4                                                        &quot;AWS4&quot;
+<span class="lineNum">      55 </span>                :      : #define AWS4_REQUEST                                                &quot;aws4_request&quot;
+<span class="lineNum">      56 </span>                :      : #define AWS4_HMAC_SHA256                                            &quot;AWS4-HMAC-SHA256&quot;
+<span class="lineNum">      57 </span>                :      : 
+<span class="lineNum">      58 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">      59 </span>                :      : Starting data for signing string so it will be regenerated on the first request
+<span class="lineNum">      60 </span>                :      : ***********************************************************************************************************************************/
+<span class="lineNum">      61 </span>                :      : STRING_STATIC(YYYYMMDD_STR,                                         &quot;YYYYMMDD&quot;);
+<span class="lineNum">      62 </span>                :      : 
+<span class="lineNum">      63 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">      64 </span>                :      : Object type
+<span class="lineNum">      65 </span>                :      : ***********************************************************************************************************************************/
+<span class="lineNum">      66 </span>                :      : struct StorageDriverS3
+<span class="lineNum">      67 </span>                :      : {
+<span class="lineNum">      68 </span>                :      :     MemContext *memContext;
+<span class="lineNum">      69 </span>                :      :     Storage *interface;                                             // Driver interface
+<span class="lineNum">      70 </span>                :      :     HttpClient *httpClient;                                         // Http client to service requests
+<span class="lineNum">      71 </span>                :      :     const StringList *headerRedactList;                             // List of headers to redact from logging
+<span class="lineNum">      72 </span>                :      : 
+<span class="lineNum">      73 </span>                :      :     const String *bucket;                                           // Bucket to store data in
+<span class="lineNum">      74 </span>                :      :     const String *region;                                           // e.g. us-east-1
+<span class="lineNum">      75 </span>                :      :     const String *accessKey;                                        // Access key
+<span class="lineNum">      76 </span>                :      :     const String *secretAccessKey;                                  // Secret access key
+<span class="lineNum">      77 </span>                :      :     const String *securityToken;                                    // Security token, if any
+<span class="lineNum">      78 </span>                :      :     const String *host;                                             // Defaults to {bucket}.{endpoint}
+<span class="lineNum">      79 </span>                :      : 
+<span class="lineNum">      80 </span>                :      :     // Current signing key and date it is valid for
+<span class="lineNum">      81 </span>                :      :     const String *signingKeyDate;                                   // Date of cached signing key (so we know when to regenerate)
+<span class="lineNum">      82 </span>                :      :     const Buffer *signingKey;                                       // Cached signing key
+<span class="lineNum">      83 </span>                :      : };
+<span class="lineNum">      84 </span>                :      : 
+<span class="lineNum">      85 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">      86 </span>                :      : Expected ISO-8601 data/time size
+<span class="lineNum">      87 </span>                :      : ***********************************************************************************************************************************/
+<span class="lineNum">      88 </span>                :      : #define ISO_8601_DATE_TIME_SIZE                                     16
+<span class="lineNum">      89 </span>                :      : 
+<span class="lineNum">      90 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">      91 </span>                :      : Format ISO-8601 date/time for authentication
+<a name="92"><span class="lineNum">      92 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      93 </span>                :      : static String *
+<span class="lineNum">      94 </span>                :<span class="lineCov">   12 : storageDriverS3DateTime(time_t authTime)</span>
+<span class="lineNum">      95 </span>                :      : {
+<span class="lineNum">      96 </span>                :<span class="lineCov">   12 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">      97 </span>                :<span class="lineCov">   12 :         FUNCTION_TEST_PARAM(INT64, authTime);</span>
+<span class="lineNum">      98 </span>                :      :     FUNCTION_TEST_END();
+<span class="lineNum">      99 </span>                :      : 
+<span class="lineNum">     100 </span>                :      :     char buffer[ISO_8601_DATE_TIME_SIZE + 1];
+<span class="lineNum">     101 </span>                :      : 
+<span class="lineNum">     102 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">   12 :     if (strftime(                                                                   // {uncoverable - nothing invalid can be passed}</span>
+<span class="lineNum">     103 </span>                :<span class="lineCov">   12 :             buffer, sizeof(buffer), &quot;%Y%m%dT%H%M%SZ&quot;, gmtime(&amp;authTime)) != ISO_8601_DATE_TIME_SIZE)</span>
+<span class="lineNum">     104 </span>                :<span class="lineNoCov">    0 :         THROW_SYS_ERROR(AssertError, &quot;unable to format date&quot;);                      // {+uncoverable}</span>
+<span class="lineNum">     105 </span>                :      : 
+<span class="lineNum">     106 </span>                :<span class="lineCov">   12 :     FUNCTION_TEST_RESULT(STRING, strNew(buffer));</span>
+<span class="lineNum">     107 </span>                :      : }
+<span class="lineNum">     108 </span>                :      : 
+<span class="lineNum">     109 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     110 </span>                :      : Generate authorization header and add it to the supplied header list
+<span class="lineNum">     111 </span>                :      : 
+<span class="lineNum">     112 </span>                :      : Based on the excellent documentation at http://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-header-based-auth.html.
+<a name="113"><span class="lineNum">     113 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     114 </span>                :      : static void
+<span class="lineNum">     115 </span>                :<span class="lineCov">   18 : storageDriverS3Auth(</span>
+<span class="lineNum">     116 </span>                :      :     StorageDriverS3 *this, const String *verb, const String *uri, const HttpQuery *query, const String *dateTime,
+<span class="lineNum">     117 </span>                :      :     HttpHeader *httpHeader, const String *payloadHash)
+<span class="lineNum">     118 </span>                :      : {
+<span class="lineNum">     119 </span>                :<span class="lineCov">   18 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     120 </span>                :<span class="lineCov">   18 :         FUNCTION_TEST_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     121 </span>                :<span class="lineCov">   18 :         FUNCTION_TEST_PARAM(STRING, verb);</span>
+<span class="lineNum">     122 </span>                :<span class="lineCov">   18 :         FUNCTION_TEST_PARAM(STRING, uri);</span>
+<span class="lineNum">     123 </span>                :<span class="lineCov">   18 :         FUNCTION_TEST_PARAM(HTTP_QUERY, query);</span>
+<span class="lineNum">     124 </span>                :<span class="lineCov">   18 :         FUNCTION_TEST_PARAM(STRING, dateTime);</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">   18 :         FUNCTION_TEST_PARAM(KEY_VALUE, httpHeader);</span>
+<span class="lineNum">     126 </span>                :<span class="lineCov">   18 :         FUNCTION_TEST_PARAM(STRING, payloadHash);</span>
+<span class="lineNum">     127 </span>                :      : 
+<span class="lineNum">     128 </span>                :<span class="lineCov">   18 :         FUNCTION_TEST_ASSERT(verb != NULL);</span>
+<span class="lineNum">     129 </span>                :<span class="lineCov">   18 :         FUNCTION_TEST_ASSERT(uri != NULL);</span>
+<span class="lineNum">     130 </span>                :<span class="lineCov">   18 :         FUNCTION_TEST_ASSERT(dateTime != NULL);</span>
+<span class="lineNum">     131 </span>                :<span class="lineCov">   18 :         FUNCTION_TEST_ASSERT(httpHeader != NULL);</span>
+<span class="lineNum">     132 </span>                :<span class="lineCov">   18 :         FUNCTION_TEST_ASSERT(payloadHash != NULL);</span>
+<span class="lineNum">     133 </span>                :      :     FUNCTION_TEST_END();
+<span class="lineNum">     134 </span>                :      : 
+<span class="lineNum">     135 </span>                :<span class="lineCov">   54 :     MEM_CONTEXT_TEMP_BEGIN()</span>
+<span class="lineNum">     136 </span>                :      :     {
+<span class="lineNum">     137 </span>                :      :         // Get date from datetime
+<span class="lineNum">     138 </span>                :<span class="lineCov">   18 :         const String *date = strSubN(dateTime, 0, 8);</span>
+<span class="lineNum">     139 </span>                :      : 
+<span class="lineNum">     140 </span>                :      :         // Set required headers
+<span class="lineNum">     141 </span>                :<span class="lineCov">   18 :         httpHeaderPut(httpHeader, S3_HEADER_CONTENT_SHA256_STR, payloadHash);</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">   18 :         httpHeaderPut(httpHeader, S3_HEADER_DATE_STR, dateTime);</span>
+<span class="lineNum">     143 </span>                :<span class="lineCov">   18 :         httpHeaderPut(httpHeader, S3_HEADER_HOST_STR, this-&gt;host);</span>
+<span class="lineNum">     144 </span>                :      : 
+<span class="lineNum">     145 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">   18 :         if (this-&gt;securityToken != NULL)</span>
+<span class="lineNum">     146 </span>                :<span class="lineCov">    2 :             httpHeaderPut(httpHeader, S3_HEADER_TOKEN_STR, this-&gt;securityToken);</span>
+<span class="lineNum">     147 </span>                :      : 
+<span class="lineNum">     148 </span>                :      :         // Generate canonical request and signed headers
+<span class="lineNum">     149 </span>                :<span class="lineCov">   18 :         const StringList *headerList = strLstSort(strLstDup(httpHeaderList(httpHeader)), sortOrderAsc);</span>
+<span class="lineNum">     150 </span>                :<span class="lineCov">   18 :         String *signedHeaders = NULL;</span>
+<span class="lineNum">     151 </span>                :      : 
+<span class="lineNum">     152 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">   32 :         String *canonicalRequest = strNewFmt(</span>
+<span class="lineNum">     153 </span>                :<span class="lineCov">   14 :             &quot;%s\n%s\n%s\n&quot;, strPtr(verb), strPtr(uri), query == NULL ? &quot;&quot; : strPtr(httpQueryRender(query)));</span>
+<span class="lineNum">     154 </span>                :      : 
+<span class="lineNum">     155 </span>        [<span class="branchCov" title="Branch 1 was taken 72 times"> + </span><span class="branchCov" title="Branch 2 was taken 18 times"> + </span>]:<span class="lineCov">   90 :         for (unsigned int headerIdx = 0; headerIdx &lt; strLstSize(headerList); headerIdx++)</span>
+<span class="lineNum">     156 </span>                :      :         {
+<span class="lineNum">     157 </span>                :<span class="lineCov">   72 :             const String *headerKey = strLstGet(headerList, headerIdx);</span>
+<span class="lineNum">     158 </span>                :<span class="lineCov">   72 :             const String *headerKeyLower = strLower(strDup(headerKey));</span>
+<span class="lineNum">     159 </span>                :      : 
+<span class="lineNum">     160 </span>                :      :             // Skip the authorization header -- if it exists this is a retry
+<span class="lineNum">     161 </span>        [<span class="branchCov" title="Branch 1 was taken 6 times"> + </span><span class="branchCov" title="Branch 2 was taken 66 times"> + </span>]:<span class="lineCov">   72 :             if (strEq(headerKeyLower, S3_HEADER_AUTHORIZATION_STR))</span>
+<span class="lineNum">     162 </span>                :<span class="lineCov">    6 :                 continue;</span>
+<span class="lineNum">     163 </span>                :      : 
+<span class="lineNum">     164 </span>                :<span class="lineCov">   66 :             strCatFmt(canonicalRequest, &quot;%s:%s\n&quot;, strPtr(headerKeyLower), strPtr(httpHeaderGet(httpHeader, headerKey)));</span>
+<span class="lineNum">     165 </span>                :      : 
+<span class="lineNum">     166 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 48 times"> + </span>]:<span class="lineCov">   66 :             if (signedHeaders == NULL)</span>
+<span class="lineNum">     167 </span>                :<span class="lineCov">   18 :                 signedHeaders = strDup(headerKeyLower);</span>
+<span class="lineNum">     168 </span>                :      :             else
+<span class="lineNum">     169 </span>                :<span class="lineCov">   48 :                 strCatFmt(signedHeaders, &quot;;%s&quot;, strPtr(headerKeyLower));</span>
+<span class="lineNum">     170 </span>                :      :         }
+<span class="lineNum">     171 </span>                :      : 
+<span class="lineNum">     172 </span>                :<span class="lineCov">   18 :         strCatFmt(canonicalRequest, &quot;\n%s\n%s&quot;, strPtr(signedHeaders), strPtr(payloadHash));</span>
+<span class="lineNum">     173 </span>                :      : 
+<span class="lineNum">     174 </span>                :      :         // Generate string to sign
+<span class="lineNum">     175 </span>                :<span class="lineCov">   18 :         const String *stringToSign = strNewFmt(</span>
+<span class="lineNum">     176 </span>                :      :             AWS4_HMAC_SHA256 &quot;\n%s\n%s/%s/&quot; S3 &quot;/&quot; AWS4_REQUEST &quot;\n%s&quot;, strPtr(dateTime), strPtr(date), strPtr(this-&gt;region),
+<span class="lineNum">     177 </span>                :<span class="lineCov">   18 :             strPtr(bufHex(cryptoHashOneStr(HASH_TYPE_SHA256_STR, canonicalRequest))));</span>
+<span class="lineNum">     178 </span>                :      : 
+<span class="lineNum">     179 </span>                :      :         // Generate signing key.  This key only needs to be regenerated every seven days but we'll do it once a day to keep the
+<span class="lineNum">     180 </span>                :      :         // logic simple.  It's a relatively expensive operation so we'd rather not do it for every request.
+<span class="lineNum">     181 </span>                :      :         // If the cached signing key has expired (or has noe been generated) then regenerate it
+<span class="lineNum">     182 </span>        [<span class="branchCov" title="Branch 1 was taken 7 times"> + </span><span class="branchCov" title="Branch 2 was taken 11 times"> + </span>]:<span class="lineCov">   18 :         if (!strEq(date, this-&gt;signingKeyDate))</span>
+<span class="lineNum">     183 </span>                :      :         {
+<span class="lineNum">     184 </span>                :<span class="lineCov">    7 :             const Buffer *dateKey = cryptoHmacOne(</span>
+<span class="lineNum">     185 </span>                :<span class="lineCov">    7 :                 HASH_TYPE_SHA256_STR, bufNewStr(strNewFmt(AWS4 &quot;%s&quot;, strPtr(this-&gt;secretAccessKey))), bufNewStr(date));</span>
+<span class="lineNum">     186 </span>                :<span class="lineCov">    7 :             const Buffer *regionKey = cryptoHmacOne(HASH_TYPE_SHA256_STR, dateKey, bufNewStr(this-&gt;region));</span>
+<span class="lineNum">     187 </span>                :<span class="lineCov">    7 :             const Buffer *serviceKey = cryptoHmacOne(HASH_TYPE_SHA256_STR, regionKey, bufNewZ(S3));</span>
+<span class="lineNum">     188 </span>                :      : 
+<span class="lineNum">     189 </span>                :      :             // Switch to the object context so signing key and date are not lost
+<span class="lineNum">     190 </span>                :<span class="lineCov">   21 :             MEM_CONTEXT_BEGIN(this-&gt;memContext)</span>
+<span class="lineNum">     191 </span>                :      :             {
+<span class="lineNum">     192 </span>                :<span class="lineCov">    7 :                 this-&gt;signingKey = cryptoHmacOne(HASH_TYPE_SHA256_STR, serviceKey, bufNewZ(AWS4_REQUEST));</span>
+<span class="lineNum">     193 </span>                :<span class="lineCov">    7 :                 this-&gt;signingKeyDate = strDup(date);</span>
+<span class="lineNum">     194 </span>                :      :             }
+<span class="lineNum">     195 </span>                :<span class="lineCov">    7 :             MEM_CONTEXT_END();</span>
+<span class="lineNum">     196 </span>                :      :         }
+<span class="lineNum">     197 </span>                :      : 
+<span class="lineNum">     198 </span>                :      :         // Generate authorization header
+<span class="lineNum">     199 </span>                :<span class="lineCov">   18 :         const String *authorization = strNewFmt(</span>
+<span class="lineNum">     200 </span>                :      :             AWS4_HMAC_SHA256 &quot; Credential=%s/%s/%s/&quot; S3 &quot;/&quot; AWS4_REQUEST &quot;,SignedHeaders=%s,Signature=%s&quot;,
+<span class="lineNum">     201 </span>                :      :             strPtr(this-&gt;accessKey), strPtr(date), strPtr(this-&gt;region), strPtr(signedHeaders),
+<span class="lineNum">     202 </span>                :<span class="lineCov">   18 :             strPtr(bufHex(cryptoHmacOne(HASH_TYPE_SHA256_STR, this-&gt;signingKey, bufNewStr(stringToSign)))));</span>
+<span class="lineNum">     203 </span>                :      : 
+<span class="lineNum">     204 </span>                :<span class="lineCov">   18 :         httpHeaderPut(httpHeader, S3_HEADER_AUTHORIZATION_STR, authorization);</span>
+<span class="lineNum">     205 </span>                :      :     }
+<span class="lineNum">     206 </span>                :<span class="lineCov">   18 :     MEM_CONTEXT_TEMP_END();</span>
+<span class="lineNum">     207 </span>                :      : 
+<span class="lineNum">     208 </span>                :<span class="lineCov">   18 :     FUNCTION_TEST_RESULT_VOID();</span>
+<span class="lineNum">     209 </span>                :<span class="lineCov">   18 : }</span>
+<span class="lineNum">     210 </span>                :      : 
+<span class="lineNum">     211 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     212 </span>                :      : New object
+<a name="213"><span class="lineNum">     213 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     214 </span>                :      : StorageDriverS3 *
+<span class="lineNum">     215 </span>                :<span class="lineCov">    9 : storageDriverS3New(</span>
+<span class="lineNum">     216 </span>                :      :     const String *path, bool write, StoragePathExpressionCallback pathExpressionFunction, const String *bucket,
+<span class="lineNum">     217 </span>                :      :     const String *endPoint, const String *region, const String *accessKey, const String *secretAccessKey,
+<span class="lineNum">     218 </span>                :      :     const String *securityToken, const String *host, unsigned int port, TimeMSec timeout, bool verifyPeer, const String *caFile,
+<span class="lineNum">     219 </span>                :      :     const String *caPath)
+<span class="lineNum">     220 </span>                :      : {
+<span class="lineNum">     221 </span>                :<span class="lineCov">    9 :     FUNCTION_DEBUG_BEGIN(logLevelDebug);</span>
+<span class="lineNum">     222 </span>                :<span class="lineCov">    9 :         FUNCTION_DEBUG_PARAM(STRING, bucket);</span>
+<span class="lineNum">     223 </span>                :<span class="lineCov">    9 :         FUNCTION_DEBUG_PARAM(STRING, endPoint);</span>
+<span class="lineNum">     224 </span>                :<span class="lineCov">    9 :         FUNCTION_DEBUG_PARAM(STRING, region);</span>
+<span class="lineNum">     225 </span>                :<span class="lineCov">    9 :         FUNCTION_TEST_PARAM(STRING, accessKey);</span>
+<span class="lineNum">     226 </span>                :<span class="lineCov">    9 :         FUNCTION_TEST_PARAM(STRING, secretAccessKey);</span>
+<span class="lineNum">     227 </span>                :<span class="lineCov">    9 :         FUNCTION_TEST_PARAM(STRING, securityToken);</span>
+<span class="lineNum">     228 </span>                :<span class="lineCov">    9 :         FUNCTION_DEBUG_PARAM(STRING, host);</span>
+<span class="lineNum">     229 </span>                :<span class="lineCov">    9 :         FUNCTION_DEBUG_PARAM(UINT, port);</span>
+<span class="lineNum">     230 </span>                :<span class="lineCov">    9 :         FUNCTION_DEBUG_PARAM(TIME_MSEC, timeout);</span>
+<span class="lineNum">     231 </span>                :<span class="lineCov">    9 :         FUNCTION_DEBUG_PARAM(BOOL, verifyPeer);</span>
+<span class="lineNum">     232 </span>                :<span class="lineCov">    9 :         FUNCTION_DEBUG_PARAM(STRING, caFile);</span>
+<span class="lineNum">     233 </span>                :<span class="lineCov">    9 :         FUNCTION_DEBUG_PARAM(STRING, caPath);</span>
+<span class="lineNum">     234 </span>                :      : 
+<span class="lineNum">     235 </span>                :<span class="lineCov">    9 :         FUNCTION_TEST_ASSERT(bucket != NULL);</span>
+<span class="lineNum">     236 </span>                :<span class="lineCov">    9 :         FUNCTION_TEST_ASSERT(endPoint != NULL);</span>
+<span class="lineNum">     237 </span>                :<span class="lineCov">    9 :         FUNCTION_TEST_ASSERT(region != NULL);</span>
+<span class="lineNum">     238 </span>                :<span class="lineCov">    9 :         FUNCTION_TEST_ASSERT(accessKey != NULL);</span>
+<span class="lineNum">     239 </span>                :<span class="lineCov">    9 :         FUNCTION_TEST_ASSERT(secretAccessKey != NULL);</span>
+<span class="lineNum">     240 </span>                :<span class="lineCov">    9 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     241 </span>                :      : 
+<span class="lineNum">     242 </span>                :      :     // Create the object
+<span class="lineNum">     243 </span>                :<span class="lineCov">    9 :     StorageDriverS3 *this = NULL;</span>
+<span class="lineNum">     244 </span>                :      : 
+<span class="lineNum">     245 </span>                :<span class="lineCov">   27 :     MEM_CONTEXT_NEW_BEGIN(&quot;StorageDriverS3&quot;)</span>
+<span class="lineNum">     246 </span>                :      :     {
+<span class="lineNum">     247 </span>                :<span class="lineCov">    9 :         this = memNew(sizeof(StorageDriverS3));</span>
+<span class="lineNum">     248 </span>                :<span class="lineCov">    9 :         this-&gt;memContext = MEM_CONTEXT_NEW();</span>
+<span class="lineNum">     249 </span>                :      : 
+<span class="lineNum">     250 </span>                :<span class="lineCov">    9 :         this-&gt;bucket = strDup(bucket);</span>
+<span class="lineNum">     251 </span>                :<span class="lineCov">    9 :         this-&gt;region = strDup(region);</span>
+<span class="lineNum">     252 </span>                :<span class="lineCov">    9 :         this-&gt;accessKey = strDup(accessKey);</span>
+<span class="lineNum">     253 </span>                :<span class="lineCov">    9 :         this-&gt;secretAccessKey = strDup(secretAccessKey);</span>
+<span class="lineNum">     254 </span>                :<span class="lineCov">    9 :         this-&gt;securityToken = strDup(securityToken);</span>
+<span class="lineNum">     255 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">    9 :         this-&gt;host = host == NULL ? strNewFmt(&quot;%s.%s&quot;, strPtr(bucket), strPtr(endPoint)) : strDup(host);</span>
+<span class="lineNum">     256 </span>                :      : 
+<span class="lineNum">     257 </span>                :      :         // Force the signing key to be generated on the first run
+<span class="lineNum">     258 </span>                :<span class="lineCov">    9 :         this-&gt;signingKeyDate = YYYYMMDD_STR;</span>
+<span class="lineNum">     259 </span>                :      : 
+<span class="lineNum">     260 </span>                :      :         // Create the storage interface
+<span class="lineNum">     261 </span>                :<span class="lineCov">    9 :         this-&gt;interface = storageNewP(</span>
+<span class="lineNum">     262 </span>                :      :             STORAGE_DRIVER_S3_TYPE_STR, path, 0, 0, write, pathExpressionFunction, this,
+<span class="lineNum">     263 </span>                :      :             .exists = (StorageInterfaceExists)storageDriverS3Exists, .info = (StorageInterfaceInfo)storageDriverS3Info,
+<span class="lineNum">     264 </span>                :      :             .list = (StorageInterfaceList)storageDriverS3List, .newRead = (StorageInterfaceNewRead)storageDriverS3NewRead,
+<span class="lineNum">     265 </span>                :      :             .newWrite = (StorageInterfaceNewWrite)storageDriverS3NewWrite,
+<span class="lineNum">     266 </span>                :      :             .pathCreate = (StorageInterfacePathCreate)storageDriverS3PathCreate,
+<span class="lineNum">     267 </span>                :      :             .pathRemove = (StorageInterfacePathRemove)storageDriverS3PathRemove,
+<span class="lineNum">     268 </span>                :      :             .pathSync = (StorageInterfacePathSync)storageDriverS3PathSync, .remove = (StorageInterfaceRemove)storageDriverS3Remove);
+<span class="lineNum">     269 </span>                :      : 
+<span class="lineNum">     270 </span>                :      :         // Create the http client used to service requests
+<span class="lineNum">     271 </span>                :<span class="lineCov">    9 :         this-&gt;httpClient = httpClientNew(this-&gt;host, port, timeout, verifyPeer, caFile, caPath);</span>
+<span class="lineNum">     272 </span>                :<span class="lineCov">    9 :         this-&gt;headerRedactList = strLstAdd(strLstNew(), S3_HEADER_AUTHORIZATION_STR);</span>
+<span class="lineNum">     273 </span>                :      :     }
+<span class="lineNum">     274 </span>                :<span class="lineCov">    9 :     MEM_CONTEXT_NEW_END();</span>
+<span class="lineNum">     275 </span>                :      : 
+<span class="lineNum">     276 </span>                :<span class="lineCov">    9 :     FUNCTION_DEBUG_RESULT(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     277 </span>                :      : }
+<span class="lineNum">     278 </span>                :      : 
+<span class="lineNum">     279 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     280 </span>                :      : Process S3 request
+<a name="281"><span class="lineNum">     281 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     282 </span>                :      : Buffer *
+<span class="lineNum">     283 </span>                :<span class="lineCov">   12 : storageDriverS3Request(</span>
+<span class="lineNum">     284 </span>                :      :     StorageDriverS3 *this, const String *verb, const String *uri, const HttpQuery *query, const Buffer *body, bool returnContent,
+<span class="lineNum">     285 </span>                :      :     bool allowMissing)
+<span class="lineNum">     286 </span>                :      : {
+<span class="lineNum">     287 </span>                :<span class="lineCov">   10 :     FUNCTION_DEBUG_BEGIN(logLevelDebug);</span>
+<span class="lineNum">     288 </span>                :<span class="lineCov">   10 :         FUNCTION_DEBUG_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     289 </span>                :<span class="lineCov">   10 :         FUNCTION_DEBUG_PARAM(STRING, verb);</span>
+<span class="lineNum">     290 </span>                :<span class="lineCov">   10 :         FUNCTION_DEBUG_PARAM(STRING, uri);</span>
+<span class="lineNum">     291 </span>                :<span class="lineCov">   10 :         FUNCTION_DEBUG_PARAM(HTTP_QUERY, query);</span>
+<span class="lineNum">     292 </span>                :<span class="lineCov">   10 :         FUNCTION_DEBUG_PARAM(BUFFER, body);</span>
+<span class="lineNum">     293 </span>                :<span class="lineCov">   10 :         FUNCTION_DEBUG_PARAM(BOOL, returnContent);</span>
+<span class="lineNum">     294 </span>                :<span class="lineCov">   10 :         FUNCTION_DEBUG_PARAM(BOOL, allowMissing);</span>
+<span class="lineNum">     295 </span>                :      : 
+<span class="lineNum">     296 </span>                :<span class="lineCov">   10 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     297 </span>                :<span class="lineCov">   10 :         FUNCTION_TEST_ASSERT(verb != NULL);</span>
+<span class="lineNum">     298 </span>                :<span class="lineCov">   10 :         FUNCTION_TEST_ASSERT(uri != NULL);</span>
+<span class="lineNum">     299 </span>                :<span class="lineCov">   10 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     300 </span>                :      : 
+<span class="lineNum">     301 </span>                :<span class="lineCov">   10 :     Buffer *result = NULL;</span>
+<span class="lineNum">     302 </span>                :      : 
+<span class="lineNum">     303 </span>                :<span class="lineCov">   32 :     MEM_CONTEXT_TEMP_BEGIN()</span>
+<span class="lineNum">     304 </span>                :      :     {
+<span class="lineNum">     305 </span>                :      :         // Create header list and add content length
+<span class="lineNum">     306 </span>                :<span class="lineCov">   10 :         HttpHeader *requestHeader = httpHeaderNew(this-&gt;headerRedactList);</span>
+<span class="lineNum">     307 </span>                :<span class="lineCov">   10 :         httpHeaderAdd(requestHeader, HTTP_HEADER_CONTENT_LENGTH_STR, ZERO_STR);</span>
+<span class="lineNum">     308 </span>                :      : 
+<span class="lineNum">     309 </span>                :      :         // Generate authorization header
+<span class="lineNum">     310 </span>                :<span class="lineCov">   10 :         storageDriverS3Auth(</span>
+<span class="lineNum">     311 </span>                :<span class="lineCov">   10 :             this, verb, uri, query, storageDriverS3DateTime(time(NULL)), requestHeader,</span>
+<span class="lineNum">     312 </span>                :<span class="lineCov">   10 :             strNew(&quot;e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&quot;));</span>
+<span class="lineNum">     313 </span>                :      : 
+<span class="lineNum">     314 </span>                :      :         // Process request
+<span class="lineNum">     315 </span>                :<span class="lineCov">   10 :         result = httpClientRequest(this-&gt;httpClient, verb, uri, query, requestHeader, returnContent);</span>
+<span class="lineNum">     316 </span>                :      : 
+<span class="lineNum">     317 </span>                :      :         // Error if the request was not successful
+<span class="lineNum">     318 </span>[<span class="branchCov" title="Branch 1 was taken 4 times"> + </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 3 times"> + </span><span class="branchCov" title="Branch 4 was taken 1 time"> + </span>]:<span class="lineCov">   10 :         if (httpClientResponseCode(this-&gt;httpClient) != HTTP_RESPONSE_CODE_OK &amp;&amp;</span>
+<span class="lineNum">     319 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">    3 :             (!allowMissing || httpClientResponseCode(this-&gt;httpClient) != HTTP_RESPONSE_CODE_NOT_FOUND))</span>
+<span class="lineNum">     320 </span>                :      :         {
+<span class="lineNum">     321 </span>                :      :             // General error message
+<span class="lineNum">     322 </span>                :<span class="lineCov">    2 :             String *error = strNewFmt(</span>
+<span class="lineNum">     323 </span>                :<span class="lineCov">    2 :                 &quot;S3 request failed with %u: %s&quot;, httpClientResponseCode(this-&gt;httpClient),</span>
+<span class="lineNum">     324 </span>                :<span class="lineCov">    2 :                 strPtr(httpClientResponseMessage(this-&gt;httpClient)));</span>
+<span class="lineNum">     325 </span>                :      : 
+<span class="lineNum">     326 </span>                :      :             // Output uri/query
+<span class="lineNum">     327 </span>                :<span class="lineCov">    2 :             strCat(error, &quot;\n*** URI/Query ***:&quot;);</span>
+<span class="lineNum">     328 </span>                :      : 
+<span class="lineNum">     329 </span>                :<span class="lineCov">    2 :             strCatFmt(error, &quot;\n%s&quot;, strPtr(httpUriEncode(uri, true)));</span>
+<span class="lineNum">     330 </span>                :      : 
+<span class="lineNum">     331 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">    2 :             if (query != NULL)</span>
+<span class="lineNum">     332 </span>                :<span class="lineCov">    1 :                 strCatFmt(error, &quot;?%s&quot;, strPtr(httpQueryRender(query)));</span>
+<span class="lineNum">     333 </span>                :      : 
+<span class="lineNum">     334 </span>                :      :             // Output request headers
+<span class="lineNum">     335 </span>                :<span class="lineCov">    2 :             const StringList *requestHeaderList = httpHeaderList(requestHeader);</span>
+<span class="lineNum">     336 </span>                :      : 
+<span class="lineNum">     337 </span>                :<span class="lineCov">    2 :             strCat(error, &quot;\n*** Request Headers ***:&quot;);</span>
+<span class="lineNum">     338 </span>                :      : 
+<span class="lineNum">     339 </span>        [<span class="branchCov" title="Branch 1 was taken 10 times"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">   12 :             for (unsigned int requestHeaderIdx = 0; requestHeaderIdx &lt; strLstSize(requestHeaderList); requestHeaderIdx++)</span>
+<span class="lineNum">     340 </span>                :      :             {
+<span class="lineNum">     341 </span>                :<span class="lineCov">   10 :                 const String *key = strLstGet(requestHeaderList, requestHeaderIdx);</span>
+<span class="lineNum">     342 </span>                :      : 
+<span class="lineNum">     343 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">   18 :                 strCatFmt(</span>
+<span class="lineNum">     344 </span>                :      :                     error, &quot;\n%s: %s&quot;, strPtr(key),
+<span class="lineNum">     345 </span>        [<span class="branchCov" title="Branch 2 was taken 6 times"> + </span><span class="branchCov" title="Branch 3 was taken 2 times"> + </span>]:<span class="lineCov">   18 :                     httpHeaderRedact(requestHeader, key) || strEq(key, S3_HEADER_DATE_STR) ?</span>
+<span class="lineNum">     346 </span>                :<span class="lineCov">    6 :                         &quot;&lt;redacted&gt;&quot; : strPtr(httpHeaderGet(requestHeader, key)));</span>
+<span class="lineNum">     347 </span>                :      :             }
+<span class="lineNum">     348 </span>                :      : 
+<span class="lineNum">     349 </span>                :      :             // Output response headers
+<span class="lineNum">     350 </span>                :<span class="lineCov">    2 :             const HttpHeader *responseHeader = httpClientReponseHeader(this-&gt;httpClient);</span>
+<span class="lineNum">     351 </span>                :<span class="lineCov">    2 :             const StringList *responseHeaderList = httpHeaderList(responseHeader);</span>
+<span class="lineNum">     352 </span>                :      : 
+<span class="lineNum">     353 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">    2 :             if (strLstSize(responseHeaderList) &gt; 0)</span>
+<span class="lineNum">     354 </span>                :      :             {
+<span class="lineNum">     355 </span>                :<span class="lineCov">    1 :                 strCat(error, &quot;\n*** Response Headers ***:&quot;);</span>
+<span class="lineNum">     356 </span>                :      : 
+<span class="lineNum">     357 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">    2 :                 for (unsigned int responseHeaderIdx = 0; responseHeaderIdx &lt; strLstSize(responseHeaderList); responseHeaderIdx++)</span>
+<span class="lineNum">     358 </span>                :      :                 {
+<span class="lineNum">     359 </span>                :<span class="lineCov">    1 :                     const String *key = strLstGet(responseHeaderList, responseHeaderIdx);</span>
+<span class="lineNum">     360 </span>                :<span class="lineCov">    1 :                     strCatFmt(error, &quot;\n%s: %s&quot;, strPtr(key), strPtr(httpHeaderGet(responseHeader, key)));</span>
+<span class="lineNum">     361 </span>                :      :                 }
+<span class="lineNum">     362 </span>                :      :             }
+<span class="lineNum">     363 </span>                :      : 
+<span class="lineNum">     364 </span>                :      :             // If there was content then output it
+<span class="lineNum">     365 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">    2 :             if (result != NULL)</span>
+<span class="lineNum">     366 </span>                :<span class="lineCov">    1 :                 strCatFmt(error, &quot;\n*** Response Content ***:\n%s&quot;, strPtr(strNewBuf(result)));</span>
+<span class="lineNum">     367 </span>                :      : 
+<span class="lineNum">     368 </span>                :<span class="lineCov">    2 :             THROW(ProtocolError, strPtr(error));</span>
+<span class="lineNum">     369 </span>                :      :         }
+<span class="lineNum">     370 </span>                :      : 
+<span class="lineNum">     371 </span>                :      :         // On success move the buffer to the calling context
+<span class="lineNum">     372 </span>                :<span class="lineCov">    8 :         bufMove(result, MEM_CONTEXT_OLD());</span>
+<span class="lineNum">     373 </span>                :      :     }
+<span class="lineNum">     374 </span>                :<span class="lineCov">   12 :     MEM_CONTEXT_TEMP_END();</span>
+<span class="lineNum">     375 </span>                :      : 
+<span class="lineNum">     376 </span>                :<span class="lineCov">    8 :     FUNCTION_DEBUG_RESULT(BUFFER, result);</span>
+<span class="lineNum">     377 </span>                :      : }
+<span class="lineNum">     378 </span>                :      : 
+<span class="lineNum">     379 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     380 </span>                :      : Does a file/path exist?
+<a name="381"><span class="lineNum">     381 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     382 </span>                :      : bool
+<span class="lineNum">     383 </span>                :<span class="lineCov">    1 : storageDriverS3Exists(StorageDriverS3 *this, const String *path)</span>
+<span class="lineNum">     384 </span>                :      : {
+<span class="lineNum">     385 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_BEGIN(logLevelDebug);</span>
+<span class="lineNum">     386 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     387 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STRING, path);</span>
+<span class="lineNum">     388 </span>                :      : 
+<span class="lineNum">     389 </span>                :<span class="lineCov">    1 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     390 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_ASSERT(path != NULL);</span>
+<span class="lineNum">     391 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     392 </span>                :      : 
+<span class="lineNum">     393 </span>                :<span class="lineCov">    1 :     bool result = false;</span>
+<span class="lineNum">     394 </span>                :      : 
+<span class="lineNum">     395 </span>                :<span class="lineCov">    1 :     THROW(AssertError, &quot;NOT YET IMPLEMENTED&quot;);</span>
+<span class="lineNum">     396 </span>                :      : 
+<span class="lineNum">     397 </span>                :      :     FUNCTION_DEBUG_RESULT(BOOL, result);
+<span class="lineNum">     398 </span>                :      : }
+<span class="lineNum">     399 </span>                :      : 
+<span class="lineNum">     400 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     401 </span>                :      : File/path info
+<a name="402"><span class="lineNum">     402 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     403 </span>                :      : StorageInfo
+<span class="lineNum">     404 </span>                :<span class="lineCov">    1 : storageDriverS3Info(StorageDriverS3 *this, const String *file, bool ignoreMissing)</span>
+<span class="lineNum">     405 </span>                :      : {
+<span class="lineNum">     406 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_BEGIN(logLevelDebug);</span>
+<span class="lineNum">     407 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     408 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STRING, file);</span>
+<span class="lineNum">     409 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(BOOL, ignoreMissing);</span>
+<span class="lineNum">     410 </span>                :      : 
+<span class="lineNum">     411 </span>                :<span class="lineCov">    1 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     412 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_ASSERT(file != NULL);</span>
+<span class="lineNum">     413 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     414 </span>                :      : 
+<span class="lineNum">     415 </span>                :<span class="lineCov">    1 :     THROW(AssertError, &quot;NOT YET IMPLEMENTED&quot;);</span>
+<span class="lineNum">     416 </span>                :      : 
+<span class="lineNum">     417 </span>                :      :     FUNCTION_DEBUG_RESULT(STORAGE_INFO, (StorageInfo){0});
+<span class="lineNum">     418 </span>                :      : }
+<span class="lineNum">     419 </span>                :      : 
+<span class="lineNum">     420 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     421 </span>                :      : Get a list of files from a directory
+<a name="422"><span class="lineNum">     422 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     423 </span>                :      : StringList *
+<span class="lineNum">     424 </span>                :<span class="lineCov">    8 : storageDriverS3List(StorageDriverS3 *this, const String *path, bool errorOnMissing, const String *expression)</span>
+<span class="lineNum">     425 </span>                :      : {
+<span class="lineNum">     426 </span>                :<span class="lineCov">    6 :     FUNCTION_DEBUG_BEGIN(logLevelDebug);</span>
+<span class="lineNum">     427 </span>                :<span class="lineCov">    6 :         FUNCTION_DEBUG_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     428 </span>                :<span class="lineCov">    6 :         FUNCTION_DEBUG_PARAM(STRING, path);</span>
+<span class="lineNum">     429 </span>                :<span class="lineCov">    6 :         FUNCTION_DEBUG_PARAM(BOOL, errorOnMissing);</span>
+<span class="lineNum">     430 </span>                :<span class="lineCov">    6 :         FUNCTION_DEBUG_PARAM(STRING, expression);</span>
+<span class="lineNum">     431 </span>                :      : 
+<span class="lineNum">     432 </span>                :<span class="lineCov">    6 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     433 </span>                :<span class="lineCov">    6 :         FUNCTION_DEBUG_ASSERT(path != NULL);</span>
+<span class="lineNum">     434 </span>                :<span class="lineCov">    6 :         FUNCTION_TEST_ASSERT(!errorOnMissing);</span>
+<span class="lineNum">     435 </span>                :<span class="lineCov">    5 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     436 </span>                :      : 
+<span class="lineNum">     437 </span>                :<span class="lineCov">    5 :     StringList *result = NULL;</span>
+<span class="lineNum">     438 </span>                :      : 
+<span class="lineNum">     439 </span>                :<span class="lineCov">   16 :     MEM_CONTEXT_TEMP_BEGIN()</span>
+<span class="lineNum">     440 </span>                :      :     {
+<span class="lineNum">     441 </span>                :<span class="lineCov">    5 :         result = strLstNew();</span>
+<span class="lineNum">     442 </span>                :<span class="lineCov">    5 :         const String *continuationToken = NULL;</span>
+<span class="lineNum">     443 </span>                :      : 
+<span class="lineNum">     444 </span>                :      :         // Prepare regexp if an expression was passed
+<span class="lineNum">     445 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">    5 :         RegExp *regExp = (expression == NULL) ? NULL : regExpNew(expression);</span>
+<span class="lineNum">     446 </span>                :      : 
+<span class="lineNum">     447 </span>                :      :         // Build the base prefix by stripping of the initial /
+<span class="lineNum">     448 </span>                :      :         const String *basePrefix;
+<span class="lineNum">     449 </span>                :      : 
+<span class="lineNum">     450 </span>        [<span class="branchCov" title="Branch 1 was taken 3 times"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">    5 :         if (strSize(path) == 1)</span>
+<span class="lineNum">     451 </span>                :<span class="lineCov">    3 :             basePrefix = EMPTY_STR;</span>
+<span class="lineNum">     452 </span>                :      :         else
+<span class="lineNum">     453 </span>                :<span class="lineCov">    2 :             basePrefix = strNewFmt(&quot;%s/&quot;, strPtr(strSub(path, 1)));</span>
+<span class="lineNum">     454 </span>                :      : 
+<span class="lineNum">     455 </span>                :      :         // Get the expression prefix when possible to limit initial results
+<span class="lineNum">     456 </span>                :<span class="lineCov">    5 :         const String *expressionPrefix = regExpPrefix(expression);</span>
+<span class="lineNum">     457 </span>                :      : 
+<span class="lineNum">     458 </span>                :      :         // If there is an expression prefix then use it to build the query prefix, otherwise query prefix is base prefix
+<span class="lineNum">     459 </span>                :      :         const String *queryPrefix;
+<span class="lineNum">     460 </span>                :      : 
+<span class="lineNum">     461 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">    5 :         if (expressionPrefix == NULL)</span>
+<span class="lineNum">     462 </span>                :<span class="lineCov">    3 :             queryPrefix = basePrefix;</span>
+<span class="lineNum">     463 </span>                :      :         else
+<span class="lineNum">     464 </span>                :      :         {
+<span class="lineNum">     465 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">    2 :             if (strEmpty(basePrefix))</span>
+<span class="lineNum">     466 </span>                :<span class="lineCov">    1 :                 queryPrefix = expressionPrefix;</span>
+<span class="lineNum">     467 </span>                :      :             else
+<span class="lineNum">     468 </span>                :<span class="lineCov">    1 :                 queryPrefix = strNewFmt(&quot;%s%s&quot;, strPtr(basePrefix), strPtr(expressionPrefix));</span>
+<span class="lineNum">     469 </span>                :      :         }
+<span class="lineNum">     470 </span>                :      : 
+<span class="lineNum">     471 </span>                :      :         // Loop as long as a continuation token returned
+<span class="lineNum">     472 </span>                :      :         do
+<span class="lineNum">     473 </span>                :      :         {
+<span class="lineNum">     474 </span>                :      :             // Use an inner mem context here because we could potentially be retrieving millions of files so it is a good idea to
+<span class="lineNum">     475 </span>                :      :             // free memory at regular intervals
+<span class="lineNum">     476 </span>                :<span class="lineCov">   19 :             MEM_CONTEXT_TEMP_BEGIN()</span>
+<span class="lineNum">     477 </span>                :      :             {
+<span class="lineNum">     478 </span>                :<span class="lineCov">    6 :                 HttpQuery *query = httpQueryNew();</span>
+<span class="lineNum">     479 </span>                :      : 
+<span class="lineNum">     480 </span>                :      :                 // Add continuation token from the prior loop if any
+<span class="lineNum">     481 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">    6 :                 if (continuationToken != NULL)</span>
+<span class="lineNum">     482 </span>                :<span class="lineCov">    1 :                     httpQueryAdd(query, S3_QUERY_CONTINUATION_TOKEN_STR, continuationToken);</span>
+<span class="lineNum">     483 </span>                :      : 
+<span class="lineNum">     484 </span>                :      :                 // Add the delimiter so we don't recurse
+<span class="lineNum">     485 </span>                :<span class="lineCov">    6 :                 httpQueryAdd(query, S3_QUERY_DELIMITER_STR, FSLASH_STR);</span>
+<span class="lineNum">     486 </span>                :      : 
+<span class="lineNum">     487 </span>                :      :                 // Use list type 2
+<span class="lineNum">     488 </span>                :<span class="lineCov">    6 :                 httpQueryAdd(query, S3_QUERY_LIST_TYPE_STR, S3_QUERY_VALUE_LIST_TYPE_2_STR);</span>
+<span class="lineNum">     489 </span>                :      : 
+<span class="lineNum">     490 </span>                :      :                 // Don't specified empty prefix because it is the default
+<span class="lineNum">     491 </span>        [<span class="branchCov" title="Branch 1 was taken 4 times"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">    6 :                 if (!strEmpty(queryPrefix))</span>
+<span class="lineNum">     492 </span>                :<span class="lineCov">    4 :                     httpQueryAdd(query, S3_QUERY_PREFIX_STR, queryPrefix);</span>
+<span class="lineNum">     493 </span>                :      : 
+<span class="lineNum">     494 </span>                :<span class="lineCov">    5 :                 XmlNode *xmlRoot = xmlDocumentRoot(</span>
+<span class="lineNum">     495 </span>                :<span class="lineCov">    6 :                     xmlDocumentNewBuf(storageDriverS3Request(this, HTTP_VERB_GET_STR, FSLASH_STR, query, NULL, true, false)));</span>
+<span class="lineNum">     496 </span>                :      : 
+<span class="lineNum">     497 </span>                :      :                 // Get subpath list
+<span class="lineNum">     498 </span>                :<span class="lineCov">    5 :                 XmlNodeList *subPathList = xmlNodeChildList(xmlRoot, S3_XML_TAG_COMMON_PREFIXES_STR);</span>
+<span class="lineNum">     499 </span>                :      : 
+<span class="lineNum">     500 </span>        [<span class="branchCov" title="Branch 1 was taken 5 times"> + </span><span class="branchCov" title="Branch 2 was taken 5 times"> + </span>]:<span class="lineCov">   10 :                 for (unsigned int subPathIdx = 0; subPathIdx &lt; xmlNodeLstSize(subPathList); subPathIdx++)</span>
+<span class="lineNum">     501 </span>                :      :                 {
+<span class="lineNum">     502 </span>                :      :                     // Get subpath name
+<span class="lineNum">     503 </span>                :<span class="lineCov">    5 :                     const String *subPath = xmlNodeContent(</span>
+<span class="lineNum">     504 </span>                :      :                         xmlNodeChild(xmlNodeLstGet(subPathList, subPathIdx), S3_XML_TAG_PREFIX_STR, true));
+<span class="lineNum">     505 </span>                :      : 
+<span class="lineNum">     506 </span>                :      :                     // Strip off base prefix and final /
+<span class="lineNum">     507 </span>                :<span class="lineCov">    5 :                     subPath = strSubN(subPath, strSize(basePrefix), strSize(subPath) - strSize(basePrefix) - 1);</span>
+<span class="lineNum">     508 </span>                :      : 
+<span class="lineNum">     509 </span>                :      :                     // Add to list after checking expression if present
+<span class="lineNum">     510 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 1 time"> + </span><span class="branchCov" title="Branch 4 was taken 1 time"> + </span>]:<span class="lineCov">    5 :                     if (regExp == NULL || regExpMatch(regExp, subPath))</span>
+<span class="lineNum">     511 </span>                :<span class="lineCov">    4 :                         strLstAdd(result, subPath);</span>
+<span class="lineNum">     512 </span>                :      :                 }
+<span class="lineNum">     513 </span>                :      : 
+<span class="lineNum">     514 </span>                :      :                 // Get file list
+<span class="lineNum">     515 </span>                :<span class="lineCov">    5 :                 XmlNodeList *fileList = xmlNodeChildList(xmlRoot, S3_XML_TAG_CONTENTS_STR);</span>
+<span class="lineNum">     516 </span>                :      : 
+<span class="lineNum">     517 </span>        [<span class="branchCov" title="Branch 1 was taken 8 times"> + </span><span class="branchCov" title="Branch 2 was taken 5 times"> + </span>]:<span class="lineCov">   13 :                 for (unsigned int fileIdx = 0; fileIdx &lt; xmlNodeLstSize(fileList); fileIdx++)</span>
+<span class="lineNum">     518 </span>                :      :                 {
+<span class="lineNum">     519 </span>                :      :                     // Get file name
+<span class="lineNum">     520 </span>                :<span class="lineCov">    8 :                     const String *file = xmlNodeContent(xmlNodeChild(xmlNodeLstGet(fileList, fileIdx), S3_XML_TAG_KEY_STR, true));</span>
+<span class="lineNum">     521 </span>                :      : 
+<span class="lineNum">     522 </span>                :      :                     // Strip off the base prefix when present
+<span class="lineNum">     523 </span>        [<span class="branchCov" title="Branch 1 was taken 6 times"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">    8 :                     file = strEmpty(basePrefix) ? file : strSub(file, strSize(basePrefix));</span>
+<span class="lineNum">     524 </span>                :      : 
+<span class="lineNum">     525 </span>                :      :                     // Add to list after checking expression if present
+<span class="lineNum">     526 </span>[<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 3 times"> + </span><span class="branchCov" title="Branch 4 was taken 1 time"> + </span>]:<span class="lineCov">    8 :                     if (regExp == NULL || regExpMatch(regExp, file))</span>
+<span class="lineNum">     527 </span>                :<span class="lineCov">    7 :                         strLstAdd(result, file);</span>
+<span class="lineNum">     528 </span>                :      :                 }
+<span class="lineNum">     529 </span>                :      : 
+<span class="lineNum">     530 </span>                :      :                 // Get the continuation token and store it in the outer temp context
+<span class="lineNum">     531 </span>                :<span class="lineCov">    5 :                 memContextSwitch(MEM_CONTEXT_OLD());</span>
+<span class="lineNum">     532 </span>                :<span class="lineCov">    5 :                 continuationToken = xmlNodeContent(xmlNodeChild(xmlRoot, S3_XML_TAG_NEXT_CONTINUATION_TOKEN_STR, false));</span>
+<span class="lineNum">     533 </span>                :<span class="lineCov">    5 :                 memContextSwitch(MEM_CONTEXT_TEMP());</span>
+<span class="lineNum">     534 </span>                :      :             }
+<span class="lineNum">     535 </span>                :<span class="lineCov">    7 :             MEM_CONTEXT_TEMP_END();</span>
+<span class="lineNum">     536 </span>                :      :         }
+<span class="lineNum">     537 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">    5 :         while (continuationToken != NULL);</span>
+<span class="lineNum">     538 </span>                :      : 
+<span class="lineNum">     539 </span>                :<span class="lineCov">    4 :         strLstMove(result, MEM_CONTEXT_OLD());</span>
+<span class="lineNum">     540 </span>                :      :     }
+<span class="lineNum">     541 </span>                :<span class="lineCov">    6 :     MEM_CONTEXT_TEMP_END();</span>
+<span class="lineNum">     542 </span>                :      : 
+<span class="lineNum">     543 </span>                :<span class="lineCov">    4 :     FUNCTION_DEBUG_RESULT(STRING_LIST, result);</span>
+<span class="lineNum">     544 </span>                :      : }
+<span class="lineNum">     545 </span>                :      : 
+<span class="lineNum">     546 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     547 </span>                :      : New file read object
+<a name="548"><span class="lineNum">     548 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     549 </span>                :      : StorageFileRead *
+<span class="lineNum">     550 </span>                :<span class="lineCov">    4 : storageDriverS3NewRead(StorageDriverS3 *this, const String *file, bool ignoreMissing)</span>
+<span class="lineNum">     551 </span>                :      : {
+<span class="lineNum">     552 </span>                :<span class="lineCov">    4 :     FUNCTION_DEBUG_BEGIN(logLevelDebug);</span>
+<span class="lineNum">     553 </span>                :<span class="lineCov">    4 :         FUNCTION_DEBUG_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     554 </span>                :<span class="lineCov">    4 :         FUNCTION_DEBUG_PARAM(STRING, file);</span>
+<span class="lineNum">     555 </span>                :<span class="lineCov">    4 :         FUNCTION_DEBUG_PARAM(BOOL, ignoreMissing);</span>
+<span class="lineNum">     556 </span>                :      : 
+<span class="lineNum">     557 </span>                :<span class="lineCov">    4 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     558 </span>                :<span class="lineCov">    4 :         FUNCTION_DEBUG_ASSERT(file != NULL);</span>
+<span class="lineNum">     559 </span>                :<span class="lineCov">    4 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     560 </span>                :      : 
+<span class="lineNum">     561 </span>                :<span class="lineCov">    4 :     FUNCTION_DEBUG_RESULT(</span>
+<span class="lineNum">     562 </span>                :      :         STORAGE_FILE_READ, storageDriverS3FileReadInterface(storageDriverS3FileReadNew(this, file, ignoreMissing)));
+<span class="lineNum">     563 </span>                :      : }
+<span class="lineNum">     564 </span>                :      : 
+<span class="lineNum">     565 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     566 </span>                :      : New file write object
+<a name="567"><span class="lineNum">     567 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     568 </span>                :      : StorageFileWrite *
+<span class="lineNum">     569 </span>                :<span class="lineCov">    1 : storageDriverS3NewWrite(</span>
+<span class="lineNum">     570 </span>                :      :     StorageDriverS3 *this, const String *file, mode_t modeFile, mode_t modePath, bool createPath, bool syncFile,
+<span class="lineNum">     571 </span>                :      :     bool syncPath, bool atomic)
+<span class="lineNum">     572 </span>                :      : {
+<span class="lineNum">     573 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_BEGIN(logLevelDebug);</span>
+<span class="lineNum">     574 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     575 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STRING, file);</span>
+<span class="lineNum">     576 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(MODE, modeFile);</span>
+<span class="lineNum">     577 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(MODE, modePath);</span>
+<span class="lineNum">     578 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(BOOL, createPath);</span>
+<span class="lineNum">     579 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(BOOL, syncFile);</span>
+<span class="lineNum">     580 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(BOOL, syncPath);</span>
+<span class="lineNum">     581 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(BOOL, atomic);</span>
+<span class="lineNum">     582 </span>                :      : 
+<span class="lineNum">     583 </span>                :<span class="lineCov">    1 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     584 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_ASSERT(file != NULL);</span>
+<span class="lineNum">     585 </span>                :<span class="lineCov">    1 :         FUNCTION_TEST_ASSERT(modeFile == 0);</span>
+<span class="lineNum">     586 </span>                :<span class="lineCov">    1 :         FUNCTION_TEST_ASSERT(modePath == 0);</span>
+<span class="lineNum">     587 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     588 </span>                :      : 
+<span class="lineNum">     589 </span>                :<span class="lineCov">    1 :     THROW(AssertError, &quot;NOT YET IMPLEMENTED&quot;);</span>
+<span class="lineNum">     590 </span>                :      : 
+<span class="lineNum">     591 </span>                :      :     FUNCTION_DEBUG_RESULT(STORAGE_FILE_WRITE, NULL);
+<span class="lineNum">     592 </span>                :      : }
+<span class="lineNum">     593 </span>                :      : 
+<span class="lineNum">     594 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     595 </span>                :      : Create a path.  There are no physical paths on S3 so just return success.
+<a name="596"><span class="lineNum">     596 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     597 </span>                :      : void
+<span class="lineNum">     598 </span>                :<span class="lineCov">    1 : storageDriverS3PathCreate(StorageDriverS3 *this, const String *path, bool errorOnExists, bool noParentCreate, mode_t mode)</span>
+<span class="lineNum">     599 </span>                :      : {
+<span class="lineNum">     600 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     601 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     602 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STRING, path);</span>
+<span class="lineNum">     603 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(BOOL, errorOnExists);</span>
+<span class="lineNum">     604 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(BOOL, noParentCreate);</span>
+<span class="lineNum">     605 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(MODE, mode);</span>
+<span class="lineNum">     606 </span>                :      : 
+<span class="lineNum">     607 </span>                :<span class="lineCov">    1 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     608 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_ASSERT(path != NULL);</span>
+<span class="lineNum">     609 </span>                :<span class="lineCov">    1 :         FUNCTION_TEST_ASSERT(mode == 0);</span>
+<span class="lineNum">     610 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     611 </span>                :      : 
+<span class="lineNum">     612 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_RESULT_VOID();</span>
+<span class="lineNum">     613 </span>                :<span class="lineCov">    1 : }</span>
+<span class="lineNum">     614 </span>                :      : 
+<span class="lineNum">     615 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     616 </span>                :      : Remove a path
+<a name="617"><span class="lineNum">     617 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     618 </span>                :      : void
+<span class="lineNum">     619 </span>                :<span class="lineCov">    1 : storageDriverS3PathRemove(StorageDriverS3 *this, const String *path, bool errorOnMissing, bool recurse)</span>
+<span class="lineNum">     620 </span>                :      : {
+<span class="lineNum">     621 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_BEGIN(logLevelDebug);</span>
+<span class="lineNum">     622 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     623 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STRING, path);</span>
+<span class="lineNum">     624 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(BOOL, errorOnMissing);</span>
+<span class="lineNum">     625 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(BOOL, recurse);</span>
+<span class="lineNum">     626 </span>                :      : 
+<span class="lineNum">     627 </span>                :<span class="lineCov">    1 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     628 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_ASSERT(path != NULL);</span>
+<span class="lineNum">     629 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     630 </span>                :      : 
+<span class="lineNum">     631 </span>                :<span class="lineCov">    1 :     THROW(AssertError, &quot;NOT YET IMPLEMENTED&quot;);</span>
+<span class="lineNum">     632 </span>                :      : 
+<span class="lineNum">     633 </span>                :      :     FUNCTION_DEBUG_RESULT_VOID();
+<span class="lineNum">     634 </span>                :      : }
+<span class="lineNum">     635 </span>                :      : 
+<span class="lineNum">     636 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     637 </span>                :      : Sync a path.  There's no need for this on S3 so just return success.
+<a name="638"><span class="lineNum">     638 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     639 </span>                :      : void
+<span class="lineNum">     640 </span>                :<span class="lineCov">    1 : storageDriverS3PathSync(StorageDriverS3 *this, const String *path, bool ignoreMissing)</span>
+<span class="lineNum">     641 </span>                :      : {
+<span class="lineNum">     642 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     643 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     644 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STRING, path);</span>
+<span class="lineNum">     645 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(BOOL, ignoreMissing);</span>
+<span class="lineNum">     646 </span>                :      : 
+<span class="lineNum">     647 </span>                :<span class="lineCov">    1 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     648 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_ASSERT(path != NULL);</span>
+<span class="lineNum">     649 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     650 </span>                :      : 
+<span class="lineNum">     651 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_RESULT_VOID();</span>
+<span class="lineNum">     652 </span>                :<span class="lineCov">    1 : }</span>
+<span class="lineNum">     653 </span>                :      : 
+<span class="lineNum">     654 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     655 </span>                :      : Remove a file
+<a name="656"><span class="lineNum">     656 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     657 </span>                :      : void
+<span class="lineNum">     658 </span>                :<span class="lineCov">    1 : storageDriverS3Remove(StorageDriverS3 *this, const String *file, bool errorOnMissing)</span>
+<span class="lineNum">     659 </span>                :      : {
+<span class="lineNum">     660 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_BEGIN(logLevelDebug);</span>
+<span class="lineNum">     661 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     662 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(STRING, file);</span>
+<span class="lineNum">     663 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_PARAM(BOOL, errorOnMissing);</span>
+<span class="lineNum">     664 </span>                :      : 
+<span class="lineNum">     665 </span>                :<span class="lineCov">    1 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     666 </span>                :<span class="lineCov">    1 :         FUNCTION_DEBUG_ASSERT(file != NULL);</span>
+<span class="lineNum">     667 </span>                :<span class="lineCov">    1 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     668 </span>                :      : 
+<span class="lineNum">     669 </span>                :<span class="lineCov">    1 :     THROW(AssertError, &quot;NOT YET IMPLEMENTED&quot;);</span>
+<span class="lineNum">     670 </span>                :      : 
+<span class="lineNum">     671 </span>                :      :     FUNCTION_DEBUG_RESULT_VOID();
+<span class="lineNum">     672 </span>                :      : }
+<span class="lineNum">     673 </span>                :      : 
+<span class="lineNum">     674 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     675 </span>                :      : Get http client
+<a name="676"><span class="lineNum">     676 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     677 </span>                :      : HttpClient *
+<span class="lineNum">     678 </span>                :<span class="lineCov">    3 : storageDriverS3HttpClient(const StorageDriverS3 *this)</span>
+<span class="lineNum">     679 </span>                :      : {
+<span class="lineNum">     680 </span>                :<span class="lineCov">    3 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     681 </span>                :<span class="lineCov">    3 :         FUNCTION_DEBUG_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     682 </span>                :      : 
+<span class="lineNum">     683 </span>                :<span class="lineCov">    3 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     684 </span>                :      :     FUNCTION_TEST_END();
+<span class="lineNum">     685 </span>                :      : 
+<span class="lineNum">     686 </span>                :<span class="lineCov">    3 :     FUNCTION_TEST_RESULT(HTTP_CLIENT, this-&gt;httpClient);</span>
+<span class="lineNum">     687 </span>                :      : }
+<span class="lineNum">     688 </span>                :      : 
+<span class="lineNum">     689 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     690 </span>                :      : Get storage interface
+<a name="691"><span class="lineNum">     691 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     692 </span>                :      : Storage *
+<span class="lineNum">     693 </span>                :<span class="lineCov">    5 : storageDriverS3Interface(const StorageDriverS3 *this)</span>
+<span class="lineNum">     694 </span>                :      : {
+<span class="lineNum">     695 </span>                :<span class="lineCov">    5 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     696 </span>                :<span class="lineCov">    5 :         FUNCTION_DEBUG_PARAM(STORAGE_DRIVER_S3, this);</span>
+<span class="lineNum">     697 </span>                :      : 
+<span class="lineNum">     698 </span>                :<span class="lineCov">    5 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     699 </span>                :      :     FUNCTION_TEST_END();
+<span class="lineNum">     700 </span>                :      : 
+<span class="lineNum">     701 </span>                :<span class="lineCov">    5 :     FUNCTION_TEST_RESULT(STORAGE, this-&gt;interface);</span>
+<span class="lineNum">     702 </span>                :      : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

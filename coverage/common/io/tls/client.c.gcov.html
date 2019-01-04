@@ -1,0 +1,674 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>pgBackRest v2.08 C Code Coverage - common/io/tls/client.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">pgBackRest v2.08 C Code Coverage</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">common/io/tls</a> - client.c<span style="font-size: 80%;"> (source / <a href="client.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">all C unit</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">224</td>
+            <td class="headerCovTableEntry">224</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-01-02 19:22:46</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">78</td>
+            <td class="headerCovTableEntry">80</td>
+            <td class="headerCovTableEntryHi">97.5 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data    Line data  Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :      : /***********************************************************************************************************************************</a>
+<span class="lineNum">       2 </span>                :      : TLS Client
+<span class="lineNum">       3 </span>                :      : ***********************************************************************************************************************************/
+<span class="lineNum">       4 </span>                :      : #include &lt;arpa/inet.h&gt;
+<span class="lineNum">       5 </span>                :      : #include &lt;netdb.h&gt;
+<span class="lineNum">       6 </span>                :      : #include &lt;stdio.h&gt;
+<span class="lineNum">       7 </span>                :      : #include &lt;string.h&gt;
+<span class="lineNum">       8 </span>                :      : #include &lt;sys/socket.h&gt;
+<span class="lineNum">       9 </span>                :      : #include &lt;unistd.h&gt;
+<span class="lineNum">      10 </span>                :      : 
+<span class="lineNum">      11 </span>                :      : #include &lt;openssl/conf.h&gt;
+<span class="lineNum">      12 </span>                :      : #include &lt;openssl/ssl.h&gt;
+<span class="lineNum">      13 </span>                :      : #include &lt;openssl/x509v3.h&gt;
+<span class="lineNum">      14 </span>                :      : 
+<span class="lineNum">      15 </span>                :      : #include &quot;common/assert.h&quot;
+<span class="lineNum">      16 </span>                :      : #include &quot;common/debug.h&quot;
+<span class="lineNum">      17 </span>                :      : #include &quot;common/log.h&quot;
+<span class="lineNum">      18 </span>                :      : #include &quot;common/io/tls/client.h&quot;
+<span class="lineNum">      19 </span>                :      : #include &quot;common/io/io.h&quot;
+<span class="lineNum">      20 </span>                :      : #include &quot;common/io/read.intern.h&quot;
+<span class="lineNum">      21 </span>                :      : #include &quot;common/io/write.intern.h&quot;
+<span class="lineNum">      22 </span>                :      : #include &quot;common/memContext.h&quot;
+<span class="lineNum">      23 </span>                :      : #include &quot;common/time.h&quot;
+<span class="lineNum">      24 </span>                :      : #include &quot;common/type/keyValue.h&quot;
+<span class="lineNum">      25 </span>                :      : #include &quot;common/wait.h&quot;
+<span class="lineNum">      26 </span>                :      : #include &quot;crypto/crypto.h&quot;
+<span class="lineNum">      27 </span>                :      : 
+<span class="lineNum">      28 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">      29 </span>                :      : Object type
+<span class="lineNum">      30 </span>                :      : ***********************************************************************************************************************************/
+<span class="lineNum">      31 </span>                :      : struct TlsClient
+<span class="lineNum">      32 </span>                :      : {
+<span class="lineNum">      33 </span>                :      :     MemContext *memContext;                                         // Mem context
+<span class="lineNum">      34 </span>                :      :     String *host;                                                   // Hostname or IP address
+<span class="lineNum">      35 </span>                :      :     unsigned int port;                                              // Port to connect to host on
+<span class="lineNum">      36 </span>                :      :     TimeMSec timeout;                                               // Timeout for any i/o operation (connect, read, etc.)
+<span class="lineNum">      37 </span>                :      :     bool verifyPeer;                                                // Should the peer (server) certificate be verified?
+<span class="lineNum">      38 </span>                :      : 
+<span class="lineNum">      39 </span>                :      :     SSL_CTX *context;                                               // TLS context
+<span class="lineNum">      40 </span>                :      :     int socket;                                                     // Client socket
+<span class="lineNum">      41 </span>                :      :     SSL *session;                                                   // TLS session on the socket
+<span class="lineNum">      42 </span>                :      : 
+<span class="lineNum">      43 </span>                :      :     IoRead *read;                                                   // Read interface
+<span class="lineNum">      44 </span>                :      :     IoWrite *write;                                                 // Write interface
+<span class="lineNum">      45 </span>                :      : };
+<span class="lineNum">      46 </span>                :      : 
+<span class="lineNum">      47 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">      48 </span>                :      : New object
+<a name="49"><span class="lineNum">      49 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      50 </span>                :      : TlsClient *
+<span class="lineNum">      51 </span>                :<span class="lineCov">   25 : tlsClientNew(</span>
+<span class="lineNum">      52 </span>                :      :     const String *host, unsigned int port, TimeMSec timeout, bool verifyPeer, const String *caFile, const String *caPath)
+<span class="lineNum">      53 </span>                :      : {
+<span class="lineNum">      54 </span>                :<span class="lineCov">   21 :     FUNCTION_DEBUG_BEGIN(logLevelDebug)</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">   21 :         FUNCTION_DEBUG_PARAM(STRING, host);</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">   21 :         FUNCTION_DEBUG_PARAM(UINT, port);</span>
+<span class="lineNum">      57 </span>                :<span class="lineCov">   21 :         FUNCTION_DEBUG_PARAM(TIME_MSEC, timeout);</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">   21 :         FUNCTION_DEBUG_PARAM(BOOL, verifyPeer);</span>
+<span class="lineNum">      59 </span>                :<span class="lineCov">   21 :         FUNCTION_DEBUG_PARAM(STRING, caFile);</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">   21 :         FUNCTION_DEBUG_PARAM(STRING, caPath);</span>
+<span class="lineNum">      61 </span>                :      : 
+<span class="lineNum">      62 </span>                :<span class="lineCov">   21 :         FUNCTION_TEST_ASSERT(host != NULL);</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">   21 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">      64 </span>                :      : 
+<span class="lineNum">      65 </span>                :<span class="lineCov">   21 :     TlsClient *this = NULL;</span>
+<span class="lineNum">      66 </span>                :      : 
+<span class="lineNum">      67 </span>                :<span class="lineCov">   65 :     MEM_CONTEXT_NEW_BEGIN(&quot;TlsClient&quot;)</span>
+<span class="lineNum">      68 </span>                :      :     {
+<span class="lineNum">      69 </span>                :<span class="lineCov">   21 :         this = memNew(sizeof(TlsClient));</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">   21 :         this-&gt;memContext = MEM_CONTEXT_NEW();</span>
+<span class="lineNum">      71 </span>                :      : 
+<span class="lineNum">      72 </span>                :<span class="lineCov">   21 :         this-&gt;host = strDup(host);</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">   21 :         this-&gt;port = port;</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">   21 :         this-&gt;timeout = timeout;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">   21 :         this-&gt;verifyPeer = verifyPeer;</span>
+<span class="lineNum">      76 </span>                :      : 
+<span class="lineNum">      77 </span>                :      :         // Initialize socket to -1 so we know when it is disconnected
+<span class="lineNum">      78 </span>                :<span class="lineCov">   21 :         this-&gt;socket = -1;</span>
+<span class="lineNum">      79 </span>                :      : 
+<span class="lineNum">      80 </span>                :      :         // Setup TLS context
+<span class="lineNum">      81 </span>                :      :         // -------------------------------------------------------------------------------------------------------------------------
+<span class="lineNum">      82 </span>                :<span class="lineCov">   21 :         cryptoInit();</span>
+<span class="lineNum">      83 </span>                :      : 
+<span class="lineNum">      84 </span>                :      :         // Select the TLS method to use.  To maintain compatability with older versions of OpenSSL we need to use an SSL method,
+<span class="lineNum">      85 </span>                :      :         // but SSL versions will be excluded in SSL_CTX_set_options().
+<span class="lineNum">      86 </span>                :<span class="lineCov">   21 :         const SSL_METHOD *method = SSLv23_method();</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">   21 :         cryptoError(method == NULL, &quot;unable to load TLS method&quot;);</span>
+<span class="lineNum">      88 </span>                :      : 
+<span class="lineNum">      89 </span>                :      :         // Create the TLS context
+<span class="lineNum">      90 </span>                :<span class="lineCov">   21 :         this-&gt;context = SSL_CTX_new(method);</span>
+<span class="lineNum">      91 </span>                :<span class="lineCov">   21 :         cryptoError(this-&gt;context == NULL, &quot;unable to create TLS context&quot;);</span>
+<span class="lineNum">      92 </span>                :      : 
+<span class="lineNum">      93 </span>                :<span class="lineCov">   21 :         memContextCallback(this-&gt;memContext, (MemContextCallback)tlsClientFree, this);</span>
+<span class="lineNum">      94 </span>                :      : 
+<span class="lineNum">      95 </span>                :      :         // Exclude SSL versions to only allow TLS and also disable compression
+<span class="lineNum">      96 </span>                :<span class="lineCov">   21 :         SSL_CTX_set_options(this-&gt;context, (long)(SSL_OP_ALL | SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION));</span>
+<span class="lineNum">      97 </span>                :      : 
+<span class="lineNum">      98 </span>                :      :         // Set location of CA certificates if the server certificate will be verified
+<span class="lineNum">      99 </span>                :      :         // -------------------------------------------------------------------------------------------------------------------------
+<span class="lineNum">     100 </span>        [<span class="branchCov" title="Branch 0 was taken 19 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">   21 :         if (this-&gt;verifyPeer)</span>
+<span class="lineNum">     101 </span>                :      :         {
+<span class="lineNum">     102 </span>                :      :             // If the user specified a location
+<span class="lineNum">     103 </span>[<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 2 times"> + </span><span class="branchCov" title="Branch 3 was taken 7 times"> + </span>]:<span class="lineCov">   19 :             if (caFile != NULL || caPath != NULL)</span>
+<span class="lineNum">     104 </span>                :      :             {
+<span class="lineNum">     105 </span>                :<span class="lineCov">   12 :                 cryptoError(</span>
+<span class="lineNum">     106 </span>                :<span class="lineCov">   12 :                     SSL_CTX_load_verify_locations(this-&gt;context, strPtr(caFile), strPtr(caPath)) != 1,</span>
+<span class="lineNum">     107 </span>                :      :                     &quot;unable to set user-defined CA certificate location&quot;);
+<span class="lineNum">     108 </span>                :      :             }
+<span class="lineNum">     109 </span>                :      :             // Else use the defaults
+<span class="lineNum">     110 </span>                :      :             else
+<span class="lineNum">     111 </span>                :<span class="lineCov">   19 :                 cryptoError(SSL_CTX_set_default_verify_paths(this-&gt;context) != 1, &quot;unable to set default CA certificate location&quot;);</span>
+<span class="lineNum">     112 </span>                :      :         }
+<span class="lineNum">     113 </span>                :      :     }
+<span class="lineNum">     114 </span>                :<span class="lineCov">   23 :     MEM_CONTEXT_NEW_END();</span>
+<span class="lineNum">     115 </span>                :      : 
+<span class="lineNum">     116 </span>                :<span class="lineCov">   19 :     FUNCTION_DEBUG_RESULT(TLS_CLIENT, this);</span>
+<span class="lineNum">     117 </span>                :      : }
+<span class="lineNum">     118 </span>                :      : 
+<span class="lineNum">     119 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     120 </span>                :      : Convert an ASN1 string used in certificates to a String
+<a name="121"><span class="lineNum">     121 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     122 </span>                :      : static String *
+<span class="lineNum">     123 </span>                :<span class="lineCov">   22 : asn1ToStr(ASN1_STRING *nameAsn1)</span>
+<span class="lineNum">     124 </span>                :      : {
+<span class="lineNum">     125 </span>                :<span class="lineCov">   22 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     126 </span>                :<span class="lineCov">   22 :         FUNCTION_TEST_PARAM(VOIDP, nameAsn1);</span>
+<span class="lineNum">     127 </span>                :      :     FUNCTION_TEST_END();
+<span class="lineNum">     128 </span>                :      : 
+<span class="lineNum">     129 </span>                :      :     // The name should not be null
+<span class="lineNum">     130 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">   22 :     if (nameAsn1 == NULL)</span>
+<span class="lineNum">     131 </span>                :<span class="lineCov">    3 :         THROW(CryptoError, &quot;TLS certificate name entry is missing&quot;);</span>
+<span class="lineNum">     132 </span>                :      : 
+<span class="lineNum">     133 </span>                :<span class="lineCov">   19 :     FUNCTION_TEST_RESULT(</span>
+<span class="lineNum">     134 </span>                :      :         STRING, strNewN(
+<span class="lineNum">     135 </span>                :      : #if OPENSSL_VERSION_NUMBER &lt; 0x10100000L
+<span class="lineNum">     136 </span>                :      :             (const char *)ASN1_STRING_data(nameAsn1),
+<span class="lineNum">     137 </span>                :      : #else
+<span class="lineNum">     138 </span>                :      :             (const char *)ASN1_STRING_get0_data(nameAsn1),
+<span class="lineNum">     139 </span>                :      : #endif
+<span class="lineNum">     140 </span>                :      :             (size_t)ASN1_STRING_length(nameAsn1)));
+<span class="lineNum">     141 </span>                :      : }
+<span class="lineNum">     142 </span>                :      : 
+<span class="lineNum">     143 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     144 </span>                :      : Check if a name from the server certificate matches the hostname
+<span class="lineNum">     145 </span>                :      : 
+<span class="lineNum">     146 </span>                :      : Matching is always case-insensitive since DNS is case insensitive.
+<a name="147"><span class="lineNum">     147 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     148 </span>                :      : static bool
+<span class="lineNum">     149 </span>                :<span class="lineCov">   31 : tlsClientHostVerifyName(const String *host, const String *name)</span>
+<span class="lineNum">     150 </span>                :      : {
+<span class="lineNum">     151 </span>                :<span class="lineCov">   31 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     152 </span>                :<span class="lineCov">   31 :         FUNCTION_DEBUG_PARAM(STRING, host);</span>
+<span class="lineNum">     153 </span>                :<span class="lineCov">   31 :         FUNCTION_DEBUG_PARAM(STRING, name);</span>
+<span class="lineNum">     154 </span>                :      : 
+<span class="lineNum">     155 </span>                :<span class="lineCov">   31 :         FUNCTION_TEST_ASSERT(host != NULL);</span>
+<span class="lineNum">     156 </span>                :<span class="lineCov">   31 :         FUNCTION_TEST_ASSERT(name != NULL);</span>
+<span class="lineNum">     157 </span>                :<span class="lineCov">   31 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     158 </span>                :      : 
+<span class="lineNum">     159 </span>                :      :     // Reject embedded nulls in certificate common or alternative name to prevent attacks like CVE-2009-4034
+<span class="lineNum">     160 </span>        [<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchCov" title="Branch 3 was taken 28 times"> + </span>]:<span class="lineCov">   31 :     if (strlen(strPtr(name)) != strSize(name))</span>
+<span class="lineNum">     161 </span>                :<span class="lineCov">    3 :         THROW(CryptoError, &quot;TLS certificate name contains embedded null&quot;);</span>
+<span class="lineNum">     162 </span>                :      : 
+<span class="lineNum">     163 </span>                :<span class="lineCov">   28 :     bool result = false;</span>
+<span class="lineNum">     164 </span>                :      : 
+<span class="lineNum">     165 </span>                :      :     // Try an exact match
+<span class="lineNum">     166 </span>        [<span class="branchCov" title="Branch 2 was taken 2 times"> + </span><span class="branchCov" title="Branch 3 was taken 26 times"> + </span>]:<span class="lineCov">   28 :     if (strcasecmp(strPtr(name), strPtr(host)) == 0)</span>
+<span class="lineNum">     167 </span>                :      :     {
+<span class="lineNum">     168 </span>                :<span class="lineCov">    2 :         result = true;</span>
+<span class="lineNum">     169 </span>                :      :     }
+<span class="lineNum">     170 </span>                :      :     // Else check if a wildcard certificate matches the host name
+<span class="lineNum">     171 </span>                :      :     //
+<span class="lineNum">     172 </span>                :      :     // The rules are:
+<span class="lineNum">     173 </span>                :      :     // 1. Only match the '*' character as wildcard
+<span class="lineNum">     174 </span>                :      :     // 2. Only match wildcards at the start of the string
+<span class="lineNum">     175 </span>                :      :     // 3. The '*' character does *not* match '.', meaning that we match only a single pathname component.
+<span class="lineNum">     176 </span>                :      :     // 4. Don't support more than one '*' in a single pattern.
+<span class="lineNum">     177 </span>                :      :     //
+<span class="lineNum">     178 </span>                :      :     // This is roughly in line with RFC2818, but contrary to what most browsers appear to be implementing (point 3 being the
+<span class="lineNum">     179 </span>                :      :     // difference)
+<span class="lineNum">     180 </span>[<span class="branchCov" title="Branch 1 was taken 18 times"> + </span><span class="branchCov" title="Branch 2 was taken 8 times"> + </span>][<span class="branchCov" title="Branch 4 was taken 15 times"> + </span><span class="branchCov" title="Branch 5 was taken 3 times"> + </span>]:<span class="lineCov">   34 :     else if (strPtr(name)[0] == '*' &amp;&amp; strPtr(name)[1] == '.' &amp;&amp; strSize(name) &gt; 2 &amp;&amp; strSize(name) &lt; strSize(host) &amp;&amp;</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 7 was taken 12 times"> + </span><span class="branchCov" title="Branch 8 was taken 3 times"> + </span>]
+<span class="lineNum">         </span>  [<span class="branchCov" title="Branch 11 was taken 8 times"> + </span><span class="branchCov" title="Branch 12 was taken 4 times"> + </span><span class="branchCov" title="Branch 13 was taken 6 times"> + </span><span class="branchCov" title="Branch 14 was taken 2 times"> + </span>]
+<span class="lineNum">     181 </span>        [<span class="branchCov" title="Branch 4 was taken 3 times"> + </span><span class="branchCov" title="Branch 5 was taken 3 times"> + </span>]:<span class="lineCov">   14 :              strcasecmp(strPtr(name) + 1, strPtr(host) + strSize(host) - strSize(name) + 1) == 0 &amp;&amp;</span>
+<span class="lineNum">     182 </span>                :<span class="lineCov">    6 :              strChr(host, '.') &gt;= (int)(strSize(host) - strSize(name)))</span>
+<span class="lineNum">     183 </span>                :      :     {
+<span class="lineNum">     184 </span>                :<span class="lineCov">    3 :         result = true;</span>
+<span class="lineNum">     185 </span>                :      :     }
+<span class="lineNum">     186 </span>                :      : 
+<span class="lineNum">     187 </span>                :<span class="lineCov">   28 :     FUNCTION_DEBUG_RESULT(BOOL, result);</span>
+<span class="lineNum">     188 </span>                :      : }
+<span class="lineNum">     189 </span>                :      : 
+<span class="lineNum">     190 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     191 </span>                :      : Verify that the server certificate matches the hostname we connected to
+<span class="lineNum">     192 </span>                :      : 
+<span class="lineNum">     193 </span>                :      : The certificate's Common Name and Subject Alternative Names are considered.
+<a name="194"><span class="lineNum">     194 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     195 </span>                :      : static bool
+<span class="lineNum">     196 </span>                :<span class="lineCov">   10 : tlsClientHostVerify(const String *host, X509 *certificate)</span>
+<span class="lineNum">     197 </span>                :      : {
+<span class="lineNum">     198 </span>                :<span class="lineCov">   10 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     199 </span>                :<span class="lineCov">   10 :         FUNCTION_DEBUG_PARAM(STRING, host);</span>
+<span class="lineNum">     200 </span>                :<span class="lineCov">   10 :         FUNCTION_DEBUG_PARAM(VOIDP, certificate);</span>
+<span class="lineNum">     201 </span>                :      : 
+<span class="lineNum">     202 </span>                :<span class="lineCov">   10 :         FUNCTION_TEST_ASSERT(host != NULL);</span>
+<span class="lineNum">     203 </span>                :<span class="lineCov">   10 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     204 </span>                :      : 
+<span class="lineNum">     205 </span>                :<span class="lineCov">   10 :     bool result = false;</span>
+<span class="lineNum">     206 </span>                :      : 
+<span class="lineNum">     207 </span>                :      :     // Error if the certificate is NULL
+<span class="lineNum">     208 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">   10 :     if (certificate == NULL)</span>
+<span class="lineNum">     209 </span>                :<span class="lineCov">    3 :         THROW(CryptoError, &quot;No certificate presented by the TLS server&quot;);</span>
+<span class="lineNum">     210 </span>                :      : 
+<span class="lineNum">     211 </span>                :<span class="lineCov">   21 :     MEM_CONTEXT_TEMP_BEGIN()</span>
+<span class="lineNum">     212 </span>                :      :     {
+<span class="lineNum">     213 </span>                :      :         // First get the subject alternative names from the certificate and compare them against the hostname
+<span class="lineNum">     214 </span>                :<span class="lineCov">    7 :         STACK_OF(GENERAL_NAME) *altNameStack = (STACK_OF(GENERAL_NAME) *)X509_get_ext_d2i(</span>
+<span class="lineNum">     215 </span>                :      :             certificate, NID_subject_alt_name, NULL, NULL);
+<span class="lineNum">     216 </span>                :<span class="lineCov">    7 :         bool altNameFound = false;</span>
+<span class="lineNum">     217 </span>                :      : 
+<span class="lineNum">     218 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">    7 :         if (altNameStack)</span>
+<span class="lineNum">     219 </span>                :      :         {
+<span class="lineNum">     220 </span>        [<span class="branchCov" title="Branch 1 was taken 22 times"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">   24 :             for (int altNameIdx = 0; altNameIdx &lt; sk_GENERAL_NAME_num(altNameStack); altNameIdx++)</span>
+<span class="lineNum">     221 </span>                :      :             {
+<span class="lineNum">     222 </span>                :<span class="lineCov">   22 :                 const GENERAL_NAME *name = sk_GENERAL_NAME_value(altNameStack, altNameIdx);</span>
+<span class="lineNum">     223 </span>                :<span class="lineCov">   22 :                 altNameFound = true;</span>
+<span class="lineNum">     224 </span>                :      : 
+<span class="lineNum">     225 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">   22 :                 if (name-&gt;type == GEN_DNS)</span>
+<span class="lineNum">     226 </span>                :<span class="lineCov">   18 :                     result = tlsClientHostVerifyName(host, asn1ToStr(name-&gt;d.dNSName));</span>
+<span class="lineNum">     227 </span>                :      : 
+<span class="lineNum">     228 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">   22 :                 if (result != false)</span>
+<span class="lineNum">     229 </span>                :<span class="lineCov">    4 :                     break;</span>
+<span class="lineNum">     230 </span>                :      :             }
+<span class="lineNum">     231 </span>                :      : 
+<span class="lineNum">     232 </span>                :<span class="lineCov">    6 :             sk_GENERAL_NAME_free(altNameStack);</span>
+<span class="lineNum">     233 </span>                :      :         }
+<span class="lineNum">     234 </span>                :      : 
+<span class="lineNum">     235 </span>                :      :         // If no subject alternative name was found then check the common name. Per RFC 2818 and RFC 6125, if the subjectAltName
+<span class="lineNum">     236 </span>                :      :         // extension of type dNSName is present the CN must be ignored.
+<span class="lineNum">     237 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">    7 :         if (!altNameFound)</span>
+<span class="lineNum">     238 </span>                :      :         {
+<span class="lineNum">     239 </span>                :<span class="lineCov">    1 :             X509_NAME *subjectName = X509_get_subject_name(certificate);</span>
+<span class="lineNum">     240 </span>                :      : 
+<span class="lineNum">     241 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    1 :             if (subjectName != NULL)                            // {uncovered - not sure how to create cert with null common name}</span>
+<span class="lineNum">     242 </span>                :      :             {
+<span class="lineNum">     243 </span>                :<span class="lineCov">    1 :                 int commonNameIndex = X509_NAME_get_index_by_NID(subjectName, NID_commonName, -1);</span>
+<span class="lineNum">     244 </span>                :      : 
+<span class="lineNum">     245 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    1 :                 if (commonNameIndex &gt;= 0)                       // {uncovered - it seems this must be &gt;= 0 if CN is not null}</span>
+<span class="lineNum">     246 </span>                :      :                 {
+<span class="lineNum">     247 </span>                :<span class="lineCov">    7 :                     result = tlsClientHostVerifyName(</span>
+<span class="lineNum">     248 </span>                :<span class="lineCov">    1 :                         host, asn1ToStr(X509_NAME_ENTRY_get_data(X509_NAME_get_entry(subjectName, commonNameIndex))));</span>
+<span class="lineNum">     249 </span>                :      :                 }
+<span class="lineNum">     250 </span>                :      :             }
+<span class="lineNum">     251 </span>                :      :         }
+<span class="lineNum">     252 </span>                :      :     }
+<span class="lineNum">     253 </span>                :<span class="lineCov">    7 :     MEM_CONTEXT_TEMP_END();</span>
+<span class="lineNum">     254 </span>                :      : 
+<span class="lineNum">     255 </span>                :<span class="lineCov">    7 :     FUNCTION_DEBUG_RESULT(BOOL, result);</span>
+<span class="lineNum">     256 </span>                :      : }
+<span class="lineNum">     257 </span>                :      : 
+<span class="lineNum">     258 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     259 </span>                :      : Open connection if this is a new client or if the connection was closed by the server
+<a name="260"><span class="lineNum">     260 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     261 </span>                :      : void
+<span class="lineNum">     262 </span>                :<span class="lineCov">   48 : tlsClientOpen(TlsClient *this)</span>
+<span class="lineNum">     263 </span>                :      : {
+<span class="lineNum">     264 </span>                :<span class="lineCov">   20 :     FUNCTION_DEBUG_BEGIN(logLevelTrace)</span>
+<span class="lineNum">     265 </span>                :<span class="lineCov">   20 :         FUNCTION_DEBUG_PARAM(TLS_CLIENT, this);</span>
+<span class="lineNum">     266 </span>                :      : 
+<span class="lineNum">     267 </span>                :<span class="lineCov">   20 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     268 </span>                :<span class="lineCov">   20 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     269 </span>                :      : 
+<span class="lineNum">     270 </span>        [<span class="branchCov" title="Branch 0 was taken 19 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">   20 :     if (this-&gt;session == NULL)</span>
+<span class="lineNum">     271 </span>                :      :     {
+<span class="lineNum">     272 </span>                :      :         // Free the read/write interfaces
+<span class="lineNum">     273 </span>                :<span class="lineCov">   19 :         ioReadFree(this-&gt;read);</span>
+<span class="lineNum">     274 </span>                :<span class="lineCov">   19 :         this-&gt;read = NULL;</span>
+<span class="lineNum">     275 </span>                :<span class="lineCov">   19 :         ioWriteFree(this-&gt;write);</span>
+<span class="lineNum">     276 </span>                :<span class="lineCov">   19 :         this-&gt;write = NULL;</span>
+<span class="lineNum">     277 </span>                :      : 
+<span class="lineNum">     278 </span>                :<span class="lineCov">   88 :         MEM_CONTEXT_TEMP_BEGIN()</span>
+<span class="lineNum">     279 </span>                :      :         {
+<span class="lineNum">     280 </span>                :<span class="lineCov">   19 :             bool connected = false;</span>
+<span class="lineNum">     281 </span>                :      :             bool retry;
+<span class="lineNum">     282 </span>        [<span class="branchCov" title="Branch 0 was taken 16 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">   19 :             Wait *wait = this-&gt;timeout &gt; 0 ? waitNew(this-&gt;timeout) : NULL;</span>
+<span class="lineNum">     283 </span>                :      : 
+<span class="lineNum">     284 </span>                :      :             do
+<span class="lineNum">     285 </span>                :      :             {
+<span class="lineNum">     286 </span>                :      :                 // Assume there will be no retry
+<span class="lineNum">     287 </span>                :<span class="lineCov">   35 :                 retry = false;</span>
+<span class="lineNum">     288 </span>                :      : 
+<span class="lineNum">     289 </span>                :<span class="lineCov">  127 :                 TRY_BEGIN()</span>
+<span class="lineNum">     290 </span>                :      :                 {
+<span class="lineNum">     291 </span>                :      :                     // Resolve the ip address.  We'll just blindly take the first address that comes up.
+<span class="lineNum">     292 </span>                :<span class="lineCov">   35 :                     struct hostent *host_entry = NULL;</span>
+<span class="lineNum">     293 </span>                :      : 
+<span class="lineNum">     294 </span>        [<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchCov" title="Branch 3 was taken 32 times"> + </span>]:<span class="lineCov">   35 :                     if ((host_entry = gethostbyname(strPtr(this-&gt;host))) == NULL)</span>
+<span class="lineNum">     295 </span>                :<span class="lineCov">    3 :                         THROW_FMT(FileOpenError, &quot;unable to resolve host '%s'&quot;, strPtr(this-&gt;host));</span>
+<span class="lineNum">     296 </span>                :      : 
+<span class="lineNum">     297 </span>                :      :                     // Connect to the server
+<span class="lineNum">     298 </span>                :<span class="lineCov">   32 :                     this-&gt;socket = socket(AF_INET, SOCK_STREAM, 0);</span>
+<span class="lineNum">     299 </span>                :<span class="lineCov">   32 :                     THROW_ON_SYS_ERROR(this-&gt;socket == -1, FileOpenError, &quot;unable to create socket&quot;);</span>
+<span class="lineNum">     300 </span>                :      : 
+<span class="lineNum">     301 </span>                :      :                     struct sockaddr_in socketAddr;
+<span class="lineNum">     302 </span>                :<span class="lineCov">   32 :                     memset(&amp;socketAddr, 0, sizeof(socketAddr));</span>
+<span class="lineNum">     303 </span>                :<span class="lineCov">   32 :                     socketAddr.sin_family = AF_INET;</span>
+<span class="lineNum">     304 </span>                :<span class="lineCov">   32 :                     socketAddr.sin_addr.s_addr = inet_addr(inet_ntoa(*((struct in_addr*)host_entry-&gt;h_addr_list[0])));</span>
+<span class="lineNum">     305 </span>                :<span class="lineCov">   32 :                     socketAddr.sin_port = htons((uint16_t)this-&gt;port);</span>
+<span class="lineNum">     306 </span>                :      : 
+<span class="lineNum">     307 </span>        [<span class="branchCov" title="Branch 1 was taken 18 times"> + </span><span class="branchCov" title="Branch 2 was taken 14 times"> + </span>]:<span class="lineCov">   32 :                     if (connect(this-&gt;socket, (struct sockaddr *)&amp;socketAddr, sizeof(socketAddr)) == -1)</span>
+<span class="lineNum">     308 </span>                :<span class="lineCov">   18 :                         THROW_SYS_ERROR_FMT(FileOpenError, &quot;unable to connect to '%s:%u'&quot;, strPtr(this-&gt;host), this-&gt;port);</span>
+<span class="lineNum">     309 </span>                :      : 
+<span class="lineNum">     310 </span>                :      :                     // Enable TCP keepalives
+<span class="lineNum">     311 </span>                :<span class="lineCov">   14 :                     int socketValue = 1;</span>
+<span class="lineNum">     312 </span>                :      : 
+<span class="lineNum">     313 </span>                :<span class="lineCov">   14 :                     THROW_ON_SYS_ERROR(</span>
+<span class="lineNum">     314 </span>                :      :                         setsockopt(this-&gt;socket, SOL_SOCKET, SO_KEEPALIVE, &amp;socketValue, sizeof(int)) == -1, ProtocolError,
+<span class="lineNum">     315 </span>                :      :                          &quot;unable set SO_KEEPALIVE&quot;);
+<span class="lineNum">     316 </span>                :      : 
+<span class="lineNum">     317 </span>                :      :                     // Set per-connection keepalive options if they are available
+<span class="lineNum">     318 </span>                :      : #ifdef TCP_KEEPIDLE
+<span class="lineNum">     319 </span>                :      :                     socketValue = 3;
+<span class="lineNum">     320 </span>                :      : 
+<span class="lineNum">     321 </span>                :      :                     THROW_ON_SYS_ERROR(
+<span class="lineNum">     322 </span>                :      :                         setsockopt(this-&gt;socket, SOL_SOCKET, TCP_KEEPIDLE, &amp;socketValue, sizeof(int)) == -1, ProtocolError,
+<span class="lineNum">     323 </span>                :      :                          &quot;unable set SO_KEEPIDLE&quot;);
+<span class="lineNum">     324 </span>                :      : 
+<span class="lineNum">     325 </span>                :      :                     THROW_ON_SYS_ERROR(
+<span class="lineNum">     326 </span>                :      :                         setsockopt(this-&gt;socket, SOL_SOCKET, TCP_KEEPINTVL, &amp;socketValue, sizeof(int)) == -1, ProtocolError,
+<span class="lineNum">     327 </span>                :      :                          &quot;unable set SO_KEEPINTVL&quot;);
+<span class="lineNum">     328 </span>                :      : 
+<span class="lineNum">     329 </span>                :      :                     socketValue = this-&gt;timeout / socketValue;
+<span class="lineNum">     330 </span>                :      : 
+<span class="lineNum">     331 </span>                :      :                     THROW_ON_SYS_ERROR(
+<span class="lineNum">     332 </span>                :      :                         setsockopt(this-&gt;socket, SOL_SOCKET, TCP_KEEPCNT, &amp;socketValue, sizeof(int)) == -1, ProtocolError,
+<span class="lineNum">     333 </span>                :      :                          &quot;unable set SO_KEEPCNT&quot;);
+<span class="lineNum">     334 </span>                :      : #endif
+<span class="lineNum">     335 </span>                :      : 
+<span class="lineNum">     336 </span>                :      :                     // Negotiate TLS
+<span class="lineNum">     337 </span>                :<span class="lineCov">   14 :                     cryptoError((this-&gt;session = SSL_new(this-&gt;context)) == NULL, &quot;unable to create TLS context&quot;);</span>
+<span class="lineNum">     338 </span>                :      : 
+<span class="lineNum">     339 </span>                :<span class="lineCov">   14 :                     cryptoError(SSL_set_tlsext_host_name(this-&gt;session, strPtr(this-&gt;host)) != 1, &quot;unable to set TLS host name&quot;);</span>
+<span class="lineNum">     340 </span>                :<span class="lineCov">   14 :                     cryptoError(SSL_set_fd(this-&gt;session, this-&gt;socket) != 1, &quot;unable to add socket to TLS context&quot;);</span>
+<span class="lineNum">     341 </span>                :<span class="lineCov">   14 :                     cryptoError(SSL_connect(this-&gt;session) != 1, &quot;unable to negotiate TLS connection&quot;);</span>
+<span class="lineNum">     342 </span>                :      : 
+<span class="lineNum">     343 </span>                :      :                     // Connection was successful
+<span class="lineNum">     344 </span>                :<span class="lineCov">   13 :                     connected = true;</span>
+<span class="lineNum">     345 </span>                :      :                 }
+<span class="lineNum">     346 </span>                :<span class="lineCov">   57 :                 CATCH_ANY()</span>
+<span class="lineNum">     347 </span>                :      :                 {
+<span class="lineNum">     348 </span>                :      :                     // Retry if wait time has not expired
+<span class="lineNum">     349 </span>[<span class="branchCov" title="Branch 0 was taken 19 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>][<span class="branchCov" title="Branch 3 was taken 16 times"> + </span><span class="branchCov" title="Branch 4 was taken 3 times"> + </span>]:<span class="lineCov">   22 :                     if (wait != NULL &amp;&amp; waitMore(wait))</span>
+<span class="lineNum">     350 </span>                :      :                     {
+<span class="lineNum">     351 </span>                :<span class="lineCov">   16 :                         LOG_DEBUG(&quot;retry %s: %s&quot;, errorTypeName(errorType()), errorMessage());</span>
+<span class="lineNum">     352 </span>                :<span class="lineCov">   16 :                         retry = true;</span>
+<span class="lineNum">     353 </span>                :      :                     }
+<span class="lineNum">     354 </span>                :      : 
+<span class="lineNum">     355 </span>                :<span class="lineCov">   22 :                     tlsClientClose(this);</span>
+<span class="lineNum">     356 </span>                :      :                 }
+<span class="lineNum">     357 </span>                :      :                 TRY_END();
+<span class="lineNum">     358 </span>                :      :             }
+<span class="lineNum">     359 </span>[<span class="branchCov" title="Branch 0 was taken 22 times"> + </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 16 times"> + </span><span class="branchCov" title="Branch 3 was taken 6 times"> + </span>]:<span class="lineCov">   35 :             while (!connected &amp;&amp; retry);</span>
+<span class="lineNum">     360 </span>                :      : 
+<span class="lineNum">     361 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>]:<span class="lineCov">   19 :             if (!connected)</span>
+<span class="lineNum">     362 </span>                :<span class="lineCov">   19 :                 RETHROW();</span>
+<span class="lineNum">     363 </span>                :      :         }
+<span class="lineNum">     364 </span>                :<span class="lineCov">   63 :         MEM_CONTEXT_TEMP_END();</span>
+<span class="lineNum">     365 </span>                :      : 
+<span class="lineNum">     366 </span>                :      :         // Verify that the certificate presented by the server is valid
+<span class="lineNum">     367 </span>        [<span class="branchCov" title="Branch 0 was taken 11 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">   13 :         if (this-&gt;verifyPeer)</span>
+<span class="lineNum">     368 </span>                :      :         {
+<span class="lineNum">     369 </span>                :      :             // Verify that the chain of trust leads to a valid CA
+<span class="lineNum">     370 </span>                :<span class="lineCov">   11 :             long int verifyResult = SSL_get_verify_result(this-&gt;session);</span>
+<span class="lineNum">     371 </span>                :      : 
+<span class="lineNum">     372 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">   11 :             if (verifyResult != X509_V_OK)</span>
+<span class="lineNum">     373 </span>                :      :             {
+<span class="lineNum">     374 </span>                :<span class="lineCov">    4 :                 THROW_FMT(</span>
+<span class="lineNum">     375 </span>                :      :                     CryptoError, &quot;unable to verify certificate presented by '%s:%u': [%ld] %s&quot;, strPtr(this-&gt;host),
+<span class="lineNum">     376 </span>                :      :                     this-&gt;port, verifyResult, X509_verify_cert_error_string(verifyResult));
+<span class="lineNum">     377 </span>                :      :             }
+<span class="lineNum">     378 </span>                :      : 
+<span class="lineNum">     379 </span>                :      :             // Verify that the hostname appears in the certificate
+<span class="lineNum">     380 </span>                :<span class="lineCov">    7 :             X509 *certificate = SSL_get_peer_certificate(this-&gt;session);</span>
+<span class="lineNum">     381 </span>                :<span class="lineCov">    7 :             bool nameResult = tlsClientHostVerify(this-&gt;host, certificate);</span>
+<span class="lineNum">     382 </span>                :<span class="lineCov">    7 :             X509_free(certificate);</span>
+<span class="lineNum">     383 </span>                :      : 
+<span class="lineNum">     384 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">    7 :             if (!nameResult)</span>
+<span class="lineNum">     385 </span>                :<span class="lineCov">    2 :                 THROW(CryptoError, &quot;unable to find matching hostname in certificate&quot;);</span>
+<span class="lineNum">     386 </span>                :      :         }
+<span class="lineNum">     387 </span>                :      : 
+<span class="lineNum">     388 </span>                :<span class="lineCov">   21 :         MEM_CONTEXT_BEGIN(this-&gt;memContext)</span>
+<span class="lineNum">     389 </span>                :      :         {
+<span class="lineNum">     390 </span>                :      :             // Create read and write interfaces
+<span class="lineNum">     391 </span>                :<span class="lineCov">    7 :             this-&gt;write = ioWriteNewP(this, .write = (IoWriteInterfaceWrite)tlsClientWrite);</span>
+<span class="lineNum">     392 </span>                :<span class="lineCov">    7 :             ioWriteOpen(this-&gt;write);</span>
+<span class="lineNum">     393 </span>                :<span class="lineCov">    7 :             this-&gt;read = ioReadNewP(this, .eof = (IoReadInterfaceEof)tlsClientEof, .read = (IoReadInterfaceRead)tlsClientRead);</span>
+<span class="lineNum">     394 </span>                :<span class="lineCov">    7 :             ioReadOpen(this-&gt;read);</span>
+<span class="lineNum">     395 </span>                :      :         }
+<span class="lineNum">     396 </span>                :<span class="lineCov">    7 :         MEM_CONTEXT_END();</span>
+<span class="lineNum">     397 </span>                :      :     }
+<span class="lineNum">     398 </span>                :      : 
+<span class="lineNum">     399 </span>                :<span class="lineCov">    8 :     FUNCTION_DEBUG_RESULT_VOID();</span>
+<span class="lineNum">     400 </span>                :<span class="lineCov">    8 : }</span>
+<span class="lineNum">     401 </span>                :      : 
+<span class="lineNum">     402 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     403 </span>                :      : Read from the TLS session
+<a name="404"><span class="lineNum">     404 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     405 </span>                :      : size_t
+<span class="lineNum">     406 </span>                :<span class="lineCov">    6 : tlsClientRead(TlsClient *this, Buffer *buffer, bool block)</span>
+<span class="lineNum">     407 </span>                :      : {
+<span class="lineNum">     408 </span>                :<span class="lineCov">    6 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     409 </span>                :<span class="lineCov">    6 :         FUNCTION_DEBUG_PARAM(TLS_CLIENT, this);</span>
+<span class="lineNum">     410 </span>                :<span class="lineCov">    6 :         FUNCTION_DEBUG_PARAM(BUFFER, buffer);</span>
+<span class="lineNum">     411 </span>                :<span class="lineCov">    6 :         FUNCTION_DEBUG_PARAM(BOOL, block);</span>
+<span class="lineNum">     412 </span>                :      : 
+<span class="lineNum">     413 </span>                :<span class="lineCov">    6 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     414 </span>                :<span class="lineCov">    6 :         FUNCTION_TEST_ASSERT(this-&gt;session != NULL);</span>
+<span class="lineNum">     415 </span>                :<span class="lineCov">    6 :         FUNCTION_TEST_ASSERT(buffer != NULL);</span>
+<span class="lineNum">     416 </span>                :<span class="lineCov">    6 :         FUNCTION_TEST_ASSERT(!bufFull(buffer));</span>
+<span class="lineNum">     417 </span>                :<span class="lineCov">    6 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     418 </span>                :      : 
+<span class="lineNum">     419 </span>                :<span class="lineCov">    6 :     ssize_t actualBytes = 0;</span>
+<span class="lineNum">     420 </span>                :      : 
+<span class="lineNum">     421 </span>                :      :     // If blocking read keep reading until buffer is full
+<span class="lineNum">     422 </span>                :      :     do
+<span class="lineNum">     423 </span>                :      :     {
+<span class="lineNum">     424 </span>                :      :         // If no tls data pending then check the socket
+<span class="lineNum">     425 </span>        [<span class="branchCov" title="Branch 1 was taken 6 times"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">    7 :         if (!SSL_pending(this-&gt;session))</span>
+<span class="lineNum">     426 </span>                :      :         {
+<span class="lineNum">     427 </span>                :      :             // Initialize the file descriptor set used for select
+<span class="lineNum">     428 </span>                :      :             fd_set selectSet;
+<span class="lineNum">     429 </span>                :<span class="lineCov">    6 :             FD_ZERO(&amp;selectSet);</span>
+<span class="lineNum">     430 </span>                :      : 
+<span class="lineNum">     431 </span>                :      :             // We know the socket is not negative because it passed error handling, so it is safe to cast to unsigned
+<span class="lineNum">     432 </span>                :<span class="lineCov">    6 :             FD_SET((unsigned int)this-&gt;socket, &amp;selectSet);</span>
+<span class="lineNum">     433 </span>                :      : 
+<span class="lineNum">     434 </span>                :      :             // Initialize timeout struct used for select.  Recreate this structure each time since Linux (at least) will modify it.
+<span class="lineNum">     435 </span>                :      :             struct timeval timeoutSelect;
+<span class="lineNum">     436 </span>                :<span class="lineCov">    6 :             timeoutSelect.tv_sec = (time_t)(this-&gt;timeout / MSEC_PER_SEC);</span>
+<span class="lineNum">     437 </span>                :<span class="lineCov">    6 :             timeoutSelect.tv_usec = (time_t)(this-&gt;timeout % MSEC_PER_SEC * 1000);</span>
+<span class="lineNum">     438 </span>                :      : 
+<span class="lineNum">     439 </span>                :      :             // Determine if there is data to be read
+<span class="lineNum">     440 </span>                :<span class="lineCov">    6 :             int result = select(this-&gt;socket + 1, &amp;selectSet, NULL, NULL, &amp;timeoutSelect);</span>
+<span class="lineNum">     441 </span>                :<span class="lineCov">    6 :             THROW_ON_SYS_ERROR_FMT(result == -1, AssertError, &quot;unable to select from '%s:%u'&quot;, strPtr(this-&gt;host), this-&gt;port);</span>
+<span class="lineNum">     442 </span>                :      : 
+<span class="lineNum">     443 </span>                :      :             // If no data read after time allotted then error
+<span class="lineNum">     444 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">    6 :             if (!result)</span>
+<span class="lineNum">     445 </span>                :      :             {
+<span class="lineNum">     446 </span>                :<span class="lineCov">    6 :                 THROW_FMT(</span>
+<span class="lineNum">     447 </span>                :      :                     FileReadError, &quot;unable to read data from '%s:%u' after %&quot; PRIu64 &quot;ms&quot;,
+<span class="lineNum">     448 </span>                :      :                     strPtr(this-&gt;host), this-&gt;port, this-&gt;timeout);
+<span class="lineNum">     449 </span>                :      :             }
+<span class="lineNum">     450 </span>                :      :         }
+<span class="lineNum">     451 </span>                :      : 
+<span class="lineNum">     452 </span>                :      :         // Read and handle errors
+<span class="lineNum">     453 </span>                :<span class="lineCov">    6 :         size_t expectedBytes = bufRemains(buffer);</span>
+<span class="lineNum">     454 </span>                :<span class="lineCov">    6 :         actualBytes = SSL_read(this-&gt;session, bufRemainsPtr(buffer), (int)expectedBytes);</span>
+<span class="lineNum">     455 </span>                :      : 
+<span class="lineNum">     456 </span>                :<span class="lineCov">    6 :         cryptoError(actualBytes &lt; 0, &quot;unable to read from TLS&quot;);</span>
+<span class="lineNum">     457 </span>                :      : 
+<span class="lineNum">     458 </span>                :      :         // Update amount of buffer used
+<span class="lineNum">     459 </span>                :<span class="lineCov">    6 :         bufUsedInc(buffer, (size_t)actualBytes);</span>
+<span class="lineNum">     460 </span>                :      : 
+<span class="lineNum">     461 </span>                :      :         // If zero bytes were returned then the connection was closed
+<span class="lineNum">     462 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">    6 :         if (actualBytes == 0)</span>
+<span class="lineNum">     463 </span>                :      :         {
+<span class="lineNum">     464 </span>                :<span class="lineCov">    1 :             tlsClientClose(this);</span>
+<span class="lineNum">     465 </span>                :<span class="lineCov">    1 :             break;</span>
+<span class="lineNum">     466 </span>                :      :         }
+<span class="lineNum">     467 </span>                :      :     }
+<span class="lineNum">     468 </span>[<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>][<span class="branchCov" title="Branch 3 was taken 1 time"> + </span><span class="branchCov" title="Branch 4 was taken 3 times"> + </span>]:<span class="lineCov">    5 :     while (block &amp;&amp; bufRemains(buffer) &gt; 0);</span>
+<span class="lineNum">     469 </span>                :      : 
+<span class="lineNum">     470 </span>                :<span class="lineCov">    5 :     FUNCTION_DEBUG_RESULT(SIZE, (size_t)actualBytes);</span>
+<span class="lineNum">     471 </span>                :      : }
+<span class="lineNum">     472 </span>                :      : 
+<span class="lineNum">     473 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     474 </span>                :      : Write to the tls session
+<a name="475"><span class="lineNum">     475 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     476 </span>                :      : void
+<span class="lineNum">     477 </span>                :<span class="lineCov">    4 : tlsClientWrite(TlsClient *this, const Buffer *buffer)</span>
+<span class="lineNum">     478 </span>                :      : {
+<span class="lineNum">     479 </span>                :<span class="lineCov">    4 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     480 </span>                :<span class="lineCov">    4 :         FUNCTION_DEBUG_PARAM(TLS_CLIENT, this);</span>
+<span class="lineNum">     481 </span>                :<span class="lineCov">    4 :         FUNCTION_DEBUG_PARAM(BUFFER, buffer);</span>
+<span class="lineNum">     482 </span>                :      : 
+<span class="lineNum">     483 </span>                :<span class="lineCov">    4 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     484 </span>                :<span class="lineCov">    4 :         FUNCTION_TEST_ASSERT(this-&gt;session != NULL);</span>
+<span class="lineNum">     485 </span>                :<span class="lineCov">    4 :         FUNCTION_TEST_ASSERT(buffer != NULL);</span>
+<span class="lineNum">     486 </span>                :<span class="lineCov">    4 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     487 </span>                :      : 
+<span class="lineNum">     488 </span>                :<span class="lineCov">    4 :     cryptoError(SSL_write(this-&gt;session, bufPtr(buffer), (int)bufUsed(buffer)) != (int)bufUsed(buffer), &quot;unable to write&quot;);</span>
+<span class="lineNum">     489 </span>                :      : 
+<span class="lineNum">     490 </span>                :<span class="lineCov">    4 :     FUNCTION_DEBUG_RESULT_VOID();</span>
+<span class="lineNum">     491 </span>                :<span class="lineCov">    4 : }</span>
+<span class="lineNum">     492 </span>                :      : 
+<span class="lineNum">     493 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     494 </span>                :      : Close the connection
+<a name="495"><span class="lineNum">     495 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     496 </span>                :      : void
+<span class="lineNum">     497 </span>                :<span class="lineCov">   34 : tlsClientClose(TlsClient *this)</span>
+<span class="lineNum">     498 </span>                :      : {
+<span class="lineNum">     499 </span>                :<span class="lineCov">   34 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     500 </span>                :<span class="lineCov">   34 :         FUNCTION_DEBUG_PARAM(TLS_CLIENT, this);</span>
+<span class="lineNum">     501 </span>                :      : 
+<span class="lineNum">     502 </span>                :<span class="lineCov">   34 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     503 </span>                :<span class="lineCov">   34 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     504 </span>                :      : 
+<span class="lineNum">     505 </span>                :      :     // Close the socket
+<span class="lineNum">     506 </span>        [<span class="branchCov" title="Branch 0 was taken 26 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">   34 :     if (this-&gt;socket != -1)</span>
+<span class="lineNum">     507 </span>                :      :     {
+<span class="lineNum">     508 </span>                :<span class="lineCov">   26 :         close(this-&gt;socket);</span>
+<span class="lineNum">     509 </span>                :<span class="lineCov">   26 :         this-&gt;socket = -1;</span>
+<span class="lineNum">     510 </span>                :      :     }
+<span class="lineNum">     511 </span>                :      : 
+<span class="lineNum">     512 </span>                :      :     // Free the TLS session
+<span class="lineNum">     513 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 26 times"> + </span>]:<span class="lineCov">   34 :     if (this-&gt;session != NULL)</span>
+<span class="lineNum">     514 </span>                :      :     {
+<span class="lineNum">     515 </span>                :<span class="lineCov">    8 :         SSL_free(this-&gt;session);</span>
+<span class="lineNum">     516 </span>                :<span class="lineCov">    8 :         this-&gt;session = NULL;</span>
+<span class="lineNum">     517 </span>                :      :     }
+<span class="lineNum">     518 </span>                :      : 
+<span class="lineNum">     519 </span>                :<span class="lineCov">   34 :     FUNCTION_DEBUG_RESULT_VOID();</span>
+<span class="lineNum">     520 </span>                :<span class="lineCov">   34 : }</span>
+<span class="lineNum">     521 </span>                :      : 
+<span class="lineNum">     522 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     523 </span>                :      : Has session been closed by the server?
+<a name="524"><span class="lineNum">     524 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     525 </span>                :      : bool
+<span class="lineNum">     526 </span>                :<span class="lineCov">   10 : tlsClientEof(const TlsClient *this)</span>
+<span class="lineNum">     527 </span>                :      : {
+<span class="lineNum">     528 </span>                :<span class="lineCov">   10 :     FUNCTION_DEBUG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     529 </span>                :<span class="lineCov">   10 :         FUNCTION_DEBUG_PARAM(TLS_CLIENT, this);</span>
+<span class="lineNum">     530 </span>                :      : 
+<span class="lineNum">     531 </span>                :<span class="lineCov">   10 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     532 </span>                :<span class="lineCov">   10 :     FUNCTION_DEBUG_END();</span>
+<span class="lineNum">     533 </span>                :      : 
+<span class="lineNum">     534 </span>                :<span class="lineCov">   10 :     FUNCTION_DEBUG_RESULT(BOOL, this-&gt;session == NULL);</span>
+<span class="lineNum">     535 </span>                :      : }
+<span class="lineNum">     536 </span>                :      : 
+<span class="lineNum">     537 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     538 </span>                :      : Get read interface
+<a name="539"><span class="lineNum">     539 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     540 </span>                :      : IoRead *
+<span class="lineNum">     541 </span>                :<span class="lineCov">   11 : tlsClientIoRead(const TlsClient *this)</span>
+<span class="lineNum">     542 </span>                :      : {
+<span class="lineNum">     543 </span>                :<span class="lineCov">   11 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     544 </span>                :<span class="lineCov">   11 :         FUNCTION_TEST_PARAM(TLS_CLIENT, this);</span>
+<span class="lineNum">     545 </span>                :      : 
+<span class="lineNum">     546 </span>                :<span class="lineCov">   11 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     547 </span>                :      :     FUNCTION_TEST_END();
+<span class="lineNum">     548 </span>                :      : 
+<span class="lineNum">     549 </span>                :<span class="lineCov">   11 :     FUNCTION_TEST_RESULT(IO_READ, this-&gt;read);</span>
+<span class="lineNum">     550 </span>                :      : }
+<span class="lineNum">     551 </span>                :      : 
+<span class="lineNum">     552 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     553 </span>                :      : Get write interface
+<a name="554"><span class="lineNum">     554 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     555 </span>                :      : IoWrite *
+<span class="lineNum">     556 </span>                :<span class="lineCov">    4 : tlsClientIoWrite(const TlsClient *this)</span>
+<span class="lineNum">     557 </span>                :      : {
+<span class="lineNum">     558 </span>                :<span class="lineCov">    4 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     559 </span>                :<span class="lineCov">    4 :         FUNCTION_TEST_PARAM(TLS_CLIENT, this);</span>
+<span class="lineNum">     560 </span>                :      : 
+<span class="lineNum">     561 </span>                :<span class="lineCov">    4 :         FUNCTION_TEST_ASSERT(this != NULL);</span>
+<span class="lineNum">     562 </span>                :      :     FUNCTION_TEST_END();
+<span class="lineNum">     563 </span>                :      : 
+<span class="lineNum">     564 </span>                :<span class="lineCov">    4 :     FUNCTION_TEST_RESULT(IO_WRITE, this-&gt;write);</span>
+<span class="lineNum">     565 </span>                :      : }
+<span class="lineNum">     566 </span>                :      : 
+<span class="lineNum">     567 </span>                :      : /***********************************************************************************************************************************
+<span class="lineNum">     568 </span>                :      : Free the object
+<a name="569"><span class="lineNum">     569 </span>                :      : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     570 </span>                :      : void
+<span class="lineNum">     571 </span>                :<span class="lineCov">   12 : tlsClientFree(TlsClient *this)</span>
+<span class="lineNum">     572 </span>                :      : {
+<span class="lineNum">     573 </span>                :<span class="lineCov">   12 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     574 </span>                :<span class="lineCov">   12 :         FUNCTION_TEST_PARAM(TLS_CLIENT, this);</span>
+<span class="lineNum">     575 </span>                :      :     FUNCTION_TEST_END();
+<span class="lineNum">     576 </span>                :      : 
+<span class="lineNum">     577 </span>        [<span class="branchCov" title="Branch 0 was taken 11 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">   12 :     if (this != NULL)</span>
+<span class="lineNum">     578 </span>                :      :     {
+<span class="lineNum">     579 </span>                :<span class="lineCov">   11 :         tlsClientClose(this);</span>
+<span class="lineNum">     580 </span>                :<span class="lineCov">   11 :         SSL_CTX_free(this-&gt;context);</span>
+<span class="lineNum">     581 </span>                :      : 
+<span class="lineNum">     582 </span>                :<span class="lineCov">   11 :         memContextCallbackClear(this-&gt;memContext);</span>
+<span class="lineNum">     583 </span>                :<span class="lineCov">   11 :         memContextFree(this-&gt;memContext);</span>
+<span class="lineNum">     584 </span>                :      :     }
+<span class="lineNum">     585 </span>                :      : 
+<span class="lineNum">     586 </span>                :<span class="lineCov">   12 :     FUNCTION_TEST_RESULT_VOID();</span>
+<span class="lineNum">     587 </span>                :<span class="lineCov">   12 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
