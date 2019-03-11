@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>pgBackRest v2.11 C Code Coverage - config/protocol.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">pgBackRest v2.11 C Code Coverage</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">config</a> - protocol.c<span style="font-size: 80%;"> (source / <a href="protocol.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">all C unit</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-10 12:52:58</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data    Line data  Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :         : /***********************************************************************************************************************************</a>
+<span class="lineNum">       2 </span>                :         : Configuration Protocol Handler
+<span class="lineNum">       3 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">       4 </span>                :         : #include &quot;common/debug.h&quot;
+<span class="lineNum">       5 </span>                :         : #include &quot;common/io/io.h&quot;
+<span class="lineNum">       6 </span>                :         : #include &quot;common/log.h&quot;
+<span class="lineNum">       7 </span>                :         : #include &quot;common/memContext.h&quot;
+<span class="lineNum">       8 </span>                :         : #include &quot;config/config.h&quot;
+<span class="lineNum">       9 </span>                :         : #include &quot;config/protocol.h&quot;
+<span class="lineNum">      10 </span>                :         : 
+<span class="lineNum">      11 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      12 </span>                :         : Constants
+<span class="lineNum">      13 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">      14 </span>                :         : STRING_EXTERN(PROTOCOL_COMMAND_CONFIG_OPTION_STR,                   PROTOCOL_COMMAND_CONFIG_OPTION);
+<span class="lineNum">      15 </span>                :         : 
+<span class="lineNum">      16 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      17 </span>                :         : Process config protocol requests
+<a name="18"><span class="lineNum">      18 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      19 </span>                :         : bool
+<span class="lineNum">      20 </span>                :<span class="lineCov">       3 : configProtocol(const String *command, const VariantList *paramList, ProtocolServer *server)</span>
+<span class="lineNum">      21 </span>                :         : {
+<span class="lineNum">      22 </span>                :<span class="lineCov">       3 :     FUNCTION_LOG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">      23 </span>                :<span class="lineCov">       3 :         FUNCTION_LOG_PARAM(STRING, command);</span>
+<span class="lineNum">      24 </span>                :<span class="lineCov">       3 :         FUNCTION_LOG_PARAM(VARIANT_LIST, paramList);</span>
+<span class="lineNum">      25 </span>                :<span class="lineCov">       3 :         FUNCTION_LOG_PARAM(PROTOCOL_SERVER, server);</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">       3 :     FUNCTION_LOG_END();</span>
+<span class="lineNum">      27 </span>                :         : 
+<span class="lineNum">      28 </span>                :<span class="lineCov">       3 :     ASSERT(command != NULL);</span>
+<span class="lineNum">      29 </span>                :         : 
+<span class="lineNum">      30 </span>                :         :     // Attempt to satisfy the request -- we may get requests that are meant for other handlers
+<span class="lineNum">      31 </span>                :<span class="lineCov">       3 :     bool found = true;</span>
+<span class="lineNum">      32 </span>                :         : 
+<span class="lineNum">      33 </span>                :<span class="lineCov">       9 :     MEM_CONTEXT_TEMP_BEGIN()</span>
+<span class="lineNum">      34 </span>                :         :     {
+<span class="lineNum">      35 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">       3 :         if (strEq(command, PROTOCOL_COMMAND_CONFIG_OPTION_STR))</span>
+<span class="lineNum">      36 </span>                :         :         {
+<span class="lineNum">      37 </span>                :<span class="lineCov">       1 :             VariantList *optionList = varLstNew();</span>
+<span class="lineNum">      38 </span>                :         : 
+<span class="lineNum">      39 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">       3 :             for (unsigned int optionIdx = 0; optionIdx &lt; varLstSize(paramList); optionIdx++)</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">       2 :                 varLstAdd(optionList, varDup(cfgOption(cfgOptionId(strPtr(varStr(varLstGet(paramList, optionIdx)))))));</span>
+<span class="lineNum">      41 </span>                :         : 
+<span class="lineNum">      42 </span>                :<span class="lineCov">       1 :             protocolServerResponse(server, varNewVarLst(optionList));</span>
+<span class="lineNum">      43 </span>                :         :         }
+<span class="lineNum">      44 </span>                :         :         else
+<span class="lineNum">      45 </span>                :<span class="lineCov">       3 :             found = false;</span>
+<span class="lineNum">      46 </span>                :         :     }
+<span class="lineNum">      47 </span>                :<span class="lineCov">       3 :     MEM_CONTEXT_TEMP_END();</span>
+<span class="lineNum">      48 </span>                :         : 
+<span class="lineNum">      49 </span>                :<span class="lineCov">       3 :     FUNCTION_LOG_RETURN(BOOL, found);</span>
+<span class="lineNum">      50 </span>                :         : }
+<span class="lineNum">      51 </span>                :         : 
+<span class="lineNum">      52 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      53 </span>                :         : Get option values from another process
+<a name="54"><span class="lineNum">      54 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      55 </span>                :         : VariantList *
+<span class="lineNum">      56 </span>                :<span class="lineCov">       1 : configProtocolOption(ProtocolClient *client, const VariantList *paramList)</span>
+<span class="lineNum">      57 </span>                :         : {
+<span class="lineNum">      58 </span>                :<span class="lineCov">       1 :     FUNCTION_LOG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">      59 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(PROTOCOL_CLIENT, client);</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(VARIANT_LIST, paramList);</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">       1 :     FUNCTION_LOG_END();</span>
+<span class="lineNum">      62 </span>                :         : 
+<span class="lineNum">      63 </span>                :<span class="lineCov">       1 :     VariantList *result = NULL;</span>
+<span class="lineNum">      64 </span>                :         : 
+<span class="lineNum">      65 </span>                :<span class="lineCov">       3 :     MEM_CONTEXT_TEMP_BEGIN()</span>
+<span class="lineNum">      66 </span>                :         :     {
+<span class="lineNum">      67 </span>                :<span class="lineCov">       1 :         ProtocolCommand *command = protocolCommandNew(PROTOCOL_COMMAND_CONFIG_OPTION_STR);</span>
+<span class="lineNum">      68 </span>                :         : 
+<span class="lineNum">      69 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">       3 :         for (unsigned int paramIdx = 0; paramIdx &lt; varLstSize(paramList); paramIdx++)</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">       2 :             protocolCommandParamAdd(command, varLstGet(paramList, paramIdx));</span>
+<span class="lineNum">      71 </span>                :         : 
+<span class="lineNum">      72 </span>                :<span class="lineCov">       1 :         memContextSwitch(MEM_CONTEXT_OLD());</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">       1 :         result = varVarLst(protocolClientExecute(client, command, true));</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">       1 :         memContextSwitch(MEM_CONTEXT_TEMP());</span>
+<span class="lineNum">      75 </span>                :         :     }
+<span class="lineNum">      76 </span>                :<span class="lineCov">       1 :     MEM_CONTEXT_TEMP_END();</span>
+<span class="lineNum">      77 </span>                :         : 
+<span class="lineNum">      78 </span>                :<span class="lineCov">       1 :     FUNCTION_LOG_RETURN(VARIANT_LIST, result);</span>
+<span class="lineNum">      79 </span>                :         : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

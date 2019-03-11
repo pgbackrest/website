@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>pgBackRest v2.11 C Code Coverage - storage/driver/remote/protocol.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">pgBackRest v2.11 C Code Coverage</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">storage/driver/remote</a> - protocol.c<span style="font-size: 80%;"> (source / <a href="protocol.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">all C unit</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">42</td>
+            <td class="headerCovTableEntry">42</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-10 12:52:58</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data    Line data  Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :         : /***********************************************************************************************************************************</a>
+<span class="lineNum">       2 </span>                :         : Remote Storage Protocol Handler
+<span class="lineNum">       3 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">       4 </span>                :         : #include &quot;common/debug.h&quot;
+<span class="lineNum">       5 </span>                :         : #include &quot;common/io/io.h&quot;
+<span class="lineNum">       6 </span>                :         : #include &quot;common/log.h&quot;
+<span class="lineNum">       7 </span>                :         : #include &quot;common/memContext.h&quot;
+<span class="lineNum">       8 </span>                :         : #include &quot;storage/driver/remote/protocol.h&quot;
+<span class="lineNum">       9 </span>                :         : #include &quot;storage/helper.h&quot;
+<span class="lineNum">      10 </span>                :         : #include &quot;storage/storage.intern.h&quot;
+<span class="lineNum">      11 </span>                :         : 
+<span class="lineNum">      12 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      13 </span>                :         : Constants
+<span class="lineNum">      14 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">      15 </span>                :         : STRING_EXTERN(PROTOCOL_COMMAND_STORAGE_EXISTS_STR,                  PROTOCOL_COMMAND_STORAGE_EXISTS);
+<span class="lineNum">      16 </span>                :         : STRING_EXTERN(PROTOCOL_COMMAND_STORAGE_LIST_STR,                    PROTOCOL_COMMAND_STORAGE_LIST);
+<span class="lineNum">      17 </span>                :         : STRING_EXTERN(PROTOCOL_COMMAND_STORAGE_OPEN_READ_STR,               PROTOCOL_COMMAND_STORAGE_OPEN_READ);
+<span class="lineNum">      18 </span>                :         : 
+<span class="lineNum">      19 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      20 </span>                :         : Process storage protocol requests
+<a name="21"><span class="lineNum">      21 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      22 </span>                :         : bool
+<span class="lineNum">      23 </span>                :<span class="lineCov">       5 : storageDriverRemoteProtocol(const String *command, const VariantList *paramList, ProtocolServer *server)</span>
+<span class="lineNum">      24 </span>                :         : {
+<span class="lineNum">      25 </span>                :<span class="lineCov">       5 :     FUNCTION_LOG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">       5 :         FUNCTION_LOG_PARAM(STRING, command);</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">       5 :         FUNCTION_LOG_PARAM(VARIANT_LIST, paramList);</span>
+<span class="lineNum">      28 </span>                :<span class="lineCov">       5 :         FUNCTION_LOG_PARAM(PROTOCOL_SERVER, server);</span>
+<span class="lineNum">      29 </span>                :<span class="lineCov">       5 :     FUNCTION_LOG_END();</span>
+<span class="lineNum">      30 </span>                :         : 
+<span class="lineNum">      31 </span>                :<span class="lineCov">       5 :     ASSERT(command != NULL);</span>
+<span class="lineNum">      32 </span>                :         : 
+<span class="lineNum">      33 </span>                :         :     // Determine which storage should be used (??? for now this is only repo)
+<span class="lineNum">      34 </span>                :<span class="lineCov">       5 :     const Storage *storage = storageRepo();</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">       5 :     StorageInterface interface = storageInterface(storage);</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">       5 :     void *driver = storageDriver(storage);</span>
+<span class="lineNum">      37 </span>                :         : 
+<span class="lineNum">      38 </span>                :         :     // Attempt to satisfy the request -- we may get requests that are meant for other handlers
+<span class="lineNum">      39 </span>                :<span class="lineCov">       5 :     bool found = true;</span>
+<span class="lineNum">      40 </span>                :         : 
+<span class="lineNum">      41 </span>                :<span class="lineCov">      15 :     MEM_CONTEXT_TEMP_BEGIN()</span>
+<span class="lineNum">      42 </span>                :         :     {
+<span class="lineNum">      43 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 4 times"> + </span>]:<span class="lineCov">       5 :         if (strEq(command, PROTOCOL_COMMAND_STORAGE_EXISTS_STR))</span>
+<span class="lineNum">      44 </span>                :         :         {
+<span class="lineNum">      45 </span>                :<span class="lineCov">       1 :             protocolServerResponse(</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">       1 :                 server, varNewBool(interface.exists(driver, storagePathNP(storage, varStr(varLstGet(paramList, 0))))));</span>
+<span class="lineNum">      47 </span>                :         :         }
+<span class="lineNum">      48 </span>        [<span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchCov" title="Branch 2 was taken 3 times"> + </span>]:<span class="lineCov">       4 :         else if (strEq(command, PROTOCOL_COMMAND_STORAGE_LIST_STR))</span>
+<span class="lineNum">      49 </span>                :         :         {
+<span class="lineNum">      50 </span>                :<span class="lineCov">       1 :             protocolServerResponse(</span>
+<span class="lineNum">      51 </span>                :         :                 server,
+<span class="lineNum">      52 </span>                :<span class="lineCov">       1 :                 varNewVarLst(</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">       1 :                     varLstNewStrLst(</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">       1 :                         interface.list(</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">       1 :                             driver, storagePathNP(storage, varStr(varLstGet(paramList, 0))), varBool(varLstGet(paramList, 1)),</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">       1 :                             varStr(varLstGet(paramList, 2))))));</span>
+<span class="lineNum">      57 </span>                :         :         }
+<span class="lineNum">      58 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">       3 :         else if (strEq(command, PROTOCOL_COMMAND_STORAGE_OPEN_READ_STR))</span>
+<span class="lineNum">      59 </span>                :         :         {
+<span class="lineNum">      60 </span>                :         :             // Create the read object
+<span class="lineNum">      61 </span>                :<span class="lineCov">       2 :             IoRead *fileRead = storageFileReadIo(</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">       2 :                 interface.newRead(</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">       2 :                     driver, storagePathNP(storage, varStr(varLstGet(paramList, 0))), varBool(varLstGet(paramList, 1))));</span>
+<span class="lineNum">      64 </span>                :         : 
+<span class="lineNum">      65 </span>                :         :             // Check if the file exists
+<span class="lineNum">      66 </span>                :<span class="lineCov">       2 :             bool exists = ioReadOpen(fileRead);</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">       2 :             protocolServerResponse(server, varNewBool(exists));</span>
+<span class="lineNum">      68 </span>                :         : 
+<span class="lineNum">      69 </span>                :         :             // Transfer the file if it exists
+<span class="lineNum">      70 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">       2 :             if (exists)</span>
+<span class="lineNum">      71 </span>                :         :             {
+<span class="lineNum">      72 </span>                :<span class="lineCov">       1 :                 Buffer *buffer = bufNew(ioBufferSize());</span>
+<span class="lineNum">      73 </span>                :         : 
+<span class="lineNum">      74 </span>                :         :                 // Write file out to protocol layer
+<span class="lineNum">      75 </span>                :         :                 do
+<span class="lineNum">      76 </span>                :         :                 {
+<span class="lineNum">      77 </span>                :<span class="lineCov">       3 :                     ioRead(fileRead, buffer);</span>
+<span class="lineNum">      78 </span>                :         : 
+<span class="lineNum">      79 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">       3 :                     if (bufUsed(buffer) &gt; 0)</span>
+<span class="lineNum">      80 </span>                :         :                     {
+<span class="lineNum">      81 </span>                :<span class="lineCov">       2 :                         ioWriteLine(protocolServerIoWrite(server), strNewFmt(PROTOCOL_BLOCK_HEADER &quot;%zu&quot;, bufUsed(buffer)));</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">       2 :                         ioWrite(protocolServerIoWrite(server), buffer);</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">       2 :                         ioWriteFlush(protocolServerIoWrite(server));</span>
+<span class="lineNum">      84 </span>                :         : 
+<span class="lineNum">      85 </span>                :<span class="lineCov">       2 :                         bufUsedZero(buffer);</span>
+<span class="lineNum">      86 </span>                :         :                     }
+<span class="lineNum">      87 </span>                :         :                 }
+<span class="lineNum">      88 </span>        [<span class="branchCov" title="Branch 1 was taken 2 times"> + </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">       3 :                 while (!ioReadEof(fileRead));</span>
+<span class="lineNum">      89 </span>                :         : 
+<span class="lineNum">      90 </span>                :         :                 // Write a zero block to show file is complete
+<span class="lineNum">      91 </span>                :<span class="lineCov">       1 :                 ioWriteLine(protocolServerIoWrite(server), strNew(PROTOCOL_BLOCK_HEADER &quot;0&quot;));</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">       2 :                 ioWriteFlush(protocolServerIoWrite(server));</span>
+<span class="lineNum">      93 </span>                :         :             }
+<span class="lineNum">      94 </span>                :         :         }
+<span class="lineNum">      95 </span>                :         :         else
+<span class="lineNum">      96 </span>                :<span class="lineCov">       5 :             found = false;</span>
+<span class="lineNum">      97 </span>                :         :     }
+<span class="lineNum">      98 </span>                :<span class="lineCov">       5 :     MEM_CONTEXT_TEMP_END();</span>
+<span class="lineNum">      99 </span>                :         : 
+<span class="lineNum">     100 </span>                :<span class="lineCov">       5 :     FUNCTION_LOG_RETURN(BOOL, found);</span>
+<span class="lineNum">     101 </span>                :         : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
