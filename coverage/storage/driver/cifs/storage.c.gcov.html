@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>pgBackRest v2.12 C Code Coverage - storage/driver/cifs/storage.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">pgBackRest v2.12 C Code Coverage</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">storage/driver/cifs</a> - storage.c<span style="font-size: 80%;"> (source / <a href="storage.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">all C unit</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">55</td>
+            <td class="headerCovTableEntry">55</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-04-11 12:32:35</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data    Line data  Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :         : /***********************************************************************************************************************************</a>
+<span class="lineNum">       2 </span>                :         : CIFS Storage Driver
+<span class="lineNum">       3 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">       4 </span>                :         : #include &quot;common/debug.h&quot;
+<span class="lineNum">       5 </span>                :         : #include &quot;common/log.h&quot;
+<span class="lineNum">       6 </span>                :         : #include &quot;common/memContext.h&quot;
+<span class="lineNum">       7 </span>                :         : #include &quot;common/regExp.h&quot;
+<span class="lineNum">       8 </span>                :         : #include &quot;storage/driver/cifs/storage.h&quot;
+<span class="lineNum">       9 </span>                :         : #include &quot;storage/driver/posix/storage.h&quot;
+<span class="lineNum">      10 </span>                :         : 
+<span class="lineNum">      11 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      12 </span>                :         : Driver type constant string
+<span class="lineNum">      13 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">      14 </span>                :         : STRING_EXTERN(STORAGE_DRIVER_CIFS_TYPE_STR,                         STORAGE_DRIVER_CIFS_TYPE);
+<span class="lineNum">      15 </span>                :         : 
+<span class="lineNum">      16 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      17 </span>                :         : Object type
+<span class="lineNum">      18 </span>                :         : 
+<span class="lineNum">      19 </span>                :         : This type *must* stay in sync with StorageDriverPosix since it is cast to StorageDriverPosix.
+<span class="lineNum">      20 </span>                :         : ***********************************************************************************************************************************/
+<span class="lineNum">      21 </span>                :         : struct StorageDriverCifs
+<span class="lineNum">      22 </span>                :         : {
+<span class="lineNum">      23 </span>                :         :     MemContext *memContext;                                         // Object memory context
+<span class="lineNum">      24 </span>                :         :     Storage *interface;                                             // Driver interface
+<span class="lineNum">      25 </span>                :         : };
+<span class="lineNum">      26 </span>                :         : 
+<span class="lineNum">      27 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      28 </span>                :         : New object
+<a name="29"><span class="lineNum">      29 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      30 </span>                :         : StorageDriverCifs *
+<span class="lineNum">      31 </span>                :<span class="lineCov">       1 : storageDriverCifsNew(</span>
+<span class="lineNum">      32 </span>                :         :     const String *path, mode_t modeFile, mode_t modePath, bool write, StoragePathExpressionCallback pathExpressionFunction)
+<span class="lineNum">      33 </span>                :         : {
+<span class="lineNum">      34 </span>                :<span class="lineCov">       1 :     FUNCTION_LOG_BEGIN(logLevelDebug);</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(STRING, path);</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(MODE, modeFile);</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(MODE, modePath);</span>
+<span class="lineNum">      38 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(BOOL, write);</span>
+<span class="lineNum">      39 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(FUNCTIONP, pathExpressionFunction);</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">       1 :     FUNCTION_LOG_END();</span>
+<span class="lineNum">      41 </span>                :         : 
+<span class="lineNum">      42 </span>                :<span class="lineCov">       1 :     ASSERT(path != NULL);</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">       1 :     ASSERT(modeFile != 0);</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">       1 :     ASSERT(modePath != 0);</span>
+<span class="lineNum">      45 </span>                :         : 
+<span class="lineNum">      46 </span>                :         :     // Create the object
+<span class="lineNum">      47 </span>                :<span class="lineCov">       1 :     StorageDriverCifs *this = NULL;</span>
+<span class="lineNum">      48 </span>                :         : 
+<span class="lineNum">      49 </span>                :<span class="lineCov">       3 :     MEM_CONTEXT_NEW_BEGIN(&quot;StorageDriverCifs&quot;)</span>
+<span class="lineNum">      50 </span>                :         :     {
+<span class="lineNum">      51 </span>                :<span class="lineCov">       1 :         this = memNew(sizeof(StorageDriverCifs));</span>
+<span class="lineNum">      52 </span>                :<span class="lineCov">       1 :         this-&gt;memContext = MEM_CONTEXT_NEW();</span>
+<span class="lineNum">      53 </span>                :         : 
+<span class="lineNum">      54 </span>                :<span class="lineCov">       1 :         this-&gt;interface = storageNewP(</span>
+<span class="lineNum">      55 </span>                :         :             STORAGE_DRIVER_CIFS_TYPE_STR, path, modeFile, modePath, write, pathExpressionFunction, this,
+<span class="lineNum">      56 </span>                :         :             .exists = (StorageInterfaceExists)storageDriverPosixExists, .info = (StorageInterfaceInfo)storageDriverPosixInfo,
+<span class="lineNum">      57 </span>                :         :             .list = (StorageInterfaceList)storageDriverPosixList, .move = (StorageInterfaceMove)storageDriverPosixMove,
+<span class="lineNum">      58 </span>                :         :             .newRead = (StorageInterfaceNewRead)storageDriverPosixNewRead,
+<span class="lineNum">      59 </span>                :         :             .newWrite = (StorageInterfaceNewWrite)storageDriverCifsNewWrite,
+<span class="lineNum">      60 </span>                :         :             .pathCreate = (StorageInterfacePathCreate)storageDriverPosixPathCreate,
+<span class="lineNum">      61 </span>                :         :             .pathRemove = (StorageInterfacePathRemove)storageDriverPosixPathRemove,
+<span class="lineNum">      62 </span>                :         :             .pathSync = (StorageInterfacePathSync)storageDriverCifsPathSync,
+<span class="lineNum">      63 </span>                :         :             .remove = (StorageInterfaceRemove)storageDriverPosixRemove);
+<span class="lineNum">      64 </span>                :         :     }
+<span class="lineNum">      65 </span>                :<span class="lineCov">       1 :     MEM_CONTEXT_NEW_END();</span>
+<span class="lineNum">      66 </span>                :         : 
+<span class="lineNum">      67 </span>                :<span class="lineCov">       1 :     FUNCTION_LOG_RETURN(STORAGE_DRIVER_CIFS, this);</span>
+<span class="lineNum">      68 </span>                :         : }
+<span class="lineNum">      69 </span>                :         : 
+<span class="lineNum">      70 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">      71 </span>                :         : New file write object
+<a name="72"><span class="lineNum">      72 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">      73 </span>                :         : StorageFileWrite *
+<span class="lineNum">      74 </span>                :<span class="lineCov">       1 : storageDriverCifsNewWrite(</span>
+<span class="lineNum">      75 </span>                :         :     StorageDriverCifs *this, const String *file, mode_t modeFile, mode_t modePath, bool createPath, bool syncFile, bool syncPath,
+<span class="lineNum">      76 </span>                :         :     bool atomic)
+<span class="lineNum">      77 </span>                :         : {
+<span class="lineNum">      78 </span>                :<span class="lineCov">       1 :     FUNCTION_LOG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(STORAGE_DRIVER_CIFS, this);</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(STRING, file);</span>
+<span class="lineNum">      81 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(MODE, modeFile);</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(MODE, modePath);</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(BOOL, createPath);</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(BOOL, syncFile);</span>
+<span class="lineNum">      85 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(BOOL, syncPath);</span>
+<span class="lineNum">      86 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(BOOL, atomic);</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">       1 :     FUNCTION_LOG_END();</span>
+<span class="lineNum">      88 </span>                :         : 
+<span class="lineNum">      89 </span>                :<span class="lineCov">       1 :     ASSERT(this != NULL);</span>
+<span class="lineNum">      90 </span>                :<span class="lineCov">       1 :     ASSERT(file != NULL);</span>
+<span class="lineNum">      91 </span>                :         : 
+<span class="lineNum">      92 </span>                :<span class="lineCov">       1 :     FUNCTION_LOG_RETURN(</span>
+<span class="lineNum">      93 </span>                :         :         STORAGE_FILE_WRITE,
+<span class="lineNum">      94 </span>                :         :         storageDriverPosixFileWriteInterface(
+<span class="lineNum">      95 </span>                :         :             storageDriverPosixFileWriteNew(
+<span class="lineNum">      96 </span>                :         :                 (StorageDriverPosix *)this, file, modeFile, modePath, createPath, syncFile, false, atomic)));
+<span class="lineNum">      97 </span>                :         : }
+<span class="lineNum">      98 </span>                :         : 
+<span class="lineNum">      99 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     100 </span>                :         : Sync a path
+<span class="lineNum">     101 </span>                :         : 
+<span class="lineNum">     102 </span>                :         : CIFS does not support explicit syncs.
+<a name="103"><span class="lineNum">     103 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     104 </span>                :         : void
+<span class="lineNum">     105 </span>                :<span class="lineCov">       1 : storageDriverCifsPathSync(StorageDriverCifs *this, const String *path, bool ignoreMissing)</span>
+<span class="lineNum">     106 </span>                :         : {
+<span class="lineNum">     107 </span>                :<span class="lineCov">       1 :     FUNCTION_LOG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(STORAGE_DRIVER_CIFS, this);</span>
+<span class="lineNum">     109 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(STRING, path);</span>
+<span class="lineNum">     110 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(BOOL, ignoreMissing);</span>
+<span class="lineNum">     111 </span>                :<span class="lineCov">       1 :     FUNCTION_LOG_END();</span>
+<span class="lineNum">     112 </span>                :         : 
+<span class="lineNum">     113 </span>                :<span class="lineCov">       1 :     ASSERT(this != NULL);</span>
+<span class="lineNum">     114 </span>                :<span class="lineCov">       1 :     ASSERT(path != NULL);</span>
+<span class="lineNum">     115 </span>                :         : 
+<span class="lineNum">     116 </span>                :<span class="lineCov">       1 :     FUNCTION_LOG_RETURN_VOID();</span>
+<span class="lineNum">     117 </span>                :<span class="lineCov">       1 : }</span>
+<span class="lineNum">     118 </span>                :         : 
+<span class="lineNum">     119 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     120 </span>                :         : Getters
+<a name="121"><span class="lineNum">     121 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     122 </span>                :         : Storage *
+<span class="lineNum">     123 </span>                :<span class="lineCov">       1 : storageDriverCifsInterface(const StorageDriverCifs *this)</span>
+<span class="lineNum">     124 </span>                :         : {
+<span class="lineNum">     125 </span>                :<span class="lineCov">       1 :     FUNCTION_TEST_BEGIN();</span>
+<span class="lineNum">     126 </span>                :<span class="lineCov">       1 :         FUNCTION_LOG_PARAM(STORAGE_DRIVER_CIFS, this);</span>
+<span class="lineNum">     127 </span>                :         :     FUNCTION_TEST_END();
+<span class="lineNum">     128 </span>                :         : 
+<span class="lineNum">     129 </span>                :<span class="lineCov">       1 :     ASSERT(this != NULL);</span>
+<span class="lineNum">     130 </span>                :         : 
+<span class="lineNum">     131 </span>                :<span class="lineCov">       1 :     FUNCTION_TEST_RETURN(this-&gt;interface);</span>
+<span class="lineNum">     132 </span>                :         : }
+<span class="lineNum">     133 </span>                :         : 
+<span class="lineNum">     134 </span>                :         : /***********************************************************************************************************************************
+<span class="lineNum">     135 </span>                :         : Free the file
+<a name="136"><span class="lineNum">     136 </span>                :         : ***********************************************************************************************************************************/</a>
+<span class="lineNum">     137 </span>                :         : void
+<span class="lineNum">     138 </span>                :<span class="lineCov">       2 : storageDriverCifsFree(StorageDriverCifs *this)</span>
+<span class="lineNum">     139 </span>                :         : {
+<span class="lineNum">     140 </span>                :<span class="lineCov">       2 :     FUNCTION_LOG_BEGIN(logLevelTrace);</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">       2 :         FUNCTION_LOG_PARAM(STORAGE_DRIVER_CIFS, this);</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">       2 :     FUNCTION_LOG_END();</span>
+<span class="lineNum">     143 </span>                :         : 
+<span class="lineNum">     144 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">       2 :     if (this != NULL)</span>
+<span class="lineNum">     145 </span>                :<span class="lineCov">       1 :         memContextFree(this-&gt;memContext);</span>
+<span class="lineNum">     146 </span>                :         : 
+<span class="lineNum">     147 </span>                :<span class="lineCov">       2 :     FUNCTION_LOG_RETURN_VOID();</span>
+<span class="lineNum">     148 </span>                :<span class="lineCov">       2 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
