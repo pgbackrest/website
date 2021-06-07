@@ -4,7 +4,7 @@
 
 pgBackRest aims to be a reliable, easy-to-use backup and restore solution that can seamlessly scale up to the largest databases and workloads by utilizing algorithms that are optimized for database-specific requirements.
 
-pgBackRest [v2.33](https://github.com/pgbackrest/pgbackrest/releases/tag/release/2.33) is the current stable release. Release notes are on the [Releases](http://www.pgbackrest.org/release.html) page.
+pgBackRest [v2.34](https://github.com/pgbackrest/pgbackrest/releases/tag/release/2.34) is the current stable release. Release notes are on the [Releases](http://www.pgbackrest.org/release.html) page.
 
 Documentation for v1 can be found [here](http://www.pgbackrest.org/1). No further releases are planned for v1 because v2 is backward-compatible with v1 options and repositories.
 
@@ -102,13 +102,7 @@ pgBackRest strives to be easy to configure and operate:
 
 ## Contributions
 
-Contributions to pgBackRest are always welcome!
-
-Code fixes or new features can be submitted via pull requests. Ideas for new features and improvements to existing functionality or documentation can be [submitted as issues](https://github.com/pgbackrest/pgbackrest/issues). You may want to check the [Project Boards](https://github.com/pgbackrest/pgbackrest/projects) to see if your suggestion has already been submitted.
-
-Bug reports should be [submitted as issues](https://github.com/pgbackrest/pgbackrest/issues). Please provide as much information as possible to aid in determining the cause of the problem.
-
-You will always receive credit in the [release notes](http://www.pgbackrest.org/release.html) for your contributions.
+Contributions to pgBackRest are always welcome! Please see our [Contributing Guidelines](https://github.com/pgbackrest/pgbackrest/blob/master/CONTRIBUTING.md) for details on how to contribute features, improvements or issues.
 
 ## Support
 
