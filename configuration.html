@@ -44,10 +44,14 @@ Asynchronous Archiving Option (<span class="id">--archive-async</span>)
 Maximum Archive Get Queue Size Option (<span class="id">--archive-get-queue-max</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 2.3
+</div><div class="section2-toc-title"><a href="#section-archive/option-archive-header-check">
+Check WAL Headers Option (<span class="id">--archive-header-check</span>)
+</a></div></div><div class="section2-toc"><div class="section2-toc-number">
+2.4
 </div><div class="section2-toc-title"><a href="#section-archive/option-archive-push-queue-max">
 Maximum Archive Push Queue Size Option (<span class="id">--archive-push-queue-max</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
-2.4
+2.5
 </div><div class="section2-toc-title"><a href="#section-archive/option-archive-timeout">
 Archive Timeout Option (<span class="id">--archive-timeout</span>)
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-number">
@@ -64,42 +68,38 @@ Check Archive Option (<span class="id">--archive-check</span>)
 Copy Archive Option (<span class="id">--archive-copy</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.3
-</div><div class="section2-toc-title"><a href="#section-backup/option-archive-header-check">
-Check WAL Headers Option (<span class="id">--archive-header-check</span>)
-</a></div></div><div class="section2-toc"><div class="section2-toc-number">
-3.4
 </div><div class="section2-toc-title"><a href="#section-backup/option-archive-mode-check">
 Check Archive Mode Option (<span class="id">--archive-mode-check</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
-3.5
+3.4
 </div><div class="section2-toc-title"><a href="#section-backup/option-backup-standby">
 Backup from Standby Option (<span class="id">--backup-standby</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
-3.6
+3.5
 </div><div class="section2-toc-title"><a href="#section-backup/option-checksum-page">
 Page Checksums Option (<span class="id">--checksum-page</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
-3.7
+3.6
 </div><div class="section2-toc-title"><a href="#section-backup/option-exclude">
 Path/File Exclusions Option (<span class="id">--exclude</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
-3.8
+3.7
 </div><div class="section2-toc-title"><a href="#section-backup/option-expire-auto">
 Expire Auto Option (<span class="id">--expire-auto</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
-3.9
+3.8
 </div><div class="section2-toc-title"><a href="#section-backup/option-manifest-save-threshold">
 Manifest Save Threshold Option (<span class="id">--manifest-save-threshold</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
-3.10
+3.9
 </div><div class="section2-toc-title"><a href="#section-backup/option-resume">
 Resume Option (<span class="id">--resume</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
-3.11
+3.10
 </div><div class="section2-toc-title"><a href="#section-backup/option-start-fast">
 Start Fast Option (<span class="id">--start-fast</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
-3.12
+3.11
 </div><div class="section2-toc-title"><a href="#section-backup/option-stop-auto">
 Stop Auto Option (<span class="id">--stop-auto</span>)
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-number">
@@ -529,8 +529,21 @@ Size can be entered in bytes (default) or KB, MB, GB, TB, or PB where the multip
 <pre class="code-block">default: 134217728
 allowed: 0-4503599627370496
 example: archive-get-queue-max=1073741824</pre>
-</div></div><div class="section2"><a id="section-archive/option-archive-push-queue-max"></a><div class="section2-header"><div class="section2-number">
+</div></div><div class="section2"><a id="section-archive/option-archive-header-check"></a><div class="section2-header"><div class="section2-number">
 2.3
+</div><div class="section2-title">
+Check WAL Headers Option (<span class="id">--archive-header-check</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Check PostgreSQL version/id in WAL headers.
+</div><div class="section-body-text">
+Enabled by default, this option checks the WAL header against the <span class="postgres">PostgreSQL</span> version and system identifier to ensure that the WAL is being copied to the correct stanza. This is in addition to checking <span class="file">pg_control</span> against the stanza and verifying that WAL is being copied from the same <span class="postgres">PostgreSQL</span> data directory where <span class="file">pg_control</span> is located.<br/>
+<br/>
+Therefore, disabling this check is fairly safe but should only be done when needed, e.g. if the WAL is encrypted.
+</div>
+<pre class="code-block">default: y
+example: archive-header-check=n</pre>
+</div></div><div class="section2"><a id="section-archive/option-archive-push-queue-max"></a><div class="section2-header"><div class="section2-number">
+2.4
 </div><div class="section2-title">
 Maximum Archive Push Queue Size Option (<span class="id">--archive-push-queue-max</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -550,7 +563,7 @@ example: archive-push-queue-max=1GB</pre>
 <div class="section-body-text">
 Deprecated Name: archive-queue-max
 </div></div></div><div class="section2"><a id="section-archive/option-archive-timeout"></a><div class="section2-header"><div class="section2-number">
-2.4
+2.5
 </div><div class="section2-title">
 Archive Timeout Option (<span class="id">--archive-timeout</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -597,21 +610,8 @@ The <span class="br-option">archive-check</span> option must be enabled if <span
 </div>
 <pre class="code-block">default: n
 example: archive-copy=y</pre>
-</div></div><div class="section2"><a id="section-backup/option-archive-header-check"></a><div class="section2-header"><div class="section2-number">
-3.3
-</div><div class="section2-title">
-Check WAL Headers Option (<span class="id">--archive-header-check</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Check PostgreSQL version/id in WAL headers.
-</div><div class="section-body-text">
-Enabled by default, this option checks the WAL header against the <span class="postgres">PostgreSQL</span> version and system identifier to ensure that the WAL is being copied to the correct stanza. This is in addition to checking <span class="file">pg_control</span> against the stanza and verifying that WAL is being copied from the same <span class="postgres">PostgreSQL</span> data directory where <span class="file">pg_control</span> is located.<br/>
-<br/>
-Therefore, disabling this check is fairly safe but should only be done when needed, e.g. if the WAL is encrypted.
-</div>
-<pre class="code-block">default: y
-example: archive-header-check=n</pre>
 </div></div><div class="section2"><a id="section-backup/option-archive-mode-check"></a><div class="section2-header"><div class="section2-number">
-3.4
+3.3
 </div><div class="section2-title">
 Check Archive Mode Option (<span class="id">--archive-mode-check</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -626,7 +626,7 @@ WAL segments pushed from a standby server might be logically the same as WAL seg
 <pre class="code-block">default: y
 example: archive-mode-check=n</pre>
 </div></div><div class="section2"><a id="section-backup/option-backup-standby"></a><div class="section2-header"><div class="section2-number">
-3.5
+3.4
 </div><div class="section2-title">
 Backup from Standby Option (<span class="id">--backup-standby</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -637,7 +637,7 @@ Enable backup from standby to reduce load on the primary cluster. This option re
 <pre class="code-block">default: n
 example: backup-standby=y</pre>
 </div></div><div class="section2"><a id="section-backup/option-checksum-page"></a><div class="section2-header"><div class="section2-number">
-3.6
+3.5
 </div><div class="section2-title">
 Page Checksums Option (<span class="id">--checksum-page</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -649,7 +649,7 @@ Failures in checksum validation will not abort a backup. Rather, warnings will b
 </div>
 <pre class="code-block">example: checksum-page=n</pre>
 </div></div><div class="section2"><a id="section-backup/option-exclude"></a><div class="section2-header"><div class="section2-number">
-3.7
+3.6
 </div><div class="section2-title">
 Path/File Exclusions Option (<span class="id">--exclude</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -665,7 +665,7 @@ Multiple exclusions may be specified on the command-line or in a configuration f
 </div>
 <pre class="code-block">example: exclude=junk/</pre>
 </div></div><div class="section2"><a id="section-backup/option-expire-auto"></a><div class="section2-header"><div class="section2-number">
-3.8
+3.7
 </div><div class="section2-title">
 Expire Auto Option (<span class="id">--expire-auto</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -676,7 +676,7 @@ The setting is enabled by default. Use caution when disabling this option as doi
 <pre class="code-block">default: y
 example: expire-auto=y</pre>
 </div></div><div class="section2"><a id="section-backup/option-manifest-save-threshold"></a><div class="section2-header"><div class="section2-number">
-3.9
+3.8
 </div><div class="section2-title">
 Manifest Save Threshold Option (<span class="id">--manifest-save-threshold</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -690,7 +690,7 @@ Size can be entered in bytes (default) or KB, MB, GB, TB, or PB where the multip
 allowed: 1-1099511627776
 example: manifest-save-threshold=5G</pre>
 </div></div><div class="section2"><a id="section-backup/option-resume"></a><div class="section2-header"><div class="section2-number">
-3.10
+3.9
 </div><div class="section2-title">
 Resume Option (<span class="id">--resume</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -701,7 +701,7 @@ Defines whether the resume feature is enabled. Resume can greatly reduce the amo
 <pre class="code-block">default: y
 example: resume=n</pre>
 </div></div><div class="section2"><a id="section-backup/option-start-fast"></a><div class="section2-header"><div class="section2-number">
-3.11
+3.10
 </div><div class="section2-title">
 Start Fast Option (<span class="id">--start-fast</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -714,7 +714,7 @@ This feature only works in <span class="postgres">PostgreSQL</span> >= <span cla
 <pre class="code-block">default: n
 example: start-fast=y</pre>
 </div></div><div class="section2"><a id="section-backup/option-stop-auto"></a><div class="section2-header"><div class="section2-number">
-3.12
+3.11
 </div><div class="section2-title">
 Stop Auto Option (<span class="id">--stop-auto</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -1885,5 +1885,5 @@ The database user name used when connecting to <span class="postgres">PostgreSQL
 </div>
 <pre class="code-block">example: pg1-user=backupuser</pre>
 </div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2021, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/master/LICENSE">MIT License</a>.  Updated August 23, 2021
+Copyright &copy; 2015-2021, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/master/LICENSE">MIT License</a>.  Updated September 30, 2021
 </div></body></html>
