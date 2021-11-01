@@ -4,9 +4,9 @@
 
 pgBackRest aims to be a reliable, easy-to-use backup and restore solution that can seamlessly scale up to the largest databases and workloads by utilizing algorithms that are optimized for database-specific requirements.
 
-pgBackRest [v2.35](https://github.com/pgbackrest/pgbackrest/releases/tag/release/2.35) is the current stable release. Release notes are on the [Releases](http://www.pgbackrest.org/release.html) page.
+pgBackRest [v2.36](https://github.com/pgbackrest/pgbackrest/releases/tag/release/2.36) is the current stable release. Release notes are on the [Releases](http://www.pgbackrest.org/release.html) page.
 
-Documentation for v1 can be found [here](http://www.pgbackrest.org/1). No further releases are planned for v1 because v2 is backward-compatible with v1 options and repositories.
+Please find us on [GitHub](https://github.com/pgbackrest/pgbackrest) and give us a star if you like pgBackRest!
 
 ## Features
 
@@ -100,13 +100,15 @@ pgBackRest strives to be easy to configure and operate:
 
 - [Configuration reference](http://www.pgbackrest.org/configuration.html) for creating pgBackRest configurations.
 
+Documentation for v1 can be found [here](http://www.pgbackrest.org/1). No further releases are planned for v1 because v2 is backward-compatible with v1 options and repositories.
+
 ## Contributions
 
-Contributions to pgBackRest are always welcome! Please see our [Contributing Guidelines](https://github.com/pgbackrest/pgbackrest/blob/master/CONTRIBUTING.md) for details on how to contribute features, improvements or issues.
+Contributions to pgBackRest are always welcome! Please see our [Contributing Guidelines](https://github.com/pgbackrest/pgbackrest/blob/main/CONTRIBUTING.md) for details on how to contribute features, improvements or issues.
 
 ## Support
 
-pgBackRest is completely free and open source under the [MIT](https://github.com/pgbackrest/pgbackrest/blob/master/LICENSE) license. You may use it for personal or commercial purposes without any restrictions whatsoever. Bug reports are taken very seriously and will be addressed as quickly as possible.
+pgBackRest is completely free and open source under the [MIT](https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE) license. You may use it for personal or commercial purposes without any restrictions whatsoever. Bug reports are taken very seriously and will be addressed as quickly as possible.
 
 Creating a robust disaster recovery policy with proper replication and backup strategies can be a very complex and daunting task. You may find that you need help during the architecture phase and ongoing support to ensure that your enterprise continues running smoothly.
 

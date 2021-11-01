@@ -10,6 +10,8 @@
 <meta name="description" content="The pgBackRest Releases detail each version of the software and lists the changes made in each version."></meta>
 <meta property="og:description" content="The pgBackRest Releases detail each version of the software and lists the changes made in each version."></meta>
 <link rel="stylesheet" href="default.css" type="text/css"></link>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
 </head><body><div class="page-header"><div class="page-header-title">
 pgBackRest Releases
 </div></div><div class="page-menu"><div class="menu-body"><div class="menu"><a class="menu-link" href="/">
@@ -30,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.35">
-v2.35 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.36">
+v2.36 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -46,6 +48,38 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.36"></a><div class="section2-header"><div class="section2-title">
+v2.36 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Minor Bug Fixes and Improvements
+</div><div class="section2-subsubtitle">
+Released November 1, 2021
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Allow <q>global</q> as a stanza prefix. (<i>Reviewed by Stefan Fercot. Reported by Younes Alhroub.</i>)
+</li><li class="list-unordered">
+Fix segfault on invalid <span class="host">GCS</span> key file. (<i>Reviewed by Stephen Frost. Reported by Henrik Feldt.</i>)
+</li></ul><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Allow <span class="br-option">link-map</span> option to create new links. (<i>Reviewed by Don Seiler, Stefan Fercot, Chris Bandy. Suggested by Don Seiler.</i>)
+</li><li class="list-unordered">
+Increase max index allowed for <span class="id">pg</span>/<span class="id">repo</span> options to 256. (<i>Reviewed by Cynthia Shang.</i>)
+</li><li class="list-unordered">
+Add <span class="id">WebIdentity</span> authentication for <span class="host">AWS S3</span>. (<i>Reviewed by James Callahan, Reid Thompson, Benjamin Blattberg, Andrew L'Ecuyer.</i>)
+</li><li class="list-unordered">
+Report backup file validation errors in <span class="file">backup.info</span>. (<i>Contributed by Stefan Fercot. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Add recovery start time to online backup restore log. (<i>Reviewed by Tom Swartz, Stefan Fercot. Suggested by Tom Swartz.</i>)
+</li><li class="list-unordered">
+Report original error and retries on local job failure. (<i>Reviewed by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Rename page checksum error to error list in info text output. (<i>Reviewed by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Add hints to standby replay timeout message. (<i>Reviewed by Cynthia Shang, Stefan Fercot. Suggested by Leigh Downs.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.35"></a><div class="section2-header"><div class="section2-title">
 v2.35 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -53,7 +87,7 @@ Binary Protocol
 </div><div class="section2-subsubtitle">
 Released August 23, 2021
 </div><div class="section-body-text">
-<b>IMPORTANT NOTE</b>: The log level for copied files in the <span class="cmd">backup</span>/<span class="cmd">restore</span> commands has been changed to <span class="id">detail</span>. This makes the <span class="id">info</span> log level less noisy but if these messages are required then set the log level for the <span class="cmd">backup</span>/<span class="cmd">restore</span> commands to <span class="id">detail</span>.
+<b>IMPORTANT NOTE</b>: The log level for copied files in the <span class="cmd">backup</span>/<span class="cmd">restore</span> commands has been changed to <span class="id">detail</span>. This makes the <span class="id">info</span> log level less noisy but if these messages are required then set the log level for the <span class="cmd">backup</span>/<span class="cmd">restore</span> commands to <span class="id">detail</span>
 </div><div class="section-body-text">
 <b> Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
@@ -100,9 +134,7 @@ Add check for test path inside repo path. (<i>Reviewed by Greg Sabino Mullane. S
 Add CodeQL static code analysis. (<i>Reviewed by Cynthia Shang.</i>)
 </li><li class="list-unordered">
 Update tests to use standard patterns. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.34"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.34"></a><div class="section2-header"><div class="section2-title">
 v2.34 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 PostgreSQL 14 Support
@@ -375,7 +407,7 @@ Improve error when <span class="br-option">pg1-path</span> option missing for <s
 </li><li class="list-unordered">
 Add hint when checksum delta is enabled after a timeline switch. (<i>Reviewed by Matt Bunter, Cynthia Shang.</i>)
 </li><li class="list-unordered">
-Use <span class="postgres">PostgreSQL</span> instead of <span class="id">postmaster</span> where appropriate. (<i>Reviewed by Cynthia Shang.</i>)
+Use <span class="postgres">PostgreSQL</span> instead of <span class="id">postma&#115;ter</span> where appropriate. (<i>Reviewed by Cynthia Shang.</i>)
 </li></ul><div class="section2-subtitle">
 Additional Notes
 </div><div class="section-body-text">
@@ -1405,7 +1437,7 @@ Add passwordless SSH configuration.
 </li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
-Rename <span class="host">master</span> to <span class="host">primary</span> in documentation to align with <span class="postgres">PostgreSQL</span> convention.
+Rename <span class="host">ma&#115;ter</span> to <span class="host">primary</span> in documentation to align with <span class="postgres">PostgreSQL</span> convention.
 </li></ul></div></div><div class="section2"><a id="1.23"></a><div class="section2-header"><div class="section2-title">
 v1.23 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -1491,7 +1523,7 @@ Critical 8.3/8.4 Bug Fix
 </div><div class="section2-subsubtitle">
 Released June 27, 2017
 </div><div class="section-body-text">
-<b>IMPORTANT NOTE</b>: <span class="postgres">PostgreSQL</span> <span class="host">8.3</span> and <span class="host">8.4</span> installations utilizing tablespaces should upgrade immediately from any <span class="host">v1</span> release and run a full backup. A bug prevented tablespaces from being backed up on these versions only. <span class="postgres">PostgreSQL</span> &ge; <span class="host">9.0</span> is not affected.
+<b>IMPORTANT NOTE</b>: <span class="postgres">PostgreSQL</span> <span class="host">8.3</span> and <span class="host">8.4</span> installations utilizing tablespaces should upgrade immediately from any <span class="host">v1</span> release and run a full backup. A bug prevented tablespaces from being backed up on these versions only. <span class="postgres">PostgreSQL</span> &ge; <span class="host">9.0</span>
 </div><div class="section-body-text">
 <b> Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
@@ -1521,7 +1553,7 @@ Fixed the <span class="cmd">info</span> command so the WAL archive min/max displ
 </li><li class="list-unordered">
 Fixed the <span class="cmd">backup</span> command so the <span class="br-setting">backup-standby</span> option is reset (and the backup proceeds on the primary) if the standby is not configured and/or reachable. (<i>Fixed by Cynthia Shang. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
-Fixed config warnings raised from a remote process causing errors in the master process. (<i>Fixed by Cynthia Shang. Reviewed by David Steele.</i>)
+Fixed config warnings raised from a remote process causing errors in the ma&#115;ter process. (<i>Fixed by Cynthia Shang. Reviewed by David Steele.</i>)
 </li></ul><div class="section-body-text">
 <b> Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
@@ -1553,11 +1585,11 @@ Added validation of <span class="br-setting">pgbackrest.conf</span> to display w
 </li></ul><div class="section-body-text">
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
-Simplify locking scheme. Now, only the master process will hold write locks (for <span class="cmd">archive-push</span> and <span class="cmd">backup</span> commands) and not all local and remote worker processes as before.
+Simplify locking scheme. Now, only the ma&#115;ter process will hold write locks (for <span class="cmd">archive-push</span> and <span class="cmd">backup</span> commands) and not all local and remote worker processes as before.
 </li><li class="list-unordered">
 Do not set timestamps of files in the backup directories to match timestamps in the cluster directory. This was originally done to enable backup resume, but that process is now implemented with checksums.
 </li><li class="list-unordered">
-Improved error message when the <span class="cmd">restore</span> command detects the presence of <span class="file">postmaster.pid</span>. (<i>Suggested by Yogesh Sharma.</i>)
+Improved error message when the <span class="cmd">restore</span> command detects the presence of <span class="file">postma&#115;ter.pid</span>. (<i>Suggested by Yogesh Sharma.</i>)
 </li><li class="list-unordered">
 Renumber return codes between 25 and 125 to avoid PostgreSQL interpreting some as fatal signal exceptions. (<i>Suggested by Yogesh Sharma.</i>)
 </li></ul></div></div><div class="section2"><a id="1.17"></a><div class="section2-header"><div class="section2-title">
@@ -1869,7 +1901,7 @@ Backup from a standby cluster. A connection to the primary cluster is still requ
 </li><li class="list-unordered">
 More flexible configuration for databases. Master and standby can both be configured on the backup server and <span class="backrest">pgBackRest</span> will automatically determine which is the primary. This means no configuration changes for backup are required after failing over from a primary to standby when a separate backup server is used.
 </li><li class="list-unordered">
-Exclude directories during backup that are cleaned, recreated, or zeroed by <span class="postgres">PostgreSQL</span> at startup. These include <span class="path">pgsql_tmp</span> and <span class="path">pg_stat_tmp</span>. The <span class="file">postgresql.auto.conf.tmp</span> file is now excluded in addition to files that were already excluded: <span class="file">backup_label.old</span>, <span class="file">postmaster.opts</span>, <span class="file">postmaster.pid</span>, <span class="file">recovery.conf</span>, <span class="file">recovery.done</span>.
+Exclude directories during backup that are cleaned, recreated, or zeroed by <span class="postgres">PostgreSQL</span> at startup. These include <span class="path">pgsql_tmp</span> and <span class="path">pg_stat_tmp</span>. The <span class="file">postgresql.auto.conf.tmp</span> file is now excluded in addition to files that were already excluded: <span class="file">backup_label.old</span>, <span class="file">postma&#115;ter.opts</span>, <span class="file">postma&#115;ter.pid</span>, <span class="file">recovery.conf</span>, <span class="file">recovery.done</span>.
 </li><li class="list-unordered">
 Experimental support for non-exclusive backups in <span class="postgres">PostgreSQL</span> 9.6 beta4. Changes to the control/catalog/WAL versions in subsequent betas may break compatibility but <span class="backrest">pgBackRest</span> will be updated with each release to keep pace.
 </li></ul><div class="section-body-text">
@@ -2063,7 +2095,7 @@ Released April 6, 2016
 </div><div class="section-body-text">
 <b> Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
-Fixed an issue where the master process was passing <span class="br-setting">--repo-remote-path</span> instead of <span class="br-setting">--repo-path</span> to the remote and causing the lock files to be created in the default repository directory (<span class="path">/var/lib/backup</span>), generally ending in failure. This was only an issue when <span class="br-setting">--repo-remote-path</span> was defined on the command line rather than in <span class="file">pg_backrest.conf</span>. (<i>Reported by Jan Wieck.</i>)
+Fixed an issue where the ma&#115;ter process was passing <span class="br-setting">--repo-remote-path</span> instead of <span class="br-setting">--repo-path</span> to the remote and causing the lock files to be created in the default repository directory (<span class="path">/var/lib/backup</span>), generally ending in failure. This was only an issue when <span class="br-setting">--repo-remote-path</span> was defined on the command line rather than in <span class="file">pg_backrest.conf</span>. (<i>Reported by Jan Wieck.</i>)
 </li></ul></div></div><div class="section2"><a id="0.91"></a><div class="section2-header"><div class="section2-title">
 v0.91 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -2429,7 +2461,7 @@ All options can now be set on the command-line making <span class="file">pg_back
 </li><li class="list-unordered">
 De/compression is now performed without threads and checksum/size is calculated in stream. That means file checksums are no longer optional.
 </li><li class="list-unordered">
-Added option <span class="br-setting">--no-start-stop</span> to allow backups when Postgres is shut down. If <span class="file">postmaster.pid</span> is present then <span class="br-setting">--force</span> is required to make the backup run (though if Postgres is running an inconsistent backup will likely be created). This option was added primarily for the purpose of unit testing, but there may be applications in the real world as well.
+Added option <span class="br-setting">--no-start-stop</span> to allow backups when Postgres is shut down. If <span class="file">postma&#115;ter.pid</span> is present then <span class="br-setting">--force</span> is required to make the backup run (though if Postgres is running an inconsistent backup will likely be created). This option was added primarily for the purpose of unit testing, but there may be applications in the real world as well.
 </li><li class="list-unordered">
 Checksum for <span class="file">backup.manifest</span> to detect a corrupted/modified manifest.
 </li><li class="list-unordered">
@@ -2517,7 +2549,7 @@ Released March 26, 2014
 </div><div class="section-body-text">
 <b> Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
-Removed <span class="br-setting">master_stderr_discard</span> option on database SSH connections. There have been occasional lockups and they could be related to issues originally seen in the file code. (<i>Reported by Stephen Frost.</i>)
+Removed <span class="br-setting">ma&#115;ter_stderr_discard</span> option on database SSH connections. There have been occasional lockups and they could be related to issues originally seen in the file code. (<i>Reported by Stephen Frost.</i>)
 </li><li class="list-unordered">
 Changed lock file conflicts on <span class="cmd">backup</span> and <span class="cmd">expire</span> commands to <span class="id">ERROR</span>. They were set to <span class="id">DEBUG</span> due to a copy-and-paste from the archive locks.
 </li></ul></div></div><div class="section2"><a id="0.10"></a><div class="section2-header"><div class="section2-title">
@@ -2545,5 +2577,5 @@ Additional Notes
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2021, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/master/LICENSE">MIT License</a>.  Updated August 23, 2021
+Copyright &copy; 2015-2021, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated November 1, 2021
 </div></body></html>
