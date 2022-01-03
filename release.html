@@ -32,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.36">
-v2.36 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.37">
+v2.37 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -48,6 +48,60 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.37"></a><div class="section2-header"><div class="section2-title">
+v2.37 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+TLS Server
+</div><div class="section2-subsubtitle">
+Released January 3, 2022
+</div><div class="section-body-text">
+<b>IMPORTANT NOTE</b>: If the <span class="cmd">restore</span> command is unable to find a backup that matches a specified time target then an error will be thrown, whereas before a warning was logged.<br/>
+<br/>
+<b>IMPORTANT NOTE</b>: The default <span class="host">TLS</span> server port has not yet been approved by <span class="host">IANA</span> and is subject to change once the approval process is complete.
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Fix <span class="cmd">restore</span> delta link mapping when path/file already exists. (<i>Reviewed by Reid Thompson. Reported by Younes Alhroub.</i>)
+</li><li class="list-unordered">
+Fix socket leak on connection retries. (<i>Reviewed by Reid Thompson. Reported by James Coleman.</i>)
+</li></ul><div class="section-body-text">
+<b> Features:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Add <span class="host">TLS</span> server. (<i>Reviewed by Stephen Frost, Reid Thompson, Andrew L'Ecuyer.</i>)
+</li><li class="list-unordered">
+Add <span class="br-option">--cmd</span> option. (<i>Contributed by Reid Thompson. Reviewed by Stefan Fercot, David Steele. Suggested by Virgile CREVON.</i>)
+</li></ul><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Check archive immediately after backup start. (<i>Reviewed by Reid Thompson, David Christensen.</i>)
+</li><li class="list-unordered">
+Add timeline and checkpoint checks to backup. (<i>Reviewed by Stefan Fercot, Reid Thompson.</i>)
+</li><li class="list-unordered">
+Check that clusters are alive and correctly configured during a backup. (<i>Reviewed by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Error when <span class="cmd">restore</span> is unable to find a backup to match the time target. (<i>Reviewed by Reid Thompson, Douglas J Hunley. Suggested by Douglas J Hunley.</i>)
+</li><li class="list-unordered">
+Parse protocol/port in <span class="host">S3</span>/<span class="host">Azure</span> endpoints. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Add warning when <span class="pg-setting">checkpoint_timeout</span> exceeds <span class="br-option">db-timeout</span>. (<i>Contributed by Stefan Fercot. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Add verb to HTTP error output. (<i>Contributed by Christoph Berg. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Allow y/n arguments for boolean command-line options. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Make backup size logging exactly match <span class="cmd">info</span> command output. (<i>Contributed by Reid Thompson. Reviewed by David Steele. Suggested by Mahomed Hussein.</i>)
+</li></ul><div class="section2-subtitle">
+Additional Notes
+</div><div class="section-body-text">
+<b>Documentation Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Display size option default and allowed values with appropriate units. (<i>Reviewed by Reid Thompson.</i>)
+</li><li class="list-unordered">
+Fix typos and improve documentation for the <span class="br-option">tablespace-map-all</span> option. (<i>Reviewed by Reid Thompson. Suggested by Reid Thompson.</i>)
+</li><li class="list-unordered">
+Remove obsolete statement about future multi-repository support. (<i>Suggested by David Christensen.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.36"></a><div class="section2-header"><div class="section2-title">
 v2.36 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -78,9 +132,7 @@ Report original error and retries on local job failure. (<i>Reviewed by Stefan F
 Rename page checksum error to error list in info text output. (<i>Reviewed by Stefan Fercot.</i>)
 </li><li class="list-unordered">
 Add hints to standby replay timeout message. (<i>Reviewed by Cynthia Shang, Stefan Fercot. Suggested by Leigh Downs.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.35"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.35"></a><div class="section2-header"><div class="section2-title">
 v2.35 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Binary Protocol
@@ -2577,5 +2629,5 @@ Additional Notes
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2021, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated November 1, 2021
+Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated January 3, 2022
 </div></body></html>
