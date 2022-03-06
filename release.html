@@ -32,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.37">
-v2.37 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.38">
+v2.38 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -48,6 +48,64 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.38"></a><div class="section2-header"><div class="section2-title">
+v2.38 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Minor Bug Fixes and Improvements
+</div><div class="section2-subsubtitle">
+Released March 6, 2022
+</div><div class="section-body-text">
+<b>IMPORTANT NOTE</b>: Repository size reported by the <span class="cmd">info</span> command is now entirely based on what <span class="backrest">pgBackRest</span> has written to storage. Previously, in certain cases, <span class="backrest">pgBackRest</span> could detect if additional compression was being applied by the storage but this is no longer supported.
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Retry errors in S3 batch file delete. (<i>Reviewed by Reid Thompson. Reported by Alex Richman.</i>)
+</li><li class="list-unordered">
+Allow case-insensitive matching of <span class="host">HTTP</span> <span class="id">connection</span> header values. (<i>Reviewed by Reid Thompson. Reported by R&eacute;mi Vidier.</i>)
+</li></ul><div class="section-body-text">
+<b> Features:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Add support for <span class="host">AWS</span> <span class="host">S3</span> server-side encryption using <span class="host">KMS</span>. (<i>Contributed by Christoph Berg. Reviewed by David Steele, Tharindu Amila.</i>)
+</li><li class="list-unordered">
+Add <span class="br-option">archive-missing-retry</span> option. (<i>Reviewed by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Add backup type filter to <span class="cmd">info</span> command. (<i>Contributed by Stefan Fercot. Reviewed by David Steele.</i>)
+</li></ul><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Retry on page validation failure during <span class="cmd">backup</span>. (<i>Reviewed by Stephen Frost, David Christensen.</i>)
+</li><li class="list-unordered">
+Handle <span class="host">TLS</span> servers that do not close connections gracefully. (<i>Reviewed by R&eacute;mi Vidier, David Christensen, Stephen Frost.</i>)
+</li><li class="list-unordered">
+Add backup LSNs to <span class="cmd">info</span> command output. (<i>Contributed by Stefan Fercot. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Automatically strip trailing slashes for <span class="cmd">repo-ls</span> paths. (<i>Contributed by David Christensen. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Do not retry fatal errors. (<i>Reviewed by Reid Thompson.</i>)
+</li><li class="list-unordered">
+Remove support for <span class="host">PostgreSQL</span> <span class="id">8.3</span>/<span class="id">8.4</span>. (<i>Reviewed by Reid Thompson, Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Remove logic that tried to determine additional file system compression. (<i>Reviewed by Reid Thompson, Stefan Fercot.</i>)
+</li></ul><div class="section2-subtitle">
+Additional Notes
+</div><div class="section-body-text">
+<b>Documentation Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Move <span class="id">repo</span> options in <span class="host">TLS</span> documentation to the <span class="id">global</span> section. (<i>Reported by Anton Kurochkin.</i>)
+</li><li class="list-unordered">
+Remove unused <span class="br-option">backup-standby</span> option from stanza commands. (<i>Reported by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Fix typos in help and release notes. (<i>Fixed by Daniel Gustafsson. Reviewed by David Steele.</i>)
+</li></ul><div class="section-body-text">
+<b>Documentation Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Add aliveness check to <span class="host">systemd</span> service configuration. (<i>Suggested by Yogesh Sharma.</i>)
+</li><li class="list-unordered">
+Add FAQ explaining WAL archive suffix. (<i>Contributed by Stefan Fercot. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Note that replications slots are not restored. (<i>Contributed by Reid Thompson. Reviewed by David Steele, Stefan Fercot. Suggested by Christophe Courtois.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.37"></a><div class="section2-header"><div class="section2-title">
 v2.37 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -98,9 +156,7 @@ Display size option default and allowed values with appropriate units. (<i>Revie
 Fix typos and improve documentation for the <span class="br-option">tablespace-map-all</span> option. (<i>Reviewed by Reid Thompson. Suggested by Reid Thompson.</i>)
 </li><li class="list-unordered">
 Remove obsolete statement about future multi-repository support. (<i>Suggested by David Christensen.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.36"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.36"></a><div class="section2-header"><div class="section2-title">
 v2.36 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Minor Bug Fixes and Improvements
@@ -2627,5 +2683,5 @@ Additional Notes
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated January 26, 2022
+Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated March 6, 2022
 </div></body></html>
