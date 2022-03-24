@@ -1430,7 +1430,7 @@ Multiple Repositories
 </div></div><div class="section-body"><div class="section-body-text">
 Multiple repositories may be configured as demonstrated in <a href="#s3-support">S3 Support</a>. A potential benefit is the ability to have a local repository for fast restores and a remote repository for redundancy.
 </div><div class="section-body-text">
-Some commands, e.g. <span class="cmd">stanza-create</span>/<span class="cmd">stanza-update</span>, will automatically work with all configured repositories while others, e.g. <a href="#delete-stanza">stanza-delete</a>, will require a repository to be specified using the <span class="br-option">repo</span> option. See the <a href="command.html">command reference</a> for details on which commands require the repository to be specified.
+Some commands, e.g. <span class="cmd">stanza-create</span>/<span class="cmd">stanza-upgrade</span>, will automatically work with all configured repositories while others, e.g. <a href="#delete-stanza">stanza-delete</a>, will require a repository to be specified using the <span class="br-option">repo</span> option. See the <a href="command.html">command reference</a> for details on which commands require the repository to be specified.
 </div><div class="section-body-text">
 Note that the <span class="br-option">repo</span> option is not required when only <span class="br-option">repo1</span> is configured in order to maintain backward compatibility. However, the <span class="br-option">repo</span> option <i>is</i> required when a single repo is configured as, e.g. <span class="br-option">repo2</span>. This is to prevent command breakage if a new repository is added later.
 </div><div class="section-body-text">
