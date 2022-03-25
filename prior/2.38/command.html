@@ -7978,11 +7978,11 @@ TLS Server Authorized Clients Option (<span class="id">--tls-server-auth</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 TLS server authorized clients.
 </div><div class="section-body-text">
-Clients are authorized on the server by verifying their certificate and checking the certificate CN (Common name) against a list on the server configured with the <span class="br-option">tls-server-auth</span>.<br/>
+Clients are authorized on the server by verifying their certificate and checking their certificate CN (Common name) against a list on the server configured with the <span class="br-option">tls-server-auth</span> option.<br/>
 <br/>
-A CN can be authorized for as many stanzas as needed by repeating the <span class="br-option">tls-server-auth</span> option, or for all stanzas by specifying <span class="br-option">tls-server-auth=*</span>.
+A client CN can be authorized for as many stanzas as needed by repeating the <span class="br-option">tls-server-auth</span> option, or for all stanzas by specifying <span class="br-option">tls-server-auth=client-cn=*</span>. Wildcards may not be specified for the client CN.
 </div>
-<pre class="code-block">example: --tls-server-auth=stanza1</pre>
+<pre class="code-block">example: --tls-server-auth=client-cn=stanza1</pre>
 </div></div><div class="section3"><a id="command-server/category-command/option-tls-server-ca-file"></a><div class="section3-header"><div class="section3-number">
 12.1.3
 </div><div class="section3-title">
@@ -11497,5 +11497,5 @@ Version Command (<span class="id">version</span>)
 </div></div><div class="section-intro">
 Displays installed <span class="backrest">pgBackRest</span> version.
 </div><div class="section-body"></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated March 6, 2022
+Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated March 25, 2022
 </div></body></html>

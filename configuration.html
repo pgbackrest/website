@@ -1940,11 +1940,11 @@ TLS Server Authorized Clients Option (<span class="id">--tls-server-auth</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 TLS server authorized clients.
 </div><div class="section-body-text">
-Clients are authorized on the server by verifying their certificate and checking the certificate CN (Common name) against a list on the server configured with the <span class="br-option">tls-server-auth</span>.<br/>
+Clients are authorized on the server by verifying their certificate and checking their certificate CN (Common name) against a list on the server configured with the <span class="br-option">tls-server-auth</span> option.<br/>
 <br/>
-A CN can be authorized for as many stanzas as needed by repeating the <span class="br-option">tls-server-auth</span> option, or for all stanzas by specifying <span class="br-option">tls-server-auth=*</span>.
+A client CN can be authorized for as many stanzas as needed by repeating the <span class="br-option">tls-server-auth</span> option, or for all stanzas by specifying <span class="br-option">tls-server-auth=client-cn=*</span>. Wildcards may not be specified for the client CN.
 </div>
-<pre class="code-block">example: tls-server-auth=stanza1</pre>
+<pre class="code-block">example: tls-server-auth=client-cn=stanza1</pre>
 </div></div><div class="section2"><a id="section-server/option-tls-server-ca-file"></a><div class="section2-header"><div class="section2-number">
 8.3
 </div><div class="section2-title">
@@ -2196,5 +2196,5 @@ The database user name used when connecting to <span class="postgres">PostgreSQL
 </div>
 <pre class="code-block">example: pg1-user=backupuser</pre>
 </div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated March 6, 2022
+Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated March 25, 2022
 </div></body></html>
