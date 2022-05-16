@@ -32,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.38">
-v2.38 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.39">
+v2.39 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -48,6 +48,76 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.39"></a><div class="section2-header"><div class="section2-title">
+v2.39 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Verify and File Bundling
+</div><div class="section2-subsubtitle">
+Released May 16, 2022
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Fix error thrown from <span class="id">FINALLY()</span> causing an infinite loop. (<i>Reviewed by Stephen Frost.</i>)
+</li><li class="list-unordered">
+Error on all lock failures except another process holding the lock. (<i>Reviewed by Reid Thompson, Geir R&aring;ness. Reported by Geir R&aring;ness.</i>)
+</li></ul><div class="section-body-text">
+<b> Features:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Backup file bundling for improved small file support. (<i>Reviewed by Reid Thompson, Stefan Fercot, Chris Bandy.</i>)
+</li><li class="list-unordered">
+Verify command to validate the contents of a repository. (<i>Contributed by Cynthia Shang, Reid Thompson. Reviewed by David Steele, Stefan Fercot.</i>)
+</li><li class="list-unordered">
+<span class="postgres">PostgreSQL</span> 15 support. (<i>Reviewed by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Show backup percent complete in <span class="cmd">info</span> output. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Auto-select backup for <span class="cmd">restore</span> command <span class="br-option">--type=lsn</span>. (<i>Contributed by Reid Thompson. Reviewed by Stefan Fercot, David Steele.</i>)
+</li><li class="list-unordered">
+Suppress existing WAL warning when <span class="br-option">archive-mode-check</span> is disabled. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Add <span class="host">AWS</span> <span class="host">IMDSv2</span> support. (<i>Contributed by Nuno Pires. Reviewed by David Steele.</i>)
+</li></ul><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Allow <span class="br-option">repo-hardlink</span> option to be changed after full backup. (<i>Reviewed by Reid Thompson.</i>)
+</li><li class="list-unordered">
+Increase precision of percent complete logging for <span class="cmd">backup</span> and <span class="cmd">restore</span>. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Improve path validation for <span class="cmd">repo-*</span> commands. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Improve <span class="cmd">stop</span> command to honor <span class="br-option">stanza</span> option. (<i>Contributed by Reid Thompson. Reviewed by David Steele. Suggested by ragaoua.</i>)
+</li><li class="list-unordered">
+Improve error message for invalid <span class="br-option">repo-azure-key</span>. (<i>Contributed by Reid Thompson. Reviewed by David Steele. Suggested by Seth Daniel.</i>)
+</li><li class="list-unordered">
+Add hint to check the log on <span class="cmd">archive-get</span>/<span class="cmd">archive-push</span> async error. (<i>Reviewed by Reid Thompson.</i>)
+</li><li class="list-unordered">
+Add <span class="id">ClockError</span> for unexpected clock skew and timezone changes. (<i>Reviewed by Greg Sabino Mullane, Stefan Fercot. Suggested by Greg Sabino Mullane.</i>)
+</li><li class="list-unordered">
+Strip extensions from history manifest before showing in error message. (<i>Reviewed by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Add user:group to lock permission error. (<i>Reviewed by Reid Thompson.</i>)
+</li></ul><div class="section2-subtitle">
+Additional Notes
+</div><div class="section-body-text">
+<b>Documentation Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Fix incorrect reference to <span class="id">stanza-update</span> in the user guide. (<i>Fixed by Abubakar Mohammed. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Fix example for <span class="br-option">repo-gcs-key-type</span> option in configuration reference. (<i>Reviewed by Reid Thompson.</i>)
+</li><li class="list-unordered">
+Fix <span class="br-option">tls-server-auth</span> example and add clarifications. (<i>Reviewed by Reid Thompson.</i>)
+</li></ul><div class="section-body-text">
+<b>Documentation Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Simplify messaging around supported versions in the documentation. (<i>Reviewed by Stefan Fercot, Reid Thompson, Greg Sabino Mullane.</i>)
+</li><li class="list-unordered">
+Add option type descriptions. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Add FAQ about backup types and restore speed. (<i>Contributed by David Christensen. Reviewed by Reid Thompson.</i>)
+</li><li class="list-unordered">
+Document required base branch for pull requests. (<i>Contributed by David Christensen. Reviewed by Reid Thompson.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.38"></a><div class="section2-header"><div class="section2-title">
 v2.38 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -104,9 +174,7 @@ Add aliveness check to <span class="host">systemd</span> service configuration. 
 Add FAQ explaining WAL archive suffix. (<i>Contributed by Stefan Fercot. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Note that replications slots are not restored. (<i>Contributed by Reid Thompson. Reviewed by David Steele, Stefan Fercot. Suggested by Christophe Courtois.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.37"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.37"></a><div class="section2-header"><div class="section2-title">
 v2.37 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 TLS Server
@@ -2613,7 +2681,7 @@ Released April 13, 2014
 </div><div class="section-body-text">
 <b> Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
-The <span class="cmd">archive-get</span> command now returns a 1 when the archive file is missing to differentiate from hard errors (ssh connection failure, file copy error, etc.) This lets <span class="postgres">PostgreSQL</span> know that that the archive stream has terminated normally. However, this does not take into account possible holes in the archive stream. (<i>Reported by Stephen Frost.</i>)
+The <span class="cmd">archive-get</span> command now returns a 1 when the archive file is missing to differentiate from hard errors (ssh connection failure, file copy error, etc.) This lets <span class="postgres">PostgreSQL</span> know that the archive stream has terminated normally. However, this does not take into account possible holes in the archive stream. (<i>Reported by Stephen Frost.</i>)
 </li></ul></div></div><div class="section2"><a id="0.17"></a><div class="section2-header"><div class="section2-title">
 v0.17 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -2683,5 +2751,5 @@ Additional Notes
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated March 6, 2022
+Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated May 16, 2022
 </div></body></html>
