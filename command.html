@@ -917,72 +917,8 @@ example: --repo1-type=cifs</pre>
 2.5
 </div><div class="section2-title">
 Stanza Options
-</div></div><div class="section-body"><div class="section3"><a id="command-archive-get/category-stanza/option-pg-host"></a><div class="section3-header"><div class="section3-number">
+</div></div><div class="section-body"><div class="section3"><a id="command-archive-get/category-stanza/option-pg-path"></a><div class="section3-header"><div class="section3-number">
 2.5.1
-</div><div class="section3-title">
-PostgreSQL Host Option (<span class="id">--pg-host</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host for operating remotely via SSH.
-</div><div class="section-body-text">
-Used for backups where the <span class="postgres">PostgreSQL</span> host is different from the repository host.
-</div>
-<pre class="code-block">example: --pg1-host=db.domain.com</pre>
-<div class="section-body-text">
-Deprecated Name: db-host
-</div></div></div><div class="section3"><a id="command-archive-get/category-stanza/option-pg-host-ca-file"></a><div class="section3-header"><div class="section3-number">
-2.5.2
-</div><div class="section3-title">
-PostgreSQL Host Certificate Authority File Option (<span class="id">--pg-host-ca-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host certificate authority file.
-</div><div class="section-body-text">
-Use a CA file other than the system default for connecting to the <span class="postgres">PostgreSQL</span> host.
-</div>
-<pre class="code-block">example: --pg1-host-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
-</div></div><div class="section3"><a id="command-archive-get/category-stanza/option-pg-host-ca-path"></a><div class="section3-header"><div class="section3-number">
-2.5.3
-</div><div class="section3-title">
-PostgreSQL Host Certificate Authority Path Option (<span class="id">--pg-host-ca-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host certificate authority path.
-</div><div class="section-body-text">
-Use a CA path other than the system default for connecting to the <span class="postgres">PostgreSQL</span> host.
-</div>
-<pre class="code-block">example: --pg1-host-ca-path=/etc/pki/tls/certs</pre>
-</div></div><div class="section3"><a id="command-archive-get/category-stanza/option-pg-host-cert-file"></a><div class="section3-header"><div class="section3-number">
-2.5.4
-</div><div class="section3-title">
-PostgreSQL Host Certificate File Option (<span class="id">--pg-host-cert-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host certificate file.
-</div><div class="section-body-text">
-Sent to <span class="postgres">PostgreSQL</span> host to prove client identity.
-</div>
-<pre class="code-block">example: --pg1-host-cert-file=/path/to/client.crt</pre>
-</div></div><div class="section3"><a id="command-archive-get/category-stanza/option-pg-host-key-file"></a><div class="section3-header"><div class="section3-number">
-2.5.5
-</div><div class="section3-title">
-PostgreSQL Host Key File Option (<span class="id">--pg-host-key-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host key file.
-</div><div class="section-body-text">
-Proves client certificate was sent by owner.
-</div>
-<pre class="code-block">example: --pg1-host-key-file=/path/to/client.key</pre>
-</div></div><div class="section3"><a id="command-archive-get/category-stanza/option-pg-host-type"></a><div class="section3-header"><div class="section3-number">
-2.5.6
-</div><div class="section3-title">
-PostgreSQL Host Protocol Type Option (<span class="id">--pg-host-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host protocol type.
-</div><div class="section-body-text">
-The following protocol types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">ssh</span> - Secure Shell.</li><li class="list-unordered"><span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.</li></ul>
-</div>
-<pre class="code-block">default: ssh
-example: --pg1-host-type=tls</pre>
-</div></div><div class="section3"><a id="command-archive-get/category-stanza/option-pg-path"></a><div class="section3-header"><div class="section3-number">
-2.5.7
 </div><div class="section3-title">
 PostgreSQL Path Option (<span class="id">--pg-path</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -1843,72 +1779,8 @@ example: --repo1-type=cifs</pre>
 3.5
 </div><div class="section2-title">
 Stanza Options
-</div></div><div class="section-body"><div class="section3"><a id="command-archive-push/category-stanza/option-pg-host"></a><div class="section3-header"><div class="section3-number">
+</div></div><div class="section-body"><div class="section3"><a id="command-archive-push/category-stanza/option-pg-path"></a><div class="section3-header"><div class="section3-number">
 3.5.1
-</div><div class="section3-title">
-PostgreSQL Host Option (<span class="id">--pg-host</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host for operating remotely via SSH.
-</div><div class="section-body-text">
-Used for backups where the <span class="postgres">PostgreSQL</span> host is different from the repository host.
-</div>
-<pre class="code-block">example: --pg1-host=db.domain.com</pre>
-<div class="section-body-text">
-Deprecated Name: db-host
-</div></div></div><div class="section3"><a id="command-archive-push/category-stanza/option-pg-host-ca-file"></a><div class="section3-header"><div class="section3-number">
-3.5.2
-</div><div class="section3-title">
-PostgreSQL Host Certificate Authority File Option (<span class="id">--pg-host-ca-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host certificate authority file.
-</div><div class="section-body-text">
-Use a CA file other than the system default for connecting to the <span class="postgres">PostgreSQL</span> host.
-</div>
-<pre class="code-block">example: --pg1-host-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
-</div></div><div class="section3"><a id="command-archive-push/category-stanza/option-pg-host-ca-path"></a><div class="section3-header"><div class="section3-number">
-3.5.3
-</div><div class="section3-title">
-PostgreSQL Host Certificate Authority Path Option (<span class="id">--pg-host-ca-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host certificate authority path.
-</div><div class="section-body-text">
-Use a CA path other than the system default for connecting to the <span class="postgres">PostgreSQL</span> host.
-</div>
-<pre class="code-block">example: --pg1-host-ca-path=/etc/pki/tls/certs</pre>
-</div></div><div class="section3"><a id="command-archive-push/category-stanza/option-pg-host-cert-file"></a><div class="section3-header"><div class="section3-number">
-3.5.4
-</div><div class="section3-title">
-PostgreSQL Host Certificate File Option (<span class="id">--pg-host-cert-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host certificate file.
-</div><div class="section-body-text">
-Sent to <span class="postgres">PostgreSQL</span> host to prove client identity.
-</div>
-<pre class="code-block">example: --pg1-host-cert-file=/path/to/client.crt</pre>
-</div></div><div class="section3"><a id="command-archive-push/category-stanza/option-pg-host-key-file"></a><div class="section3-header"><div class="section3-number">
-3.5.5
-</div><div class="section3-title">
-PostgreSQL Host Key File Option (<span class="id">--pg-host-key-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host key file.
-</div><div class="section-body-text">
-Proves client certificate was sent by owner.
-</div>
-<pre class="code-block">example: --pg1-host-key-file=/path/to/client.key</pre>
-</div></div><div class="section3"><a id="command-archive-push/category-stanza/option-pg-host-type"></a><div class="section3-header"><div class="section3-number">
-3.5.6
-</div><div class="section3-title">
-PostgreSQL Host Protocol Type Option (<span class="id">--pg-host-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host protocol type.
-</div><div class="section-body-text">
-The following protocol types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">ssh</span> - Secure Shell.</li><li class="list-unordered"><span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.</li></ul>
-</div>
-<pre class="code-block">default: ssh
-example: --pg1-host-type=tls</pre>
-</div></div><div class="section3"><a id="command-archive-push/category-stanza/option-pg-path"></a><div class="section3-header"><div class="section3-number">
-3.5.7
 </div><div class="section3-title">
 PostgreSQL Path Option (<span class="id">--pg-path</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2634,147 +2506,8 @@ Enable hard-linking of files in differential and incremental backups to their fu
 example: --repo1-hardlink</pre>
 <div class="section-body-text">
 Deprecated Name: hardlink
-</div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-host"></a><div class="section3-header"><div class="section3-number">
-4.4.13
-</div><div class="section3-title">
-Repository Host Option (<span class="id">--repo-host</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
-</div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
-When backing up and archiving to a locally mounted filesystem this setting is not required.
-</div>
-<pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
-<div class="section-body-text">
-Deprecated Name: backup-host
-</div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-host-ca-file"></a><div class="section3-header"><div class="section3-number">
-4.4.14
-</div><div class="section3-title">
-Repository Host Certificate Authority File Option (<span class="id">--repo-host-ca-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host certificate authority file.
-</div><div class="section-body-text">
-Use a CA file other than the system default for connecting to the repository host.
-</div>
-<pre class="code-block">example: --repo1-host-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
-</div></div><div class="section3"><a id="command-backup/category-repository/option-repo-host-ca-path"></a><div class="section3-header"><div class="section3-number">
-4.4.15
-</div><div class="section3-title">
-Repository Host Certificate Authority Path Option (<span class="id">--repo-host-ca-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host certificate authority path.
-</div><div class="section-body-text">
-Use a CA path other than the system default for connecting to the repository host.
-</div>
-<pre class="code-block">example: --repo1-host-ca-path=/etc/pki/tls/certs</pre>
-</div></div><div class="section3"><a id="command-backup/category-repository/option-repo-host-cert-file"></a><div class="section3-header"><div class="section3-number">
-4.4.16
-</div><div class="section3-title">
-Repository Host Certificate File Option (<span class="id">--repo-host-cert-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host certificate file.
-</div><div class="section-body-text">
-Sent to repository host to prove client identity.
-</div>
-<pre class="code-block">example: --repo1-host-cert-file=/path/to/client.crt</pre>
-</div></div><div class="section3"><a id="command-backup/category-repository/option-repo-host-cmd"></a><div class="section3-header"><div class="section3-number">
-4.4.17
-</div><div class="section3-title">
-Repository Host Command Option (<span class="id">--repo-host-cmd</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host <span class="backrest">pgBackRest</span> command.
-</div><div class="section-body-text">
-Required only if the path to the <span class="backrest">pgBackRest</span> command is different on the local and repository hosts. If not defined, the repository host command will be set the same as the local command.
-</div>
-<pre class="code-block">example: --repo1-host-cmd=/usr/lib/backrest/bin/pgbackrest</pre>
-<div class="section-body-text">
-Deprecated Name: backup-cmd
-</div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-host-config"></a><div class="section3-header"><div class="section3-number">
-4.4.18
-</div><div class="section3-title">
-Repository Host Configuration Option (<span class="id">--repo-host-config</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> repository host configuration file.
-</div><div class="section-body-text">
-Sets the location of the configuration file on the repository host. This is only required if the repository host configuration file is in a different location than the local configuration file.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH "/" PROJECT_CONFIG_FILE
-example: --repo1-host-config=/conf/pgbackrest/pgbackrest.conf</pre>
-<div class="section-body-text">
-Deprecated Name: backup-config
-</div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-host-config-include-path"></a><div class="section3-header"><div class="section3-number">
-4.4.19
-</div><div class="section3-title">
-Repository Host Configuration Include Path Option (<span class="id">--repo-host-config-include-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> repository host configuration include path.
-</div><div class="section-body-text">
-Sets the location of the configuration include path on the repository host. This is only required if the repository host configuration include path is in a different location than the local configuration include path.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH "/" PROJECT_CONFIG_INCLUDE_PATH
-example: --repo1-host-config-include-path=/conf/pgbackrest/conf.d</pre>
-</div></div><div class="section3"><a id="command-backup/category-repository/option-repo-host-config-path"></a><div class="section3-header"><div class="section3-number">
-4.4.20
-</div><div class="section3-title">
-Repository Host Configuration Path Option (<span class="id">--repo-host-config-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> repository host configuration path.
-</div><div class="section-body-text">
-Sets the location of the configuration path on the repository host. This is only required if the repository host configuration path is in a different location than the local configuration path.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH
-example: --repo1-host-config-path=/conf/pgbackrest</pre>
-</div></div><div class="section3"><a id="command-backup/category-repository/option-repo-host-key-file"></a><div class="section3-header"><div class="section3-number">
-4.4.21
-</div><div class="section3-title">
-Repository Host Key File Option (<span class="id">--repo-host-key-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host key file.
-</div><div class="section-body-text">
-Proves client certificate was sent by owner.
-</div>
-<pre class="code-block">example: --repo1-host-key-file=/path/to/client.key</pre>
-</div></div><div class="section3"><a id="command-backup/category-repository/option-repo-host-port"></a><div class="section3-header"><div class="section3-number">
-4.4.22
-</div><div class="section3-title">
-Repository Host Port Option (<span class="id">--repo-host-port</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host port when <span class="br-setting">repo-host</span> is set.
-</div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
-</div>
-<pre class="code-block">allowed: 0-65535
-example: --repo1-host-port=25</pre>
-<div class="section-body-text">
-Deprecated Name: backup-ssh-port
-</div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-host-type"></a><div class="section3-header"><div class="section3-number">
-4.4.23
-</div><div class="section3-title">
-Repository Host Protocol Type Option (<span class="id">--repo-host-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host protocol type.
-</div><div class="section-body-text">
-The following protocol types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">ssh</span> - Secure Shell.</li><li class="list-unordered"><span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.</li></ul>
-</div>
-<pre class="code-block">default: ssh
-example: --repo1-host-type=tls</pre>
-</div></div><div class="section3"><a id="command-backup/category-repository/option-repo-host-user"></a><div class="section3-header"><div class="section3-number">
-4.4.24
-</div><div class="section3-title">
-Repository Host User Option (<span class="id">--repo-host-user</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host user when <span class="br-setting">repo-host</span> is set.
-</div><div class="section-body-text">
-Defines the user that will be used for operations on the repository host. Preferably this is not the <span class="id">postgres</span> user but rather some other user like <span class="id">pgbackrest</span>. If <span class="postgres">PostgreSQL</span> runs on the repository host the <span class="id">postgres</span> user can be placed in the <span class="id">pgbackrest</span> group so it has read permissions on the repository without being able to damage the contents accidentally.
-</div>
-<pre class="code-block">default: pgbackrest
-example: --repo1-host-user=repo-user</pre>
-<div class="section-body-text">
-Deprecated Name: backup-user
 </div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-path"></a><div class="section3-header"><div class="section3-number">
-4.4.25
+4.4.13
 </div><div class="section3-title">
 Repository Path Option (<span class="id">--repo-path</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2787,7 +2520,7 @@ It may be difficult to estimate in advance how much space you'll need. The best 
 <pre class="code-block">default: /var/lib/pgbackrest
 example: --repo1-path=/backup/db/backrest</pre>
 </div></div><div class="section3"><a id="command-backup/category-repository/option-repo-retention-archive"></a><div class="section3-header"><div class="section3-number">
-4.4.26
+4.4.14
 </div><div class="section3-title">
 Archive Retention Option (<span class="id">--repo-retention-archive</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2802,7 +2535,7 @@ example: --repo1-retention-archive=2</pre>
 <div class="section-body-text">
 Deprecated Name: retention-archive
 </div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-retention-archive-type"></a><div class="section3-header"><div class="section3-number">
-4.4.27
+4.4.15
 </div><div class="section3-title">
 Archive Retention Type Option (<span class="id">--repo-retention-archive-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2815,7 +2548,7 @@ example: --repo1-retention-archive-type=diff</pre>
 <div class="section-body-text">
 Deprecated Name: retention-archive-type
 </div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-retention-diff"></a><div class="section3-header"><div class="section3-number">
-4.4.28
+4.4.16
 </div><div class="section3-title">
 Differential Retention Option (<span class="id">--repo-retention-diff</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2828,7 +2561,7 @@ example: --repo1-retention-diff=3</pre>
 <div class="section-body-text">
 Deprecated Name: retention-diff
 </div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-retention-full"></a><div class="section3-header"><div class="section3-number">
-4.4.29
+4.4.17
 </div><div class="section3-title">
 Full Retention Option (<span class="id">--repo-retention-full</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2841,7 +2574,7 @@ example: --repo1-retention-full=2</pre>
 <div class="section-body-text">
 Deprecated Name: retention-full
 </div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-retention-full-type"></a><div class="section3-header"><div class="section3-number">
-4.4.30
+4.4.18
 </div><div class="section3-title">
 Full Retention Type Option (<span class="id">--repo-retention-full-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2852,7 +2585,7 @@ Determines whether the <span class="br-setting">repo-retention-full</span> setti
 <pre class="code-block">default: count
 example: --repo1-retention-full-type=time</pre>
 </div></div><div class="section3"><a id="command-backup/category-repository/option-repo-retention-history"></a><div class="section3-header"><div class="section3-number">
-4.4.31
+4.4.19
 </div><div class="section3-title">
 Backup History Retention Option (<span class="id">--repo-retention-history</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2867,7 +2600,7 @@ When a full backup history manifest is expired, all differential and incremental
 <pre class="code-block">allowed: 0-9999999
 example: --repo1-retention-history=365</pre>
 </div></div><div class="section3"><a id="command-backup/category-repository/option-repo-s3-bucket"></a><div class="section3-header"><div class="section3-number">
-4.4.32
+4.4.20
 </div><div class="section3-title">
 S3 Repository Bucket Option (<span class="id">--repo-s3-bucket</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2879,7 +2612,7 @@ S3 bucket used to store the repository.<br/>
 </div>
 <pre class="code-block">example: --repo1-s3-bucket=pg-backup</pre>
 </div></div><div class="section3"><a id="command-backup/category-repository/option-repo-s3-endpoint"></a><div class="section3-header"><div class="section3-number">
-4.4.33
+4.4.21
 </div><div class="section3-title">
 S3 Repository Endpoint Option (<span class="id">--repo-s3-endpoint</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2891,7 +2624,7 @@ For custom/test configurations the <span class="br-setting">repo-storage-ca-file
 </div>
 <pre class="code-block">example: --repo1-s3-endpoint=s3.amazonaws.com</pre>
 </div></div><div class="section3"><a id="command-backup/category-repository/option-repo-s3-key-type"></a><div class="section3-header"><div class="section3-number">
-4.4.34
+4.4.22
 </div><div class="section3-title">
 S3 Repository Key Type Option (<span class="id">--repo-s3-key-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2903,7 +2636,7 @@ The following types are supported:<br/>
 <pre class="code-block">default: shared
 example: --repo1-s3-key-type=auto</pre>
 </div></div><div class="section3"><a id="command-backup/category-repository/option-repo-s3-kms-key-id"></a><div class="section3-header"><div class="section3-number">
-4.4.35
+4.4.23
 </div><div class="section3-title">
 S3 Repository KMS Key ID Option (<span class="id">--repo-s3-kms-key-id</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2913,7 +2646,7 @@ Setting this option enables S3 server-side encryption using the specified AWS ke
 </div>
 <pre class="code-block">example: --repo1-s3-kms-key-id=bceb4f13-6939-4be3-910d-df54dee817b7</pre>
 </div></div><div class="section3"><a id="command-backup/category-repository/option-repo-s3-region"></a><div class="section3-header"><div class="section3-number">
-4.4.36
+4.4.24
 </div><div class="section3-title">
 S3 Repository Region Option (<span class="id">--repo-s3-region</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2923,7 +2656,7 @@ The AWS region where the bucket was created.
 </div>
 <pre class="code-block">example: --repo1-s3-region=us-east-1</pre>
 </div></div><div class="section3"><a id="command-backup/category-repository/option-repo-s3-role"></a><div class="section3-header"><div class="section3-number">
-4.4.37
+4.4.25
 </div><div class="section3-title">
 S3 Repository Role Option (<span class="id">--repo-s3-role</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2933,7 +2666,7 @@ The AWS role name (not the full ARN) used to retrieve temporary credentials when
 </div>
 <pre class="code-block">example: --repo1-s3-role=authrole</pre>
 </div></div><div class="section3"><a id="command-backup/category-repository/option-repo-s3-uri-style"></a><div class="section3-header"><div class="section3-number">
-4.4.38
+4.4.26
 </div><div class="section3-title">
 S3 Repository URI Style Option (<span class="id">--repo-s3-uri-style</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2945,7 +2678,7 @@ The following URI styles are supported:<br/>
 <pre class="code-block">default: host
 example: --repo1-s3-uri-style=path</pre>
 </div></div><div class="section3"><a id="command-backup/category-repository/option-repo-storage-ca-file"></a><div class="section3-header"><div class="section3-number">
-4.4.39
+4.4.27
 </div><div class="section3-title">
 Repository Storage CA File Option (<span class="id">--repo-storage-ca-file</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2957,7 +2690,7 @@ Use a CA file other than the system default for storage (e.g. S3, Azure) certifi
 <div class="section-body-text">
 Deprecated Names: repo-azure-ca-file, repo-s3-ca-file
 </div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-storage-ca-path"></a><div class="section3-header"><div class="section3-number">
-4.4.40
+4.4.28
 </div><div class="section3-title">
 Repository Storage TLS CA Path Option (<span class="id">--repo-storage-ca-path</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2969,7 +2702,7 @@ Use a CA path other than the system default for storage (e.g. S3, Azure) certifi
 <div class="section-body-text">
 Deprecated Names: repo-azure-ca-path, repo-s3-ca-path
 </div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-storage-host"></a><div class="section3-header"><div class="section3-number">
-4.4.41
+4.4.29
 </div><div class="section3-title">
 Repository Storage Host Option (<span class="id">--repo-storage-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2981,7 +2714,7 @@ Connect to a host other than the storage (e.g. S3, Azure) endpoint. This is typi
 <div class="section-body-text">
 Deprecated Names: repo-azure-host, repo-s3-host
 </div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-storage-port"></a><div class="section3-header"><div class="section3-number">
-4.4.42
+4.4.30
 </div><div class="section3-title">
 Repository Storage Port Option (<span class="id">--repo-storage-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2995,7 +2728,7 @@ example: --repo1-storage-port=9000</pre>
 <div class="section-body-text">
 Deprecated Names: repo-azure-port, repo-s3-port
 </div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-storage-verify-tls"></a><div class="section3-header"><div class="section3-number">
-4.4.43
+4.4.31
 </div><div class="section3-title">
 Repository Storage Certificate Verify Option (<span class="id">--repo-storage-verify-tls</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -3008,7 +2741,7 @@ example: --no-repo1-storage-verify-tls</pre>
 <div class="section-body-text">
 Deprecated Names: repo-azure-verify-tls, repo-s3-verify-ssl, repo-s3-verify-tls
 </div></div></div><div class="section3"><a id="command-backup/category-repository/option-repo-type"></a><div class="section3-header"><div class="section3-number">
-4.4.44
+4.4.32
 </div><div class="section3-title">
 Repository Type Option (<span class="id">--repo-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4507,74 +4240,8 @@ The following types are supported for authorization:<br/>
 </div>
 <pre class="code-block">default: service
 example: --repo1-gcs-key-type=auto</pre>
-</div></div><div class="section3"><a id="command-expire/category-repository/option-repo-host"></a><div class="section3-header"><div class="section3-number">
-6.4.9
-</div><div class="section3-title">
-Repository Host Option (<span class="id">--repo-host</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
-</div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
-When backing up and archiving to a locally mounted filesystem this setting is not required.
-</div>
-<pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
-<div class="section-body-text">
-Deprecated Name: backup-host
-</div></div></div><div class="section3"><a id="command-expire/category-repository/option-repo-host-ca-file"></a><div class="section3-header"><div class="section3-number">
-6.4.10
-</div><div class="section3-title">
-Repository Host Certificate Authority File Option (<span class="id">--repo-host-ca-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host certificate authority file.
-</div><div class="section-body-text">
-Use a CA file other than the system default for connecting to the repository host.
-</div>
-<pre class="code-block">example: --repo1-host-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
-</div></div><div class="section3"><a id="command-expire/category-repository/option-repo-host-ca-path"></a><div class="section3-header"><div class="section3-number">
-6.4.11
-</div><div class="section3-title">
-Repository Host Certificate Authority Path Option (<span class="id">--repo-host-ca-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host certificate authority path.
-</div><div class="section-body-text">
-Use a CA path other than the system default for connecting to the repository host.
-</div>
-<pre class="code-block">example: --repo1-host-ca-path=/etc/pki/tls/certs</pre>
-</div></div><div class="section3"><a id="command-expire/category-repository/option-repo-host-cert-file"></a><div class="section3-header"><div class="section3-number">
-6.4.12
-</div><div class="section3-title">
-Repository Host Certificate File Option (<span class="id">--repo-host-cert-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host certificate file.
-</div><div class="section-body-text">
-Sent to repository host to prove client identity.
-</div>
-<pre class="code-block">example: --repo1-host-cert-file=/path/to/client.crt</pre>
-</div></div><div class="section3"><a id="command-expire/category-repository/option-repo-host-key-file"></a><div class="section3-header"><div class="section3-number">
-6.4.13
-</div><div class="section3-title">
-Repository Host Key File Option (<span class="id">--repo-host-key-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host key file.
-</div><div class="section-body-text">
-Proves client certificate was sent by owner.
-</div>
-<pre class="code-block">example: --repo1-host-key-file=/path/to/client.key</pre>
-</div></div><div class="section3"><a id="command-expire/category-repository/option-repo-host-type"></a><div class="section3-header"><div class="section3-number">
-6.4.14
-</div><div class="section3-title">
-Repository Host Protocol Type Option (<span class="id">--repo-host-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host protocol type.
-</div><div class="section-body-text">
-The following protocol types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">ssh</span> - Secure Shell.</li><li class="list-unordered"><span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.</li></ul>
-</div>
-<pre class="code-block">default: ssh
-example: --repo1-host-type=tls</pre>
 </div></div><div class="section3"><a id="command-expire/category-repository/option-repo-path"></a><div class="section3-header"><div class="section3-number">
-6.4.15
+6.4.9
 </div><div class="section3-title">
 Repository Path Option (<span class="id">--repo-path</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4587,7 +4254,7 @@ It may be difficult to estimate in advance how much space you'll need. The best 
 <pre class="code-block">default: /var/lib/pgbackrest
 example: --repo1-path=/backup/db/backrest</pre>
 </div></div><div class="section3"><a id="command-expire/category-repository/option-repo-retention-archive"></a><div class="section3-header"><div class="section3-number">
-6.4.16
+6.4.10
 </div><div class="section3-title">
 Archive Retention Option (<span class="id">--repo-retention-archive</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4602,7 +4269,7 @@ example: --repo1-retention-archive=2</pre>
 <div class="section-body-text">
 Deprecated Name: retention-archive
 </div></div></div><div class="section3"><a id="command-expire/category-repository/option-repo-retention-archive-type"></a><div class="section3-header"><div class="section3-number">
-6.4.17
+6.4.11
 </div><div class="section3-title">
 Archive Retention Type Option (<span class="id">--repo-retention-archive-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4615,7 +4282,7 @@ example: --repo1-retention-archive-type=diff</pre>
 <div class="section-body-text">
 Deprecated Name: retention-archive-type
 </div></div></div><div class="section3"><a id="command-expire/category-repository/option-repo-retention-diff"></a><div class="section3-header"><div class="section3-number">
-6.4.18
+6.4.12
 </div><div class="section3-title">
 Differential Retention Option (<span class="id">--repo-retention-diff</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4628,7 +4295,7 @@ example: --repo1-retention-diff=3</pre>
 <div class="section-body-text">
 Deprecated Name: retention-diff
 </div></div></div><div class="section3"><a id="command-expire/category-repository/option-repo-retention-full"></a><div class="section3-header"><div class="section3-number">
-6.4.19
+6.4.13
 </div><div class="section3-title">
 Full Retention Option (<span class="id">--repo-retention-full</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4641,7 +4308,7 @@ example: --repo1-retention-full=2</pre>
 <div class="section-body-text">
 Deprecated Name: retention-full
 </div></div></div><div class="section3"><a id="command-expire/category-repository/option-repo-retention-full-type"></a><div class="section3-header"><div class="section3-number">
-6.4.20
+6.4.14
 </div><div class="section3-title">
 Full Retention Type Option (<span class="id">--repo-retention-full-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4652,7 +4319,7 @@ Determines whether the <span class="br-setting">repo-retention-full</span> setti
 <pre class="code-block">default: count
 example: --repo1-retention-full-type=time</pre>
 </div></div><div class="section3"><a id="command-expire/category-repository/option-repo-retention-history"></a><div class="section3-header"><div class="section3-number">
-6.4.21
+6.4.15
 </div><div class="section3-title">
 Backup History Retention Option (<span class="id">--repo-retention-history</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4667,7 +4334,7 @@ When a full backup history manifest is expired, all differential and incremental
 <pre class="code-block">allowed: 0-9999999
 example: --repo1-retention-history=365</pre>
 </div></div><div class="section3"><a id="command-expire/category-repository/option-repo-s3-bucket"></a><div class="section3-header"><div class="section3-number">
-6.4.22
+6.4.16
 </div><div class="section3-title">
 S3 Repository Bucket Option (<span class="id">--repo-s3-bucket</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4679,7 +4346,7 @@ S3 bucket used to store the repository.<br/>
 </div>
 <pre class="code-block">example: --repo1-s3-bucket=pg-backup</pre>
 </div></div><div class="section3"><a id="command-expire/category-repository/option-repo-s3-endpoint"></a><div class="section3-header"><div class="section3-number">
-6.4.23
+6.4.17
 </div><div class="section3-title">
 S3 Repository Endpoint Option (<span class="id">--repo-s3-endpoint</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4691,7 +4358,7 @@ For custom/test configurations the <span class="br-setting">repo-storage-ca-file
 </div>
 <pre class="code-block">example: --repo1-s3-endpoint=s3.amazonaws.com</pre>
 </div></div><div class="section3"><a id="command-expire/category-repository/option-repo-s3-key-type"></a><div class="section3-header"><div class="section3-number">
-6.4.24
+6.4.18
 </div><div class="section3-title">
 S3 Repository Key Type Option (<span class="id">--repo-s3-key-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4703,7 +4370,7 @@ The following types are supported:<br/>
 <pre class="code-block">default: shared
 example: --repo1-s3-key-type=auto</pre>
 </div></div><div class="section3"><a id="command-expire/category-repository/option-repo-s3-kms-key-id"></a><div class="section3-header"><div class="section3-number">
-6.4.25
+6.4.19
 </div><div class="section3-title">
 S3 Repository KMS Key ID Option (<span class="id">--repo-s3-kms-key-id</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4713,7 +4380,7 @@ Setting this option enables S3 server-side encryption using the specified AWS ke
 </div>
 <pre class="code-block">example: --repo1-s3-kms-key-id=bceb4f13-6939-4be3-910d-df54dee817b7</pre>
 </div></div><div class="section3"><a id="command-expire/category-repository/option-repo-s3-region"></a><div class="section3-header"><div class="section3-number">
-6.4.26
+6.4.20
 </div><div class="section3-title">
 S3 Repository Region Option (<span class="id">--repo-s3-region</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4723,7 +4390,7 @@ The AWS region where the bucket was created.
 </div>
 <pre class="code-block">example: --repo1-s3-region=us-east-1</pre>
 </div></div><div class="section3"><a id="command-expire/category-repository/option-repo-s3-role"></a><div class="section3-header"><div class="section3-number">
-6.4.27
+6.4.21
 </div><div class="section3-title">
 S3 Repository Role Option (<span class="id">--repo-s3-role</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4733,7 +4400,7 @@ The AWS role name (not the full ARN) used to retrieve temporary credentials when
 </div>
 <pre class="code-block">example: --repo1-s3-role=authrole</pre>
 </div></div><div class="section3"><a id="command-expire/category-repository/option-repo-s3-uri-style"></a><div class="section3-header"><div class="section3-number">
-6.4.28
+6.4.22
 </div><div class="section3-title">
 S3 Repository URI Style Option (<span class="id">--repo-s3-uri-style</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4745,7 +4412,7 @@ The following URI styles are supported:<br/>
 <pre class="code-block">default: host
 example: --repo1-s3-uri-style=path</pre>
 </div></div><div class="section3"><a id="command-expire/category-repository/option-repo-storage-ca-file"></a><div class="section3-header"><div class="section3-number">
-6.4.29
+6.4.23
 </div><div class="section3-title">
 Repository Storage CA File Option (<span class="id">--repo-storage-ca-file</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4757,7 +4424,7 @@ Use a CA file other than the system default for storage (e.g. S3, Azure) certifi
 <div class="section-body-text">
 Deprecated Names: repo-azure-ca-file, repo-s3-ca-file
 </div></div></div><div class="section3"><a id="command-expire/category-repository/option-repo-storage-ca-path"></a><div class="section3-header"><div class="section3-number">
-6.4.30
+6.4.24
 </div><div class="section3-title">
 Repository Storage TLS CA Path Option (<span class="id">--repo-storage-ca-path</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4769,7 +4436,7 @@ Use a CA path other than the system default for storage (e.g. S3, Azure) certifi
 <div class="section-body-text">
 Deprecated Names: repo-azure-ca-path, repo-s3-ca-path
 </div></div></div><div class="section3"><a id="command-expire/category-repository/option-repo-storage-host"></a><div class="section3-header"><div class="section3-number">
-6.4.31
+6.4.25
 </div><div class="section3-title">
 Repository Storage Host Option (<span class="id">--repo-storage-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4781,7 +4448,7 @@ Connect to a host other than the storage (e.g. S3, Azure) endpoint. This is typi
 <div class="section-body-text">
 Deprecated Names: repo-azure-host, repo-s3-host
 </div></div></div><div class="section3"><a id="command-expire/category-repository/option-repo-storage-port"></a><div class="section3-header"><div class="section3-number">
-6.4.32
+6.4.26
 </div><div class="section3-title">
 Repository Storage Port Option (<span class="id">--repo-storage-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4795,7 +4462,7 @@ example: --repo1-storage-port=9000</pre>
 <div class="section-body-text">
 Deprecated Names: repo-azure-port, repo-s3-port
 </div></div></div><div class="section3"><a id="command-expire/category-repository/option-repo-storage-verify-tls"></a><div class="section3-header"><div class="section3-number">
-6.4.33
+6.4.27
 </div><div class="section3-title">
 Repository Storage Certificate Verify Option (<span class="id">--repo-storage-verify-tls</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -4808,7 +4475,7 @@ example: --no-repo1-storage-verify-tls</pre>
 <div class="section-body-text">
 Deprecated Names: repo-azure-verify-tls, repo-s3-verify-ssl, repo-s3-verify-tls
 </div></div></div><div class="section3"><a id="command-expire/category-repository/option-repo-type"></a><div class="section3-header"><div class="section3-number">
-6.4.34
+6.4.28
 </div><div class="section3-title">
 Repository Type Option (<span class="id">--repo-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -7370,27 +7037,8 @@ Enables keep-alive messages on socket connections.
 </div>
 <pre class="code-block">default: y
 example: --no-sck-keep-alive</pre>
-</div></div><div class="section3"><a id="command-restore/category-general/option-spool-path"></a><div class="section3-header"><div class="section3-number">
-11.2.15
-</div><div class="section3-title">
-Spool Path Option (<span class="id">--spool-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Path where transient data is stored.
-</div><div class="section-body-text">
-This path is used to store data for the asynchronous <span class="cmd">archive-push</span> and <span class="cmd">archive-get</span> command.<br/>
-<br/>
-The asynchronous <span class="cmd">archive-push</span> command writes acknowledgements into the spool path when it has successfully stored WAL in the archive (and errors on failure) so the foreground process can quickly notify <span class="postgres">PostgreSQL</span>. Acknowledgement files are very small (zero on success and a few hundred bytes on error).<br/>
-<br/>
-The asynchronous <span class="cmd">archive-get</span> command queues WAL in the spool path so it can be provided very quickly when <span class="postgres">PostgreSQL</span> requests it. Moving files to <span class="postgres">PostgreSQL</span> is most efficient when the spool path is on the same filesystem as <span class="path">pg_xlog</span>/<span class="path">pg_wal</span>.<br/>
-<br/>
-The data stored in the spool path is not strictly temporary since it can and should survive a reboot. However, loss of the data in the spool path is not a problem. <span class="backrest">pgBackRest</span> will simply recheck each WAL segment to ensure it is safely archived for <span class="cmd">archive-push</span> and rebuild the queue for <span class="cmd">archive-get</span>.<br/>
-<br/>
-The spool path is intended to be located on a local Posix-compatible filesystem, not a remote filesystem such as <span class="host">NFS</span> or <span class="host">CIFS</span>.
-</div>
-<pre class="code-block">default: /var/spool/pgbackrest
-example: --spool-path=/backup/db/spool</pre>
 </div></div><div class="section3"><a id="command-restore/category-general/option-stanza"></a><div class="section3-header"><div class="section3-number">
-11.2.16
+11.2.15
 </div><div class="section3-title">
 Stanza Option (<span class="id">--stanza</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -7402,7 +7050,7 @@ It is tempting to name the stanza after the primary cluster but a better name de
 </div>
 <pre class="code-block">example: --stanza=main</pre>
 </div></div><div class="section3"><a id="command-restore/category-general/option-tcp-keep-alive-count"></a><div class="section3-header"><div class="section3-number">
-11.2.17
+11.2.16
 </div><div class="section3-title">
 Keep Alive Count Option (<span class="id">--tcp-keep-alive-count</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -7415,7 +7063,7 @@ This option is available on systems that support the <span class="id">TCP_KEEPCN
 <pre class="code-block">allowed: 1-32
 example: --tcp-keep-alive-count=3</pre>
 </div></div><div class="section3"><a id="command-restore/category-general/option-tcp-keep-alive-idle"></a><div class="section3-header"><div class="section3-number">
-11.2.18
+11.2.17
 </div><div class="section3-title">
 Keep Alive Idle Option (<span class="id">--tcp-keep-alive-idle</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -7428,7 +7076,7 @@ This option is available on systems that support the <span class="id">TCP_KEEPID
 <pre class="code-block">allowed: 1-3600
 example: --tcp-keep-alive-idle=60</pre>
 </div></div><div class="section3"><a id="command-restore/category-general/option-tcp-keep-alive-interval"></a><div class="section3-header"><div class="section3-number">
-11.2.19
+11.2.18
 </div><div class="section3-title">
 Keep Alive Interval Option (<span class="id">--tcp-keep-alive-interval</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -7924,72 +7572,8 @@ example: --repo1-type=cifs</pre>
 11.5
 </div><div class="section2-title">
 Stanza Options
-</div></div><div class="section-body"><div class="section3"><a id="command-restore/category-stanza/option-pg-host"></a><div class="section3-header"><div class="section3-number">
+</div></div><div class="section-body"><div class="section3"><a id="command-restore/category-stanza/option-pg-path"></a><div class="section3-header"><div class="section3-number">
 11.5.1
-</div><div class="section3-title">
-PostgreSQL Host Option (<span class="id">--pg-host</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host for operating remotely via SSH.
-</div><div class="section-body-text">
-Used for backups where the <span class="postgres">PostgreSQL</span> host is different from the repository host.
-</div>
-<pre class="code-block">example: --pg1-host=db.domain.com</pre>
-<div class="section-body-text">
-Deprecated Name: db-host
-</div></div></div><div class="section3"><a id="command-restore/category-stanza/option-pg-host-ca-file"></a><div class="section3-header"><div class="section3-number">
-11.5.2
-</div><div class="section3-title">
-PostgreSQL Host Certificate Authority File Option (<span class="id">--pg-host-ca-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host certificate authority file.
-</div><div class="section-body-text">
-Use a CA file other than the system default for connecting to the <span class="postgres">PostgreSQL</span> host.
-</div>
-<pre class="code-block">example: --pg1-host-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
-</div></div><div class="section3"><a id="command-restore/category-stanza/option-pg-host-ca-path"></a><div class="section3-header"><div class="section3-number">
-11.5.3
-</div><div class="section3-title">
-PostgreSQL Host Certificate Authority Path Option (<span class="id">--pg-host-ca-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host certificate authority path.
-</div><div class="section-body-text">
-Use a CA path other than the system default for connecting to the <span class="postgres">PostgreSQL</span> host.
-</div>
-<pre class="code-block">example: --pg1-host-ca-path=/etc/pki/tls/certs</pre>
-</div></div><div class="section3"><a id="command-restore/category-stanza/option-pg-host-cert-file"></a><div class="section3-header"><div class="section3-number">
-11.5.4
-</div><div class="section3-title">
-PostgreSQL Host Certificate File Option (<span class="id">--pg-host-cert-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host certificate file.
-</div><div class="section-body-text">
-Sent to <span class="postgres">PostgreSQL</span> host to prove client identity.
-</div>
-<pre class="code-block">example: --pg1-host-cert-file=/path/to/client.crt</pre>
-</div></div><div class="section3"><a id="command-restore/category-stanza/option-pg-host-key-file"></a><div class="section3-header"><div class="section3-number">
-11.5.5
-</div><div class="section3-title">
-PostgreSQL Host Key File Option (<span class="id">--pg-host-key-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host key file.
-</div><div class="section-body-text">
-Proves client certificate was sent by owner.
-</div>
-<pre class="code-block">example: --pg1-host-key-file=/path/to/client.key</pre>
-</div></div><div class="section3"><a id="command-restore/category-stanza/option-pg-host-type"></a><div class="section3-header"><div class="section3-number">
-11.5.6
-</div><div class="section3-title">
-PostgreSQL Host Protocol Type Option (<span class="id">--pg-host-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host protocol type.
-</div><div class="section-body-text">
-The following protocol types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">ssh</span> - Secure Shell.</li><li class="list-unordered"><span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.</li></ul>
-</div>
-<pre class="code-block">default: ssh
-example: --pg1-host-type=tls</pre>
-</div></div><div class="section3"><a id="command-restore/category-stanza/option-pg-path"></a><div class="section3-header"><div class="section3-number">
-11.5.7
 </div><div class="section3-title">
 PostgreSQL Path Option (<span class="id">--pg-path</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -8495,19 +8079,8 @@ The <span class="cmd">stanza-create</span> command must be run after the stanza 
 14.1
 </div><div class="section2-title">
 Command Options
-</div></div><div class="section-body"><div class="section3"><a id="command-stanza-create/category-command/option-force"></a><div class="section3-header"><div class="section3-number">
+</div></div><div class="section-body"><div class="section3"><a id="command-stanza-create/category-command/option-online"></a><div class="section3-header"><div class="section3-number">
 14.1.1
-</div><div class="section3-title">
-Force Option (<span class="id">--force</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Force stanza creation.
-</div><div class="section-body-text">
-This option is no longer supported.
-</div>
-<pre class="code-block">default: n
-example: --no-force</pre>
-</div></div><div class="section3"><a id="command-stanza-create/category-command/option-online"></a><div class="section3-header"><div class="section3-number">
-14.1.2
 </div><div class="section3-title">
 Online Option (<span class="id">--online</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -11553,18 +11126,8 @@ Output may be none (default) or text. Requesting text generates ouput to stdout.
 </div>
 <pre class="code-block">default: none
 example: --output=text</pre>
-</div></div><div class="section3"><a id="command-verify/category-command/option-set"></a><div class="section3-header"><div class="section3-number">
-19.1.2
-</div><div class="section3-title">
-Set Option (<span class="id">--set</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Backup set to verify.
-</div><div class="section-body-text">
-Verify all database and archive files associated with the specified backup set.
-</div>
-<pre class="code-block">example: --set=20150131-153358F_20150131-153401I</pre>
 </div></div><div class="section3"><a id="command-verify/category-command/option-verbose"></a><div class="section3-header"><div class="section3-number">
-19.1.3
+19.1.2
 </div><div class="section3-title">
 Verbose Option (<span class="id">--verbose</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -12261,5 +11824,5 @@ Version Command (<span class="id">version</span>)
 </div></div><div class="section-intro">
 Displays installed <span class="backrest">pgBackRest</span> version.
 </div><div class="section-body"></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated May 16, 2022
+Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated May 31, 2022
 </div></body></html>
