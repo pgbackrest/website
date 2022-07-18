@@ -32,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.39">
-v2.39 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.40">
+v2.40 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -48,6 +48,50 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.40"></a><div class="section2-header"><div class="section2-title">
+v2.40 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+OpenSSL 3 Support
+</div><div class="section2-subsubtitle">
+Released July 18, 2022
+</div><div class="section-body-text">
+<b>NOTE TO PACKAGERS</b>: An experimental <span class="host">meson</span> build has been added but packagers should continue to use the <span class="host">autoconf</span>/<span class="host">make</span> build for the foreseeable future.
+</div><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="host">OpenSSL 3</span> support. (<i>Reviewed by Stephen Frost.</i>)
+</li><li class="list-unordered">
+Create snapshot when listing contents of a path. (<i>Reviewed by John Morris, Stephen Frost.</i>)
+</li><li class="list-unordered">
+Force <span class="br-option">target-timeline=current</span> when restore <span class="br-option">type=immediate</span>. (<i>Reviewed by Stephen Frost.</i>)
+</li><li class="list-unordered">
+Truncate files during delta <span class="cmd">restore</span> when they are larger than expected. (<i>Reviewed by Stephen Frost.</i>)
+</li><li class="list-unordered">
+Disable incremental manifest save when <span class="br-option">resume=n</span>. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Set backup percent complete to zero before copy start. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Use <span class="host">S3</span> <span class="id">IsTruncated</span> flag to determine list continuation. (<i>Reviewed by John Morris, Soulou. Suggested by Christian Montagne.</i>)
+</li></ul><div class="section2-subtitle">
+Additional Notes
+</div><div class="section-body-text">
+<b>Documentation Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Skip internal options in the configuration reference. (<i>Reported by Francisco Miguel Biete.</i>)
+</li></ul><div class="section-body-text">
+<b>Documentation Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Add link to <span class="postgres">PostgreSQL</span> configuration in repository host section. (<i>Reviewed by Stefan Fercot. Suggested by Julien Cigar.</i>)
+</li></ul><div class="section-body-text">
+<b>Test Suite Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Add experimental <span class="host">Meson</span> build. (<i>Reviewed by Eli Schwartz, Sam Bassaly.</i>)
+</li><li class="list-unordered">
+Allow any path to be passed to the <span class="br-option">--test-path</span> option. (<i>Contributed by Andrey Sokolov. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Fix compile error when <span class="id">DEBUG_EXEC_TIME</span> is defined without <span class="id">DEBUG</span>. (<i>Contributed by Andrey Sokolov. Reviewed by David Steele.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.39"></a><div class="section2-header"><div class="section2-title">
 v2.39 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -116,9 +160,7 @@ Add option type descriptions. (<i>Contributed by Reid Thompson. Reviewed by Davi
 Add FAQ about backup types and restore speed. (<i>Contributed by David Christensen. Reviewed by Reid Thompson.</i>)
 </li><li class="list-unordered">
 Document required base branch for pull requests. (<i>Contributed by David Christensen. Reviewed by Reid Thompson.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.38"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.38"></a><div class="section2-header"><div class="section2-title">
 v2.38 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Minor Bug Fixes and Improvements
@@ -2549,7 +2591,7 @@ Fixed a locking issue that could allow multiple operations of the same type agai
 </div><ul class="list-unordered"><li class="list-unordered">
 Allow duplicate WAL segments to be archived when the checksum matches. This is necessary for some recovery scenarios.
 </li><li class="list-unordered">
-Allow comments/disabling in <span class="file">pg_backrest.conf</span> using the <span class="id">#</span> character. Only <span class="id">#</span> characters in the forst character of the line are honored. (<i>Suggested by Michael Renner.</i>)
+Allow comments/disabling in <span class="file">pg_backrest.conf</span> using the <span class="id">#</span> character. Only <span class="id">#</span> characters in the first character of the line are honored. (<i>Suggested by Michael Renner.</i>)
 </li><li class="list-unordered">
 Better logging before <span class="id">pg_start_backup()</span> to make it clear when the backup is waiting on a checkpoint. (<i>Suggested by Michael Renner.</i>)
 </li><li class="list-unordered">
@@ -2751,5 +2793,5 @@ Additional Notes
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated May 16, 2022
+Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated July 18, 2022
 </div></body></html>
