@@ -885,7 +885,7 @@ select name,
   from stanza;</pre>
 <pre class="execute-body-cmd">sudo -u postgres psql -f \
        /var/lib/pgsql/pgbackrest/doc/example/pgsql-pgbackrest-query.sql</pre>
-<pre class="execute-body-output">  name  | last_successful_backup |    last_archived_wal     
+<pre class="execute-body-output">  name  | last_successful_backup |    last_archived_wal
 --------+------------------------+--------------------------
  "demo" | 2022-03-06 15:43:55+00 | 000000010000000000000005
 (1 row)</pre>
@@ -1158,7 +1158,7 @@ Once recovery is complete the test2 database will contain all previously created
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Demonstrate that the test2 database was recovered
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres psql -c "select * from test2_table;" test2</pre>
-<pre class="execute-body-output"> id 
+<pre class="execute-body-output"> id
 ----
   2
 (1 row)</pre>
@@ -1191,7 +1191,7 @@ Now that the invalid test1 database has been dropped only the test2 and built-in
 <span class="host">pg-primary</span> <b>&#x21d2;</b> List remaining databases
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres psql -c "select oid, datname from pg_database order by oid;"</pre>
-<pre class="execute-body-output">  oid  |  datname  
+<pre class="execute-body-output">  oid  |  datname
 -------+-----------
      1 | template1
  13016 | template0
@@ -1215,7 +1215,7 @@ Point-in-Time Recovery (PITR) allows the WAL to be played from the last backup t
        insert into important_table values ('Important Data'); \
        commit; \
        select * from important_table;"</pre>
-<pre class="execute-body-output">    message     
+<pre class="execute-body-output">    message
 ----------------</pre>
 <pre class="execute-body-output-highlight"> Important Data</pre>
 <pre class="execute-body-output">(1 row)</pre>
@@ -1259,7 +1259,7 @@ restore_command = 'pgbackrest --stanza=demo archive-get %f "%p"'</pre>
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo systemctl start postgresql-10.service</pre>
 <pre class="execute-body-cmd">sudo -u postgres psql -c "select * from important_table"</pre>
-<pre class="execute-body-output">    message     
+<pre class="execute-body-output">    message
 ----------------</pre>
 <pre class="execute-body-output-highlight"> Important Data</pre>
 <pre class="execute-body-output">(1 row)</pre>
@@ -1385,7 +1385,7 @@ The default behavior for time-based restore, if the <span class="br-option">--se
        --target-action=promote restore</pre>
 <pre class="execute-body-cmd">sudo systemctl start postgresql-10.service</pre>
 <pre class="execute-body-cmd">sudo -u postgres psql -c "select * from important_table"</pre>
-<pre class="execute-body-output">    message     
+<pre class="execute-body-output">    message
 ----------------</pre>
 <pre class="execute-body-output-highlight"> Important Data</pre>
 <pre class="execute-body-output">(1 row)</pre>
@@ -1806,7 +1806,7 @@ User=pgbackrest
 ExecStart=/usr/bin/pgbackrest server
 ExecStartPost=/bin/sleep 3
 ExecStartPost=/bin/bash -c "[ ! -z $MAINPID ]"
-ExecReload=kill -HUP $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
 WantedBy=multi-user.target</pre>
@@ -1829,7 +1829,7 @@ User=postgres
 ExecStart=/usr/bin/pgbackrest server
 ExecStartPost=/bin/sleep 3
 ExecStartPost=/bin/bash -c "[ ! -z $MAINPID ]"
-ExecReload=kill -HUP $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
 WantedBy=multi-user.target</pre>
@@ -2072,7 +2072,7 @@ User=postgres
 ExecStart=/usr/bin/pgbackrest server
 ExecStartPost=/bin/sleep 3
 ExecStartPost=/bin/bash -c "[ ! -z $MAINPID ]"
-ExecReload=kill -HUP $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
 WantedBy=multi-user.target</pre>
@@ -2138,7 +2138,7 @@ An easy way to test that replication is properly configured is to create a table
        insert into replicated_table values ('Important Data'); \
        commit; \
        select * from replicated_table";</pre>
-<pre class="execute-body-output">    message     
+<pre class="execute-body-output">    message
 ----------------</pre>
 <pre class="execute-body-output-highlight"> Important Data</pre>
 <pre class="execute-body-output">(1 row)</pre>
@@ -2159,7 +2159,7 @@ This can be done manually by calling <span class="id">pg_switch_wal()</span> whi
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Call <span class="id">pg_switch_wal()</span>
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres psql -c "select *, current_timestamp from pg_switch_wal()";</pre>
-<pre class="execute-body-output"> pg_switch_wal |       current_timestamp       
+<pre class="execute-body-output"> pg_switch_wal |       current_timestamp
 ---------------+-------------------------------
  0/2302ACF0    | 2022-03-06 15:47:06.267771+00
 (1 row)</pre>
@@ -2170,7 +2170,7 @@ Now after a short delay the table will appear on <span class="host">pg-standby</
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres psql -c " \
        select *, current_timestamp from replicated_table"</pre>
-<pre class="execute-body-output">    message     |      current_timestamp       
+<pre class="execute-body-output">    message     |      current_timestamp
 ----------------+------------------------------</pre>
 <pre class="execute-body-output-highlight"> Important Data | 2022-03-06 15:47:08.30542+00</pre>
 <pre class="execute-body-output">(1 row)</pre>
@@ -2289,7 +2289,7 @@ Now when a table is created on <span class="host">pg-primary</span> it will appe
        insert into stream_table values ('Important Data'); \
        commit; \
        select *, current_timestamp from stream_table";</pre>
-<pre class="execute-body-output">    message     |       current_timestamp       
+<pre class="execute-body-output">    message     |       current_timestamp
 ----------------+-------------------------------</pre>
 <pre class="execute-body-output-highlight"> Important Data | 2022-03-06 15:47:15.878472+00</pre>
 <pre class="execute-body-output">(1 row)</pre>
@@ -2298,7 +2298,7 @@ Now when a table is created on <span class="host">pg-primary</span> it will appe
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres psql -c " \
        select *, current_timestamp from stream_table"</pre>
-<pre class="execute-body-output">    message     |       current_timestamp       
+<pre class="execute-body-output">    message     |       current_timestamp
 ----------------+-------------------------------</pre>
 <pre class="execute-body-output-highlight"> Important Data | 2022-03-06 15:47:16.187884+00</pre>
 <pre class="execute-body-output">(1 row)</pre>
