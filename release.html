@@ -32,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.43">
-v2.43 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.44">
+v2.44 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -48,6 +48,36 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.44"></a><div class="section2-header"><div class="section2-title">
+v2.44 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Remove PostgreSQL 9.0/9.1/9.2 Support
+</div><div class="section2-subsubtitle">
+Released January 30, 2023
+</div><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Remove support for <span class="host">PostgreSQL</span> <span class="id">9.0</span>/<span class="id">9.1</span>/<span class="id">9.2</span>. (<i>Reviewed by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Restore errors when no backup matches the current version of <span class="postgres">PostgreSQL</span>. (<i>Contributed by Stefan Fercot. Reviewed by David Steele. Suggested by Soulou.</i>)
+</li><li class="list-unordered">
+Add <span class="br-option">compress-level</span> range checking for each <span class="br-option">compress-type</span>. (<i>Reviewed by Stefan Fercot. Suggested by gkleen, ViperRu.</i>)
+</li></ul><div class="section2-subtitle">
+Additional Notes
+</div><div class="section-body-text">
+<b>Documentation Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Add warning about enabling <q>hierarchical namespace</q> on Azure storage. (<i>Reviewed by Stefan Fercot. Suggested by Vojtech Galda, Pluggi, asjonos.</i>)
+</li><li class="list-unordered">
+Add replacement for linefeeds in monitoring example. (<i>Reviewed by Stefan Fercot. Suggested by rudonx, gmustdie, Ivan Shelestov.</i>)
+</li><li class="list-unordered">
+Clarify <span class="br-option">target-action</span> behavior on various <span class="postgres">PostgreSQL</span> versions. (<i>Contributed by Chris Bandy. Reviewed by David Steele, Anton Kurochkin, Stefan Fercot. Suggested by Anton Kurochkin, Chris Bandy.</i>)
+</li><li class="list-unordered">
+Updates and clarifications to index page. (<i>Reviewed by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Add dark mode to the website. (<i>Suggested by Stephen Frost.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.43"></a><div class="section2-header"><div class="section2-title">
 v2.43 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -62,9 +92,7 @@ Fix missing reference in diff/incr backup. (<i>Reviewed by Stefan Fercot. Report
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add hint when an option is specified without an index. (<i>Reviewed by Stefan Fercot.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.42"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.42"></a><div class="section2-header"><div class="section2-title">
 v2.42 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Bug Fixes
@@ -2865,5 +2893,5 @@ Additional Notes
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2022, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated November 28, 2022
+Copyright &copy; 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated January 30, 2023
 </div></body></html>
