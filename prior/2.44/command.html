@@ -180,7 +180,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -513,10 +513,8 @@ example: --repo1-gcs-key-type=auto</pre>
 </div><div class="section3-title">
 Repository Host Option (<span class="id">--repo-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
+Repository host when operating remotely.
 </div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
 When backing up and archiving to a locally mounted filesystem this setting is not required.
 </div>
 <pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
@@ -616,7 +614,7 @@ Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host port when <span class="br-setting">repo-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the repository host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --repo1-host-port=25</pre>
@@ -941,7 +939,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -1318,10 +1316,8 @@ example: --repo1-gcs-key-type=auto</pre>
 </div><div class="section3-title">
 Repository Host Option (<span class="id">--repo-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
+Repository host when operating remotely.
 </div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
 When backing up and archiving to a locally mounted filesystem this setting is not required.
 </div>
 <pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
@@ -1421,7 +1417,7 @@ Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host port when <span class="br-setting">repo-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the repository host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --repo1-host-port=25</pre>
@@ -1819,7 +1815,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -2195,10 +2191,8 @@ example: --repo1-gcs-key-type=auto</pre>
 </div><div class="section3-title">
 Repository Host Option (<span class="id">--repo-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
+Repository host when operating remotely.
 </div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
 When backing up and archiving to a locally mounted filesystem this setting is not required.
 </div>
 <pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
@@ -2298,7 +2292,7 @@ Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host port when <span class="br-setting">repo-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the repository host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --repo1-host-port=25</pre>
@@ -2823,7 +2817,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -3537,7 +3531,7 @@ example: --pg1-database=backupdb</pre>
 </div><div class="section3-title">
 PostgreSQL Host Option (<span class="id">--pg-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host for operating remotely via SSH.
+<span class="postgres">PostgreSQL</span> host for operating remotely.
 </div><div class="section-body-text">
 Used for backups where the <span class="postgres">PostgreSQL</span> host is different from the repository host.
 </div>
@@ -3638,7 +3632,7 @@ PostgreSQL Host Port Option (<span class="id">--pg-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 <span class="postgres">PostgreSQL</span> host port when <span class="br-setting">pg-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the <span class="postgres">PostgreSQL</span> host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the <span class="postgres">PostgreSQL</span> host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --pg1-host-port=25</pre>
@@ -3827,7 +3821,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -4149,10 +4143,8 @@ example: --repo1-gcs-key-type=auto</pre>
 </div><div class="section3-title">
 Repository Host Option (<span class="id">--repo-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
+Repository host when operating remotely.
 </div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
 When backing up and archiving to a locally mounted filesystem this setting is not required.
 </div>
 <pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
@@ -4252,7 +4244,7 @@ Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host port when <span class="br-setting">repo-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the repository host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --repo1-host-port=25</pre>
@@ -4487,7 +4479,7 @@ example: --pg1-database=backupdb</pre>
 </div><div class="section3-title">
 PostgreSQL Host Option (<span class="id">--pg-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host for operating remotely via SSH.
+<span class="postgres">PostgreSQL</span> host for operating remotely.
 </div><div class="section-body-text">
 Used for backups where the <span class="postgres">PostgreSQL</span> host is different from the repository host.
 </div>
@@ -4588,7 +4580,7 @@ PostgreSQL Host Port Option (<span class="id">--pg-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 <span class="postgres">PostgreSQL</span> host port when <span class="br-setting">pg-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the <span class="postgres">PostgreSQL</span> host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the <span class="postgres">PostgreSQL</span> host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --pg1-host-port=25</pre>
@@ -5393,7 +5385,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -5713,10 +5705,8 @@ example: --repo1-gcs-key-type=auto</pre>
 </div><div class="section3-title">
 Repository Host Option (<span class="id">--repo-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
+Repository host when operating remotely.
 </div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
 When backing up and archiving to a locally mounted filesystem this setting is not required.
 </div>
 <pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
@@ -5816,7 +5806,7 @@ Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host port when <span class="br-setting">repo-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the repository host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --repo1-host-port=25</pre>
@@ -6100,7 +6090,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -6446,10 +6436,8 @@ example: --repo1-gcs-key-type=auto</pre>
 </div><div class="section3-title">
 Repository Host Option (<span class="id">--repo-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
+Repository host when operating remotely.
 </div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
 When backing up and archiving to a locally mounted filesystem this setting is not required.
 </div>
 <pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
@@ -6549,7 +6537,7 @@ Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host port when <span class="br-setting">repo-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the repository host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --repo1-host-port=25</pre>
@@ -6868,7 +6856,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -7203,10 +7191,8 @@ example: --repo1-gcs-key-type=auto</pre>
 </div><div class="section3-title">
 Repository Host Option (<span class="id">--repo-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
+Repository host when operating remotely.
 </div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
 When backing up and archiving to a locally mounted filesystem this setting is not required.
 </div>
 <pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
@@ -7306,7 +7292,7 @@ Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host port when <span class="br-setting">repo-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the repository host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --repo1-host-port=25</pre>
@@ -7755,7 +7741,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -8113,10 +8099,8 @@ example: --repo1-gcs-key-type=auto</pre>
 </div><div class="section3-title">
 Repository Host Option (<span class="id">--repo-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
+Repository host when operating remotely.
 </div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
 When backing up and archiving to a locally mounted filesystem this setting is not required.
 </div>
 <pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
@@ -8216,7 +8200,7 @@ Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host port when <span class="br-setting">repo-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the repository host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --repo1-host-port=25</pre>
@@ -8997,7 +8981,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -9330,10 +9314,8 @@ example: --repo1-gcs-key-type=auto</pre>
 </div><div class="section3-title">
 Repository Host Option (<span class="id">--repo-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
+Repository host when operating remotely.
 </div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
 When backing up and archiving to a locally mounted filesystem this setting is not required.
 </div>
 <pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
@@ -9433,7 +9415,7 @@ Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host port when <span class="br-setting">repo-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the repository host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --repo1-host-port=25</pre>
@@ -9668,7 +9650,7 @@ example: --pg1-database=backupdb</pre>
 </div><div class="section3-title">
 PostgreSQL Host Option (<span class="id">--pg-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host for operating remotely via SSH.
+<span class="postgres">PostgreSQL</span> host for operating remotely.
 </div><div class="section-body-text">
 Used for backups where the <span class="postgres">PostgreSQL</span> host is different from the repository host.
 </div>
@@ -9769,7 +9751,7 @@ PostgreSQL Host Port Option (<span class="id">--pg-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 <span class="postgres">PostgreSQL</span> host port when <span class="br-setting">pg-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the <span class="postgres">PostgreSQL</span> host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the <span class="postgres">PostgreSQL</span> host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --pg1-host-port=25</pre>
@@ -9921,7 +9903,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -10267,10 +10249,8 @@ example: --repo1-gcs-key-type=auto</pre>
 </div><div class="section3-title">
 Repository Host Option (<span class="id">--repo-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
+Repository host when operating remotely.
 </div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
 When backing up and archiving to a locally mounted filesystem this setting is not required.
 </div>
 <pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
@@ -10370,7 +10350,7 @@ Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host port when <span class="br-setting">repo-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the repository host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --repo1-host-port=25</pre>
@@ -10605,7 +10585,7 @@ example: --pg1-database=backupdb</pre>
 </div><div class="section3-title">
 PostgreSQL Host Option (<span class="id">--pg-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host for operating remotely via SSH.
+<span class="postgres">PostgreSQL</span> host for operating remotely.
 </div><div class="section-body-text">
 Used for backups where the <span class="postgres">PostgreSQL</span> host is different from the repository host.
 </div>
@@ -10706,7 +10686,7 @@ PostgreSQL Host Port Option (<span class="id">--pg-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 <span class="postgres">PostgreSQL</span> host port when <span class="br-setting">pg-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the <span class="postgres">PostgreSQL</span> host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the <span class="postgres">PostgreSQL</span> host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --pg1-host-port=25</pre>
@@ -10854,7 +10834,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -11187,10 +11167,8 @@ example: --repo1-gcs-key-type=auto</pre>
 </div><div class="section3-title">
 Repository Host Option (<span class="id">--repo-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
+Repository host when operating remotely.
 </div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
 When backing up and archiving to a locally mounted filesystem this setting is not required.
 </div>
 <pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
@@ -11290,7 +11268,7 @@ Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host port when <span class="br-setting">repo-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the repository host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --repo1-host-port=25</pre>
@@ -11525,7 +11503,7 @@ example: --pg1-database=backupdb</pre>
 </div><div class="section3-title">
 PostgreSQL Host Option (<span class="id">--pg-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host for operating remotely via SSH.
+<span class="postgres">PostgreSQL</span> host for operating remotely.
 </div><div class="section-body-text">
 Used for backups where the <span class="postgres">PostgreSQL</span> host is different from the repository host.
 </div>
@@ -11626,7 +11604,7 @@ PostgreSQL Host Port Option (<span class="id">--pg-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 <span class="postgres">PostgreSQL</span> host port when <span class="br-setting">pg-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the <span class="postgres">PostgreSQL</span> host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the <span class="postgres">PostgreSQL</span> host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --pg1-host-port=25</pre>
@@ -12092,7 +12070,7 @@ Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Network compression level.
 </div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once. SSH compression is always disabled.
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
 </div>
 <pre class="code-block">default: 3
 allowed: 0-9
@@ -12426,10 +12404,8 @@ example: --repo1-gcs-key-type=auto</pre>
 </div><div class="section3-title">
 Repository Host Option (<span class="id">--repo-host</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely via SSH.
+Repository host when operating remotely.
 </div><div class="section-body-text">
-Make sure that trusted SSH authentication is configured between the <span class="postgres">PostgreSQL</span> host and the repository host.<br/>
-<br/>
 When backing up and archiving to a locally mounted filesystem this setting is not required.
 </div>
 <pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
@@ -12529,7 +12505,7 @@ Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host port when <span class="br-setting">repo-host</span> is set.
 </div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol. Currently only SSH is supported.
+Use this option to specify a non-default port for the repository host protocol.
 </div>
 <pre class="code-block">allowed: 0-65535
 example: --repo1-host-port=25</pre>
@@ -12749,5 +12725,5 @@ Version Command (<span class="id">version</span>)
 </div></div><div class="section-intro">
 Displays installed <span class="backrest">pgBackRest</span> version.
 </div><div class="section-body"></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated January 30, 2023
+Copyright &copy; 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>.  Updated January 31, 2023
 </div></body></html>
