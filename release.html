@@ -32,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.46">
-v2.46 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.47">
+v2.47 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -48,6 +48,42 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.47"></a><div class="section2-header"><div class="section2-title">
+v2.47 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Performance Improvements and Bug Fixes
+</div><div class="section2-subsubtitle">
+Released July 24, 2023
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Preserve block incremental info in manifest during delta backup. (<i>Reviewed by Stephen Frost. Reported by Francisco Miguel Biete Banon.</i>)
+</li><li class="list-unordered">
+Fix block incremental file names in <span class="cmd">verify</span> command. (<i>Reviewed by Reid Thompson. Reported by Francisco Miguel Biete Banon.</i>)
+</li><li class="list-unordered">
+Fix spurious automatic delta backup on backup from standby. (<i>Reviewed by Stephen Frost. Reported by krmozejko, Don Seiler.</i>)
+</li><li class="list-unordered">
+Skip <span class="file">recovery.signal</span> for <span class="postgres">PostgreSQL</span> >= 12 when recovery <span class="br-option">type=none</span>. (<i>Reviewed by Stefan Fercot. Reported by T.Anastacio.</i>)
+</li><li class="list-unordered">
+Fix unique label generation for diff/incr backup. (<i>Fixed by Andrey Sokolov. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Fix time-based archive expiration when no backups are expired. (<i>Reviewed by Stefan Fercot.</i>)
+</li></ul><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Improve performance of <span class="host">SFTP</span> storage driver. (<i>Contributed by Stephen Frost, Reid Thompson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Add timezone offset to <span class="cmd">info</span> command date/time output. (<i>Reviewed by Stefan Fercot, Philip Hurst. Suggested by Philip Hurst.</i>)
+</li><li class="list-unordered">
+Centralize error handling for unsupported features. (<i>Reviewed by Stefan Fercot.</i>)
+</li></ul><div class="section2-subtitle">
+Additional Notes
+</div><div class="section-body-text">
+<b>Documentation Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Clarify preference to install from packages in the user guide. (<i>Reviewed by Stefan Fercot. Suggested by dr-kd.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.46"></a><div class="section2-header"><div class="section2-title">
 v2.46 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -78,9 +114,7 @@ Additional Notes
 Add warning about using recovery <span class="br-option">type=none</span>. (<i>Reviewed by Stefan Fercot.</i>)
 </li><li class="list-unordered">
 Add note about running <span class="cmd">stanza-create</span> on already-created repositories.
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.45"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.45"></a><div class="section2-header"><div class="section2-title">
 v2.45 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Block Incremental Backup (BETA)
@@ -235,7 +269,7 @@ Additional Notes
 </div><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
-Skip internal options in the configuration reference. (<i>Reported by Francisco Miguel Biete.</i>)
+Skip internal options in the configuration reference. (<i>Reported by Francisco Miguel Biete Banon.</i>)
 </li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
@@ -519,7 +553,7 @@ Fix issues with leftover spool files from a prior <span class="cmd">restore</spa
 </li><li class="list-unordered">
 Fix issue when checking links for large numbers of tablespaces. (<i>Reviewed by Cynthia Shang, Avinash Vallarapu. Reported by Avinash Vallarapu.</i>)
 </li><li class="list-unordered">
-Free no longer needed remotes so they do not timeout during <span class="cmd">restore</span>. (<i>Reviewed by Cynthia Shang. Reported by Francisco Miguel Biete.</i>)
+Free no longer needed remotes so they do not timeout during <span class="cmd">restore</span>. (<i>Reviewed by Cynthia Shang. Reported by Francisco Miguel Biete Banon.</i>)
 </li><li class="list-unordered">
 Fix <span class="cmd">help</span> when a valid option is invalid for the specified command. (<i>Reviewed by Stefan Fercot. Reported by Cynthia Shang.</i>)
 </li></ul><div class="section-body-text">
@@ -2949,5 +2983,5 @@ Additional Notes
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated May 22, 2023
+Copyright &copy; 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 24, 2023
 </div></body></html>
