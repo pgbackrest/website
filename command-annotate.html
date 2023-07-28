@@ -1,0 +1,791 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>pgBackRest Command Reference: annotate</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore" property="og:site_name">
+<meta content="pgBackRest Command Reference: annotate" property="og:title">
+<meta content="website" property="og:type">
+<link href="favicon.png" rel="icon" type="image/png">
+<meta content="image/png" property="og:image:type">
+<meta content="http://www.pgbackrest.org/logo.png" property="og:image">
+<meta content="The pgBackRest Command Reference details all commands and options." name="description">
+<meta content="The pgBackRest Command Reference details all commands and options." property="og:description">
+<link href="default.css" rel="stylesheet" type="text/css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
+</head><body><div class="section1"><a id="command-annotate"></a><div class="section1-header"><div class="section1-number">
+2
+</div><div class="section1-title">
+Annotate Command (<span class="id">annotate</span>)
+</div></div><div class="section-intro">
+Annotations included with the <span class="cmd">backup</span> command can be added, modified, or removed afterwards using the <span class="cmd">annotate</span> command.
+</div><div class="section-body"><div class="section2"><a id="command-annotate/category-command"></a><div class="section2-header"><div class="section2-number">
+2.1
+</div><div class="section2-title">
+Command Options
+</div></div><div class="section-body"><div class="section3"><a id="command-annotate/category-command/option-annotation"></a><div class="section3-header"><div class="section3-number">
+2.1.1
+</div><div class="section3-title">
+Backup annotation(s) Option (<span class="id">--annotation</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Annotate backup with user-defined key/value pairs.
+</div><div class="section-body-text">
+Users can attach informative key/value pairs to the backup. This option may be used multiple times to attach multiple annotations.<br>
+<br>
+Annotations are output by the <span class="cmd">info</span> command text output when a backup is specified with <span class="br-option">--set</span> and always appear in the JSON output.
+</div>
+<pre class="code-block">example: --annotation=source=&quot;Sunday backup for website database&quot;</pre>
+</div></div><div class="section3"><a id="command-annotate/category-command/option-set"></a><div class="section3-header"><div class="section3-number">
+2.1.2
+</div><div class="section3-title">
+Set Option (<span class="id">--set</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Backup set to annotate.
+</div><div class="section-body-text">
+The backup set to annotate.
+</div>
+<pre class="code-block">example: --set=20150131-153358F_20150131-153401I</pre>
+</div></div></div></div><div class="section2"><a id="command-annotate/category-general"></a><div class="section2-header"><div class="section2-number">
+2.2
+</div><div class="section2-title">
+General Options
+</div></div><div class="section-body"><div class="section3"><a id="command-annotate/category-general/option-buffer-size"></a><div class="section3-header"><div class="section3-number">
+2.2.1
+</div><div class="section3-title">
+Buffer Size Option (<span class="id">--buffer-size</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Buffer size for I/O operations.
+</div><div class="section-body-text">
+Buffer size used for copy, compress, encrypt, and other operations. The number of buffers used depends on options and each operation may use additional memory, e.g. <span class="id">gz</span> compression may use an additional 256KiB of memory.<br>
+<br>
+Allowed values are <span class="id">16KiB</span>, <span class="id">32KiB</span>, <span class="id">64KiB</span>, <span class="id">128KiB</span>, <span class="id">256KiB</span>, <span class="id">512KiB</span>, <span class="id">1MiB</span>, <span class="id">2MiB</span>, <span class="id">4MiB</span>, <span class="id">8MiB</span>, and <span class="id">16MiB</span>.
+</div>
+<pre class="code-block">default: 1MiB
+example: --buffer-size=2MiB</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-compress-level-network"></a><div class="section3-header"><div class="section3-number">
+2.2.2
+</div><div class="section3-title">
+Network Compress Level Option (<span class="id">--compress-level-network</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Network compression level.
+</div><div class="section-body-text">
+Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
+</div>
+<pre class="code-block">default: 3
+allowed: 0-9
+example: --compress-level-network=1</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-config"></a><div class="section3-header"><div class="section3-number">
+2.2.3
+</div><div class="section3-title">
+Config Option (<span class="id">--config</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> configuration file.
+</div><div class="section-body-text">
+Use this option to specify a different configuration file than the default.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH &quot;/&quot; PROJECT_CONFIG_FILE
+example: --config=/conf/pgbackrest/pgbackrest.conf</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-config-include-path"></a><div class="section3-header"><div class="section3-number">
+2.2.4
+</div><div class="section3-title">
+Config Include Path Option (<span class="id">--config-include-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Path to additional <span class="backrest">pgBackRest</span> configuration files.
+</div><div class="section-body-text">
+Configuration files existing in the specified location with extension <span class="file">.conf</span> will be concatenated with the <span class="backrest">pgBackRest</span> configuration file, resulting in one configuration file.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH &quot;/&quot; PROJECT_CONFIG_INCLUDE_PATH
+example: --config-include-path=/conf/pgbackrest/conf.d</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-config-path"></a><div class="section3-header"><div class="section3-number">
+2.2.5
+</div><div class="section3-title">
+Config Path Option (<span class="id">--config-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Base path of <span class="backrest">pgBackRest</span> configuration files.
+</div><div class="section-body-text">
+This setting is used to override the default base path setting for the <span class="br-option">--config</span> and <span class="br-option">--config-include-path</span> options unless they are explicitly set on the command-line.<br>
+<br>
+For example, passing only <span class="id">--config-path=/conf/pgbackrest</span> results in the <span class="br-option">--config</span> default being set to <span class="id">/conf/pgbackrest/pgbackrest.conf</span> and the <span class="br-option">--config-include-path</span> default being set to <span class="id">/conf/pgbackrest/conf.d</span>.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH
+example: --config-path=/conf/pgbackrest</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-io-timeout"></a><div class="section3-header"><div class="section3-number">
+2.2.6
+</div><div class="section3-title">
+I/O Timeout Option (<span class="id">--io-timeout</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+I/O timeout.
+</div><div class="section-body-text">
+Timeout, in seconds, used for connections and read/write operations.<br>
+<br>
+Note that the entire read/write operation does not need to complete within this timeout but <i>some</i> progress must be made, even if it is only a single byte.
+</div>
+<pre class="code-block">default: 60
+allowed: 0.1-3600
+example: --io-timeout=120</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-lock-path"></a><div class="section3-header"><div class="section3-number">
+2.2.7
+</div><div class="section3-title">
+Lock Path Option (<span class="id">--lock-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Path where lock files are stored.
+</div><div class="section-body-text">
+The lock path provides a location for <span class="backrest">pgBackRest</span> to create lock files to prevent conflicting operations from being run concurrently.
+</div>
+<pre class="code-block">default: /tmp/pgbackrest
+example: --lock-path=/backup/db/lock</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-neutral-umask"></a><div class="section3-header"><div class="section3-number">
+2.2.8
+</div><div class="section3-title">
+Neutral Umask Option (<span class="id">--neutral-umask</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Use a neutral umask.
+</div><div class="section-body-text">
+Sets the umask to 0000 so modes in the repository are created in a sensible way. The default directory mode is 0750 and default file mode is 0640. The lock and log directories set the directory and file mode to 0770 and 0660 respectively.<br>
+<br>
+To use the executing user&#39;s umask instead specify <span class="br-setting">neutral-umask=n</span> in the config file or <span class="br-setting">--no-neutral-umask</span> on the command line.
+</div>
+<pre class="code-block">default: y
+example: --no-neutral-umask</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-protocol-timeout"></a><div class="section3-header"><div class="section3-number">
+2.2.9
+</div><div class="section3-title">
+Protocol Timeout Option (<span class="id">--protocol-timeout</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Protocol timeout.
+</div><div class="section-body-text">
+Sets the timeout, in seconds, that the local or remote process will wait for a new message to be received on the protocol layer. This prevents processes from waiting indefinitely for a message.<br>
+<div class="admonition"><div class="note">NOTE:</div><div class="note-text">The <span class="br-option">protocol-timeout</span> option must be greater than the <span class="br-option">db-timeout</span> option.</div></div>
+</div>
+<pre class="code-block">default: 1830
+allowed: 0.1-604800
+example: --protocol-timeout=630</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-sck-keep-alive"></a><div class="section3-header"><div class="section3-number">
+2.2.10
+</div><div class="section3-title">
+Keep Alive Option (<span class="id">--sck-keep-alive</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Keep-alive enable.
+</div><div class="section-body-text">
+Enables keep-alive messages on socket connections.
+</div>
+<pre class="code-block">default: y
+example: --no-sck-keep-alive</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-stanza"></a><div class="section3-header"><div class="section3-number">
+2.2.11
+</div><div class="section3-title">
+Stanza Option (<span class="id">--stanza</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Defines the stanza.
+</div><div class="section-body-text">
+A stanza is the configuration for a <span class="postgres">PostgreSQL</span> database cluster that defines where it is located, how it will be backed up, archiving options, etc. Most db servers will only have one <span class="postgres">PostgreSQL</span> database cluster and therefore one stanza, whereas backup servers will have a stanza for every database cluster that needs to be backed up.<br>
+<br>
+It is tempting to name the stanza after the primary cluster but a better name describes the databases contained in the cluster. Because the stanza name will be used for the primary and all replicas it is more appropriate to choose a name that describes the actual function of the cluster, such as app or dw, rather than the local cluster name, such as main or prod.
+</div>
+<pre class="code-block">example: --stanza=main</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-tcp-keep-alive-count"></a><div class="section3-header"><div class="section3-number">
+2.2.12
+</div><div class="section3-title">
+Keep Alive Count Option (<span class="id">--tcp-keep-alive-count</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Keep-alive count.
+</div><div class="section-body-text">
+Specifies the number of TCP keep-alive messages that can be lost before the connection is considered dead.<br>
+<br>
+This option is available on systems that support the <span class="id">TCP_KEEPCNT</span> socket option.
+</div>
+<pre class="code-block">allowed: 1-32
+example: --tcp-keep-alive-count=3</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-tcp-keep-alive-idle"></a><div class="section3-header"><div class="section3-number">
+2.2.13
+</div><div class="section3-title">
+Keep Alive Idle Option (<span class="id">--tcp-keep-alive-idle</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Keep-alive idle time.
+</div><div class="section-body-text">
+Specifies the amount of time (in seconds) with no network activity after which the operating system should send a TCP keep-alive message.<br>
+<br>
+This option is available on systems that support the <span class="id">TCP_KEEPIDLE</span> socket option.
+</div>
+<pre class="code-block">allowed: 1-3600
+example: --tcp-keep-alive-idle=60</pre>
+</div></div><div class="section3"><a id="command-annotate/category-general/option-tcp-keep-alive-interval"></a><div class="section3-header"><div class="section3-number">
+2.2.14
+</div><div class="section3-title">
+Keep Alive Interval Option (<span class="id">--tcp-keep-alive-interval</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Keep-alive interval time.
+</div><div class="section-body-text">
+Specifies the amount of time (in seconds) after which a TCP keep-alive message that has not been acknowledged should be retransmitted.<br>
+<br>
+This option is available on systems that support the <span class="id">TCP_KEEPINTVL</span> socket option.
+</div>
+<pre class="code-block">allowed: 1-900
+example: --tcp-keep-alive-interval=30</pre>
+</div></div></div></div><div class="section2"><a id="command-annotate/category-log"></a><div class="section2-header"><div class="section2-number">
+2.3
+</div><div class="section2-title">
+Log Options
+</div></div><div class="section-body"><div class="section3"><a id="command-annotate/category-log/option-log-level-console"></a><div class="section3-header"><div class="section3-number">
+2.3.1
+</div><div class="section3-title">
+Console Log Level Option (<span class="id">--log-level-console</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Level for console logging.
+</div><div class="section-body-text">
+The following log levels are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
+</div>
+<pre class="code-block">default: warn
+example: --log-level-console=error</pre>
+</div></div><div class="section3"><a id="command-annotate/category-log/option-log-level-file"></a><div class="section3-header"><div class="section3-number">
+2.3.2
+</div><div class="section3-title">
+File Log Level Option (<span class="id">--log-level-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Level for file logging.
+</div><div class="section-body-text">
+The following log levels are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
+</div>
+<pre class="code-block">default: info
+example: --log-level-file=debug</pre>
+</div></div><div class="section3"><a id="command-annotate/category-log/option-log-level-stderr"></a><div class="section3-header"><div class="section3-number">
+2.3.3
+</div><div class="section3-title">
+Std Error Log Level Option (<span class="id">--log-level-stderr</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Level for stderr logging.
+</div><div class="section-body-text">
+Specifies which log levels will output to <span class="id">stderr</span> rather than <span class="id">stdout</span> (specified by <span class="br-option">log-level-console</span>). The timestamp and process will not be output to <span class="id">stderr</span>.<br>
+<br>
+The following log levels are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
+</div>
+<pre class="code-block">default: warn
+example: --log-level-stderr=error</pre>
+</div></div><div class="section3"><a id="command-annotate/category-log/option-log-path"></a><div class="section3-header"><div class="section3-number">
+2.3.4
+</div><div class="section3-title">
+Log Path Option (<span class="id">--log-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Path where log files are stored.
+</div><div class="section-body-text">
+The log path provides a location for <span class="backrest">pgBackRest</span> to store log files. Note that if <span class="br-setting">log-level-file=off</span> then no log path is required.
+</div>
+<pre class="code-block">default: /var/log/pgbackrest
+example: --log-path=/backup/db/log</pre>
+</div></div><div class="section3"><a id="command-annotate/category-log/option-log-subprocess"></a><div class="section3-header"><div class="section3-number">
+2.3.5
+</div><div class="section3-title">
+Log Subprocesses Option (<span class="id">--log-subprocess</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Enable logging in subprocesses.
+</div><div class="section-body-text">
+Enable file logging for any subprocesses created by this process using the log level specified by <span class="br-option">log-level-file</span>.
+</div>
+<pre class="code-block">default: n
+example: --log-subprocess</pre>
+</div></div><div class="section3"><a id="command-annotate/category-log/option-log-timestamp"></a><div class="section3-header"><div class="section3-number">
+2.3.6
+</div><div class="section3-title">
+Log Timestamp Option (<span class="id">--log-timestamp</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Enable timestamp in logging.
+</div><div class="section-body-text">
+Enables the timestamp in console and file logging. This option is disabled in special situations such as generating documentation.
+</div>
+<pre class="code-block">default: y
+example: --no-log-timestamp</pre>
+</div></div></div></div><div class="section2"><a id="command-annotate/category-repository"></a><div class="section2-header"><div class="section2-number">
+2.4
+</div><div class="section2-title">
+Repository Options
+</div></div><div class="section-body"><div class="section3"><a id="command-annotate/category-repository/option-repo"></a><div class="section3-header"><div class="section3-number">
+2.4.1
+</div><div class="section3-title">
+Set Repository Option (<span class="id">--repo</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Set repository.
+</div><div class="section-body-text">
+Set the repository for a command to operate on.<br>
+<br>
+For example, this option may be used to perform a restore from a specific repository, rather than letting <span class="backrest">pgBackRest</span> choose.
+</div>
+<pre class="code-block">allowed: 1-256
+example: --repo=1</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-azure-container"></a><div class="section3-header"><div class="section3-number">
+2.4.2
+</div><div class="section3-title">
+Azure Repository Container Option (<span class="id">--repo-azure-container</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Azure repository container.
+</div><div class="section-body-text">
+Azure container used to store the repository.<br>
+<br>
+<span class="backrest">pgBackRest</span> repositories can be stored in the container root by setting <span class="br-option">repo-path=/</span> but it is usually best to specify a prefix, such as <span class="path">/repo</span>, so logs and other Azure-generated content can also be stored in the container.
+</div>
+<pre class="code-block">example: --repo1-azure-container=pg-backup</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-azure-key-type"></a><div class="section3-header"><div class="section3-number">
+2.4.3
+</div><div class="section3-title">
+Azure Repository Key Type Option (<span class="id">--repo-azure-key-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Azure repository key type.
+</div><div class="section-body-text">
+The following types are supported for authorization:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">shared</span> - Shared key</li><li class="list-unordered"><span class="id">sas</span> - Shared access signature</li></ul>
+</div>
+<pre class="code-block">default: shared
+example: --repo1-azure-key-type=sas</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-azure-uri-style"></a><div class="section3-header"><div class="section3-number">
+2.4.4
+</div><div class="section3-title">
+Azure Repository URI Style Option (<span class="id">--repo-azure-uri-style</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Azure URI Style.
+</div><div class="section-body-text">
+The following URI styles are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">host</span> - Connect to <span class="id">account.endpoint</span> host.</li><li class="list-unordered"><span class="id">path</span> - Connect to <span class="id">endpoint</span> host and prepend account to URIs.</li></ul>
+</div>
+<pre class="code-block">default: host
+example: --repo1-azure-uri-style=path</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-cipher-type"></a><div class="section3-header"><div class="section3-number">
+2.4.5
+</div><div class="section3-title">
+Repository Cipher Type Option (<span class="id">--repo-cipher-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Cipher used to encrypt the repository.
+</div><div class="section-body-text">
+The following cipher types are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">none</span> - The repository is not encrypted</li><li class="list-unordered"><span class="id">aes-256-cbc</span> - Advanced Encryption Standard with 256 bit key length</li></ul>Note that encryption is always performed client-side even if the repository type (e.g. S3) supports encryption.
+</div>
+<pre class="code-block">default: none
+example: --repo1-cipher-type=aes-256-cbc</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-gcs-bucket"></a><div class="section3-header"><div class="section3-number">
+2.4.6
+</div><div class="section3-title">
+GCS Repository Bucket Option (<span class="id">--repo-gcs-bucket</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+GCS repository bucket.
+</div><div class="section-body-text">
+GCS bucket used to store the repository.<br>
+<br>
+<span class="backrest">pgBackRest</span> repositories can be stored in the bucket root by setting <span class="br-option">repo-path=/</span> but it is usually best to specify a prefix, such as <span class="path">/repo</span>, so logs and other GCS-generated content can also be stored in the bucket.
+</div>
+<pre class="code-block">example: --repo1-gcs-bucket=/pg-backup</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-gcs-endpoint"></a><div class="section3-header"><div class="section3-number">
+2.4.7
+</div><div class="section3-title">
+GCS Repository Endpoint Option (<span class="id">--repo-gcs-endpoint</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+GCS repository endpoint.
+</div><div class="section-body-text">
+Endpoint used to connect to the storage service. May be updated to use a local GCS server or alternate endpoint.
+</div>
+<pre class="code-block">default: storage.googleapis.com
+example: --repo1-gcs-endpoint=localhost</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-gcs-key-type"></a><div class="section3-header"><div class="section3-number">
+2.4.8
+</div><div class="section3-title">
+GCS Repository Key Type Option (<span class="id">--repo-gcs-key-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+GCS repository key type.
+</div><div class="section-body-text">
+The following types are supported for authorization:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">auto</span> - Authorize using the instance service account.</li><li class="list-unordered"><span class="id">service</span> - Service account from locally stored key.</li><li class="list-unordered"><span class="id">token</span> - For local testing, e.g. <span class="file">fakegcs</span>.</li></ul>
+</div>
+<pre class="code-block">default: service
+example: --repo1-gcs-key-type=auto</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-host"></a><div class="section3-header"><div class="section3-number">
+2.4.9
+</div><div class="section3-title">
+Repository Host Option (<span class="id">--repo-host</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host when operating remotely.
+</div><div class="section-body-text">
+When backing up and archiving to a locally mounted filesystem this setting is not required.
+</div>
+<pre class="code-block">example: --repo1-host=repo1.domain.com</pre>
+<div class="section-body-text">
+Deprecated Name: backup-host
+</div></div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-host-ca-file"></a><div class="section3-header"><div class="section3-number">
+2.4.10
+</div><div class="section3-title">
+Repository Host Certificate Authority File Option (<span class="id">--repo-host-ca-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host certificate authority file.
+</div><div class="section-body-text">
+Use a CA file other than the system default for connecting to the repository host.
+</div>
+<pre class="code-block">example: --repo1-host-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-host-ca-path"></a><div class="section3-header"><div class="section3-number">
+2.4.11
+</div><div class="section3-title">
+Repository Host Certificate Authority Path Option (<span class="id">--repo-host-ca-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host certificate authority path.
+</div><div class="section-body-text">
+Use a CA path other than the system default for connecting to the repository host.
+</div>
+<pre class="code-block">example: --repo1-host-ca-path=/etc/pki/tls/certs</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-host-cert-file"></a><div class="section3-header"><div class="section3-number">
+2.4.12
+</div><div class="section3-title">
+Repository Host Certificate File Option (<span class="id">--repo-host-cert-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host certificate file.
+</div><div class="section-body-text">
+Sent to repository host to prove client identity.
+</div>
+<pre class="code-block">example: --repo1-host-cert-file=/path/to/client.crt</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-host-cmd"></a><div class="section3-header"><div class="section3-number">
+2.4.13
+</div><div class="section3-title">
+Repository Host Command Option (<span class="id">--repo-host-cmd</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host <span class="backrest">pgBackRest</span> command.
+</div><div class="section-body-text">
+Required only if the path to the <span class="backrest">pgBackRest</span> command is different on the local and repository hosts. If not defined, the repository host command will be set the same as the local command.
+</div>
+<pre class="code-block">example: --repo1-host-cmd=/usr/lib/backrest/bin/pgbackrest</pre>
+<div class="section-body-text">
+Deprecated Name: backup-cmd
+</div></div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-host-config"></a><div class="section3-header"><div class="section3-number">
+2.4.14
+</div><div class="section3-title">
+Repository Host Configuration Option (<span class="id">--repo-host-config</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> repository host configuration file.
+</div><div class="section-body-text">
+Sets the location of the configuration file on the repository host. This is only required if the repository host configuration file is in a different location than the local configuration file.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH &quot;/&quot; PROJECT_CONFIG_FILE
+example: --repo1-host-config=/conf/pgbackrest/pgbackrest.conf</pre>
+<div class="section-body-text">
+Deprecated Name: backup-config
+</div></div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-host-config-include-path"></a><div class="section3-header"><div class="section3-number">
+2.4.15
+</div><div class="section3-title">
+Repository Host Configuration Include Path Option (<span class="id">--repo-host-config-include-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> repository host configuration include path.
+</div><div class="section-body-text">
+Sets the location of the configuration include path on the repository host. This is only required if the repository host configuration include path is in a different location than the local configuration include path.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH &quot;/&quot; PROJECT_CONFIG_INCLUDE_PATH
+example: --repo1-host-config-include-path=/conf/pgbackrest/conf.d</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-host-config-path"></a><div class="section3-header"><div class="section3-number">
+2.4.16
+</div><div class="section3-title">
+Repository Host Configuration Path Option (<span class="id">--repo-host-config-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> repository host configuration path.
+</div><div class="section-body-text">
+Sets the location of the configuration path on the repository host. This is only required if the repository host configuration path is in a different location than the local configuration path.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH
+example: --repo1-host-config-path=/conf/pgbackrest</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-host-key-file"></a><div class="section3-header"><div class="section3-number">
+2.4.17
+</div><div class="section3-title">
+Repository Host Key File Option (<span class="id">--repo-host-key-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host key file.
+</div><div class="section-body-text">
+Proves client certificate was sent by owner.
+</div>
+<pre class="code-block">example: --repo1-host-key-file=/path/to/client.key</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-host-port"></a><div class="section3-header"><div class="section3-number">
+2.4.18
+</div><div class="section3-title">
+Repository Host Port Option (<span class="id">--repo-host-port</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host port when <span class="br-setting">repo-host</span> is set.
+</div><div class="section-body-text">
+Use this option to specify a non-default port for the repository host protocol.
+</div>
+<pre class="code-block">allowed: 0-65535
+example: --repo1-host-port=25</pre>
+<div class="section-body-text">
+Deprecated Name: backup-ssh-port
+</div></div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-host-type"></a><div class="section3-header"><div class="section3-number">
+2.4.19
+</div><div class="section3-title">
+Repository Host Protocol Type Option (<span class="id">--repo-host-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host protocol type.
+</div><div class="section-body-text">
+The following protocol types are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">ssh</span> - Secure Shell.</li><li class="list-unordered"><span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.</li></ul>
+</div>
+<pre class="code-block">default: ssh
+example: --repo1-host-type=tls</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-host-user"></a><div class="section3-header"><div class="section3-number">
+2.4.20
+</div><div class="section3-title">
+Repository Host User Option (<span class="id">--repo-host-user</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host user when <span class="br-setting">repo-host</span> is set.
+</div><div class="section-body-text">
+Defines the user that will be used for operations on the repository host. Preferably this is not the <span class="id">postgres</span> user but rather some other user like <span class="id">pgbackrest</span>. If <span class="postgres">PostgreSQL</span> runs on the repository host the <span class="id">postgres</span> user can be placed in the <span class="id">pgbackrest</span> group so it has read permissions on the repository without being able to damage the contents accidentally.
+</div>
+<pre class="code-block">default: pgbackrest
+example: --repo1-host-user=repo-user</pre>
+<div class="section-body-text">
+Deprecated Name: backup-user
+</div></div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-path"></a><div class="section3-header"><div class="section3-number">
+2.4.21
+</div><div class="section3-title">
+Repository Path Option (<span class="id">--repo-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Path where backups and archive are stored.
+</div><div class="section-body-text">
+The repository is where <span class="backrest">pgBackRest</span> stores backups and archives WAL segments.<br>
+<br>
+It may be difficult to estimate in advance how much space you&#39;ll need. The best thing to do is take some backups then record the size of different types of backups (full/incr/diff) and measure the amount of WAL generated per day. This will give you a general idea of how much space you&#39;ll need, though of course requirements will likely change over time as your database evolves.
+</div>
+<pre class="code-block">default: /var/lib/pgbackrest
+example: --repo1-path=/backup/db/backrest</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-s3-bucket"></a><div class="section3-header"><div class="section3-number">
+2.4.22
+</div><div class="section3-title">
+S3 Repository Bucket Option (<span class="id">--repo-s3-bucket</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository bucket.
+</div><div class="section-body-text">
+S3 bucket used to store the repository.<br>
+<br>
+<span class="backrest">pgBackRest</span> repositories can be stored in the bucket root by setting <span class="br-option">repo-path=/</span> but it is usually best to specify a prefix, such as <span class="path">/repo</span>, so logs and other AWS generated content can also be stored in the bucket.
+</div>
+<pre class="code-block">example: --repo1-s3-bucket=pg-backup</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-s3-endpoint"></a><div class="section3-header"><div class="section3-number">
+2.4.23
+</div><div class="section3-title">
+S3 Repository Endpoint Option (<span class="id">--repo-s3-endpoint</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository endpoint.
+</div><div class="section-body-text">
+The AWS endpoint should be valid for the selected region.<br>
+<br>
+For custom/test configurations the <span class="br-setting">repo-storage-ca-file</span>, <span class="br-setting">repo-storage-ca-path</span>, <span class="br-setting">repo-storage-host</span>, <span class="br-setting">repo-storage-port</span>, and <span class="br-setting">repo-storage-verify-tls</span> options may be useful.
+</div>
+<pre class="code-block">example: --repo1-s3-endpoint=s3.amazonaws.com</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-s3-key-type"></a><div class="section3-header"><div class="section3-number">
+2.4.24
+</div><div class="section3-title">
+S3 Repository Key Type Option (<span class="id">--repo-s3-key-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository key type.
+</div><div class="section-body-text">
+The following types are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">shared</span> - Shared keys</li><li class="list-unordered"><span class="id">auto</span> - Automatically retrieve temporary credentials</li><li class="list-unordered"><span class="id">web-id</span> - Automatically retrieve web identity credentials</li></ul>
+</div>
+<pre class="code-block">default: shared
+example: --repo1-s3-key-type=auto</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-s3-kms-key-id"></a><div class="section3-header"><div class="section3-number">
+2.4.25
+</div><div class="section3-title">
+S3 Repository KMS Key ID Option (<span class="id">--repo-s3-kms-key-id</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository KMS key.
+</div><div class="section-body-text">
+Setting this option enables S3 server-side encryption using the specified AWS key management service key.
+</div>
+<pre class="code-block">example: --repo1-s3-kms-key-id=bceb4f13-6939-4be3-910d-df54dee817b7</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-s3-region"></a><div class="section3-header"><div class="section3-number">
+2.4.26
+</div><div class="section3-title">
+S3 Repository Region Option (<span class="id">--repo-s3-region</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository region.
+</div><div class="section-body-text">
+The AWS region where the bucket was created.
+</div>
+<pre class="code-block">example: --repo1-s3-region=us-east-1</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-s3-role"></a><div class="section3-header"><div class="section3-number">
+2.4.27
+</div><div class="section3-title">
+S3 Repository Role Option (<span class="id">--repo-s3-role</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository role.
+</div><div class="section-body-text">
+The AWS role name (not the full ARN) used to retrieve temporary credentials when <span class="br-option">repo-s3-key-type=auto</span>.
+</div>
+<pre class="code-block">example: --repo1-s3-role=authrole</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-s3-uri-style"></a><div class="section3-header"><div class="section3-number">
+2.4.28
+</div><div class="section3-title">
+S3 Repository URI Style Option (<span class="id">--repo-s3-uri-style</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 URI Style.
+</div><div class="section-body-text">
+The following URI styles are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">host</span> - Connect to <span class="id">bucket.endpoint</span> host.</li><li class="list-unordered"><span class="id">path</span> - Connect to <span class="id">endpoint</span> host and prepend bucket to URIs.</li></ul>
+</div>
+<pre class="code-block">default: host
+example: --repo1-s3-uri-style=path</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-sftp-host"></a><div class="section3-header"><div class="section3-number">
+2.4.29
+</div><div class="section3-title">
+SFTP Repository Host Option (<span class="id">--repo-sftp-host</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP repository host.
+</div><div class="section-body-text">
+The SFTP host containing the repository.
+</div>
+<pre class="code-block">example: --repo1-sftp-host=sftprepo.domain</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-sftp-host-fingerprint"></a><div class="section3-header"><div class="section3-number">
+2.4.30
+</div><div class="section3-title">
+SFTP Repository Host Fingerprint Option (<span class="id">--repo-sftp-host-fingerprint</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP repository host fingerprint.
+</div><div class="section-body-text">
+SFTP repository host fingerprint generation should match the <span class="br-setting">repo-sftp-host-key-hash-type</span>. Generate the fingeprint via <span class="id">awk &#39;{print $2}&#39; ssh_host_xxx_key.pub | base64 -d | (md5sum or sha1sum) -b</span>. The ssh host keys are normally found in the <span class="path">/etc/ssh</span> directory.
+</div>
+<pre class="code-block">example: --repo1-sftp-host-fingerprint=f84e172dfead7aeeeae6c1fdfb5aa8cf</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-sftp-host-key-hash-type"></a><div class="section3-header"><div class="section3-number">
+2.4.31
+</div><div class="section3-title">
+SFTP Repository Host Key Hash Type Option (<span class="id">--repo-sftp-host-key-hash-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP repository host key hash type.
+</div><div class="section-body-text">
+SFTP repository host key hash type. Declares the hash type to be used to compute the digest of the remote system&#39;s host key on SSH startup. Newer versions of libssh2 support <span class="id">sha256</span> in addition to md5 and sha1.
+</div>
+<pre class="code-block">example: --repo1-sftp-host-key-hash-type=sha256</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-sftp-host-port"></a><div class="section3-header"><div class="section3-number">
+2.4.32
+</div><div class="section3-title">
+SFTP Repository Host Port Option (<span class="id">--repo-sftp-host-port</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP repository host port.
+</div><div class="section-body-text">
+SFTP repository host port.
+</div>
+<pre class="code-block">default: 22
+allowed: 1-65535
+example: --repo1-sftp-host-port=22</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-sftp-host-user"></a><div class="section3-header"><div class="section3-number">
+2.4.33
+</div><div class="section3-title">
+SFTP Repository Host User Option (<span class="id">--repo-sftp-host-user</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP repository host user.
+</div><div class="section-body-text">
+User on the host used to store the repository.
+</div>
+<pre class="code-block">example: --repo1-sftp-host-user=pg-backup</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-sftp-private-key-file"></a><div class="section3-header"><div class="section3-number">
+2.4.34
+</div><div class="section3-title">
+SFTP Repository Private Key File Option (<span class="id">--repo-sftp-private-key-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP private key file.
+</div><div class="section-body-text">
+SFTP private key file used for authentication.
+</div>
+<pre class="code-block">example: --repo1-sftp-private-key-file=~/.ssh/id_ed25519</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-sftp-public-key-file"></a><div class="section3-header"><div class="section3-number">
+2.4.35
+</div><div class="section3-title">
+SFTP Repository Public Key File Option (<span class="id">--repo-sftp-public-key-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP public key file.
+</div><div class="section-body-text">
+SFTP public key file used for authentication. Optional if compiled against OpenSSL, required if compiled against a different library.
+</div>
+<pre class="code-block">example: --repo1-sftp-public-key-file=~/.ssh/id_ed25519.pub</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-storage-ca-file"></a><div class="section3-header"><div class="section3-number">
+2.4.36
+</div><div class="section3-title">
+Repository Storage CA File Option (<span class="id">--repo-storage-ca-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository storage CA file.
+</div><div class="section-body-text">
+Use a CA file other than the system default for storage (e.g. S3, Azure) certificates.
+</div>
+<pre class="code-block">example: --repo1-storage-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
+<div class="section-body-text">
+Deprecated Names: repo-azure-ca-file, repo-s3-ca-file
+</div></div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-storage-ca-path"></a><div class="section3-header"><div class="section3-number">
+2.4.37
+</div><div class="section3-title">
+Repository Storage TLS CA Path Option (<span class="id">--repo-storage-ca-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository storage CA path.
+</div><div class="section-body-text">
+Use a CA path other than the system default for storage (e.g. S3, Azure) certificates.
+</div>
+<pre class="code-block">example: --repo1-storage-ca-path=/etc/pki/tls/certs</pre>
+<div class="section-body-text">
+Deprecated Names: repo-azure-ca-path, repo-s3-ca-path
+</div></div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-storage-host"></a><div class="section3-header"><div class="section3-number">
+2.4.38
+</div><div class="section3-title">
+Repository Storage Host Option (<span class="id">--repo-storage-host</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository storage host.
+</div><div class="section-body-text">
+Connect to a host other than the storage (e.g. S3, Azure) endpoint. This is typically used for testing.
+</div>
+<pre class="code-block">example: --repo1-storage-host=127.0.0.1</pre>
+<div class="section-body-text">
+Deprecated Names: repo-azure-host, repo-s3-host
+</div></div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-storage-port"></a><div class="section3-header"><div class="section3-number">
+2.4.39
+</div><div class="section3-title">
+Repository Storage Port Option (<span class="id">--repo-storage-port</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository storage port.
+</div><div class="section-body-text">
+Port to use when connecting to the storage (e.g. S3, Azure) endpoint (or host if specified).
+</div>
+<pre class="code-block">default: 443
+allowed: 1-65535
+example: --repo1-storage-port=9000</pre>
+<div class="section-body-text">
+Deprecated Names: repo-azure-port, repo-s3-port
+</div></div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-storage-upload-chunk-size"></a><div class="section3-header"><div class="section3-number">
+2.4.40
+</div><div class="section3-title">
+Repository Storage Upload Chunk Size Option (<span class="id">--repo-storage-upload-chunk-size</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository storage upload chunk size.
+</div><div class="section-body-text">
+Object stores such as S3 allow files to be uploaded in chunks when the file is too large to be stored in memory. Even if the file can be stored in memory, it is more memory efficient to limit the amount of memory used for uploads.<br>
+<br>
+A larger chunk size will generally lead to better performance because it will minimize upload requests and allow more files to be uploaded in a single request rather than in chunks. The disadvantage is that memory usage will be higher and because the chunk buffer must be allocated per process, larger <span class="br-option">process-max</span> values will lead to more memory being consumed overall.<br>
+<br>
+Default chunk sizes by repo type:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">azure</span> - 4MiB</li><li class="list-unordered"><span class="id">gcs</span> - 4MiB</li><li class="list-unordered"><span class="id">s3</span> - 5MiB</li></ul>Note that valid chunk sizes vary by storage type and by platform. For example, <span class="host">AWS S3</span> has a minimum chunk size of 5MiB but <span class="host">S3</span> clones may accept lower values. Terminology for chunk size varies by storage type, so when searching min/max values use <q>part size</q> for <span class="host">AWS S3</span>, <q>chunk size</q> for <span class="host">GCS</span>, and <q>block size</q> for <span class="host">Azure</span>. No attempt is made to validate configured chunk sizes so selecting an invalid value will lead to errors from the storage service or undefined behavior.
+</div>
+<pre class="code-block">allowed: 64KiB-1TiB
+example: --repo1-storage-upload-chunk-size=16MiB</pre>
+</div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-storage-verify-tls"></a><div class="section3-header"><div class="section3-number">
+2.4.41
+</div><div class="section3-title">
+Repository Storage Certificate Verify Option (<span class="id">--repo-storage-verify-tls</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository storage certificate verify.
+</div><div class="section-body-text">
+This option provides the ability to enable/disable verification of the storage (e.g. S3, Azure) server TLS certificate. Disabling should only be used for testing or other scenarios where a certificate has been self-signed.
+</div>
+<pre class="code-block">default: y
+example: --no-repo1-storage-verify-tls</pre>
+<div class="section-body-text">
+Deprecated Names: repo-azure-verify-tls, repo-s3-verify-ssl, repo-s3-verify-tls
+</div></div></div><div class="section3"><a id="command-annotate/category-repository/option-repo-type"></a><div class="section3-header"><div class="section3-number">
+2.4.42
+</div><div class="section3-title">
+Repository Type Option (<span class="id">--repo-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Type of storage used for the repository.
+</div><div class="section-body-text">
+The following repository types are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">azure</span> - Azure Blob Storage Service</li><li class="list-unordered"><span class="id">cifs</span> - Like <span class="id">posix</span>, but disables links and directory fsyncs</li><li class="list-unordered"><span class="id">gcs</span> - Google Cloud Storage</li><li class="list-unordered"><span class="id">posix</span> - Posix-compliant file systems</li><li class="list-unordered"><span class="id">s3</span> - AWS Simple Storage Service</li><li class="list-unordered"><span class="id">sftp</span> - Secure File Transfer Protocol</li></ul>When an <span class="host">NFS</span> mount is used as a <span class="id">posix</span> repository, the same rules apply to <span class="backrest">pgBackRest</span> as described in the <span class="postgres">PostgreSQL</span> documentation: <a href="https://www.postgresql.org/docs/current/creating-cluster.html#CREATING-CLUSTER-FILESYSTEM">Creating a Database Cluster - File Systems</a>.
+</div>
+<pre class="code-block">default: posix
+example: --repo1-type=cifs</pre>
+</div></div></div></div></div></div><div class="page-footer">
+Copyright © 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 24, 2023
+</div></body></html>

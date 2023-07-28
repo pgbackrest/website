@@ -1,15 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
 <title>pgBackRest Configuration Reference
-</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8"></meta>
-<meta property="og:site_name" content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore"></meta>
-<meta property="og:title" content="pgBackRest Configuration Reference"></meta>
-<meta property="og:type" content="website"></meta>
-<link rel="icon" href="favicon.png" type="image/png"></link>
-<meta property="og:image:type" content="image/png"></meta>
-<meta property="og:image" content="http://www.pgbackrest.org/logo.png"></meta>
-<meta name="description" content="The pgBackRest Configuration Reference details all configuration options."></meta>
-<meta property="og:description" content="The pgBackRest Configuration Reference details all configuration options."></meta>
-<link rel="stylesheet" href="default.css" type="text/css"></link>
+</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore" property="og:site_name">
+<meta content="pgBackRest Configuration Reference" property="og:title">
+<meta content="website" property="og:type">
+<link href="favicon.png" rel="icon" type="image/png">
+<meta content="image/png" property="og:image:type">
+<meta content="http://www.pgbackrest.org/logo.png" property="og:image">
+<meta content="The pgBackRest Configuration Reference details all configuration options." name="description">
+<meta content="The pgBackRest Configuration Reference details all configuration options." property="og:description">
+<link href="default.css" rel="stylesheet" type="text/css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
 </head><body><div class="page-header"><div class="page-header-title">
@@ -34,2426 +34,648 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-number">
 2
-</div><div class="section1-toc-title"><a href="#section-archive">
+</div><div class="section1-toc-title"><a href="configuration-archive.html">
 Archive Options (<span class="id">archive</span>)
 </a></div><div class="section2-toc"><div class="section2-toc-number">
 2.1
-</div><div class="section2-toc-title"><a href="#section-archive/option-archive-async">
+</div><div class="section2-toc-title"><a href="configuration-archive.html#section-archive/option-archive-async">
 Asynchronous Archiving Option (<span class="id">--archive-async</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 2.2
-</div><div class="section2-toc-title"><a href="#section-archive/option-archive-get-queue-max">
+</div><div class="section2-toc-title"><a href="configuration-archive.html#section-archive/option-archive-get-queue-max">
 Maximum Archive Get Queue Size Option (<span class="id">--archive-get-queue-max</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 2.3
-</div><div class="section2-toc-title"><a href="#section-archive/option-archive-header-check">
+</div><div class="section2-toc-title"><a href="configuration-archive.html#section-archive/option-archive-header-check">
 Check WAL Headers Option (<span class="id">--archive-header-check</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 2.4
-</div><div class="section2-toc-title"><a href="#section-archive/option-archive-missing-retry">
+</div><div class="section2-toc-title"><a href="configuration-archive.html#section-archive/option-archive-missing-retry">
 Retry Missing WAL Segment Option (<span class="id">--archive-missing-retry</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 2.5
-</div><div class="section2-toc-title"><a href="#section-archive/option-archive-push-queue-max">
+</div><div class="section2-toc-title"><a href="configuration-archive.html#section-archive/option-archive-push-queue-max">
 Maximum Archive Push Queue Size Option (<span class="id">--archive-push-queue-max</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 2.6
-</div><div class="section2-toc-title"><a href="#section-archive/option-archive-timeout">
+</div><div class="section2-toc-title"><a href="configuration-archive.html#section-archive/option-archive-timeout">
 Archive Timeout Option (<span class="id">--archive-timeout</span>)
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-number">
 3
-</div><div class="section1-toc-title"><a href="#section-backup">
+</div><div class="section1-toc-title"><a href="configuration-backup.html">
 Backup Options (<span class="id">backup</span>)
 </a></div><div class="section2-toc"><div class="section2-toc-number">
 3.1
-</div><div class="section2-toc-title"><a href="#section-backup/option-annotation">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-annotation">
 Backup annotation(s) Option (<span class="id">--annotation</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.2
-</div><div class="section2-toc-title"><a href="#section-backup/option-archive-check">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-archive-check">
 Check Archive Option (<span class="id">--archive-check</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.3
-</div><div class="section2-toc-title"><a href="#section-backup/option-archive-copy">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-archive-copy">
 Copy Archive Option (<span class="id">--archive-copy</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.4
-</div><div class="section2-toc-title"><a href="#section-backup/option-archive-mode-check">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-archive-mode-check">
 Check Archive Mode Option (<span class="id">--archive-mode-check</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.5
-</div><div class="section2-toc-title"><a href="#section-backup/option-backup-standby">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-backup-standby">
 Backup from Standby Option (<span class="id">--backup-standby</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.6
-</div><div class="section2-toc-title"><a href="#section-backup/option-checksum-page">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-checksum-page">
 Page Checksums Option (<span class="id">--checksum-page</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.7
-</div><div class="section2-toc-title"><a href="#section-backup/option-exclude">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-exclude">
 Path/File Exclusions Option (<span class="id">--exclude</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.8
-</div><div class="section2-toc-title"><a href="#section-backup/option-expire-auto">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-expire-auto">
 Expire Auto Option (<span class="id">--expire-auto</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.9
-</div><div class="section2-toc-title"><a href="#section-backup/option-manifest-save-threshold">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-manifest-save-threshold">
 Manifest Save Threshold Option (<span class="id">--manifest-save-threshold</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.10
-</div><div class="section2-toc-title"><a href="#section-backup/option-page-header-check">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-page-header-check">
 Page Header Check Option (<span class="id">--page-header-check</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.11
-</div><div class="section2-toc-title"><a href="#section-backup/option-resume">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-resume">
 Resume Option (<span class="id">--resume</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.12
-</div><div class="section2-toc-title"><a href="#section-backup/option-start-fast">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-start-fast">
 Start Fast Option (<span class="id">--start-fast</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 3.13
-</div><div class="section2-toc-title"><a href="#section-backup/option-stop-auto">
+</div><div class="section2-toc-title"><a href="configuration-backup.html#section-backup/option-stop-auto">
 Stop Auto Option (<span class="id">--stop-auto</span>)
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-number">
 4
-</div><div class="section1-toc-title"><a href="#section-general">
+</div><div class="section1-toc-title"><a href="configuration-general.html">
 General Options (<span class="id">general</span>)
 </a></div><div class="section2-toc"><div class="section2-toc-number">
 4.1
-</div><div class="section2-toc-title"><a href="#section-general/option-buffer-size">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-buffer-size">
 Buffer Size Option (<span class="id">--buffer-size</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.2
-</div><div class="section2-toc-title"><a href="#section-general/option-cmd">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-cmd">
 pgBackRest Command Option (<span class="id">--cmd</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.3
-</div><div class="section2-toc-title"><a href="#section-general/option-cmd-ssh">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-cmd-ssh">
 SSH Client Command Option (<span class="id">--cmd-ssh</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.4
-</div><div class="section2-toc-title"><a href="#section-general/option-compress">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-compress">
 Compress Option (<span class="id">--compress</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.5
-</div><div class="section2-toc-title"><a href="#section-general/option-compress-level">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-compress-level">
 Compress Level Option (<span class="id">--compress-level</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.6
-</div><div class="section2-toc-title"><a href="#section-general/option-compress-level-network">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-compress-level-network">
 Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.7
-</div><div class="section2-toc-title"><a href="#section-general/option-compress-type">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-compress-type">
 Compress Type Option (<span class="id">--compress-type</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.8
-</div><div class="section2-toc-title"><a href="#section-general/option-config">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-config">
 Config Option (<span class="id">--config</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.9
-</div><div class="section2-toc-title"><a href="#section-general/option-config-include-path">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-config-include-path">
 Config Include Path Option (<span class="id">--config-include-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.10
-</div><div class="section2-toc-title"><a href="#section-general/option-config-path">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-config-path">
 Config Path Option (<span class="id">--config-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.11
-</div><div class="section2-toc-title"><a href="#section-general/option-db-timeout">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-db-timeout">
 Database Timeout Option (<span class="id">--db-timeout</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.12
-</div><div class="section2-toc-title"><a href="#section-general/option-delta">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-delta">
 Delta Option (<span class="id">--delta</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.13
-</div><div class="section2-toc-title"><a href="#section-general/option-dry-run">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-dry-run">
 Dry Run Option (<span class="id">--dry-run</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.14
-</div><div class="section2-toc-title"><a href="#section-general/option-io-timeout">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-io-timeout">
 I/O Timeout Option (<span class="id">--io-timeout</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.15
-</div><div class="section2-toc-title"><a href="#section-general/option-lock-path">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-lock-path">
 Lock Path Option (<span class="id">--lock-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.16
-</div><div class="section2-toc-title"><a href="#section-general/option-neutral-umask">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-neutral-umask">
 Neutral Umask Option (<span class="id">--neutral-umask</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.17
-</div><div class="section2-toc-title"><a href="#section-general/option-process-max">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-process-max">
 Process Maximum Option (<span class="id">--process-max</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.18
-</div><div class="section2-toc-title"><a href="#section-general/option-protocol-timeout">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-protocol-timeout">
 Protocol Timeout Option (<span class="id">--protocol-timeout</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.19
-</div><div class="section2-toc-title"><a href="#section-general/option-raw">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-raw">
 Raw Data Option (<span class="id">--raw</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.20
-</div><div class="section2-toc-title"><a href="#section-general/option-sck-keep-alive">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-sck-keep-alive">
 Keep Alive Option (<span class="id">--sck-keep-alive</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.21
-</div><div class="section2-toc-title"><a href="#section-general/option-spool-path">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-spool-path">
 Spool Path Option (<span class="id">--spool-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.22
-</div><div class="section2-toc-title"><a href="#section-general/option-stanza">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-stanza">
 Stanza Option (<span class="id">--stanza</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.23
-</div><div class="section2-toc-title"><a href="#section-general/option-tcp-keep-alive-count">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-tcp-keep-alive-count">
 Keep Alive Count Option (<span class="id">--tcp-keep-alive-count</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.24
-</div><div class="section2-toc-title"><a href="#section-general/option-tcp-keep-alive-idle">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-tcp-keep-alive-idle">
 Keep Alive Idle Option (<span class="id">--tcp-keep-alive-idle</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 4.25
-</div><div class="section2-toc-title"><a href="#section-general/option-tcp-keep-alive-interval">
+</div><div class="section2-toc-title"><a href="configuration-general.html#section-general/option-tcp-keep-alive-interval">
 Keep Alive Interval Option (<span class="id">--tcp-keep-alive-interval</span>)
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-number">
 5
-</div><div class="section1-toc-title"><a href="#section-log">
+</div><div class="section1-toc-title"><a href="configuration-log.html">
 Log Options (<span class="id">log</span>)
 </a></div><div class="section2-toc"><div class="section2-toc-number">
 5.1
-</div><div class="section2-toc-title"><a href="#section-log/option-log-level-console">
+</div><div class="section2-toc-title"><a href="configuration-log.html#section-log/option-log-level-console">
 Console Log Level Option (<span class="id">--log-level-console</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 5.2
-</div><div class="section2-toc-title"><a href="#section-log/option-log-level-file">
+</div><div class="section2-toc-title"><a href="configuration-log.html#section-log/option-log-level-file">
 File Log Level Option (<span class="id">--log-level-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 5.3
-</div><div class="section2-toc-title"><a href="#section-log/option-log-level-stderr">
+</div><div class="section2-toc-title"><a href="configuration-log.html#section-log/option-log-level-stderr">
 Std Error Log Level Option (<span class="id">--log-level-stderr</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 5.4
-</div><div class="section2-toc-title"><a href="#section-log/option-log-path">
+</div><div class="section2-toc-title"><a href="configuration-log.html#section-log/option-log-path">
 Log Path Option (<span class="id">--log-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 5.5
-</div><div class="section2-toc-title"><a href="#section-log/option-log-subprocess">
+</div><div class="section2-toc-title"><a href="configuration-log.html#section-log/option-log-subprocess">
 Log Subprocesses Option (<span class="id">--log-subprocess</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 5.6
-</div><div class="section2-toc-title"><a href="#section-log/option-log-timestamp">
+</div><div class="section2-toc-title"><a href="configuration-log.html#section-log/option-log-timestamp">
 Log Timestamp Option (<span class="id">--log-timestamp</span>)
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-number">
 6
-</div><div class="section1-toc-title"><a href="#section-repository">
+</div><div class="section1-toc-title"><a href="configuration-repository.html">
 Repository Options (<span class="id">repository</span>)
 </a></div><div class="section2-toc"><div class="section2-toc-number">
 6.1
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo">
 Set Repository Option (<span class="id">--repo</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.2
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-azure-account">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-azure-account">
 Azure Repository Account Option (<span class="id">--repo-azure-account</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.3
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-azure-container">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-azure-container">
 Azure Repository Container Option (<span class="id">--repo-azure-container</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.4
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-azure-endpoint">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-azure-endpoint">
 Azure Repository Endpoint Option (<span class="id">--repo-azure-endpoint</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.5
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-azure-key">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-azure-key">
 Azure Repository Key Option (<span class="id">--repo-azure-key</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.6
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-azure-key-type">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-azure-key-type">
 Azure Repository Key Type Option (<span class="id">--repo-azure-key-type</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.7
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-azure-uri-style">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-azure-uri-style">
 Azure Repository URI Style Option (<span class="id">--repo-azure-uri-style</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.8
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-block">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-block">
 Block Incremental Backup Option (<span class="id">--repo-block</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.9
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-bundle">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-bundle">
 Repository Bundles Option (<span class="id">--repo-bundle</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.10
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-bundle-limit">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-bundle-limit">
 Repository Bundle Limit Option (<span class="id">--repo-bundle-limit</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.11
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-bundle-size">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-bundle-size">
 Repository Bundle Size Option (<span class="id">--repo-bundle-size</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.12
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-cipher-pass">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-cipher-pass">
 Repository Cipher Passphrase Option (<span class="id">--repo-cipher-pass</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.13
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-cipher-type">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-cipher-type">
 Repository Cipher Type Option (<span class="id">--repo-cipher-type</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.14
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-gcs-bucket">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-gcs-bucket">
 GCS Repository Bucket Option (<span class="id">--repo-gcs-bucket</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.15
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-gcs-endpoint">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-gcs-endpoint">
 GCS Repository Endpoint Option (<span class="id">--repo-gcs-endpoint</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.16
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-gcs-key">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-gcs-key">
 GCS Repository Key Option (<span class="id">--repo-gcs-key</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.17
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-gcs-key-type">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-gcs-key-type">
 GCS Repository Key Type Option (<span class="id">--repo-gcs-key-type</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.18
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-hardlink">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-hardlink">
 Repository Hardlink Option (<span class="id">--repo-hardlink</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.19
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-host">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-host">
 Repository Host Option (<span class="id">--repo-host</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.20
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-host-ca-file">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-host-ca-file">
 Repository Host Certificate Authority File Option (<span class="id">--repo-host-ca-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.21
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-host-ca-path">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-host-ca-path">
 Repository Host Certificate Authority Path Option (<span class="id">--repo-host-ca-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.22
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-host-cert-file">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-host-cert-file">
 Repository Host Certificate File Option (<span class="id">--repo-host-cert-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.23
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-host-cmd">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-host-cmd">
 Repository Host Command Option (<span class="id">--repo-host-cmd</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.24
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-host-config">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-host-config">
 Repository Host Configuration Option (<span class="id">--repo-host-config</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.25
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-host-config-include-path">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-host-config-include-path">
 Repository Host Configuration Include Path Option (<span class="id">--repo-host-config-include-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.26
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-host-config-path">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-host-config-path">
 Repository Host Configuration Path Option (<span class="id">--repo-host-config-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.27
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-host-key-file">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-host-key-file">
 Repository Host Key File Option (<span class="id">--repo-host-key-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.28
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-host-port">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-host-port">
 Repository Host Port Option (<span class="id">--repo-host-port</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.29
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-host-type">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-host-type">
 Repository Host Protocol Type Option (<span class="id">--repo-host-type</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.30
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-host-user">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-host-user">
 Repository Host User Option (<span class="id">--repo-host-user</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.31
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-path">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-path">
 Repository Path Option (<span class="id">--repo-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.32
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-retention-archive">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-retention-archive">
 Archive Retention Option (<span class="id">--repo-retention-archive</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.33
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-retention-archive-type">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-retention-archive-type">
 Archive Retention Type Option (<span class="id">--repo-retention-archive-type</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.34
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-retention-diff">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-retention-diff">
 Differential Retention Option (<span class="id">--repo-retention-diff</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.35
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-retention-full">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-retention-full">
 Full Retention Option (<span class="id">--repo-retention-full</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.36
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-retention-full-type">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-retention-full-type">
 Full Retention Type Option (<span class="id">--repo-retention-full-type</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.37
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-retention-history">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-retention-history">
 Backup History Retention Option (<span class="id">--repo-retention-history</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.38
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-s3-bucket">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-s3-bucket">
 S3 Repository Bucket Option (<span class="id">--repo-s3-bucket</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.39
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-s3-endpoint">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-s3-endpoint">
 S3 Repository Endpoint Option (<span class="id">--repo-s3-endpoint</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.40
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-s3-key">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-s3-key">
 S3 Repository Access Key Option (<span class="id">--repo-s3-key</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.41
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-s3-key-secret">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-s3-key-secret">
 S3 Repository Secret Access Key Option (<span class="id">--repo-s3-key-secret</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.42
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-s3-key-type">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-s3-key-type">
 S3 Repository Key Type Option (<span class="id">--repo-s3-key-type</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.43
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-s3-kms-key-id">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-s3-kms-key-id">
 S3 Repository KMS Key ID Option (<span class="id">--repo-s3-kms-key-id</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.44
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-s3-region">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-s3-region">
 S3 Repository Region Option (<span class="id">--repo-s3-region</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.45
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-s3-role">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-s3-role">
 S3 Repository Role Option (<span class="id">--repo-s3-role</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.46
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-s3-token">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-s3-token">
 S3 Repository Security Token Option (<span class="id">--repo-s3-token</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.47
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-s3-uri-style">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-s3-uri-style">
 S3 Repository URI Style Option (<span class="id">--repo-s3-uri-style</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.48
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-sftp-host">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-sftp-host">
 SFTP Repository Host Option (<span class="id">--repo-sftp-host</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.49
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-sftp-host-fingerprint">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-sftp-host-fingerprint">
 SFTP Repository Host Fingerprint Option (<span class="id">--repo-sftp-host-fingerprint</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.50
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-sftp-host-key-hash-type">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-sftp-host-key-hash-type">
 SFTP Repository Host Key Hash Type Option (<span class="id">--repo-sftp-host-key-hash-type</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.51
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-sftp-host-port">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-sftp-host-port">
 SFTP Repository Host Port Option (<span class="id">--repo-sftp-host-port</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.52
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-sftp-host-user">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-sftp-host-user">
 SFTP Repository Host User Option (<span class="id">--repo-sftp-host-user</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.53
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-sftp-private-key-file">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-sftp-private-key-file">
 SFTP Repository Private Key File Option (<span class="id">--repo-sftp-private-key-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.54
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-sftp-private-key-passphrase">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-sftp-private-key-passphrase">
 SFTP Repository Private Key Passphrase Option (<span class="id">--repo-sftp-private-key-passphrase</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.55
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-sftp-public-key-file">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-sftp-public-key-file">
 SFTP Repository Public Key File Option (<span class="id">--repo-sftp-public-key-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.56
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-storage-ca-file">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-storage-ca-file">
 Repository Storage CA File Option (<span class="id">--repo-storage-ca-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.57
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-storage-ca-path">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-storage-ca-path">
 Repository Storage TLS CA Path Option (<span class="id">--repo-storage-ca-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.58
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-storage-host">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-storage-host">
 Repository Storage Host Option (<span class="id">--repo-storage-host</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.59
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-storage-port">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-storage-port">
 Repository Storage Port Option (<span class="id">--repo-storage-port</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.60
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-storage-upload-chunk-size">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-storage-upload-chunk-size">
 Repository Storage Upload Chunk Size Option (<span class="id">--repo-storage-upload-chunk-size</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.61
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-storage-verify-tls">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-storage-verify-tls">
 Repository Storage Certificate Verify Option (<span class="id">--repo-storage-verify-tls</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 6.62
-</div><div class="section2-toc-title"><a href="#section-repository/option-repo-type">
+</div><div class="section2-toc-title"><a href="configuration-repository.html#section-repository/option-repo-type">
 Repository Type Option (<span class="id">--repo-type</span>)
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-number">
 7
-</div><div class="section1-toc-title"><a href="#section-restore">
+</div><div class="section1-toc-title"><a href="configuration-restore.html">
 Restore Options (<span class="id">restore</span>)
 </a></div><div class="section2-toc"><div class="section2-toc-number">
 7.1
-</div><div class="section2-toc-title"><a href="#section-restore/option-archive-mode">
+</div><div class="section2-toc-title"><a href="configuration-restore.html#section-restore/option-archive-mode">
 Archive Mode Option (<span class="id">--archive-mode</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 7.2
-</div><div class="section2-toc-title"><a href="#section-restore/option-db-exclude">
+</div><div class="section2-toc-title"><a href="configuration-restore.html#section-restore/option-db-exclude">
 Exclude Database Option (<span class="id">--db-exclude</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 7.3
-</div><div class="section2-toc-title"><a href="#section-restore/option-db-include">
+</div><div class="section2-toc-title"><a href="configuration-restore.html#section-restore/option-db-include">
 Include Database Option (<span class="id">--db-include</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 7.4
-</div><div class="section2-toc-title"><a href="#section-restore/option-link-all">
+</div><div class="section2-toc-title"><a href="configuration-restore.html#section-restore/option-link-all">
 Link All Option (<span class="id">--link-all</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 7.5
-</div><div class="section2-toc-title"><a href="#section-restore/option-link-map">
+</div><div class="section2-toc-title"><a href="configuration-restore.html#section-restore/option-link-map">
 Link Map Option (<span class="id">--link-map</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 7.6
-</div><div class="section2-toc-title"><a href="#section-restore/option-recovery-option">
+</div><div class="section2-toc-title"><a href="configuration-restore.html#section-restore/option-recovery-option">
 Recovery Option Option (<span class="id">--recovery-option</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 7.7
-</div><div class="section2-toc-title"><a href="#section-restore/option-tablespace-map">
+</div><div class="section2-toc-title"><a href="configuration-restore.html#section-restore/option-tablespace-map">
 Tablespace Map Option (<span class="id">--tablespace-map</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 7.8
-</div><div class="section2-toc-title"><a href="#section-restore/option-tablespace-map-all">
+</div><div class="section2-toc-title"><a href="configuration-restore.html#section-restore/option-tablespace-map-all">
 Map All Tablespaces Option (<span class="id">--tablespace-map-all</span>)
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-number">
 8
-</div><div class="section1-toc-title"><a href="#section-server">
+</div><div class="section1-toc-title"><a href="configuration-server.html">
 Server Options (<span class="id">server</span>)
 </a></div><div class="section2-toc"><div class="section2-toc-number">
 8.1
-</div><div class="section2-toc-title"><a href="#section-server/option-tls-server-address">
+</div><div class="section2-toc-title"><a href="configuration-server.html#section-server/option-tls-server-address">
 TLS Server Address Option (<span class="id">--tls-server-address</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 8.2
-</div><div class="section2-toc-title"><a href="#section-server/option-tls-server-auth">
+</div><div class="section2-toc-title"><a href="configuration-server.html#section-server/option-tls-server-auth">
 TLS Server Authorized Clients Option (<span class="id">--tls-server-auth</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 8.3
-</div><div class="section2-toc-title"><a href="#section-server/option-tls-server-ca-file">
+</div><div class="section2-toc-title"><a href="configuration-server.html#section-server/option-tls-server-ca-file">
 TLS Server Certificate Authorities Option (<span class="id">--tls-server-ca-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 8.4
-</div><div class="section2-toc-title"><a href="#section-server/option-tls-server-cert-file">
+</div><div class="section2-toc-title"><a href="configuration-server.html#section-server/option-tls-server-cert-file">
 TLS Server Certificate Option (<span class="id">--tls-server-cert-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 8.5
-</div><div class="section2-toc-title"><a href="#section-server/option-tls-server-key-file">
+</div><div class="section2-toc-title"><a href="configuration-server.html#section-server/option-tls-server-key-file">
 TLS Server Key Option (<span class="id">--tls-server-key-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 8.6
-</div><div class="section2-toc-title"><a href="#section-server/option-tls-server-port">
+</div><div class="section2-toc-title"><a href="configuration-server.html#section-server/option-tls-server-port">
 TLS Server Port Option (<span class="id">--tls-server-port</span>)
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-number">
 9
-</div><div class="section1-toc-title"><a href="#section-stanza">
+</div><div class="section1-toc-title"><a href="configuration-stanza.html">
 Stanza Options (<span class="id">stanza</span>)
 </a></div><div class="section2-toc"><div class="section2-toc-number">
 9.1
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-database">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-database">
 PostgreSQL Database Option (<span class="id">--pg-database</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.2
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-host">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-host">
 PostgreSQL Host Option (<span class="id">--pg-host</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.3
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-host-ca-file">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-host-ca-file">
 PostgreSQL Host Certificate Authority File Option (<span class="id">--pg-host-ca-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.4
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-host-ca-path">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-host-ca-path">
 PostgreSQL Host Certificate Authority Path Option (<span class="id">--pg-host-ca-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.5
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-host-cert-file">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-host-cert-file">
 PostgreSQL Host Certificate File Option (<span class="id">--pg-host-cert-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.6
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-host-cmd">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-host-cmd">
 PostgreSQL Host Command Option (<span class="id">--pg-host-cmd</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.7
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-host-config">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-host-config">
 PostgreSQL Host Configuration Option (<span class="id">--pg-host-config</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.8
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-host-config-include-path">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-host-config-include-path">
 PostgreSQL Host Configuration Include Path Option (<span class="id">--pg-host-config-include-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.9
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-host-config-path">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-host-config-path">
 PostgreSQL Host Configuration Path Option (<span class="id">--pg-host-config-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.10
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-host-key-file">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-host-key-file">
 PostgreSQL Host Key File Option (<span class="id">--pg-host-key-file</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.11
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-host-port">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-host-port">
 PostgreSQL Host Port Option (<span class="id">--pg-host-port</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.12
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-host-type">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-host-type">
 PostgreSQL Host Protocol Type Option (<span class="id">--pg-host-type</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.13
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-host-user">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-host-user">
 PostgreSQL Host User Option (<span class="id">--pg-host-user</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.14
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-path">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-path">
 PostgreSQL Path Option (<span class="id">--pg-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.15
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-port">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-port">
 PostgreSQL Port Option (<span class="id">--pg-port</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.16
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-socket-path">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-socket-path">
 PostgreSQL Socket Path Option (<span class="id">--pg-socket-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number">
 9.17
-</div><div class="section2-toc-title"><a href="#section-stanza/option-pg-user">
+</div><div class="section2-toc-title"><a href="configuration-stanza.html#section-stanza/option-pg-user">
 PostgreSQL Database User Option (<span class="id">--pg-user</span>)
 </a></div></div></div></div></div><div class="page-body"><div class="section1"><a id="introduction"></a><div class="section1-header"><div class="section1-number">
 1
 </div><div class="section1-title">
 Introduction
 </div></div><div class="section-intro">
-<span class="backrest">pgBackRest</span> can be used entirely with command-line parameters but a configuration file is more practical for installations that are complex or set a lot of options. The default location for the configuration file is <span class="file">/etc/pgbackrest/pgbackrest.conf</span>. If no file exists in that location then the old default of <span class="file">/etc/pgbackrest.conf</span> will be checked.<br/>
-<br/>
-The following option types are used:<br/>
-<br/>
-<b>String</b>: A text string, commonly an identifier, password, etc.<br/>
-<br/>
-Command line example: <span class="br-setting">--stanza=demo</span><br/>Configuration file example: <span class="br-setting">repo1-cipher-pass=zWaf6XtpjIVZC5444yXB...</span><br/>
-<br/>
-<b>Path</b>: Used to uniquely identify a location in a directory structure. Paths must begin with /, double // is not allowed, and no ending / is expected.<br/>
-<br/>
-Command line example: <span class="br-setting">--repo1-path=/var/lib/pgbackrest</span><br/>Configuration file example: <span class="br-setting">repo1-path=/var/lib/pgbackrest</span><br/>
-<br/>
-<b>Boolean</b>: Enables or disables the option. Only y/n are valid argument values.<br/>
-<br/>
-Command line examples: <span class="br-setting">--start-fast</span>, <span class="br-setting">--no-start-fast</span>, <span class="br-setting">--start-fast=y</span>, <span class="br-setting">--start-fast=n</span><br/>Configuration file examples: <span class="br-setting">start-fast=y</span>, <span class="br-setting">start-fast=n</span><br/>
-<br/>
-<b>Integer</b>: Used for ports, retention/retry counts, parallel processes allowed, etc.<br/>
-<br/>
-Command line example: <span class="br-setting">--compress-level=3</span><br/>Configuration file example: <span class="br-setting">pg1-port=5432</span><br/>
-<br/>
-<b>Size</b>: Used for buffer sizes, disk usage, etc. Size can be specified in bytes (default) or KiB, MiB, GiB, TiB, or PiB where the multiplier is a power of 1024. For example, the case-insensitive value 5GiB (or 5GB, 5g) can be used instead of 5368709120. Fractional values such as 2.5GiB are not allowed, use 2560MiB instead.<br/>
-<br/>
-Command line example: <span class="br-setting">--archive-get-queue-max=1GiB</span><br/>Configuration file example: <span class="br-setting">buffer-size=2MiB</span><br/>
-<br/>
-<b>Time</b>: Time in seconds.<br/>
-<br/>
-Command line example: <span class="br-setting">--io-timeout=90</span><br/>Configuration file example: <span class="br-setting">db-timeout=600</span><br/>
-<br/>
-<b>List</b>: Option may be provided multiple times.<br/>
-<br/>
-Command line example: <span class="br-setting">--db-exclude=db1 --db-exclude=db2 --db-exclude=db5</span><br/>Configuration file example, each on its own line: <span class="br-setting">db-exclude=db1 db-exclude=db2 db-exclude=db5</span><br/>
-<br/>
-<b>Key/Value</b>: Option may be provided multiple times in the form <span class="id">key=value</span>.<br/>
-<br/>
-Command line example: <span class="br-setting">--tablespace-map=ts_01=/db/ts_01 --tablespace-map=ts_02=/db/ts_02</span><br/>Configuration file example, each on its own line: <span class="br-setting">tablespace-map=ts_01=/db/ts_01 tablespace-map=ts_02=/db/ts_02</span>
-</div><div class="section-body"></div></div><div class="section1"><a id="section-archive"></a><div class="section1-header"><div class="section1-number">
-2
-</div><div class="section1-title">
-Archive Options (<span class="id">archive</span>)
-</div></div><div class="section-intro">
-The <span class="br-setting">archive</span> section defines options for the <span class="cmd">archive-push</span> and <span class="cmd">archive-get</span> commands.
-</div><div class="section-body"><div class="section2"><a id="section-archive/option-archive-async"></a><div class="section2-header"><div class="section2-number">
-2.1
-</div><div class="section2-title">
-Asynchronous Archiving Option (<span class="id">--archive-async</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Push/get WAL segments asynchronously.
-</div><div class="section-body-text">
-Enables asynchronous operation for the <span class="cmd">archive-push</span> and <span class="cmd">archive-get</span> commands.<br/>
-<br/>
-Asynchronous operation is more efficient because it can reuse connections and take advantage of parallelism. See the <span class="br-option">spool-path</span>, <span class="br-option">archive-get-queue-max</span>, and <span class="br-option">archive-push-queue-max</span> options for more information.
-</div>
-<pre class="code-block">default: n
-example: archive-async=y</pre>
-</div></div><div class="section2"><a id="section-archive/option-archive-get-queue-max"></a><div class="section2-header"><div class="section2-number">
-2.2
-</div><div class="section2-title">
-Maximum Archive Get Queue Size Option (<span class="id">--archive-get-queue-max</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Maximum size of the <span class="backrest">pgBackRest</span> archive-get queue.
-</div><div class="section-body-text">
-Specifies the maximum size of the <span class="cmd">archive-get</span> queue when <span class="br-option">archive-async</span> is enabled. The queue is stored in the <span class="br-option">spool-path</span> and is used to speed providing WAL to <span class="postgres">PostgreSQL</span>.
-</div>
-<pre class="code-block">default: 128MiB
-allowed: 0-4PiB
-example: archive-get-queue-max=1GiB</pre>
-</div></div><div class="section2"><a id="section-archive/option-archive-header-check"></a><div class="section2-header"><div class="section2-number">
-2.3
-</div><div class="section2-title">
-Check WAL Headers Option (<span class="id">--archive-header-check</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Check PostgreSQL version/id in WAL headers.
-</div><div class="section-body-text">
-Enabled by default, this option checks the WAL header against the <span class="postgres">PostgreSQL</span> version and system identifier to ensure that the WAL is being copied to the correct stanza. This is in addition to checking <span class="file">pg_control</span> against the stanza and verifying that WAL is being copied from the same <span class="postgres">PostgreSQL</span> data directory where <span class="file">pg_control</span> is located.<br/>
-<br/>
-Therefore, disabling this check is fairly safe but should only be done when needed, e.g. if the WAL is encrypted.
-</div>
-<pre class="code-block">default: y
-example: archive-header-check=n</pre>
-</div></div><div class="section2"><a id="section-archive/option-archive-missing-retry"></a><div class="section2-header"><div class="section2-number">
-2.4
-</div><div class="section2-title">
-Retry Missing WAL Segment Option (<span class="id">--archive-missing-retry</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Retry missing WAL segment
-</div><div class="section-body-text">
-Retry a WAL segment that was previously reported as missing by the <span class="cmd">archive-get</span> command when in asynchronous mode. This prevents notifications in the spool path from a prior restore from being used and possibly causing a recovery failure if consistency has not been reached.<br/>
-<br/>
-Disabling this option allows <span class="postgres">PostgreSQL</span> to more reliably recognize when the end of the WAL in the archive has been reached, which permits it to switch over to streaming from the primary. With retries enabled, a steady stream of WAL being archived will cause <span class="postgres">PostgreSQL</span> to continue getting WAL from the archive rather than switch to streaming.<br/>
-<br/>
-When disabling this option it is important to ensure that the spool path for the stanza is empty. The <span class="cmd">restore</span> command does this automatically if the spool path is configured at restore time. Otherwise, it is up to the user to ensure the spool path is empty.
-</div>
-<pre class="code-block">default: y
-example: archive-missing-retry=n</pre>
-</div></div><div class="section2"><a id="section-archive/option-archive-push-queue-max"></a><div class="section2-header"><div class="section2-number">
-2.5
-</div><div class="section2-title">
-Maximum Archive Push Queue Size Option (<span class="id">--archive-push-queue-max</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Maximum size of the <span class="postgres">PostgreSQL</span> archive queue.
-</div><div class="section-body-text">
-After the limit is reached, the following will happen:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="backrest">pgBackRest</span> will notify <span class="postgres">PostgreSQL</span> that the WAL was successfully archived, then <b>DROP IT</b>.</li><li class="list-unordered">A warning will be output to the <span class="postgres">PostgreSQL</span> log.</li></ul>If this occurs then the archive log stream will be interrupted and PITR will not be possible past that point. A new backup will be required to regain full restore capability.<br/>
-<br/>
-In asynchronous mode the entire queue will be dropped to prevent spurts of WAL getting through before the queue limit is exceeded again.<br/>
-<br/>
-The purpose of this feature is to prevent the log volume from filling up at which point <span class="postgres">PostgreSQL</span> will stop completely. Better to lose the backup than have <span class="postgres">PostgreSQL</span> go down.
-</div>
-<pre class="code-block">allowed: 0-4PiB
-example: archive-push-queue-max=1TiB</pre>
-<div class="section-body-text">
-Deprecated Name: archive-queue-max
-</div></div></div><div class="section2"><a id="section-archive/option-archive-timeout"></a><div class="section2-header"><div class="section2-number">
-2.6
-</div><div class="section2-title">
-Archive Timeout Option (<span class="id">--archive-timeout</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Archive timeout.
-</div><div class="section-body-text">
-Set maximum time, in seconds, to wait for each WAL segment to reach the <span class="backrest">pgBackRest</span> archive repository. The timeout applies to the <span class="cmd">check</span> and <span class="cmd">backup</span> commands when waiting for WAL segments required for backup consistency to be archived.
-</div>
-<pre class="code-block">default: 60
-allowed: 0.1-86400
-example: archive-timeout=30</pre>
-</div></div></div></div><div class="section1"><a id="section-backup"></a><div class="section1-header"><div class="section1-number">
-3
-</div><div class="section1-title">
-Backup Options (<span class="id">backup</span>)
-</div></div><div class="section-intro">
-The <span class="br-setting">backup</span> section defines settings related to backup.
-</div><div class="section-body"><div class="section2"><a id="section-backup/option-annotation"></a><div class="section2-header"><div class="section2-number">
-3.1
-</div><div class="section2-title">
-Backup annotation(s) Option (<span class="id">--annotation</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Annotate backup with user-defined key/value pairs.
-</div><div class="section-body-text">
-Users can attach informative key/value pairs to the backup. This option may be used multiple times to attach multiple annotations.<br/>
-<br/>
-Annotations are output by the <span class="cmd">info</span> command text output when a backup is specified with <span class="br-option">--set</span> and always appear in the JSON output.
-</div>
-<pre class="code-block">example: annotation=source="Sunday backup for website database"</pre>
-</div></div><div class="section2"><a id="section-backup/option-archive-check"></a><div class="section2-header"><div class="section2-number">
-3.2
-</div><div class="section2-title">
-Check Archive Option (<span class="id">--archive-check</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Check that WAL segments are in the archive before backup completes.
-</div><div class="section-body-text">
-Checks that all WAL segments required to make the backup consistent are present in the WAL archive. It's a good idea to leave this as the default unless you are using another method for archiving.<br/>
-<br/>
-This option must be enabled if <span class="br-option">archive-copy</span> is enabled.
-</div>
-<pre class="code-block">default: y
-example: archive-check=n</pre>
-</div></div><div class="section2"><a id="section-backup/option-archive-copy"></a><div class="section2-header"><div class="section2-number">
-3.3
-</div><div class="section2-title">
-Copy Archive Option (<span class="id">--archive-copy</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Copy WAL segments needed for consistency to the backup.
-</div><div class="section-body-text">
-This slightly paranoid option protects against corruption in the WAL segment archive by storing the WAL segments required for consistency directly in the backup. WAL segments are still stored in the archive so this option will use additional space.<br/>
-<br/>
-It is best if the <span class="cmd">archive-push</span> and <span class="cmd">backup</span> commands have the same <span class="br-setting">compress-type</span> (e.g. <span class="id">lz4</span>) when using this option. Otherwise, the WAL segments will need to be recompressed with the <span class="br-setting">compress-type</span> used by the backup, which can be fairly expensive depending on how much WAL was generated during the backup.<br/>
-<br/>
-On restore, the WAL segments will be present in <span class="path">pg_xlog/pg_wal</span> and <span class="postgres">PostgreSQL</span> will use them in preference to calling the <span class="id">restore_command</span>.<br/>
-<br/>
-The <span class="br-option">archive-check</span> option must be enabled if <span class="br-option">archive-copy</span> is enabled.
-</div>
-<pre class="code-block">default: n
-example: archive-copy=y</pre>
-</div></div><div class="section2"><a id="section-backup/option-archive-mode-check"></a><div class="section2-header"><div class="section2-number">
-3.4
-</div><div class="section2-title">
-Check Archive Mode Option (<span class="id">--archive-mode-check</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Check the <span class="postgres">PostgreSQL</span> <span class="br-setting">archive_mode</span> setting.
-</div><div class="section-body-text">
-Enabled by default, this option disallows <span class="postgres">PostgreSQL</span> <span class="br-setting">archive_mode=always</span>.<br/>
-<br/>
-WAL segments pushed from a standby server might be logically the same as WAL segments pushed from the primary but have different checksums. Disabling archiving from multiple sources is recommended to avoid conflicts.<br/>
-<div class="admonition"><div class="caution">CAUTION:</div><div class="caution-text">If this option is disabled then it is critical to ensure that only one archiver is writing to the repository via the <span class="cmd">archive-push</span> command.</div></div>
-</div>
-<pre class="code-block">default: y
-example: archive-mode-check=n</pre>
-</div></div><div class="section2"><a id="section-backup/option-backup-standby"></a><div class="section2-header"><div class="section2-number">
-3.5
-</div><div class="section2-title">
-Backup from Standby Option (<span class="id">--backup-standby</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Backup from the standby cluster.
-</div><div class="section-body-text">
-Enable backup from standby to reduce load on the primary cluster. This option requires that both the <span class="host">primary</span> and <span class="host">standby</span> hosts be configured.
-</div>
-<pre class="code-block">default: n
-example: backup-standby=y</pre>
-</div></div><div class="section2"><a id="section-backup/option-checksum-page"></a><div class="section2-header"><div class="section2-number">
-3.6
-</div><div class="section2-title">
-Page Checksums Option (<span class="id">--checksum-page</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Validate data page checksums.
-</div><div class="section-body-text">
-Directs <span class="backrest">pgBackRest</span> to validate all data page checksums while backing up a cluster. This option is automatically enabled when data page checksums are enabled on the cluster.<br/>
-<br/>
-Failures in checksum validation will not abort a backup. Rather, warnings will be emitted in the log (and to the console with default settings) and the list of invalid pages will be stored in the backup manifest.
-</div>
-<pre class="code-block">example: checksum-page=n</pre>
-</div></div><div class="section2"><a id="section-backup/option-exclude"></a><div class="section2-header"><div class="section2-number">
-3.7
-</div><div class="section2-title">
-Path/File Exclusions Option (<span class="id">--exclude</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Exclude paths/files from the backup.
-</div><div class="section-body-text">
-All exclusions are relative to <span class="path">$PGDATA</span>. If the exclusion ends with / then only files in the specified directory will be excluded, e.g. <span class="br-option">--exclude=junk/</span> will exclude all files in the <span class="path">$PGDATA/junk</span> directory but include the directory itself. If the exclusion does not end with / then the file may match the exclusion exactly or match with / appended to the exclusion, e.g. <span class="br-option">--exclude=junk</span> will exclude the <span class="path">$PGDATA/junk</span> directory and all the files it contains.<br/>
-<br/>
-<b>Be careful using this feature -- it is very easy to exclude something critical that will make the backup inconsistent. Be sure to test your restores!</b><br/>
-<br/>
-All excluded files will be logged at <span class="id">info</span> level along with the exclusion rule. Be sure to audit the list of excluded files to ensure nothing unexpected is being excluded.<br/>
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">Exclusions are not honored on delta restores. Any files/directories that were excluded by the backup will be <i>removed</i> on delta restore.</div></div>This option should not be used to exclude <span class="postgres">PostgreSQL</span> logs from a backup. Logs can be moved out of the <span class="id">PGDATA</span> directory using the <span class="postgres">PostgreSQL</span> <span class="br-setting">log_directory</span> setting, which has the benefit of allowing logs to be preserved after a restore.<br/>
-<br/>
-Multiple exclusions may be specified on the command-line or in a configuration file.
-</div>
-<pre class="code-block">example: exclude=junk/</pre>
-</div></div><div class="section2"><a id="section-backup/option-expire-auto"></a><div class="section2-header"><div class="section2-number">
-3.8
-</div><div class="section2-title">
-Expire Auto Option (<span class="id">--expire-auto</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Automatically run the <span class="cmd">expire</span> command after a successful backup.
-</div><div class="section-body-text">
-The setting is enabled by default. Use caution when disabling this option as doing so will result in retaining all backups and archives indefinitely, which could cause your repository to run out of space. The <span class="cmd">expire</span> command will need to be run regularly to prevent this from happening.
-</div>
-<pre class="code-block">default: y
-example: expire-auto=y</pre>
-</div></div><div class="section2"><a id="section-backup/option-manifest-save-threshold"></a><div class="section2-header"><div class="section2-number">
-3.9
-</div><div class="section2-title">
-Manifest Save Threshold Option (<span class="id">--manifest-save-threshold</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Manifest save threshold during backup.
-</div><div class="section-body-text">
-Defines how often the manifest will be saved during a backup. Saving the manifest is important because it stores the checksums and allows the resume function to work efficiently. The actual threshold used is 1% of the backup size or <span class="br-setting">manifest-save-threshold</span>, whichever is greater.
-</div>
-<pre class="code-block">default: 1GiB
-allowed: 1-1TiB
-example: manifest-save-threshold=8GiB</pre>
-</div></div><div class="section2"><a id="section-backup/option-page-header-check"></a><div class="section2-header"><div class="section2-number">
-3.10
-</div><div class="section2-title">
-Page Header Check Option (<span class="id">--page-header-check</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Check PostgreSQL page headers.
-</div><div class="section-body-text">
-Enabled by default, this option adds page header checks.<br/>
-<br/>
-Disabling this option should be avoided except when necessary, e.g. if pages are encrypted.
-</div>
-<pre class="code-block">default: y
-example: page-header-check=n</pre>
-</div></div><div class="section2"><a id="section-backup/option-resume"></a><div class="section2-header"><div class="section2-number">
-3.11
-</div><div class="section2-title">
-Resume Option (<span class="id">--resume</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Allow resume of failed backup.
-</div><div class="section-body-text">
-Defines whether the resume feature is enabled. Resume can greatly reduce the amount of time required to run a backup after a previous backup of the same type has failed. It adds complexity, however, so it may be desirable to disable in environments that do not require the feature.
-</div>
-<pre class="code-block">default: y
-example: resume=n</pre>
-</div></div><div class="section2"><a id="section-backup/option-start-fast"></a><div class="section2-header"><div class="section2-number">
-3.12
-</div><div class="section2-title">
-Start Fast Option (<span class="id">--start-fast</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Force a checkpoint to start backup quickly.
-</div><div class="section-body-text">
-Forces a checkpoint (by passing <span class="id">y</span> to the <span class="id">fast</span> parameter of the backup start function) so the backup begins immediately. Otherwise the backup will start after the next regular checkpoint.
-</div>
-<pre class="code-block">default: n
-example: start-fast=y</pre>
-</div></div><div class="section2"><a id="section-backup/option-stop-auto"></a><div class="section2-header"><div class="section2-number">
-3.13
-</div><div class="section2-title">
-Stop Auto Option (<span class="id">--stop-auto</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Stop prior failed backup on new backup.
-</div><div class="section-body-text">
-This will only be done if an exclusive advisory lock can be acquired to demonstrate that the prior failed backup process has really stopped.<br/>
-<br/>
-This feature relies on pg_is_in_backup() so only works on <span class="postgres">PostgreSQL</span> >= <span class="id">9.3</span>.<br/>
-<br/>
-This feature is not supported for <span class="postgres">PostgreSQL</span> >= <span class="id">9.6</span> since backups are run in non-exclusive mode.<br/>
-<br/>
-The setting is disabled by default because it assumes that <span class="backrest">pgBackRest</span> is the only process doing exclusive online backups. It depends on an advisory lock that only <span class="backrest">pgBackRest</span> sets so it may abort other processes that do exclusive online backups. Note that <span class="cmd">base_backup</span> and <span class="cmd">pg_dump</span> are safe to use with this setting because they do not call <span class="id">pg_start_backup()</span> so are not exclusive.
-</div>
-<pre class="code-block">default: n
-example: stop-auto=y</pre>
-</div></div></div></div><div class="section1"><a id="section-general"></a><div class="section1-header"><div class="section1-number">
-4
-</div><div class="section1-title">
-General Options (<span class="id">general</span>)
-</div></div><div class="section-intro">
-The <span class="br-setting">general</span> section defines options that are common for many commands.
-</div><div class="section-body"><div class="section2"><a id="section-general/option-buffer-size"></a><div class="section2-header"><div class="section2-number">
-4.1
-</div><div class="section2-title">
-Buffer Size Option (<span class="id">--buffer-size</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Buffer size for I/O operations.
-</div><div class="section-body-text">
-Buffer size used for copy, compress, encrypt, and other operations. The number of buffers used depends on options and each operation may use additional memory, e.g. <span class="id">gz</span> compression may use an additional 256KiB of memory.<br/>
-<br/>
-Allowed values are <span class="id">16KiB</span>, <span class="id">32KiB</span>, <span class="id">64KiB</span>, <span class="id">128KiB</span>, <span class="id">256KiB</span>, <span class="id">512KiB</span>, <span class="id">1MiB</span>, <span class="id">2MiB</span>, <span class="id">4MiB</span>, <span class="id">8MiB</span>, and <span class="id">16MiB</span>.
-</div>
-<pre class="code-block">default: 1MiB
-example: buffer-size=2MiB</pre>
-</div></div><div class="section2"><a id="section-general/option-cmd"></a><div class="section2-header"><div class="section2-number">
-4.2
-</div><div class="section2-title">
-pgBackRest Command Option (<span class="id">--cmd</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> command.
-</div><div class="section-body-text">
-<span class="backrest">pgBackRest</span> may generate a command string, e.g. when the <span class="cmd">restore</span> command generates the <span class="pg-setting">restore_command</span> setting. The command used to run the <span class="backrest">pgBackRest</span> process will be used in this case unless the <span class="br-option">cmd</span> option is provided.<br/>
-<div class="admonition"><div class="caution">CAUTION:</div><div class="caution-text">Wrapping the <span class="backrest">pgBackRest</span> command may cause unpredictable behavior and is not recommended.</div></div>
-</div>
-<pre class="code-block">example: cmd=/var/lib/pgsql/bin/pgbackrest_wrapper.sh</pre>
-</div></div><div class="section2"><a id="section-general/option-cmd-ssh"></a><div class="section2-header"><div class="section2-number">
-4.3
-</div><div class="section2-title">
-SSH Client Command Option (<span class="id">--cmd-ssh</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-SSH client command.
-</div><div class="section-body-text">
-Use a specific SSH client command when an alternate is desired or the <span class="file">ssh</span> command is not in $PATH.
-</div>
-<pre class="code-block">default: ssh
-example: cmd-ssh=/usr/bin/ssh</pre>
-</div></div><div class="section2"><a id="section-general/option-compress"></a><div class="section2-header"><div class="section2-number">
-4.4
-</div><div class="section2-title">
-Compress Option (<span class="id">--compress</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Use file compression.
-</div><div class="section-body-text">
-Backup files are compatible with command-line compression tools.<br/>
-<br/>
-This option is now deprecated. The <span class="br-setting">compress-type</span> option should be used instead.
-</div>
-<pre class="code-block">default: y
-example: compress=n</pre>
-</div></div><div class="section2"><a id="section-general/option-compress-level"></a><div class="section2-header"><div class="section2-number">
-4.5
-</div><div class="section2-title">
-Compress Level Option (<span class="id">--compress-level</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-File compression level.
-</div><div class="section-body-text">
-Sets the level to be used for file compression when <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> or <span class="br-setting">compress=y</span> (deprecated).<br/>
-<br/>
-The following are the defaults levels based on <span class="br-setting">compress-type</span> when <span class="br-setting">compress-level</span> is not specified:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">bz2</span> - 9</li><li class="list-unordered"><span class="id">gz</span> - 6</li><li class="list-unordered"><span class="id">lz4</span> - 1</li><li class="list-unordered"><span class="id">zst</span> - 3</li></ul>
-</div>
-<pre class="code-block">example: compress-level=9</pre>
-</div></div><div class="section2"><a id="section-general/option-compress-level-network"></a><div class="section2-header"><div class="section2-number">
-4.6
-</div><div class="section2-title">
-Network Compress Level Option (<span class="id">--compress-level-network</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Network compression level.
-</div><div class="section-body-text">
-Sets the network compression level when <span class="br-setting">compress-type=none</span> and the command is not run on the same host as the repository. Compression is used to reduce network traffic but can be disabled by setting <span class="br-setting">compress-level-network=0</span>. When <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> the <span class="br-setting">compress-level-network</span> setting is ignored and <span class="br-setting">compress-level</span> is used instead so that the file is only compressed once.
-</div>
-<pre class="code-block">default: 3
-allowed: 0-9
-example: compress-level-network=1</pre>
-</div></div><div class="section2"><a id="section-general/option-compress-type"></a><div class="section2-header"><div class="section2-number">
-4.7
-</div><div class="section2-title">
-Compress Type Option (<span class="id">--compress-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-File compression type.
-</div><div class="section-body-text">
-The following compression types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">none</span> - no compression</li><li class="list-unordered"><span class="id">bz2</span> - bzip2 compression format</li><li class="list-unordered"><span class="id">gz</span> - gzip compression format</li><li class="list-unordered"><span class="id">lz4</span> - lz4 compression format (not available on all platforms)</li><li class="list-unordered"><span class="id">zst</span> - Zstandard compression format (not available on all platforms)</li></ul>
-</div>
-<pre class="code-block">default: gz
-example: compress-type=none</pre>
-</div></div><div class="section2"><a id="section-general/option-config"></a><div class="section2-header"><div class="section2-number">
-4.8
-</div><div class="section2-title">
-Config Option (<span class="id">--config</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> configuration file.
-</div><div class="section-body-text">
-Use this option to specify a different configuration file than the default.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH "/" PROJECT_CONFIG_FILE
-example: config=/conf/pgbackrest/pgbackrest.conf</pre>
-</div></div><div class="section2"><a id="section-general/option-config-include-path"></a><div class="section2-header"><div class="section2-number">
-4.9
-</div><div class="section2-title">
-Config Include Path Option (<span class="id">--config-include-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Path to additional <span class="backrest">pgBackRest</span> configuration files.
-</div><div class="section-body-text">
-Configuration files existing in the specified location with extension <span class="file">.conf</span> will be concatenated with the <span class="backrest">pgBackRest</span> configuration file, resulting in one configuration file.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH "/" PROJECT_CONFIG_INCLUDE_PATH
-example: config-include-path=/conf/pgbackrest/conf.d</pre>
-</div></div><div class="section2"><a id="section-general/option-config-path"></a><div class="section2-header"><div class="section2-number">
-4.10
-</div><div class="section2-title">
-Config Path Option (<span class="id">--config-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Base path of <span class="backrest">pgBackRest</span> configuration files.
-</div><div class="section-body-text">
-This setting is used to override the default base path setting for the <span class="br-option">--config</span> and <span class="br-option">--config-include-path</span> options unless they are explicitly set on the command-line.<br/>
-<br/>
-For example, passing only <span class="id">--config-path=/conf/pgbackrest</span> results in the <span class="br-option">--config</span> default being set to <span class="id">/conf/pgbackrest/pgbackrest.conf</span> and the <span class="br-option">--config-include-path</span> default being set to <span class="id">/conf/pgbackrest/conf.d</span>.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH
-example: config-path=/conf/pgbackrest</pre>
-</div></div><div class="section2"><a id="section-general/option-db-timeout"></a><div class="section2-header"><div class="section2-number">
-4.11
-</div><div class="section2-title">
-Database Timeout Option (<span class="id">--db-timeout</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Database query timeout.
-</div><div class="section-body-text">
-Sets the timeout, in seconds, for queries against the database. This includes the backup start/stop functions which can each take a substantial amount of time. Because of this the timeout should be kept high unless you know that these functions will return quickly (i.e. if you have set <span class="br-setting">start-fast=y</span> and you know that the database cluster will not generate many WAL segments during the backup).<br/>
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">The <span class="br-option">db-timeout</span> option must be less than the <span class="br-option">protocol-timeout</span> option.</div></div>
-</div>
-<pre class="code-block">default: 1800
-allowed: 0.1-604800
-example: db-timeout=600</pre>
-</div></div><div class="section2"><a id="section-general/option-delta"></a><div class="section2-header"><div class="section2-number">
-4.12
-</div><div class="section2-title">
-Delta Option (<span class="id">--delta</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Restore or backup using checksums.
-</div><div class="section-body-text">
-During a restore, by default the <span class="postgres">PostgreSQL</span> data and tablespace directories are expected to be present but empty. This option performs a delta restore using checksums.<br/>
-<br/>
-During a backup, this option will use checksums instead of the timestamps to determine if files will be copied.
-</div>
-<pre class="code-block">default: n
-example: delta=y</pre>
-</div></div><div class="section2"><a id="section-general/option-dry-run"></a><div class="section2-header"><div class="section2-number">
-4.13
-</div><div class="section2-title">
-Dry Run Option (<span class="id">--dry-run</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Execute a dry-run for the command.
-</div><div class="section-body-text">
-The <span class="br-option">--dry-run</span> option is a command-line only option and can be passed when it is desirable to determine what modifications will be made by the command without the command actually making any modifications.
-</div>
-<pre class="code-block">default: n
-example: dry-run=y</pre>
-</div></div><div class="section2"><a id="section-general/option-io-timeout"></a><div class="section2-header"><div class="section2-number">
-4.14
-</div><div class="section2-title">
-I/O Timeout Option (<span class="id">--io-timeout</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-I/O timeout.
-</div><div class="section-body-text">
-Timeout, in seconds, used for connections and read/write operations.<br/>
-<br/>
-Note that the entire read/write operation does not need to complete within this timeout but <i>some</i> progress must be made, even if it is only a single byte.
-</div>
-<pre class="code-block">default: 60
-allowed: 0.1-3600
-example: io-timeout=120</pre>
-</div></div><div class="section2"><a id="section-general/option-lock-path"></a><div class="section2-header"><div class="section2-number">
-4.15
-</div><div class="section2-title">
-Lock Path Option (<span class="id">--lock-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Path where lock files are stored.
-</div><div class="section-body-text">
-The lock path provides a location for <span class="backrest">pgBackRest</span> to create lock files to prevent conflicting operations from being run concurrently.
-</div>
-<pre class="code-block">default: /tmp/pgbackrest
-example: lock-path=/backup/db/lock</pre>
-</div></div><div class="section2"><a id="section-general/option-neutral-umask"></a><div class="section2-header"><div class="section2-number">
-4.16
-</div><div class="section2-title">
-Neutral Umask Option (<span class="id">--neutral-umask</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Use a neutral umask.
-</div><div class="section-body-text">
-Sets the umask to 0000 so modes in the repository are created in a sensible way. The default directory mode is 0750 and default file mode is 0640. The lock and log directories set the directory and file mode to 0770 and 0660 respectively.<br/>
-<br/>
-To use the executing user's umask instead specify <span class="br-setting">neutral-umask=n</span> in the config file or <span class="br-setting">--no-neutral-umask</span> on the command line.
-</div>
-<pre class="code-block">default: y
-example: neutral-umask=n</pre>
-</div></div><div class="section2"><a id="section-general/option-process-max"></a><div class="section2-header"><div class="section2-number">
-4.17
-</div><div class="section2-title">
-Process Maximum Option (<span class="id">--process-max</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Max processes to use for compress/transfer.
-</div><div class="section-body-text">
-Each process will perform compression and transfer to make the command run faster, but don't set <span class="br-setting">process-max</span> so high that it impacts database performance.
-</div>
-<pre class="code-block">default: 1
-allowed: 1-999
-example: process-max=4</pre>
-</div></div><div class="section2"><a id="section-general/option-protocol-timeout"></a><div class="section2-header"><div class="section2-number">
-4.18
-</div><div class="section2-title">
-Protocol Timeout Option (<span class="id">--protocol-timeout</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Protocol timeout.
-</div><div class="section-body-text">
-Sets the timeout, in seconds, that the local or remote process will wait for a new message to be received on the protocol layer. This prevents processes from waiting indefinitely for a message.<br/>
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">The <span class="br-option">protocol-timeout</span> option must be greater than the <span class="br-option">db-timeout</span> option.</div></div>
-</div>
-<pre class="code-block">default: 1830
-allowed: 0.1-604800
-example: protocol-timeout=630</pre>
-</div></div><div class="section2"><a id="section-general/option-raw"></a><div class="section2-header"><div class="section2-number">
-4.19
-</div><div class="section2-title">
-Raw Data Option (<span class="id">--raw</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Do not transform data.
-</div><div class="section-body-text">
-Do not transform (i.e, encrypt, decompress, etc.) data for the current command.
-</div>
-<pre class="code-block">default: n
-example: raw=y</pre>
-</div></div><div class="section2"><a id="section-general/option-sck-keep-alive"></a><div class="section2-header"><div class="section2-number">
-4.20
-</div><div class="section2-title">
-Keep Alive Option (<span class="id">--sck-keep-alive</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Keep-alive enable.
-</div><div class="section-body-text">
-Enables keep-alive messages on socket connections.
-</div>
-<pre class="code-block">default: y
-example: sck-keep-alive=n</pre>
-</div></div><div class="section2"><a id="section-general/option-spool-path"></a><div class="section2-header"><div class="section2-number">
-4.21
-</div><div class="section2-title">
-Spool Path Option (<span class="id">--spool-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Path where transient data is stored.
-</div><div class="section-body-text">
-This path is used to store data for the asynchronous <span class="cmd">archive-push</span> and <span class="cmd">archive-get</span> command.<br/>
-<br/>
-The asynchronous <span class="cmd">archive-push</span> command writes acknowledgements into the spool path when it has successfully stored WAL in the archive (and errors on failure) so the foreground process can quickly notify <span class="postgres">PostgreSQL</span>. Acknowledgement files are very small (zero on success and a few hundred bytes on error).<br/>
-<br/>
-The asynchronous <span class="cmd">archive-get</span> command queues WAL in the spool path so it can be provided very quickly when <span class="postgres">PostgreSQL</span> requests it. Moving files to <span class="postgres">PostgreSQL</span> is most efficient when the spool path is on the same filesystem as <span class="path">pg_xlog</span>/<span class="path">pg_wal</span>.<br/>
-<br/>
-The data stored in the spool path is not strictly temporary since it can and should survive a reboot. However, loss of the data in the spool path is not a problem. <span class="backrest">pgBackRest</span> will simply recheck each WAL segment to ensure it is safely archived for <span class="cmd">archive-push</span> and rebuild the queue for <span class="cmd">archive-get</span>.<br/>
-<br/>
-The spool path is intended to be located on a local Posix-compatible filesystem, not a remote filesystem such as <span class="host">NFS</span> or <span class="host">CIFS</span>.
-</div>
-<pre class="code-block">default: /var/spool/pgbackrest
-example: spool-path=/backup/db/spool</pre>
-</div></div><div class="section2"><a id="section-general/option-stanza"></a><div class="section2-header"><div class="section2-number">
-4.22
-</div><div class="section2-title">
-Stanza Option (<span class="id">--stanza</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Defines the stanza.
-</div><div class="section-body-text">
-A stanza is the configuration for a <span class="postgres">PostgreSQL</span> database cluster that defines where it is located, how it will be backed up, archiving options, etc. Most db servers will only have one <span class="postgres">PostgreSQL</span> database cluster and therefore one stanza, whereas backup servers will have a stanza for every database cluster that needs to be backed up.<br/>
-<br/>
-It is tempting to name the stanza after the primary cluster but a better name describes the databases contained in the cluster. Because the stanza name will be used for the primary and all replicas it is more appropriate to choose a name that describes the actual function of the cluster, such as app or dw, rather than the local cluster name, such as main or prod.
-</div>
-<pre class="code-block">example: stanza=main</pre>
-</div></div><div class="section2"><a id="section-general/option-tcp-keep-alive-count"></a><div class="section2-header"><div class="section2-number">
-4.23
-</div><div class="section2-title">
-Keep Alive Count Option (<span class="id">--tcp-keep-alive-count</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Keep-alive count.
-</div><div class="section-body-text">
-Specifies the number of TCP keep-alive messages that can be lost before the connection is considered dead.<br/>
-<br/>
-This option is available on systems that support the <span class="id">TCP_KEEPCNT</span> socket option.
-</div>
-<pre class="code-block">allowed: 1-32
-example: tcp-keep-alive-count=3</pre>
-</div></div><div class="section2"><a id="section-general/option-tcp-keep-alive-idle"></a><div class="section2-header"><div class="section2-number">
-4.24
-</div><div class="section2-title">
-Keep Alive Idle Option (<span class="id">--tcp-keep-alive-idle</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Keep-alive idle time.
-</div><div class="section-body-text">
-Specifies the amount of time (in seconds) with no network activity after which the operating system should send a TCP keep-alive message.<br/>
-<br/>
-This option is available on systems that support the <span class="id">TCP_KEEPIDLE</span> socket option.
-</div>
-<pre class="code-block">allowed: 1-3600
-example: tcp-keep-alive-idle=60</pre>
-</div></div><div class="section2"><a id="section-general/option-tcp-keep-alive-interval"></a><div class="section2-header"><div class="section2-number">
-4.25
-</div><div class="section2-title">
-Keep Alive Interval Option (<span class="id">--tcp-keep-alive-interval</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Keep-alive interval time.
-</div><div class="section-body-text">
-Specifies the amount of time (in seconds) after which a TCP keep-alive message that has not been acknowledged should be retransmitted.<br/>
-<br/>
-This option is available on systems that support the <span class="id">TCP_KEEPINTVL</span> socket option.
-</div>
-<pre class="code-block">allowed: 1-900
-example: tcp-keep-alive-interval=30</pre>
-</div></div></div></div><div class="section1"><a id="section-log"></a><div class="section1-header"><div class="section1-number">
-5
-</div><div class="section1-title">
-Log Options (<span class="id">log</span>)
-</div></div><div class="section-intro">
-The <span class="br-setting">log</span> section defines logging-related settings.<br/>
-<div class="admonition"><div class="caution">CAUTION:</div><div class="caution-text">Trace-level logging may expose secrets such as keys and passwords. Use with caution!</div></div>
-</div><div class="section-body"><div class="section2"><a id="section-log/option-log-level-console"></a><div class="section2-header"><div class="section2-number">
-5.1
-</div><div class="section2-title">
-Console Log Level Option (<span class="id">--log-level-console</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Level for console logging.
-</div><div class="section-body-text">
-The following log levels are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
-</div>
-<pre class="code-block">default: warn
-example: log-level-console=error</pre>
-</div></div><div class="section2"><a id="section-log/option-log-level-file"></a><div class="section2-header"><div class="section2-number">
-5.2
-</div><div class="section2-title">
-File Log Level Option (<span class="id">--log-level-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Level for file logging.
-</div><div class="section-body-text">
-The following log levels are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
-</div>
-<pre class="code-block">default: info
-example: log-level-file=debug</pre>
-</div></div><div class="section2"><a id="section-log/option-log-level-stderr"></a><div class="section2-header"><div class="section2-number">
-5.3
-</div><div class="section2-title">
-Std Error Log Level Option (<span class="id">--log-level-stderr</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Level for stderr logging.
-</div><div class="section-body-text">
-Specifies which log levels will output to <span class="id">stderr</span> rather than <span class="id">stdout</span> (specified by <span class="br-option">log-level-console</span>). The timestamp and process will not be output to <span class="id">stderr</span>.<br/>
-<br/>
-The following log levels are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
-</div>
-<pre class="code-block">default: warn
-example: log-level-stderr=error</pre>
-</div></div><div class="section2"><a id="section-log/option-log-path"></a><div class="section2-header"><div class="section2-number">
-5.4
-</div><div class="section2-title">
-Log Path Option (<span class="id">--log-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Path where log files are stored.
-</div><div class="section-body-text">
-The log path provides a location for <span class="backrest">pgBackRest</span> to store log files. Note that if <span class="br-setting">log-level-file=off</span> then no log path is required.
-</div>
-<pre class="code-block">default: /var/log/pgbackrest
-example: log-path=/backup/db/log</pre>
-</div></div><div class="section2"><a id="section-log/option-log-subprocess"></a><div class="section2-header"><div class="section2-number">
-5.5
-</div><div class="section2-title">
-Log Subprocesses Option (<span class="id">--log-subprocess</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Enable logging in subprocesses.
-</div><div class="section-body-text">
-Enable file logging for any subprocesses created by this process using the log level specified by <span class="br-option">log-level-file</span>.
-</div>
-<pre class="code-block">default: n
-example: log-subprocess=y</pre>
-</div></div><div class="section2"><a id="section-log/option-log-timestamp"></a><div class="section2-header"><div class="section2-number">
-5.6
-</div><div class="section2-title">
-Log Timestamp Option (<span class="id">--log-timestamp</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Enable timestamp in logging.
-</div><div class="section-body-text">
-Enables the timestamp in console and file logging. This option is disabled in special situations such as generating documentation.
-</div>
-<pre class="code-block">default: y
-example: log-timestamp=n</pre>
-</div></div></div></div><div class="section1"><a id="section-repository"></a><div class="section1-header"><div class="section1-number">
-6
-</div><div class="section1-title">
-Repository Options (<span class="id">repository</span>)
-</div></div><div class="section-intro">
-The <span class="br-setting">repository</span> section defines options used to configure the repository.<br/>
-<br/>
-<b>Indexing</b>: All <span class="br-setting">repo-</span> options are indexed to allow for configuring multiple repositories. For example, a single repository is configured with the <span class="br-setting">repo1-path</span>, <span class="br-setting">repo1-host</span>, etc. options. If there is more than one repository configured and the <span class="br-option">--repo</span> option is not specified for a command, the repositories will be acted upon in highest priority order (e.g. repo1 then repo2).<br/>
-<br/>
-The <span class="br-setting">repo-retention-*</span> options define how long backups will be retained. Expiration only occurs when the count of complete backups exceeds the allowed retention. In other words, if <span class="br-setting">repo1-retention-full-type</span> is set to <span class="br-setting">count</span> (default) and <span class="br-setting">repo1-retention-full</span> is set to 2, then there must be 3 complete backups before the oldest will be expired. If <span class="br-setting">repo1-retention-full-type</span> is set to <span class="br-setting">time</span> then <span class="br-setting">repo1-retention-full</span> represents days so there must be at least that many days worth of full backups before expiration can occur. Make sure you always have enough space for retention + 1 backups.
-</div><div class="section-body"><div class="section2"><a id="section-repository/option-repo"></a><div class="section2-header"><div class="section2-number">
-6.1
-</div><div class="section2-title">
-Set Repository Option (<span class="id">--repo</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Set repository.
-</div><div class="section-body-text">
-Set the repository for a command to operate on.<br/>
-<br/>
-For example, this option may be used to perform a restore from a specific repository, rather than letting <span class="backrest">pgBackRest</span> choose.
-</div>
-<pre class="code-block">allowed: 1-256
-example: repo=1</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-azure-account"></a><div class="section2-header"><div class="section2-number">
-6.2
-</div><div class="section2-title">
-Azure Repository Account Option (<span class="id">--repo-azure-account</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Azure repository account.
-</div><div class="section-body-text">
-Azure account used to store the repository.
-</div>
-<pre class="code-block">example: repo1-azure-account=pg-backup</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-azure-container"></a><div class="section2-header"><div class="section2-number">
-6.3
-</div><div class="section2-title">
-Azure Repository Container Option (<span class="id">--repo-azure-container</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Azure repository container.
-</div><div class="section-body-text">
-Azure container used to store the repository.<br/>
-<br/>
-<span class="backrest">pgBackRest</span> repositories can be stored in the container root by setting <span class="br-option">repo-path=/</span> but it is usually best to specify a prefix, such as <span class="path">/repo</span>, so logs and other Azure-generated content can also be stored in the container.
-</div>
-<pre class="code-block">example: repo1-azure-container=pg-backup</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-azure-endpoint"></a><div class="section2-header"><div class="section2-number">
-6.4
-</div><div class="section2-title">
-Azure Repository Endpoint Option (<span class="id">--repo-azure-endpoint</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Azure repository endpoint.
-</div><div class="section-body-text">
-Endpoint used to connect to the blob service. The default is generally correct unless using Azure Government.<br/>
-<br/>
-For custom/test configurations the <span class="br-setting">repo-storage-ca-file</span>, <span class="br-setting">repo-storage-ca-path</span>, <span class="br-setting">repo-storage-host</span>, <span class="br-setting">repo-storage-port</span>, and <span class="br-setting">repo-storage-verify-tls</span> options may be useful.
-</div>
-<pre class="code-block">default: blob.core.windows.net
-example: repo1-azure-endpoint=blob.core.usgovcloudapi.net</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-azure-key"></a><div class="section2-header"><div class="section2-number">
-6.5
-</div><div class="section2-title">
-Azure Repository Key Option (<span class="id">--repo-azure-key</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Azure repository key.
-</div><div class="section-body-text">
-A shared key or shared access signature depending on the <span class="br-option">repo-azure-key-type</span> option.
-</div>
-<pre class="code-block">example: repo1-azure-key=T+9+aov82qNhrcXSNGZCzm9mjd4d75/oxxOr6r1JVpgTLA==</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-azure-key-type"></a><div class="section2-header"><div class="section2-number">
-6.6
-</div><div class="section2-title">
-Azure Repository Key Type Option (<span class="id">--repo-azure-key-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Azure repository key type.
-</div><div class="section-body-text">
-The following types are supported for authorization:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">shared</span> - Shared key</li><li class="list-unordered"><span class="id">sas</span> - Shared access signature</li></ul>
-</div>
-<pre class="code-block">default: shared
-example: repo1-azure-key-type=sas</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-azure-uri-style"></a><div class="section2-header"><div class="section2-number">
-6.7
-</div><div class="section2-title">
-Azure Repository URI Style Option (<span class="id">--repo-azure-uri-style</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Azure URI Style.
-</div><div class="section-body-text">
-The following URI styles are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">host</span> - Connect to <span class="id">account.endpoint</span> host.</li><li class="list-unordered"><span class="id">path</span> - Connect to <span class="id">endpoint</span> host and prepend account to URIs.</li></ul>
-</div>
-<pre class="code-block">default: host
-example: repo1-azure-uri-style=path</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-block"></a><div class="section2-header"><div class="section2-number">
-6.8
-</div><div class="section2-title">
-Block Incremental Backup Option (<span class="id">--repo-block</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Enable block incremental backup.
-</div><div class="section-body-text">
-Block incremental allows for more granular backups by splitting files into blocks that can be backed up independently. This saves space in the repository and can improve delta restore performance because individual blocks can be fetched without reading the entire file from the repository.<br/>
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">The <span class="br-option">repo-bundle</span> option must be enabled before <span class="br-option">repo-block</span> can be enabled.</div></div>The block size for a file is determined based on the file size and age. Generally, older/larger files will get larger block sizes. If a file is old enough, it will not be backed up using block incremental.<br/>
-<br/>
-Block incremental is most efficient when enabled for all backup types, including full. This makes the full a bit larger but subsequent differential and incremental backups can make use of the block maps generated by the full backup to save space.
-</div>
-<pre class="code-block">default: n
-example: repo1-block=y</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-bundle"></a><div class="section2-header"><div class="section2-number">
-6.9
-</div><div class="section2-title">
-Repository Bundles Option (<span class="id">--repo-bundle</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Bundle files in repository.
-</div><div class="section-body-text">
-Bundle (combine) smaller files to reduce the total number of files written to the repository. Writing fewer files is generally more efficient, especially on object stores such as <span class="host">S3</span>. In addition, zero-length files are not stored (except in the manifest), which saves time and space.
-</div>
-<pre class="code-block">default: n
-example: repo1-bundle=y</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-bundle-limit"></a><div class="section2-header"><div class="section2-number">
-6.10
-</div><div class="section2-title">
-Repository Bundle Limit Option (<span class="id">--repo-bundle-limit</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Limit for file bundles.
-</div><div class="section-body-text">
-Size limit for files that will be included in bundles. Files larger than this size will be stored separately.<br/>
-<br/>
-Bundled files cannot be reused when a backup is resumed, so this option controls the files that can be resumed, i.e. higher values result in fewer resumable files.
-</div>
-<pre class="code-block">default: 2MiB
-allowed: 8KiB-1PiB
-example: repo1-bundle-limit=10MiB</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-bundle-size"></a><div class="section2-header"><div class="section2-number">
-6.11
-</div><div class="section2-title">
-Repository Bundle Size Option (<span class="id">--repo-bundle-size</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Target size for file bundles.
-</div><div class="section-body-text">
-Defines the total size of files that will be added to a single bundle. Most bundles will be smaller than this size but it is possible that some will be slightly larger, so do not set this option to the maximum size that your file system allows.<br/>
-<br/>
-In general, it is not a good idea to set this option too high because retries will need to redo the entire bundle.
-</div>
-<pre class="code-block">default: 20MiB
-allowed: 1MiB-1PiB
-example: repo1-bundle-size=10MiB</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-cipher-pass"></a><div class="section2-header"><div class="section2-number">
-6.12
-</div><div class="section2-title">
-Repository Cipher Passphrase Option (<span class="id">--repo-cipher-pass</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository cipher passphrase.
-</div><div class="section-body-text">
-Passphrase used to encrypt/decrypt files of the repository.
-</div>
-<pre class="code-block">example: repo1-cipher-pass=zWaf6XtpjIVZC5444yXB+cgFDFl7MxGlgkZSaoPvTGirhPygu4jOKOXf9LO4vjfO</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-cipher-type"></a><div class="section2-header"><div class="section2-number">
-6.13
-</div><div class="section2-title">
-Repository Cipher Type Option (<span class="id">--repo-cipher-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Cipher used to encrypt the repository.
-</div><div class="section-body-text">
-The following cipher types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">none</span> - The repository is not encrypted</li><li class="list-unordered"><span class="id">aes-256-cbc</span> - Advanced Encryption Standard with 256 bit key length</li></ul>Note that encryption is always performed client-side even if the repository type (e.g. S3) supports encryption.
-</div>
-<pre class="code-block">default: none
-example: repo1-cipher-type=aes-256-cbc</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-gcs-bucket"></a><div class="section2-header"><div class="section2-number">
-6.14
-</div><div class="section2-title">
-GCS Repository Bucket Option (<span class="id">--repo-gcs-bucket</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-GCS repository bucket.
-</div><div class="section-body-text">
-GCS bucket used to store the repository.<br/>
-<br/>
-<span class="backrest">pgBackRest</span> repositories can be stored in the bucket root by setting <span class="br-option">repo-path=/</span> but it is usually best to specify a prefix, such as <span class="path">/repo</span>, so logs and other GCS-generated content can also be stored in the bucket.
-</div>
-<pre class="code-block">example: repo1-gcs-bucket=/pg-backup</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-gcs-endpoint"></a><div class="section2-header"><div class="section2-number">
-6.15
-</div><div class="section2-title">
-GCS Repository Endpoint Option (<span class="id">--repo-gcs-endpoint</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-GCS repository endpoint.
-</div><div class="section-body-text">
-Endpoint used to connect to the storage service. May be updated to use a local GCS server or alternate endpoint.
-</div>
-<pre class="code-block">default: storage.googleapis.com
-example: repo1-gcs-endpoint=localhost</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-gcs-key"></a><div class="section2-header"><div class="section2-number">
-6.16
-</div><div class="section2-title">
-GCS Repository Key Option (<span class="id">--repo-gcs-key</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-GCS repository key.
-</div><div class="section-body-text">
-A token or service key file depending on the <span class="br-option">repo-gcs-key-type</span> option.
-</div>
-<pre class="code-block">example: repo1-gcs-key=/etc/pgbackrest/gcs-key.json</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-gcs-key-type"></a><div class="section2-header"><div class="section2-number">
-6.17
-</div><div class="section2-title">
-GCS Repository Key Type Option (<span class="id">--repo-gcs-key-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-GCS repository key type.
-</div><div class="section-body-text">
-The following types are supported for authorization:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">auto</span> - Authorize using the instance service account.</li><li class="list-unordered"><span class="id">service</span> - Service account from locally stored key.</li><li class="list-unordered"><span class="id">token</span> - For local testing, e.g. <span class="file">fakegcs</span>.</li></ul>
-</div>
-<pre class="code-block">default: service
-example: repo1-gcs-key-type=auto</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-hardlink"></a><div class="section2-header"><div class="section2-number">
-6.18
-</div><div class="section2-title">
-Repository Hardlink Option (<span class="id">--repo-hardlink</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Hardlink files between backups in the repository.
-</div><div class="section-body-text">
-Enable hard-linking of files in differential and incremental backups to their full backups. This gives the appearance that each backup is a full backup at the file-system level. Be careful, though, because modifying files that are hard-linked can affect all the backups in the set.
-</div>
-<pre class="code-block">default: n
-example: repo1-hardlink=y</pre>
-<div class="section-body-text">
-Deprecated Name: hardlink
-</div></div></div><div class="section2"><a id="section-repository/option-repo-host"></a><div class="section2-header"><div class="section2-number">
-6.19
-</div><div class="section2-title">
-Repository Host Option (<span class="id">--repo-host</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host when operating remotely.
-</div><div class="section-body-text">
-When backing up and archiving to a locally mounted filesystem this setting is not required.
-</div>
-<pre class="code-block">example: repo1-host=repo1.domain.com</pre>
-<div class="section-body-text">
-Deprecated Name: backup-host
-</div></div></div><div class="section2"><a id="section-repository/option-repo-host-ca-file"></a><div class="section2-header"><div class="section2-number">
-6.20
-</div><div class="section2-title">
-Repository Host Certificate Authority File Option (<span class="id">--repo-host-ca-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host certificate authority file.
-</div><div class="section-body-text">
-Use a CA file other than the system default for connecting to the repository host.
-</div>
-<pre class="code-block">example: repo1-host-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-host-ca-path"></a><div class="section2-header"><div class="section2-number">
-6.21
-</div><div class="section2-title">
-Repository Host Certificate Authority Path Option (<span class="id">--repo-host-ca-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host certificate authority path.
-</div><div class="section-body-text">
-Use a CA path other than the system default for connecting to the repository host.
-</div>
-<pre class="code-block">example: repo1-host-ca-path=/etc/pki/tls/certs</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-host-cert-file"></a><div class="section2-header"><div class="section2-number">
-6.22
-</div><div class="section2-title">
-Repository Host Certificate File Option (<span class="id">--repo-host-cert-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host certificate file.
-</div><div class="section-body-text">
-Sent to repository host to prove client identity.
-</div>
-<pre class="code-block">example: repo1-host-cert-file=/path/to/client.crt</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-host-cmd"></a><div class="section2-header"><div class="section2-number">
-6.23
-</div><div class="section2-title">
-Repository Host Command Option (<span class="id">--repo-host-cmd</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host <span class="backrest">pgBackRest</span> command.
-</div><div class="section-body-text">
-Required only if the path to the <span class="backrest">pgBackRest</span> command is different on the local and repository hosts. If not defined, the repository host command will be set the same as the local command.
-</div>
-<pre class="code-block">example: repo1-host-cmd=/usr/lib/backrest/bin/pgbackrest</pre>
-<div class="section-body-text">
-Deprecated Name: backup-cmd
-</div></div></div><div class="section2"><a id="section-repository/option-repo-host-config"></a><div class="section2-header"><div class="section2-number">
-6.24
-</div><div class="section2-title">
-Repository Host Configuration Option (<span class="id">--repo-host-config</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> repository host configuration file.
-</div><div class="section-body-text">
-Sets the location of the configuration file on the repository host. This is only required if the repository host configuration file is in a different location than the local configuration file.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH "/" PROJECT_CONFIG_FILE
-example: repo1-host-config=/conf/pgbackrest/pgbackrest.conf</pre>
-<div class="section-body-text">
-Deprecated Name: backup-config
-</div></div></div><div class="section2"><a id="section-repository/option-repo-host-config-include-path"></a><div class="section2-header"><div class="section2-number">
-6.25
-</div><div class="section2-title">
-Repository Host Configuration Include Path Option (<span class="id">--repo-host-config-include-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> repository host configuration include path.
-</div><div class="section-body-text">
-Sets the location of the configuration include path on the repository host. This is only required if the repository host configuration include path is in a different location than the local configuration include path.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH "/" PROJECT_CONFIG_INCLUDE_PATH
-example: repo1-host-config-include-path=/conf/pgbackrest/conf.d</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-host-config-path"></a><div class="section2-header"><div class="section2-number">
-6.26
-</div><div class="section2-title">
-Repository Host Configuration Path Option (<span class="id">--repo-host-config-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> repository host configuration path.
-</div><div class="section-body-text">
-Sets the location of the configuration path on the repository host. This is only required if the repository host configuration path is in a different location than the local configuration path.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH
-example: repo1-host-config-path=/conf/pgbackrest</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-host-key-file"></a><div class="section2-header"><div class="section2-number">
-6.27
-</div><div class="section2-title">
-Repository Host Key File Option (<span class="id">--repo-host-key-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host key file.
-</div><div class="section-body-text">
-Proves client certificate was sent by owner.
-</div>
-<pre class="code-block">example: repo1-host-key-file=/path/to/client.key</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-host-port"></a><div class="section2-header"><div class="section2-number">
-6.28
-</div><div class="section2-title">
-Repository Host Port Option (<span class="id">--repo-host-port</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host port when <span class="br-setting">repo-host</span> is set.
-</div><div class="section-body-text">
-Use this option to specify a non-default port for the repository host protocol.
-</div>
-<pre class="code-block">allowed: 0-65535
-example: repo1-host-port=25</pre>
-<div class="section-body-text">
-Deprecated Name: backup-ssh-port
-</div></div></div><div class="section2"><a id="section-repository/option-repo-host-type"></a><div class="section2-header"><div class="section2-number">
-6.29
-</div><div class="section2-title">
-Repository Host Protocol Type Option (<span class="id">--repo-host-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host protocol type.
-</div><div class="section-body-text">
-The following protocol types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">ssh</span> - Secure Shell.</li><li class="list-unordered"><span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.</li></ul>
-</div>
-<pre class="code-block">default: ssh
-example: repo1-host-type=tls</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-host-user"></a><div class="section2-header"><div class="section2-number">
-6.30
-</div><div class="section2-title">
-Repository Host User Option (<span class="id">--repo-host-user</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository host user when <span class="br-setting">repo-host</span> is set.
-</div><div class="section-body-text">
-Defines the user that will be used for operations on the repository host. Preferably this is not the <span class="id">postgres</span> user but rather some other user like <span class="id">pgbackrest</span>. If <span class="postgres">PostgreSQL</span> runs on the repository host the <span class="id">postgres</span> user can be placed in the <span class="id">pgbackrest</span> group so it has read permissions on the repository without being able to damage the contents accidentally.
-</div>
-<pre class="code-block">default: pgbackrest
-example: repo1-host-user=repo-user</pre>
-<div class="section-body-text">
-Deprecated Name: backup-user
-</div></div></div><div class="section2"><a id="section-repository/option-repo-path"></a><div class="section2-header"><div class="section2-number">
-6.31
-</div><div class="section2-title">
-Repository Path Option (<span class="id">--repo-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Path where backups and archive are stored.
-</div><div class="section-body-text">
-The repository is where <span class="backrest">pgBackRest</span> stores backups and archives WAL segments.<br/>
-<br/>
-It may be difficult to estimate in advance how much space you'll need. The best thing to do is take some backups then record the size of different types of backups (full/incr/diff) and measure the amount of WAL generated per day. This will give you a general idea of how much space you'll need, though of course requirements will likely change over time as your database evolves.
-</div>
-<pre class="code-block">default: /var/lib/pgbackrest
-example: repo1-path=/backup/db/backrest</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-retention-archive"></a><div class="section2-header"><div class="section2-number">
-6.32
-</div><div class="section2-title">
-Archive Retention Option (<span class="id">--repo-retention-archive</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Number of backups worth of continuous WAL to retain.
-</div><div class="section-body-text">
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">WAL segments required to make a backup consistent are always retained until the backup is expired regardless of how this option is configured.</div></div>If this value is not set and <span class="br-setting">repo-retention-full-type</span> is <span class="br-setting">count</span> (default), then the archive to expire will default to the <span class="br-setting">repo-retention-full</span> (or <span class="br-setting">repo-retention-diff</span>) value corresponding to the <span class="br-setting">repo-retention-archive-type</span> if set to <span class="br-setting">full</span> (or <span class="br-setting">diff</span>). This will ensure that WAL is only expired for backups that are already expired. If <span class="br-setting">repo-retention-full-type</span> is <span class="br-setting">time</span>, then this value will default to removing archives that are earlier than the oldest full backup retained after satisfying the <span class="br-setting">repo-retention-full</span> setting.<br/>
-<br/>
-This option must be set if <span class="br-setting">repo-retention-archive-type</span> is set to <span class="br-setting">incr</span>. If disk space is at a premium, then this setting, in conjunction with <span class="br-setting">repo-retention-archive-type</span>, can be used to aggressively expire WAL segments. However, doing so negates the ability to perform PITR from the backups with expired WAL and is therefore <b>not</b> recommended.
-</div>
-<pre class="code-block">allowed: 1-9999999
-example: repo1-retention-archive=2</pre>
-<div class="section-body-text">
-Deprecated Name: retention-archive
-</div></div></div><div class="section2"><a id="section-repository/option-repo-retention-archive-type"></a><div class="section2-header"><div class="section2-number">
-6.33
-</div><div class="section2-title">
-Archive Retention Type Option (<span class="id">--repo-retention-archive-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Backup type for WAL retention.
-</div><div class="section-body-text">
-If set to <span class="br-setting">full</span> <span class="backrest">pgBackRest</span> will keep archive logs for the number of full backups defined by <span class="br-setting">repo-retention-archive</span>. If set to <span class="br-setting">diff</span> (differential) <span class="backrest">pgBackRest</span> will keep archive logs for the number of full and differential backups defined by <span class="br-setting">repo-retention-archive</span>, meaning if the last backup taken was a full backup, it will be counted as a differential for the purpose of repo-retention. If set to <span class="br-setting">incr</span> (incremental) <span class="backrest">pgBackRest</span> will keep archive logs for the number of full, differential, and incremental backups defined by <span class="br-setting">repo-retention-archive</span>. It is recommended that this setting not be changed from the default which will only expire WAL in conjunction with expiring full backups.
-</div>
-<pre class="code-block">default: full
-example: repo1-retention-archive-type=diff</pre>
-<div class="section-body-text">
-Deprecated Name: retention-archive-type
-</div></div></div><div class="section2"><a id="section-repository/option-repo-retention-diff"></a><div class="section2-header"><div class="section2-number">
-6.34
-</div><div class="section2-title">
-Differential Retention Option (<span class="id">--repo-retention-diff</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Number of differential backups to retain.
-</div><div class="section-body-text">
-When a differential backup expires, all incremental backups associated with the differential backup will also expire. When not defined all differential backups will be kept until the full backups they depend on expire.
-</div>
-<pre class="code-block">allowed: 1-9999999
-example: repo1-retention-diff=3</pre>
-<div class="section-body-text">
-Deprecated Name: retention-diff
-</div></div></div><div class="section2"><a id="section-repository/option-repo-retention-full"></a><div class="section2-header"><div class="section2-number">
-6.35
-</div><div class="section2-title">
-Full Retention Option (<span class="id">--repo-retention-full</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Full backup retention count/time.
-</div><div class="section-body-text">
-When a full backup expires, all differential and incremental backups associated with the full backup will also expire. When the option is not defined a warning will be issued. If indefinite retention is desired then set the option to the max value.
-</div>
-<pre class="code-block">allowed: 1-9999999
-example: repo1-retention-full=2</pre>
-<div class="section-body-text">
-Deprecated Name: retention-full
-</div></div></div><div class="section2"><a id="section-repository/option-repo-retention-full-type"></a><div class="section2-header"><div class="section2-number">
-6.36
-</div><div class="section2-title">
-Full Retention Type Option (<span class="id">--repo-retention-full-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Retention type for full backups.
-</div><div class="section-body-text">
-Determines whether the <span class="br-setting">repo-retention-full</span> setting represents a time period (days) or count of full backups to keep. If set to <span class="br-setting">time</span> then full backups older than <span class="br-setting">repo-retention-full</span> will be removed from the repository if there is at least one backup that is equal to or greater than the <span class="br-setting">repo-retention-full</span> setting. For example, if <span class="br-setting">repo-retention-full</span> is 30 (days) and there are 2 full backups: one 25 days old and one 35 days old, no full backups will be expired because expiring the 35 day old backup would leave only the 25 day old backup, which would violate the 30 day retention policy of having at least one backup 30 days old before an older one can be expired. Archived WAL older than the oldest full backup remaining will be automatically expired unless <span class="br-setting">repo-retention-archive-type</span> and <span class="br-setting">repo-retention-archive</span> are explicitly set.
-</div>
-<pre class="code-block">default: count
-example: repo1-retention-full-type=time</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-retention-history"></a><div class="section2-header"><div class="section2-number">
-6.37
-</div><div class="section2-title">
-Backup History Retention Option (<span class="id">--repo-retention-history</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Days of backup history manifests to retain.
-</div><div class="section-body-text">
-A copy of the backup manifest is stored in the <span class="path">backup.history</span> path when a backup completes. By default these files are never expired since they are useful for data mining, e.g. measuring backup and WAL growth over time.<br/>
-<br/>
-Set <span class="br-setting">repo-retention-history</span> to define the number of days of backup history manifests to retain. Unexpired backups are always kept in the backup history. Specify <span class="br-option">repo-retention-history=0</span> to retain the backup history only for unexpired backups.<br/>
-<br/>
-When a full backup history manifest is expired, all differential and incremental backup history manifests associated with the full backup also expire.
-</div>
-<pre class="code-block">allowed: 0-9999999
-example: repo1-retention-history=365</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-s3-bucket"></a><div class="section2-header"><div class="section2-number">
-6.38
-</div><div class="section2-title">
-S3 Repository Bucket Option (<span class="id">--repo-s3-bucket</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-S3 repository bucket.
-</div><div class="section-body-text">
-S3 bucket used to store the repository.<br/>
-<br/>
-<span class="backrest">pgBackRest</span> repositories can be stored in the bucket root by setting <span class="br-option">repo-path=/</span> but it is usually best to specify a prefix, such as <span class="path">/repo</span>, so logs and other AWS generated content can also be stored in the bucket.
-</div>
-<pre class="code-block">example: repo1-s3-bucket=pg-backup</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-s3-endpoint"></a><div class="section2-header"><div class="section2-number">
-6.39
-</div><div class="section2-title">
-S3 Repository Endpoint Option (<span class="id">--repo-s3-endpoint</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-S3 repository endpoint.
-</div><div class="section-body-text">
-The AWS endpoint should be valid for the selected region.<br/>
-<br/>
-For custom/test configurations the <span class="br-setting">repo-storage-ca-file</span>, <span class="br-setting">repo-storage-ca-path</span>, <span class="br-setting">repo-storage-host</span>, <span class="br-setting">repo-storage-port</span>, and <span class="br-setting">repo-storage-verify-tls</span> options may be useful.
-</div>
-<pre class="code-block">example: repo1-s3-endpoint=s3.amazonaws.com</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-s3-key"></a><div class="section2-header"><div class="section2-number">
-6.40
-</div><div class="section2-title">
-S3 Repository Access Key Option (<span class="id">--repo-s3-key</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-S3 repository access key.
-</div><div class="section-body-text">
-AWS key used to access this bucket.
-</div>
-<pre class="code-block">example: repo1-s3-key=AKIAIOSFODNN7EXAMPLE</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-s3-key-secret"></a><div class="section2-header"><div class="section2-number">
-6.41
-</div><div class="section2-title">
-S3 Repository Secret Access Key Option (<span class="id">--repo-s3-key-secret</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-S3 repository secret access key.
-</div><div class="section-body-text">
-AWS secret key used to access this bucket.
-</div>
-<pre class="code-block">example: repo1-s3-key-secret=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-s3-key-type"></a><div class="section2-header"><div class="section2-number">
-6.42
-</div><div class="section2-title">
-S3 Repository Key Type Option (<span class="id">--repo-s3-key-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-S3 repository key type.
-</div><div class="section-body-text">
-The following types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">shared</span> - Shared keys</li><li class="list-unordered"><span class="id">auto</span> - Automatically retrieve temporary credentials</li><li class="list-unordered"><span class="id">web-id</span> - Automatically retrieve web identity credentials</li></ul>
-</div>
-<pre class="code-block">default: shared
-example: repo1-s3-key-type=auto</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-s3-kms-key-id"></a><div class="section2-header"><div class="section2-number">
-6.43
-</div><div class="section2-title">
-S3 Repository KMS Key ID Option (<span class="id">--repo-s3-kms-key-id</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-S3 repository KMS key.
-</div><div class="section-body-text">
-Setting this option enables S3 server-side encryption using the specified AWS key management service key.
-</div>
-<pre class="code-block">example: repo1-s3-kms-key-id=bceb4f13-6939-4be3-910d-df54dee817b7</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-s3-region"></a><div class="section2-header"><div class="section2-number">
-6.44
-</div><div class="section2-title">
-S3 Repository Region Option (<span class="id">--repo-s3-region</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-S3 repository region.
-</div><div class="section-body-text">
-The AWS region where the bucket was created.
-</div>
-<pre class="code-block">example: repo1-s3-region=us-east-1</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-s3-role"></a><div class="section2-header"><div class="section2-number">
-6.45
-</div><div class="section2-title">
-S3 Repository Role Option (<span class="id">--repo-s3-role</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-S3 repository role.
-</div><div class="section-body-text">
-The AWS role name (not the full ARN) used to retrieve temporary credentials when <span class="br-option">repo-s3-key-type=auto</span>.
-</div>
-<pre class="code-block">example: repo1-s3-role=authrole</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-s3-token"></a><div class="section2-header"><div class="section2-number">
-6.46
-</div><div class="section2-title">
-S3 Repository Security Token Option (<span class="id">--repo-s3-token</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-S3 repository security token.
-</div><div class="section-body-text">
-AWS security token used with temporary credentials.
-</div>
-<pre class="code-block">example: repo1-s3-token=AQoDYXdzEPT//////////wEXAMPLEtc764bNrC9SAPBSM22 ...</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-s3-uri-style"></a><div class="section2-header"><div class="section2-number">
-6.47
-</div><div class="section2-title">
-S3 Repository URI Style Option (<span class="id">--repo-s3-uri-style</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-S3 URI Style.
-</div><div class="section-body-text">
-The following URI styles are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">host</span> - Connect to <span class="id">bucket.endpoint</span> host.</li><li class="list-unordered"><span class="id">path</span> - Connect to <span class="id">endpoint</span> host and prepend bucket to URIs.</li></ul>
-</div>
-<pre class="code-block">default: host
-example: repo1-s3-uri-style=path</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-sftp-host"></a><div class="section2-header"><div class="section2-number">
-6.48
-</div><div class="section2-title">
-SFTP Repository Host Option (<span class="id">--repo-sftp-host</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-SFTP repository host.
-</div><div class="section-body-text">
-The SFTP host containing the repository.
-</div>
-<pre class="code-block">example: repo1-sftp-host=sftprepo.domain</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-sftp-host-fingerprint"></a><div class="section2-header"><div class="section2-number">
-6.49
-</div><div class="section2-title">
-SFTP Repository Host Fingerprint Option (<span class="id">--repo-sftp-host-fingerprint</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-SFTP repository host fingerprint.
-</div><div class="section-body-text">
-SFTP repository host fingerprint generation should match the <span class="br-setting">repo-sftp-host-key-hash-type</span>. Generate the fingeprint via <span class="id">awk '{print $2}' ssh_host_xxx_key.pub | base64 -d | (md5sum or sha1sum) -b</span>. The ssh host keys are normally found in the <span class="path">/etc/ssh</span> directory.
-</div>
-<pre class="code-block">example: repo1-sftp-host-fingerprint=f84e172dfead7aeeeae6c1fdfb5aa8cf</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-sftp-host-key-hash-type"></a><div class="section2-header"><div class="section2-number">
-6.50
-</div><div class="section2-title">
-SFTP Repository Host Key Hash Type Option (<span class="id">--repo-sftp-host-key-hash-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-SFTP repository host key hash type.
-</div><div class="section-body-text">
-SFTP repository host key hash type. Declares the hash type to be used to compute the digest of the remote system's host key on SSH startup. Newer versions of libssh2 support <span class="id">sha256</span> in addition to md5 and sha1.
-</div>
-<pre class="code-block">example: repo1-sftp-host-key-hash-type=sha256</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-sftp-host-port"></a><div class="section2-header"><div class="section2-number">
-6.51
-</div><div class="section2-title">
-SFTP Repository Host Port Option (<span class="id">--repo-sftp-host-port</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-SFTP repository host port.
-</div><div class="section-body-text">
-SFTP repository host port.
-</div>
-<pre class="code-block">default: 22
-allowed: 1-65535
-example: repo1-sftp-host-port=22</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-sftp-host-user"></a><div class="section2-header"><div class="section2-number">
-6.52
-</div><div class="section2-title">
-SFTP Repository Host User Option (<span class="id">--repo-sftp-host-user</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-SFTP repository host user.
-</div><div class="section-body-text">
-User on the host used to store the repository.
-</div>
-<pre class="code-block">example: repo1-sftp-host-user=pg-backup</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-sftp-private-key-file"></a><div class="section2-header"><div class="section2-number">
-6.53
-</div><div class="section2-title">
-SFTP Repository Private Key File Option (<span class="id">--repo-sftp-private-key-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-SFTP private key file.
-</div><div class="section-body-text">
-SFTP private key file used for authentication.
-</div>
-<pre class="code-block">example: repo1-sftp-private-key-file=~/.ssh/id_ed25519</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-sftp-private-key-passphrase"></a><div class="section2-header"><div class="section2-number">
-6.54
-</div><div class="section2-title">
-SFTP Repository Private Key Passphrase Option (<span class="id">--repo-sftp-private-key-passphrase</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-SFTP private key passphrase.
-</div><div class="section-body-text">
-Passphrase used to access the private key. This is an optional feature when creating an SSH public/private key pair.
-</div>
-<pre class="code-block">example: repo1-sftp-private-key-passphrase=BeSureToGenerateAndUseASecurePassphrase</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-sftp-public-key-file"></a><div class="section2-header"><div class="section2-number">
-6.55
-</div><div class="section2-title">
-SFTP Repository Public Key File Option (<span class="id">--repo-sftp-public-key-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-SFTP public key file.
-</div><div class="section-body-text">
-SFTP public key file used for authentication. Optional if compiled against OpenSSL, required if compiled against a different library.
-</div>
-<pre class="code-block">example: repo1-sftp-public-key-file=~/.ssh/id_ed25519.pub</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-storage-ca-file"></a><div class="section2-header"><div class="section2-number">
-6.56
-</div><div class="section2-title">
-Repository Storage CA File Option (<span class="id">--repo-storage-ca-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository storage CA file.
-</div><div class="section-body-text">
-Use a CA file other than the system default for storage (e.g. S3, Azure) certificates.
-</div>
-<pre class="code-block">example: repo1-storage-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
-<div class="section-body-text">
-Deprecated Names: repo-azure-ca-file, repo-s3-ca-file
-</div></div></div><div class="section2"><a id="section-repository/option-repo-storage-ca-path"></a><div class="section2-header"><div class="section2-number">
-6.57
-</div><div class="section2-title">
-Repository Storage TLS CA Path Option (<span class="id">--repo-storage-ca-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository storage CA path.
-</div><div class="section-body-text">
-Use a CA path other than the system default for storage (e.g. S3, Azure) certificates.
-</div>
-<pre class="code-block">example: repo1-storage-ca-path=/etc/pki/tls/certs</pre>
-<div class="section-body-text">
-Deprecated Names: repo-azure-ca-path, repo-s3-ca-path
-</div></div></div><div class="section2"><a id="section-repository/option-repo-storage-host"></a><div class="section2-header"><div class="section2-number">
-6.58
-</div><div class="section2-title">
-Repository Storage Host Option (<span class="id">--repo-storage-host</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository storage host.
-</div><div class="section-body-text">
-Connect to a host other than the storage (e.g. S3, Azure) endpoint. This is typically used for testing.
-</div>
-<pre class="code-block">example: repo1-storage-host=127.0.0.1</pre>
-<div class="section-body-text">
-Deprecated Names: repo-azure-host, repo-s3-host
-</div></div></div><div class="section2"><a id="section-repository/option-repo-storage-port"></a><div class="section2-header"><div class="section2-number">
-6.59
-</div><div class="section2-title">
-Repository Storage Port Option (<span class="id">--repo-storage-port</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository storage port.
-</div><div class="section-body-text">
-Port to use when connecting to the storage (e.g. S3, Azure) endpoint (or host if specified).
-</div>
-<pre class="code-block">default: 443
-allowed: 1-65535
-example: repo1-storage-port=9000</pre>
-<div class="section-body-text">
-Deprecated Names: repo-azure-port, repo-s3-port
-</div></div></div><div class="section2"><a id="section-repository/option-repo-storage-upload-chunk-size"></a><div class="section2-header"><div class="section2-number">
-6.60
-</div><div class="section2-title">
-Repository Storage Upload Chunk Size Option (<span class="id">--repo-storage-upload-chunk-size</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository storage upload chunk size.
-</div><div class="section-body-text">
-Object stores such as S3 allow files to be uploaded in chunks when the file is too large to be stored in memory. Even if the file can be stored in memory, it is more memory efficient to limit the amount of memory used for uploads.<br/>
-<br/>
-A larger chunk size will generally lead to better performance because it will minimize upload requests and allow more files to be uploaded in a single request rather than in chunks. The disadvantage is that memory usage will be higher and because the chunk buffer must be allocated per process, larger <span class="br-option">process-max</span> values will lead to more memory being consumed overall.<br/>
-<br/>
-Default chunk sizes by repo type:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">azure</span> - 4MiB</li><li class="list-unordered"><span class="id">gcs</span> - 4MiB</li><li class="list-unordered"><span class="id">s3</span> - 5MiB</li></ul>Note that valid chunk sizes vary by storage type and by platform. For example, <span class="host">AWS S3</span> has a minimum chunk size of 5MiB but <span class="host">S3</span> clones may accept lower values. Terminology for chunk size varies by storage type, so when searching min/max values use <q>part size</q> for <span class="host">AWS S3</span>, <q>chunk size</q> for <span class="host">GCS</span>, and <q>block size</q> for <span class="host">Azure</span>. No attempt is made to validate configured chunk sizes so selecting an invalid value will lead to errors from the storage service or undefined behavior.
-</div>
-<pre class="code-block">allowed: 64KiB-1TiB
-example: repo1-storage-upload-chunk-size=16MiB</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-storage-verify-tls"></a><div class="section2-header"><div class="section2-number">
-6.61
-</div><div class="section2-title">
-Repository Storage Certificate Verify Option (<span class="id">--repo-storage-verify-tls</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Repository storage certificate verify.
-</div><div class="section-body-text">
-This option provides the ability to enable/disable verification of the storage (e.g. S3, Azure) server TLS certificate. Disabling should only be used for testing or other scenarios where a certificate has been self-signed.
-</div>
-<pre class="code-block">default: y
-example: repo1-storage-verify-tls=n</pre>
-<div class="section-body-text">
-Deprecated Names: repo-azure-verify-tls, repo-s3-verify-ssl, repo-s3-verify-tls
-</div></div></div><div class="section2"><a id="section-repository/option-repo-type"></a><div class="section2-header"><div class="section2-number">
-6.62
-</div><div class="section2-title">
-Repository Type Option (<span class="id">--repo-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Type of storage used for the repository.
-</div><div class="section-body-text">
-The following repository types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">azure</span> - Azure Blob Storage Service</li><li class="list-unordered"><span class="id">cifs</span> - Like <span class="id">posix</span>, but disables links and directory fsyncs</li><li class="list-unordered"><span class="id">gcs</span> - Google Cloud Storage</li><li class="list-unordered"><span class="id">posix</span> - Posix-compliant file systems</li><li class="list-unordered"><span class="id">s3</span> - AWS Simple Storage Service</li><li class="list-unordered"><span class="id">sftp</span> - Secure File Transfer Protocol</li></ul>When an <span class="host">NFS</span> mount is used as a <span class="id">posix</span> repository, the same rules apply to <span class="backrest">pgBackRest</span> as described in the <span class="postgres">PostgreSQL</span> documentation: <a href="https://www.postgresql.org/docs/current/creating-cluster.html#CREATING-CLUSTER-FILESYSTEM">Creating a Database Cluster - File Systems</a>.
-</div>
-<pre class="code-block">default: posix
-example: repo1-type=cifs</pre>
-</div></div></div></div><div class="section1"><a id="section-restore"></a><div class="section1-header"><div class="section1-number">
-7
-</div><div class="section1-title">
-Restore Options (<span class="id">restore</span>)
-</div></div><div class="section-intro">
-The <span class="br-setting">restore</span> section defines settings used for restoring backups.
-</div><div class="section-body"><div class="section2"><a id="section-restore/option-archive-mode"></a><div class="section2-header"><div class="section2-number">
-7.1
-</div><div class="section2-title">
-Archive Mode Option (<span class="id">--archive-mode</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Preserve or disable archiving on restored cluster.
-</div><div class="section-body-text">
-This option allows archiving to be preserved or disabled on a restored cluster. This is useful when the cluster must be promoted to do some work but is not intended to become the new primary. In this case it is not a good idea to push WAL from the cluster into the repository.<br/>
-<br/>
-The following modes are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - disable archiving by setting <span class="br-setting">archive_mode=off</span>.</li><li class="list-unordered"><span class="id">preserve</span> - preserve current <span class="br-setting">archive_mode</span> setting.</li></ul><b>NOTE</b>: This option is not available on <span class="postgres">PostgreSQL</span> &lt; 12.
-</div>
-<pre class="code-block">default: preserve
-example: archive-mode=off</pre>
-</div></div><div class="section2"><a id="section-restore/option-db-exclude"></a><div class="section2-header"><div class="section2-number">
-7.2
-</div><div class="section2-title">
-Exclude Database Option (<span class="id">--db-exclude</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Restore excluding the specified databases.
-</div><div class="section-body-text">
-Databases excluded will be restored as sparse, zeroed files to save space but still allow <span class="postgres">PostgreSQL</span> to perform recovery. After recovery, those databases will not be accessible but can be removed with the <span class="id">drop database</span> command. The <span class="br-setting">--db-exclude</span> option can be passed multiple times to specify more than one database to exclude.<br/>
-<br/>
-When used in combination with the <span class="br-setting">--db-include</span> option, <span class="br-setting">--db-exclude</span> will only apply to standard system databases (<span class="id">template0</span>, <span class="id">template1</span>, and <span class="id">postgres</span>).
-</div>
-<pre class="code-block">example: db-exclude=db_main</pre>
-</div></div><div class="section2"><a id="section-restore/option-db-include"></a><div class="section2-header"><div class="section2-number">
-7.3
-</div><div class="section2-title">
-Include Database Option (<span class="id">--db-include</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Restore only specified databases.
-</div><div class="section-body-text">
-This feature allows only selected databases to be restored. Databases not specifically included will be restored as sparse, zeroed files to save space but still allow <span class="postgres">PostgreSQL</span> to perform recovery. After recovery, the databases that were not included will not be accessible but can be removed with the <span class="id">drop database</span> command.<br/>
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">built-in databases (<span class="id">template0</span>, <span class="id">template1</span>, and <span class="id">postgres</span>) are always restored unless specifically excluded.</div></div>The <span class="br-setting">--db-include</span> option can be passed multiple times to specify more than one database to include.<br/>
-<br/>
-See <a href="user-guide.html#restore/option-db-include">Restore Selected Databases</a> for additional information and caveats.
-</div>
-<pre class="code-block">example: db-include=db_main</pre>
-</div></div><div class="section2"><a id="section-restore/option-link-all"></a><div class="section2-header"><div class="section2-number">
-7.4
-</div><div class="section2-title">
-Link All Option (<span class="id">--link-all</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Restore all symlinks.
-</div><div class="section-body-text">
-By default symlinked directories and files are restored as normal directories and files in $PGDATA. This is because it may not be safe to restore symlinks to their original destinations on a system other than where the original backup was performed. This option restores all the symlinks just as they were on the original system where the backup was performed.
-</div>
-<pre class="code-block">default: n
-example: link-all=y</pre>
-</div></div><div class="section2"><a id="section-restore/option-link-map"></a><div class="section2-header"><div class="section2-number">
-7.5
-</div><div class="section2-title">
-Link Map Option (<span class="id">--link-map</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Modify the destination of a symlink.
-</div><div class="section-body-text">
-Allows the destination file or path of a symlink to be changed on restore. This is useful for restoring to systems that have a different storage layout than the original system where the backup was generated.
-</div>
-<pre class="code-block">example: link-map=pg_xlog=/data/xlog</pre>
-</div></div><div class="section2"><a id="section-restore/option-recovery-option"></a><div class="section2-header"><div class="section2-number">
-7.6
-</div><div class="section2-title">
-Recovery Option Option (<span class="id">--recovery-option</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Set an option in <span class="file">recovery.conf</span>.
-</div><div class="section-body-text">
-See http://www.postgresql.org/docs/X.X/static/recovery-config.html for details on recovery.conf options (replace X.X with your <span class="postgres">PostgreSQL</span> version). This option can be used multiple times.<br/>
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">The <span class="br-setting">restore_command</span> option will be automatically generated but can be overridden with this option. Be careful about specifying your own <span class="br-setting">restore_command</span> as <span class="backrest">pgBackRest</span> is designed to handle this for you. Target Recovery options (recovery_target_name, recovery_target_time, etc.) are generated automatically by <span class="backrest">pgBackRest</span> and should not be set with this option.</div></div>Since <span class="backrest">pgBackRest</span> does not start <span class="postgres">PostgreSQL</span> after writing the <span class="file">recovery.conf</span> file, it is always possible to edit/check <span class="file">recovery.conf</span> before manually restarting.
-</div>
-<pre class="code-block">example: recovery-option=primary_conninfo=db.mydomain.com</pre>
-</div></div><div class="section2"><a id="section-restore/option-tablespace-map"></a><div class="section2-header"><div class="section2-number">
-7.7
-</div><div class="section2-title">
-Tablespace Map Option (<span class="id">--tablespace-map</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Restore a tablespace into the specified directory.
-</div><div class="section-body-text">
-Moves a tablespace to a new location during the restore. This is useful when tablespace locations are not the same on a replica, or an upgraded system has different mount points.<br/>
-<br/>
-Tablespace locations are not stored in pg_tablespace so moving tablespaces can be done with impunity. However, moving a tablespace to the <span class="br-setting">data_directory</span> is not recommended and may cause problems. For more information on moving tablespaces http://www.databasesoup.com/2013/11/moving-tablespaces.html is a good resource.
-</div>
-<pre class="code-block">example: tablespace-map=ts_01=/db/ts_01</pre>
-</div></div><div class="section2"><a id="section-restore/option-tablespace-map-all"></a><div class="section2-header"><div class="section2-number">
-7.8
-</div><div class="section2-title">
-Map All Tablespaces Option (<span class="id">--tablespace-map-all</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Restore all tablespaces into the specified directory.
-</div><div class="section-body-text">
-Tablespaces are restored into their original locations by default. This behavior can be modified for each tablespace with the <span class="br-setting">tablespace-map</span> option, but it is sometimes preferable to remap all tablespaces to a new directory all at once. This is particularly useful for development or staging systems that may not have the same storage layout as the original system where the backup was generated.<br/>
-<br/>
-The path specified will be the parent path used to create all the tablespaces in the backup.
-</div>
-<pre class="code-block">example: tablespace-map-all=/data/tablespace</pre>
-</div></div></div></div><div class="section1"><a id="section-server"></a><div class="section1-header"><div class="section1-number">
-8
-</div><div class="section1-title">
-Server Options (<span class="id">server</span>)
-</div></div><div class="section-intro">
-The <span class="br-setting">server</span> section defines options used for configuring the <span class="host">TLS</span> server.
-</div><div class="section-body"><div class="section2"><a id="section-server/option-tls-server-address"></a><div class="section2-header"><div class="section2-number">
-8.1
-</div><div class="section2-title">
-TLS Server Address Option (<span class="id">--tls-server-address</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-TLS server address.
-</div><div class="section-body-text">
-IP address the server will listen on for client requests.
-</div>
-<pre class="code-block">default: localhost
-example: tls-server-address=::*</pre>
-</div></div><div class="section2"><a id="section-server/option-tls-server-auth"></a><div class="section2-header"><div class="section2-number">
-8.2
-</div><div class="section2-title">
-TLS Server Authorized Clients Option (<span class="id">--tls-server-auth</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-TLS server authorized clients.
-</div><div class="section-body-text">
-Clients are authorized on the server by verifying their certificate and checking their certificate CN (Common Name) against a list on the server configured with the <span class="br-option">tls-server-auth</span> option.<br/>
-<br/>
-A client CN can be authorized for as many stanzas as needed by repeating the <span class="br-option">tls-server-auth</span> option, or for all stanzas by specifying <span class="br-option">tls-server-auth=client-cn=*</span>. Wildcards may not be specified for the client CN.
-</div>
-<pre class="code-block">example: tls-server-auth=client-cn=stanza1</pre>
-</div></div><div class="section2"><a id="section-server/option-tls-server-ca-file"></a><div class="section2-header"><div class="section2-number">
-8.3
-</div><div class="section2-title">
-TLS Server Certificate Authorities Option (<span class="id">--tls-server-ca-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-TLS server certificate authorities.
-</div><div class="section-body-text">
-Checks that client certificates are signed by a trusted certificate authority.
-</div>
-<pre class="code-block">example: tls-server-ca-file=/path/to/server.ca</pre>
-</div></div><div class="section2"><a id="section-server/option-tls-server-cert-file"></a><div class="section2-header"><div class="section2-number">
-8.4
-</div><div class="section2-title">
-TLS Server Certificate Option (<span class="id">--tls-server-cert-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-TLS server certificate file.
-</div><div class="section-body-text">
-Sent to the client to show the server identity.
-</div>
-<pre class="code-block">example: tls-server-cert-file=/path/to/server.crt</pre>
-</div></div><div class="section2"><a id="section-server/option-tls-server-key-file"></a><div class="section2-header"><div class="section2-number">
-8.5
-</div><div class="section2-title">
-TLS Server Key Option (<span class="id">--tls-server-key-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-TLS server key file.
-</div><div class="section-body-text">
-Proves server certificate was sent by the owner.
-</div>
-<pre class="code-block">example: tls-server-key-file=/path/to/server.key</pre>
-</div></div><div class="section2"><a id="section-server/option-tls-server-port"></a><div class="section2-header"><div class="section2-number">
-8.6
-</div><div class="section2-title">
-TLS Server Port Option (<span class="id">--tls-server-port</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-TLS server port.
-</div><div class="section-body-text">
-Port the server will listen on for client requests.
-</div>
-<pre class="code-block">default: 8432
-allowed: 1-65535
-example: tls-server-port=8000</pre>
-</div></div></div></div><div class="section1"><a id="section-stanza"></a><div class="section1-header"><div class="section1-number">
-9
-</div><div class="section1-title">
-Stanza Options (<span class="id">stanza</span>)
-</div></div><div class="section-intro">
-A stanza defines the backup configuration for a specific <span class="postgres">PostgreSQL</span> database cluster. The stanza section must define the database cluster path and host/user if the database cluster is remote. Also, any global configuration sections can be overridden to define stanza-specific settings.<br/>
-<br/>
-<b>Indexing</b>: All <span class="br-setting">pg-</span> options are indexed to allow for configuring multiple <span class="postgres">PostgreSQL</span> hosts. For example, a single primary is configured with the <span class="br-setting">pg1-path</span>, <span class="br-setting">pg1-port</span>, etc. options. If a standby is configured then index the <span class="br-setting">pg-</span> options on the repository host as <span class="br-setting">pg2-</span> (e.g. pg2-host, pg2-path, etc).
-</div><div class="section-body"><div class="section2"><a id="section-stanza/option-pg-database"></a><div class="section2-header"><div class="section2-number">
-9.1
-</div><div class="section2-title">
-PostgreSQL Database Option (<span class="id">--pg-database</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> database.
-</div><div class="section-body-text">
-The database name used when connecting to <span class="postgres">PostgreSQL</span>. The default is usually best but some installations may not contain this database.<br/>
-<br/>
-Note that for legacy reasons the setting of the <span class="id">PGDATABASE</span> environment variable will be ignored.
-</div>
-<pre class="code-block">default: postgres
-example: pg1-database=backupdb</pre>
-</div></div><div class="section2"><a id="section-stanza/option-pg-host"></a><div class="section2-header"><div class="section2-number">
-9.2
-</div><div class="section2-title">
-PostgreSQL Host Option (<span class="id">--pg-host</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host for operating remotely.
-</div><div class="section-body-text">
-Used for backups where the <span class="postgres">PostgreSQL</span> host is different from the repository host.
-</div>
-<pre class="code-block">example: pg1-host=db.domain.com</pre>
-<div class="section-body-text">
-Deprecated Name: db-host
-</div></div></div><div class="section2"><a id="section-stanza/option-pg-host-ca-file"></a><div class="section2-header"><div class="section2-number">
-9.3
-</div><div class="section2-title">
-PostgreSQL Host Certificate Authority File Option (<span class="id">--pg-host-ca-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host certificate authority file.
-</div><div class="section-body-text">
-Use a CA file other than the system default for connecting to the <span class="postgres">PostgreSQL</span> host.
-</div>
-<pre class="code-block">example: pg1-host-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
-</div></div><div class="section2"><a id="section-stanza/option-pg-host-ca-path"></a><div class="section2-header"><div class="section2-number">
-9.4
-</div><div class="section2-title">
-PostgreSQL Host Certificate Authority Path Option (<span class="id">--pg-host-ca-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host certificate authority path.
-</div><div class="section-body-text">
-Use a CA path other than the system default for connecting to the <span class="postgres">PostgreSQL</span> host.
-</div>
-<pre class="code-block">example: pg1-host-ca-path=/etc/pki/tls/certs</pre>
-</div></div><div class="section2"><a id="section-stanza/option-pg-host-cert-file"></a><div class="section2-header"><div class="section2-number">
-9.5
-</div><div class="section2-title">
-PostgreSQL Host Certificate File Option (<span class="id">--pg-host-cert-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host certificate file.
-</div><div class="section-body-text">
-Sent to <span class="postgres">PostgreSQL</span> host to prove client identity.
-</div>
-<pre class="code-block">example: pg1-host-cert-file=/path/to/client.crt</pre>
-</div></div><div class="section2"><a id="section-stanza/option-pg-host-cmd"></a><div class="section2-header"><div class="section2-number">
-9.6
-</div><div class="section2-title">
-PostgreSQL Host Command Option (<span class="id">--pg-host-cmd</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host <span class="backrest">pgBackRest</span> command.
-</div><div class="section-body-text">
-Required only if the path to the <span class="backrest">pgBackRest</span> command is different on the local and <span class="postgres">PostgreSQL</span> hosts. If not defined, the <span class="postgres">PostgreSQL</span> host command will be set the same as the local command.
-</div>
-<pre class="code-block">example: pg1-host-cmd=/usr/lib/backrest/bin/pgbackrest</pre>
-<div class="section-body-text">
-Deprecated Name: db-cmd
-</div></div></div><div class="section2"><a id="section-stanza/option-pg-host-config"></a><div class="section2-header"><div class="section2-number">
-9.7
-</div><div class="section2-title">
-PostgreSQL Host Configuration Option (<span class="id">--pg-host-config</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> database host configuration file.
-</div><div class="section-body-text">
-Sets the location of the configuration file on the <span class="postgres">PostgreSQL</span> host. This is only required if the <span class="postgres">PostgreSQL</span> host configuration file is in a different location than the local configuration file.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH "/" PROJECT_CONFIG_FILE
-example: pg1-host-config=/conf/pgbackrest/pgbackrest.conf</pre>
-<div class="section-body-text">
-Deprecated Name: db-config
-</div></div></div><div class="section2"><a id="section-stanza/option-pg-host-config-include-path"></a><div class="section2-header"><div class="section2-number">
-9.8
-</div><div class="section2-title">
-PostgreSQL Host Configuration Include Path Option (<span class="id">--pg-host-config-include-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> database host configuration include path.
-</div><div class="section-body-text">
-Sets the location of the configuration include path on the <span class="postgres">PostgreSQL</span> host. This is only required if the <span class="postgres">PostgreSQL</span> host configuration include path is in a different location than the local configuration include path.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH "/" PROJECT_CONFIG_INCLUDE_PATH
-example: pg1-host-config-include-path=/conf/pgbackrest/conf.d</pre>
-</div></div><div class="section2"><a id="section-stanza/option-pg-host-config-path"></a><div class="section2-header"><div class="section2-number">
-9.9
-</div><div class="section2-title">
-PostgreSQL Host Configuration Path Option (<span class="id">--pg-host-config-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> database host configuration path.
-</div><div class="section-body-text">
-Sets the location of the configuration path on the <span class="postgres">PostgreSQL</span> host. This is only required if the <span class="postgres">PostgreSQL</span> host configuration path is in a different location than the local configuration path.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH
-example: pg1-host-config-path=/conf/pgbackrest</pre>
-</div></div><div class="section2"><a id="section-stanza/option-pg-host-key-file"></a><div class="section2-header"><div class="section2-number">
-9.10
-</div><div class="section2-title">
-PostgreSQL Host Key File Option (<span class="id">--pg-host-key-file</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host key file.
-</div><div class="section-body-text">
-Proves client certificate was sent by owner.
-</div>
-<pre class="code-block">example: pg1-host-key-file=/path/to/client.key</pre>
-</div></div><div class="section2"><a id="section-stanza/option-pg-host-port"></a><div class="section2-header"><div class="section2-number">
-9.11
-</div><div class="section2-title">
-PostgreSQL Host Port Option (<span class="id">--pg-host-port</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host port when <span class="br-setting">pg-host</span> is set.
-</div><div class="section-body-text">
-Use this option to specify a non-default port for the <span class="postgres">PostgreSQL</span> host protocol.
-</div>
-<pre class="code-block">allowed: 0-65535
-example: pg1-host-port=25</pre>
-<div class="section-body-text">
-Deprecated Name: db-ssh-port
-</div></div></div><div class="section2"><a id="section-stanza/option-pg-host-type"></a><div class="section2-header"><div class="section2-number">
-9.12
-</div><div class="section2-title">
-PostgreSQL Host Protocol Type Option (<span class="id">--pg-host-type</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host protocol type.
-</div><div class="section-body-text">
-The following protocol types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">ssh</span> - Secure Shell.</li><li class="list-unordered"><span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.</li></ul>
-</div>
-<pre class="code-block">default: ssh
-example: pg1-host-type=tls</pre>
-</div></div><div class="section2"><a id="section-stanza/option-pg-host-user"></a><div class="section2-header"><div class="section2-number">
-9.13
-</div><div class="section2-title">
-PostgreSQL Host User Option (<span class="id">--pg-host-user</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> host logon user when <span class="br-setting">pg-host</span> is set.
-</div><div class="section-body-text">
-This user will also own the remote <span class="backrest">pgBackRest</span> process and will initiate connections to <span class="postgres">PostgreSQL</span>. For this to work correctly the user should be the <span class="postgres">PostgreSQL</span> database cluster owner which is generally <span class="id">postgres</span>, the default.
-</div>
-<pre class="code-block">default: postgres
-example: pg1-host-user=db_owner</pre>
-<div class="section-body-text">
-Deprecated Name: db-user
-</div></div></div><div class="section2"><a id="section-stanza/option-pg-path"></a><div class="section2-header"><div class="section2-number">
-9.14
-</div><div class="section2-title">
-PostgreSQL Path Option (<span class="id">--pg-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> data directory.
-</div><div class="section-body-text">
-This should be the same as the <span class="br-setting">data_directory</span> setting in <span class="file">postgresql.conf</span>. Even though this value can be read from <span class="file">postgresql.conf</span> or <span class="postgres">PostgreSQL</span> it is prudent to set it in case those resources are not available during a restore or offline backup scenario.<br/>
-<br/>
-The <span class="br-setting">pg-path</span> option is tested against the value reported by <span class="postgres">PostgreSQL</span> on every online backup so it should always be current.
-</div>
-<pre class="code-block">example: pg1-path=/data/db</pre>
-<div class="section-body-text">
-Deprecated Name: db-path
-</div></div></div><div class="section2"><a id="section-stanza/option-pg-port"></a><div class="section2-header"><div class="section2-number">
-9.15
-</div><div class="section2-title">
-PostgreSQL Port Option (<span class="id">--pg-port</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> port.
-</div><div class="section-body-text">
-Port that <span class="postgres">PostgreSQL</span> is running on. This usually does not need to be specified as most <span class="postgres">PostgreSQL</span> clusters run on the default port.
-</div>
-<pre class="code-block">default: 5432
-allowed: 0-65535
-example: pg1-port=6543</pre>
-<div class="section-body-text">
-Deprecated Name: db-port
-</div></div></div><div class="section2"><a id="section-stanza/option-pg-socket-path"></a><div class="section2-header"><div class="section2-number">
-9.16
-</div><div class="section2-title">
-PostgreSQL Socket Path Option (<span class="id">--pg-socket-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> unix socket path.
-</div><div class="section-body-text">
-The unix socket directory that was specified when <span class="postgres">PostgreSQL</span> was started. <span class="backrest">pgBackRest</span> will automatically look in the standard location for your OS so there is usually no need to specify this setting unless the socket directory was explicitly modified with the <span class="br-setting">unix_socket_directory</span> setting in <span class="file">postgresql.conf</span>.
-</div>
-<pre class="code-block">example: pg1-socket-path=/var/run/postgresql</pre>
-<div class="section-body-text">
-Deprecated Name: db-socket-path
-</div></div></div><div class="section2"><a id="section-stanza/option-pg-user"></a><div class="section2-header"><div class="section2-number">
-9.17
-</div><div class="section2-title">
-PostgreSQL Database User Option (<span class="id">--pg-user</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> database user.
-</div><div class="section-body-text">
-The database user name used when connecting to <span class="postgres">PostgreSQL</span>. If not specified <span class="backrest">pgBackRest</span> will connect with the local OS user or <span class="id">PGUSER</span>.
-</div>
-<pre class="code-block">example: pg1-user=backupuser</pre>
-</div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 24, 2023
+<span class="backrest">pgBackRest</span> can be used entirely with command-line parameters but a configuration file is more practical for installations that are complex or set a lot of options. The default location for the configuration file is <span class="file">/etc/pgbackrest/pgbackrest.conf</span>. If no file exists in that location then the old default of <span class="file">/etc/pgbackrest.conf</span> will be checked.<br>
+<br>
+The following option types are used:<br>
+<br>
+<b>String</b>: A text string, commonly an identifier, password, etc.<br>
+<br>
+Command line example: <span class="br-setting">--stanza=demo</span><br>Configuration file example: <span class="br-setting">repo1-cipher-pass=zWaf6XtpjIVZC5444yXB...</span><br>
+<br>
+<b>Path</b>: Used to uniquely identify a location in a directory structure. Paths must begin with /, double // is not allowed, and no ending / is expected.<br>
+<br>
+Command line example: <span class="br-setting">--repo1-path=/var/lib/pgbackrest</span><br>Configuration file example: <span class="br-setting">repo1-path=/var/lib/pgbackrest</span><br>
+<br>
+<b>Boolean</b>: Enables or disables the option. Only y/n are valid argument values.<br>
+<br>
+Command line examples: <span class="br-setting">--start-fast</span>, <span class="br-setting">--no-start-fast</span>, <span class="br-setting">--start-fast=y</span>, <span class="br-setting">--start-fast=n</span><br>Configuration file examples: <span class="br-setting">start-fast=y</span>, <span class="br-setting">start-fast=n</span><br>
+<br>
+<b>Integer</b>: Used for ports, retention/retry counts, parallel processes allowed, etc.<br>
+<br>
+Command line example: <span class="br-setting">--compress-level=3</span><br>Configuration file example: <span class="br-setting">pg1-port=5432</span><br>
+<br>
+<b>Size</b>: Used for buffer sizes, disk usage, etc. Size can be specified in bytes (default) or KiB, MiB, GiB, TiB, or PiB where the multiplier is a power of 1024. For example, the case-insensitive value 5GiB (or 5GB, 5g) can be used instead of 5368709120. Fractional values such as 2.5GiB are not allowed, use 2560MiB instead.<br>
+<br>
+Command line example: <span class="br-setting">--archive-get-queue-max=1GiB</span><br>Configuration file example: <span class="br-setting">buffer-size=2MiB</span><br>
+<br>
+<b>Time</b>: Time in seconds.<br>
+<br>
+Command line example: <span class="br-setting">--io-timeout=90</span><br>Configuration file example: <span class="br-setting">db-timeout=600</span><br>
+<br>
+<b>List</b>: Option may be provided multiple times.<br>
+<br>
+Command line example: <span class="br-setting">--db-exclude=db1 --db-exclude=db2 --db-exclude=db5</span><br>Configuration file example, each on its own line: <span class="br-setting">db-exclude=db1 db-exclude=db2 db-exclude=db5</span><br>
+<br>
+<b>Key/Value</b>: Option may be provided multiple times in the form <span class="id">key=value</span>.<br>
+<br>
+Command line example: <span class="br-setting">--tablespace-map=ts_01=/db/ts_01 --tablespace-map=ts_02=/db/ts_02</span><br>Configuration file example, each on its own line: <span class="br-setting">tablespace-map=ts_01=/db/ts_01 tablespace-map=ts_02=/db/ts_02</span>
+</div><div class="section-body"></div></div></div><div class="page-footer">
+Copyright © 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 24, 2023
 </div></body></html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>pgBackRest Configuration Reference: stanza</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore" property="og:site_name">
+<meta content="pgBackRest Configuration Reference: stanza" property="og:title">
+<meta content="website" property="og:type">
+<link href="favicon.png" rel="icon" type="image/png">
+<meta content="image/png" property="og:image:type">
+<meta content="http://www.pgbackrest.org/logo.png" property="og:image">
+<meta content="The pgBackRest Configuration Reference details all configuration options." name="description">
+<meta content="The pgBackRest Configuration Reference details all configuration options." property="og:description">
+<link href="default.css" rel="stylesheet" type="text/css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
+</head><body><div class="section1"><a id="section-stanza"></a><div class="section1-header"><div class="section1-number">
+9
+</div><div class="section1-title">
+Stanza Options (<span class="id">stanza</span>)
+</div></div><div class="section-intro">
+A stanza defines the backup configuration for a specific <span class="postgres">PostgreSQL</span> database cluster. The stanza section must define the database cluster path and host/user if the database cluster is remote. Also, any global configuration sections can be overridden to define stanza-specific settings.<br>
+<br>
+<b>Indexing</b>: All <span class="br-setting">pg-</span> options are indexed to allow for configuring multiple <span class="postgres">PostgreSQL</span> hosts. For example, a single primary is configured with the <span class="br-setting">pg1-path</span>, <span class="br-setting">pg1-port</span>, etc. options. If a standby is configured then index the <span class="br-setting">pg-</span> options on the repository host as <span class="br-setting">pg2-</span> (e.g. pg2-host, pg2-path, etc).
+</div><div class="section-body"><div class="section2"><a id="section-stanza/option-pg-database"></a><div class="section2-header"><div class="section2-number">
+9.1
+</div><div class="section2-title">
+PostgreSQL Database Option (<span class="id">--pg-database</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> database.
+</div><div class="section-body-text">
+The database name used when connecting to <span class="postgres">PostgreSQL</span>. The default is usually best but some installations may not contain this database.<br>
+<br>
+Note that for legacy reasons the setting of the <span class="id">PGDATABASE</span> environment variable will be ignored.
+</div>
+<pre class="code-block">default: postgres
+example: pg1-database=backupdb</pre>
+</div></div><div class="section2"><a id="section-stanza/option-pg-host"></a><div class="section2-header"><div class="section2-number">
+9.2
+</div><div class="section2-title">
+PostgreSQL Host Option (<span class="id">--pg-host</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> host for operating remotely.
+</div><div class="section-body-text">
+Used for backups where the <span class="postgres">PostgreSQL</span> host is different from the repository host.
+</div>
+<pre class="code-block">example: pg1-host=db.domain.com</pre>
+<div class="section-body-text">
+Deprecated Name: db-host
+</div></div></div><div class="section2"><a id="section-stanza/option-pg-host-ca-file"></a><div class="section2-header"><div class="section2-number">
+9.3
+</div><div class="section2-title">
+PostgreSQL Host Certificate Authority File Option (<span class="id">--pg-host-ca-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> host certificate authority file.
+</div><div class="section-body-text">
+Use a CA file other than the system default for connecting to the <span class="postgres">PostgreSQL</span> host.
+</div>
+<pre class="code-block">example: pg1-host-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
+</div></div><div class="section2"><a id="section-stanza/option-pg-host-ca-path"></a><div class="section2-header"><div class="section2-number">
+9.4
+</div><div class="section2-title">
+PostgreSQL Host Certificate Authority Path Option (<span class="id">--pg-host-ca-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> host certificate authority path.
+</div><div class="section-body-text">
+Use a CA path other than the system default for connecting to the <span class="postgres">PostgreSQL</span> host.
+</div>
+<pre class="code-block">example: pg1-host-ca-path=/etc/pki/tls/certs</pre>
+</div></div><div class="section2"><a id="section-stanza/option-pg-host-cert-file"></a><div class="section2-header"><div class="section2-number">
+9.5
+</div><div class="section2-title">
+PostgreSQL Host Certificate File Option (<span class="id">--pg-host-cert-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> host certificate file.
+</div><div class="section-body-text">
+Sent to <span class="postgres">PostgreSQL</span> host to prove client identity.
+</div>
+<pre class="code-block">example: pg1-host-cert-file=/path/to/client.crt</pre>
+</div></div><div class="section2"><a id="section-stanza/option-pg-host-cmd"></a><div class="section2-header"><div class="section2-number">
+9.6
+</div><div class="section2-title">
+PostgreSQL Host Command Option (<span class="id">--pg-host-cmd</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> host <span class="backrest">pgBackRest</span> command.
+</div><div class="section-body-text">
+Required only if the path to the <span class="backrest">pgBackRest</span> command is different on the local and <span class="postgres">PostgreSQL</span> hosts. If not defined, the <span class="postgres">PostgreSQL</span> host command will be set the same as the local command.
+</div>
+<pre class="code-block">example: pg1-host-cmd=/usr/lib/backrest/bin/pgbackrest</pre>
+<div class="section-body-text">
+Deprecated Name: db-cmd
+</div></div></div><div class="section2"><a id="section-stanza/option-pg-host-config"></a><div class="section2-header"><div class="section2-number">
+9.7
+</div><div class="section2-title">
+PostgreSQL Host Configuration Option (<span class="id">--pg-host-config</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> database host configuration file.
+</div><div class="section-body-text">
+Sets the location of the configuration file on the <span class="postgres">PostgreSQL</span> host. This is only required if the <span class="postgres">PostgreSQL</span> host configuration file is in a different location than the local configuration file.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH &quot;/&quot; PROJECT_CONFIG_FILE
+example: pg1-host-config=/conf/pgbackrest/pgbackrest.conf</pre>
+<div class="section-body-text">
+Deprecated Name: db-config
+</div></div></div><div class="section2"><a id="section-stanza/option-pg-host-config-include-path"></a><div class="section2-header"><div class="section2-number">
+9.8
+</div><div class="section2-title">
+PostgreSQL Host Configuration Include Path Option (<span class="id">--pg-host-config-include-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> database host configuration include path.
+</div><div class="section-body-text">
+Sets the location of the configuration include path on the <span class="postgres">PostgreSQL</span> host. This is only required if the <span class="postgres">PostgreSQL</span> host configuration include path is in a different location than the local configuration include path.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH &quot;/&quot; PROJECT_CONFIG_INCLUDE_PATH
+example: pg1-host-config-include-path=/conf/pgbackrest/conf.d</pre>
+</div></div><div class="section2"><a id="section-stanza/option-pg-host-config-path"></a><div class="section2-header"><div class="section2-number">
+9.9
+</div><div class="section2-title">
+PostgreSQL Host Configuration Path Option (<span class="id">--pg-host-config-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> database host configuration path.
+</div><div class="section-body-text">
+Sets the location of the configuration path on the <span class="postgres">PostgreSQL</span> host. This is only required if the <span class="postgres">PostgreSQL</span> host configuration path is in a different location than the local configuration path.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH
+example: pg1-host-config-path=/conf/pgbackrest</pre>
+</div></div><div class="section2"><a id="section-stanza/option-pg-host-key-file"></a><div class="section2-header"><div class="section2-number">
+9.10
+</div><div class="section2-title">
+PostgreSQL Host Key File Option (<span class="id">--pg-host-key-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> host key file.
+</div><div class="section-body-text">
+Proves client certificate was sent by owner.
+</div>
+<pre class="code-block">example: pg1-host-key-file=/path/to/client.key</pre>
+</div></div><div class="section2"><a id="section-stanza/option-pg-host-port"></a><div class="section2-header"><div class="section2-number">
+9.11
+</div><div class="section2-title">
+PostgreSQL Host Port Option (<span class="id">--pg-host-port</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> host port when <span class="br-setting">pg-host</span> is set.
+</div><div class="section-body-text">
+Use this option to specify a non-default port for the <span class="postgres">PostgreSQL</span> host protocol.
+</div>
+<pre class="code-block">allowed: 0-65535
+example: pg1-host-port=25</pre>
+<div class="section-body-text">
+Deprecated Name: db-ssh-port
+</div></div></div><div class="section2"><a id="section-stanza/option-pg-host-type"></a><div class="section2-header"><div class="section2-number">
+9.12
+</div><div class="section2-title">
+PostgreSQL Host Protocol Type Option (<span class="id">--pg-host-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> host protocol type.
+</div><div class="section-body-text">
+The following protocol types are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">ssh</span> - Secure Shell.</li><li class="list-unordered"><span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.</li></ul>
+</div>
+<pre class="code-block">default: ssh
+example: pg1-host-type=tls</pre>
+</div></div><div class="section2"><a id="section-stanza/option-pg-host-user"></a><div class="section2-header"><div class="section2-number">
+9.13
+</div><div class="section2-title">
+PostgreSQL Host User Option (<span class="id">--pg-host-user</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> host logon user when <span class="br-setting">pg-host</span> is set.
+</div><div class="section-body-text">
+This user will also own the remote <span class="backrest">pgBackRest</span> process and will initiate connections to <span class="postgres">PostgreSQL</span>. For this to work correctly the user should be the <span class="postgres">PostgreSQL</span> database cluster owner which is generally <span class="id">postgres</span>, the default.
+</div>
+<pre class="code-block">default: postgres
+example: pg1-host-user=db_owner</pre>
+<div class="section-body-text">
+Deprecated Name: db-user
+</div></div></div><div class="section2"><a id="section-stanza/option-pg-path"></a><div class="section2-header"><div class="section2-number">
+9.14
+</div><div class="section2-title">
+PostgreSQL Path Option (<span class="id">--pg-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> data directory.
+</div><div class="section-body-text">
+This should be the same as the <span class="br-setting">data_directory</span> setting in <span class="file">postgresql.conf</span>. Even though this value can be read from <span class="file">postgresql.conf</span> or <span class="postgres">PostgreSQL</span> it is prudent to set it in case those resources are not available during a restore or offline backup scenario.<br>
+<br>
+The <span class="br-setting">pg-path</span> option is tested against the value reported by <span class="postgres">PostgreSQL</span> on every online backup so it should always be current.
+</div>
+<pre class="code-block">example: pg1-path=/data/db</pre>
+<div class="section-body-text">
+Deprecated Name: db-path
+</div></div></div><div class="section2"><a id="section-stanza/option-pg-port"></a><div class="section2-header"><div class="section2-number">
+9.15
+</div><div class="section2-title">
+PostgreSQL Port Option (<span class="id">--pg-port</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> port.
+</div><div class="section-body-text">
+Port that <span class="postgres">PostgreSQL</span> is running on. This usually does not need to be specified as most <span class="postgres">PostgreSQL</span> clusters run on the default port.
+</div>
+<pre class="code-block">default: 5432
+allowed: 0-65535
+example: pg1-port=6543</pre>
+<div class="section-body-text">
+Deprecated Name: db-port
+</div></div></div><div class="section2"><a id="section-stanza/option-pg-socket-path"></a><div class="section2-header"><div class="section2-number">
+9.16
+</div><div class="section2-title">
+PostgreSQL Socket Path Option (<span class="id">--pg-socket-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> unix socket path.
+</div><div class="section-body-text">
+The unix socket directory that was specified when <span class="postgres">PostgreSQL</span> was started. <span class="backrest">pgBackRest</span> will automatically look in the standard location for your OS so there is usually no need to specify this setting unless the socket directory was explicitly modified with the <span class="br-setting">unix_socket_directory</span> setting in <span class="file">postgresql.conf</span>.
+</div>
+<pre class="code-block">example: pg1-socket-path=/var/run/postgresql</pre>
+<div class="section-body-text">
+Deprecated Name: db-socket-path
+</div></div></div><div class="section2"><a id="section-stanza/option-pg-user"></a><div class="section2-header"><div class="section2-number">
+9.17
+</div><div class="section2-title">
+PostgreSQL Database User Option (<span class="id">--pg-user</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="postgres">PostgreSQL</span> database user.
+</div><div class="section-body-text">
+The database user name used when connecting to <span class="postgres">PostgreSQL</span>. If not specified <span class="backrest">pgBackRest</span> will connect with the local OS user or <span class="id">PGUSER</span>.
+</div>
+<pre class="code-block">example: pg1-user=backupuser</pre>
+</div></div></div></div><div class="page-footer">
+Copyright © 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 24, 2023
+</div></body></html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>pgBackRest Configuration Reference: log</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore" property="og:site_name">
+<meta content="pgBackRest Configuration Reference: log" property="og:title">
+<meta content="website" property="og:type">
+<link href="favicon.png" rel="icon" type="image/png">
+<meta content="image/png" property="og:image:type">
+<meta content="http://www.pgbackrest.org/logo.png" property="og:image">
+<meta content="The pgBackRest Configuration Reference details all configuration options." name="description">
+<meta content="The pgBackRest Configuration Reference details all configuration options." property="og:description">
+<link href="default.css" rel="stylesheet" type="text/css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
+</head><body><div class="section1"><a id="section-log"></a><div class="section1-header"><div class="section1-number">
+5
+</div><div class="section1-title">
+Log Options (<span class="id">log</span>)
+</div></div><div class="section-intro">
+The <span class="br-setting">log</span> section defines logging-related settings.<br>
+<div class="admonition"><div class="caution">CAUTION:</div><div class="caution-text">Trace-level logging may expose secrets such as keys and passwords. Use with caution!</div></div>
+</div><div class="section-body"><div class="section2"><a id="section-log/option-log-level-console"></a><div class="section2-header"><div class="section2-number">
+5.1
+</div><div class="section2-title">
+Console Log Level Option (<span class="id">--log-level-console</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Level for console logging.
+</div><div class="section-body-text">
+The following log levels are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
+</div>
+<pre class="code-block">default: warn
+example: log-level-console=error</pre>
+</div></div><div class="section2"><a id="section-log/option-log-level-file"></a><div class="section2-header"><div class="section2-number">
+5.2
+</div><div class="section2-title">
+File Log Level Option (<span class="id">--log-level-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Level for file logging.
+</div><div class="section-body-text">
+The following log levels are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
+</div>
+<pre class="code-block">default: info
+example: log-level-file=debug</pre>
+</div></div><div class="section2"><a id="section-log/option-log-level-stderr"></a><div class="section2-header"><div class="section2-number">
+5.3
+</div><div class="section2-title">
+Std Error Log Level Option (<span class="id">--log-level-stderr</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Level for stderr logging.
+</div><div class="section-body-text">
+Specifies which log levels will output to <span class="id">stderr</span> rather than <span class="id">stdout</span> (specified by <span class="br-option">log-level-console</span>). The timestamp and process will not be output to <span class="id">stderr</span>.<br>
+<br>
+The following log levels are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
+</div>
+<pre class="code-block">default: warn
+example: log-level-stderr=error</pre>
+</div></div><div class="section2"><a id="section-log/option-log-path"></a><div class="section2-header"><div class="section2-number">
+5.4
+</div><div class="section2-title">
+Log Path Option (<span class="id">--log-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Path where log files are stored.
+</div><div class="section-body-text">
+The log path provides a location for <span class="backrest">pgBackRest</span> to store log files. Note that if <span class="br-setting">log-level-file=off</span> then no log path is required.
+</div>
+<pre class="code-block">default: /var/log/pgbackrest
+example: log-path=/backup/db/log</pre>
+</div></div><div class="section2"><a id="section-log/option-log-subprocess"></a><div class="section2-header"><div class="section2-number">
+5.5
+</div><div class="section2-title">
+Log Subprocesses Option (<span class="id">--log-subprocess</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Enable logging in subprocesses.
+</div><div class="section-body-text">
+Enable file logging for any subprocesses created by this process using the log level specified by <span class="br-option">log-level-file</span>.
+</div>
+<pre class="code-block">default: n
+example: log-subprocess=y</pre>
+</div></div><div class="section2"><a id="section-log/option-log-timestamp"></a><div class="section2-header"><div class="section2-number">
+5.6
+</div><div class="section2-title">
+Log Timestamp Option (<span class="id">--log-timestamp</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Enable timestamp in logging.
+</div><div class="section-body-text">
+Enables the timestamp in console and file logging. This option is disabled in special situations such as generating documentation.
+</div>
+<pre class="code-block">default: y
+example: log-timestamp=n</pre>
+</div></div></div></div><div class="page-footer">
+Copyright © 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 24, 2023
+</div></body></html>

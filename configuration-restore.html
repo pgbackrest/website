@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>pgBackRest Configuration Reference: restore</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore" property="og:site_name">
+<meta content="pgBackRest Configuration Reference: restore" property="og:title">
+<meta content="website" property="og:type">
+<link href="favicon.png" rel="icon" type="image/png">
+<meta content="image/png" property="og:image:type">
+<meta content="http://www.pgbackrest.org/logo.png" property="og:image">
+<meta content="The pgBackRest Configuration Reference details all configuration options." name="description">
+<meta content="The pgBackRest Configuration Reference details all configuration options." property="og:description">
+<link href="default.css" rel="stylesheet" type="text/css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
+</head><body><div class="section1"><a id="section-restore"></a><div class="section1-header"><div class="section1-number">
+7
+</div><div class="section1-title">
+Restore Options (<span class="id">restore</span>)
+</div></div><div class="section-intro">
+The <span class="br-setting">restore</span> section defines settings used for restoring backups.
+</div><div class="section-body"><div class="section2"><a id="section-restore/option-archive-mode"></a><div class="section2-header"><div class="section2-number">
+7.1
+</div><div class="section2-title">
+Archive Mode Option (<span class="id">--archive-mode</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Preserve or disable archiving on restored cluster.
+</div><div class="section-body-text">
+This option allows archiving to be preserved or disabled on a restored cluster. This is useful when the cluster must be promoted to do some work but is not intended to become the new primary. In this case it is not a good idea to push WAL from the cluster into the repository.<br>
+<br>
+The following modes are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - disable archiving by setting <span class="br-setting">archive_mode=off</span>.</li><li class="list-unordered"><span class="id">preserve</span> - preserve current <span class="br-setting">archive_mode</span> setting.</li></ul><b>NOTE</b>: This option is not available on <span class="postgres">PostgreSQL</span> &lt; 12.
+</div>
+<pre class="code-block">default: preserve
+example: archive-mode=off</pre>
+</div></div><div class="section2"><a id="section-restore/option-db-exclude"></a><div class="section2-header"><div class="section2-number">
+7.2
+</div><div class="section2-title">
+Exclude Database Option (<span class="id">--db-exclude</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Restore excluding the specified databases.
+</div><div class="section-body-text">
+Databases excluded will be restored as sparse, zeroed files to save space but still allow <span class="postgres">PostgreSQL</span> to perform recovery. After recovery, those databases will not be accessible but can be removed with the <span class="id">drop database</span> command. The <span class="br-setting">--db-exclude</span> option can be passed multiple times to specify more than one database to exclude.<br>
+<br>
+When used in combination with the <span class="br-setting">--db-include</span> option, <span class="br-setting">--db-exclude</span> will only apply to standard system databases (<span class="id">template0</span>, <span class="id">template1</span>, and <span class="id">postgres</span>).
+</div>
+<pre class="code-block">example: db-exclude=db_main</pre>
+</div></div><div class="section2"><a id="section-restore/option-db-include"></a><div class="section2-header"><div class="section2-number">
+7.3
+</div><div class="section2-title">
+Include Database Option (<span class="id">--db-include</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Restore only specified databases.
+</div><div class="section-body-text">
+This feature allows only selected databases to be restored. Databases not specifically included will be restored as sparse, zeroed files to save space but still allow <span class="postgres">PostgreSQL</span> to perform recovery. After recovery, the databases that were not included will not be accessible but can be removed with the <span class="id">drop database</span> command.<br>
+<div class="admonition"><div class="note">NOTE:</div><div class="note-text">built-in databases (<span class="id">template0</span>, <span class="id">template1</span>, and <span class="id">postgres</span>) are always restored unless specifically excluded.</div></div>The <span class="br-setting">--db-include</span> option can be passed multiple times to specify more than one database to include.<br>
+<br>
+See <a href="user-guide.html#restore/option-db-include">Restore Selected Databases</a> for additional information and caveats.
+</div>
+<pre class="code-block">example: db-include=db_main</pre>
+</div></div><div class="section2"><a id="section-restore/option-link-all"></a><div class="section2-header"><div class="section2-number">
+7.4
+</div><div class="section2-title">
+Link All Option (<span class="id">--link-all</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Restore all symlinks.
+</div><div class="section-body-text">
+By default symlinked directories and files are restored as normal directories and files in $PGDATA. This is because it may not be safe to restore symlinks to their original destinations on a system other than where the original backup was performed. This option restores all the symlinks just as they were on the original system where the backup was performed.
+</div>
+<pre class="code-block">default: n
+example: link-all=y</pre>
+</div></div><div class="section2"><a id="section-restore/option-link-map"></a><div class="section2-header"><div class="section2-number">
+7.5
+</div><div class="section2-title">
+Link Map Option (<span class="id">--link-map</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Modify the destination of a symlink.
+</div><div class="section-body-text">
+Allows the destination file or path of a symlink to be changed on restore. This is useful for restoring to systems that have a different storage layout than the original system where the backup was generated.
+</div>
+<pre class="code-block">example: link-map=pg_xlog=/data/xlog</pre>
+</div></div><div class="section2"><a id="section-restore/option-recovery-option"></a><div class="section2-header"><div class="section2-number">
+7.6
+</div><div class="section2-title">
+Recovery Option Option (<span class="id">--recovery-option</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Set an option in <span class="file">recovery.conf</span>.
+</div><div class="section-body-text">
+See http://www.postgresql.org/docs/X.X/static/recovery-config.html for details on recovery.conf options (replace X.X with your <span class="postgres">PostgreSQL</span> version). This option can be used multiple times.<br>
+<div class="admonition"><div class="note">NOTE:</div><div class="note-text">The <span class="br-setting">restore_command</span> option will be automatically generated but can be overridden with this option. Be careful about specifying your own <span class="br-setting">restore_command</span> as <span class="backrest">pgBackRest</span> is designed to handle this for you. Target Recovery options (recovery_target_name, recovery_target_time, etc.) are generated automatically by <span class="backrest">pgBackRest</span> and should not be set with this option.</div></div>Since <span class="backrest">pgBackRest</span> does not start <span class="postgres">PostgreSQL</span> after writing the <span class="file">recovery.conf</span> file, it is always possible to edit/check <span class="file">recovery.conf</span> before manually restarting.
+</div>
+<pre class="code-block">example: recovery-option=primary_conninfo=db.mydomain.com</pre>
+</div></div><div class="section2"><a id="section-restore/option-tablespace-map"></a><div class="section2-header"><div class="section2-number">
+7.7
+</div><div class="section2-title">
+Tablespace Map Option (<span class="id">--tablespace-map</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Restore a tablespace into the specified directory.
+</div><div class="section-body-text">
+Moves a tablespace to a new location during the restore. This is useful when tablespace locations are not the same on a replica, or an upgraded system has different mount points.<br>
+<br>
+Tablespace locations are not stored in pg_tablespace so moving tablespaces can be done with impunity. However, moving a tablespace to the <span class="br-setting">data_directory</span> is not recommended and may cause problems. For more information on moving tablespaces http://www.databasesoup.com/2013/11/moving-tablespaces.html is a good resource.
+</div>
+<pre class="code-block">example: tablespace-map=ts_01=/db/ts_01</pre>
+</div></div><div class="section2"><a id="section-restore/option-tablespace-map-all"></a><div class="section2-header"><div class="section2-number">
+7.8
+</div><div class="section2-title">
+Map All Tablespaces Option (<span class="id">--tablespace-map-all</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Restore all tablespaces into the specified directory.
+</div><div class="section-body-text">
+Tablespaces are restored into their original locations by default. This behavior can be modified for each tablespace with the <span class="br-setting">tablespace-map</span> option, but it is sometimes preferable to remap all tablespaces to a new directory all at once. This is particularly useful for development or staging systems that may not have the same storage layout as the original system where the backup was generated.<br>
+<br>
+The path specified will be the parent path used to create all the tablespaces in the backup.
+</div>
+<pre class="code-block">example: tablespace-map-all=/data/tablespace</pre>
+</div></div></div></div><div class="page-footer">
+Copyright © 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 24, 2023
+</div></body></html>

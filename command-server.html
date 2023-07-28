@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>pgBackRest Command Reference: server</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore" property="og:site_name">
+<meta content="pgBackRest Command Reference: server" property="og:title">
+<meta content="website" property="og:type">
+<link href="favicon.png" rel="icon" type="image/png">
+<meta content="image/png" property="og:image:type">
+<meta content="http://www.pgbackrest.org/logo.png" property="og:image">
+<meta content="The pgBackRest Command Reference details all commands and options." name="description">
+<meta content="The pgBackRest Command Reference details all commands and options." property="og:description">
+<link href="default.css" rel="stylesheet" type="text/css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
+</head><body><div class="section1"><a id="command-server"></a><div class="section1-header"><div class="section1-number">
+13
+</div><div class="section1-title">
+Server Command (<span class="id">server</span>)
+</div></div><div class="section-intro">
+The <span class="backrest">pgBackRest</span> server allows access to remote hosts without using the <span class="host">SSH</span> protocol.
+</div><div class="section-body"><div class="section2"><a id="command-server/category-command"></a><div class="section2-header"><div class="section2-number">
+13.1
+</div><div class="section2-title">
+Command Options
+</div></div><div class="section-body"><div class="section3"><a id="command-server/category-command/option-tls-server-address"></a><div class="section3-header"><div class="section3-number">
+13.1.1
+</div><div class="section3-title">
+TLS Server Address Option (<span class="id">--tls-server-address</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+TLS server address.
+</div><div class="section-body-text">
+IP address the server will listen on for client requests.
+</div>
+<pre class="code-block">default: localhost
+example: --tls-server-address=::*</pre>
+</div></div><div class="section3"><a id="command-server/category-command/option-tls-server-auth"></a><div class="section3-header"><div class="section3-number">
+13.1.2
+</div><div class="section3-title">
+TLS Server Authorized Clients Option (<span class="id">--tls-server-auth</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+TLS server authorized clients.
+</div><div class="section-body-text">
+Clients are authorized on the server by verifying their certificate and checking their certificate CN (Common Name) against a list on the server configured with the <span class="br-option">tls-server-auth</span> option.<br>
+<br>
+A client CN can be authorized for as many stanzas as needed by repeating the <span class="br-option">tls-server-auth</span> option, or for all stanzas by specifying <span class="br-option">tls-server-auth=client-cn=*</span>. Wildcards may not be specified for the client CN.
+</div>
+<pre class="code-block">example: --tls-server-auth=client-cn=stanza1</pre>
+</div></div><div class="section3"><a id="command-server/category-command/option-tls-server-ca-file"></a><div class="section3-header"><div class="section3-number">
+13.1.3
+</div><div class="section3-title">
+TLS Server Certificate Authorities Option (<span class="id">--tls-server-ca-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+TLS server certificate authorities.
+</div><div class="section-body-text">
+Checks that client certificates are signed by a trusted certificate authority.
+</div>
+<pre class="code-block">example: --tls-server-ca-file=/path/to/server.ca</pre>
+</div></div><div class="section3"><a id="command-server/category-command/option-tls-server-cert-file"></a><div class="section3-header"><div class="section3-number">
+13.1.4
+</div><div class="section3-title">
+TLS Server Certificate Option (<span class="id">--tls-server-cert-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+TLS server certificate file.
+</div><div class="section-body-text">
+Sent to the client to show the server identity.
+</div>
+<pre class="code-block">example: --tls-server-cert-file=/path/to/server.crt</pre>
+</div></div><div class="section3"><a id="command-server/category-command/option-tls-server-key-file"></a><div class="section3-header"><div class="section3-number">
+13.1.5
+</div><div class="section3-title">
+TLS Server Key Option (<span class="id">--tls-server-key-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+TLS server key file.
+</div><div class="section-body-text">
+Proves server certificate was sent by the owner.
+</div>
+<pre class="code-block">example: --tls-server-key-file=/path/to/server.key</pre>
+</div></div><div class="section3"><a id="command-server/category-command/option-tls-server-port"></a><div class="section3-header"><div class="section3-number">
+13.1.6
+</div><div class="section3-title">
+TLS Server Port Option (<span class="id">--tls-server-port</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+TLS server port.
+</div><div class="section-body-text">
+Port the server will listen on for client requests.
+</div>
+<pre class="code-block">default: 8432
+allowed: 1-65535
+example: --tls-server-port=8000</pre>
+</div></div></div></div><div class="section2"><a id="command-server/category-general"></a><div class="section2-header"><div class="section2-number">
+13.2
+</div><div class="section2-title">
+General Options
+</div></div><div class="section-body"><div class="section3"><a id="command-server/category-general/option-buffer-size"></a><div class="section3-header"><div class="section3-number">
+13.2.1
+</div><div class="section3-title">
+Buffer Size Option (<span class="id">--buffer-size</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Buffer size for I/O operations.
+</div><div class="section-body-text">
+Buffer size used for copy, compress, encrypt, and other operations. The number of buffers used depends on options and each operation may use additional memory, e.g. <span class="id">gz</span> compression may use an additional 256KiB of memory.<br>
+<br>
+Allowed values are <span class="id">16KiB</span>, <span class="id">32KiB</span>, <span class="id">64KiB</span>, <span class="id">128KiB</span>, <span class="id">256KiB</span>, <span class="id">512KiB</span>, <span class="id">1MiB</span>, <span class="id">2MiB</span>, <span class="id">4MiB</span>, <span class="id">8MiB</span>, and <span class="id">16MiB</span>.
+</div>
+<pre class="code-block">default: 1MiB
+example: --buffer-size=2MiB</pre>
+</div></div><div class="section3"><a id="command-server/category-general/option-config"></a><div class="section3-header"><div class="section3-number">
+13.2.2
+</div><div class="section3-title">
+Config Option (<span class="id">--config</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> configuration file.
+</div><div class="section-body-text">
+Use this option to specify a different configuration file than the default.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH &quot;/&quot; PROJECT_CONFIG_FILE
+example: --config=/conf/pgbackrest/pgbackrest.conf</pre>
+</div></div><div class="section3"><a id="command-server/category-general/option-config-include-path"></a><div class="section3-header"><div class="section3-number">
+13.2.3
+</div><div class="section3-title">
+Config Include Path Option (<span class="id">--config-include-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Path to additional <span class="backrest">pgBackRest</span> configuration files.
+</div><div class="section-body-text">
+Configuration files existing in the specified location with extension <span class="file">.conf</span> will be concatenated with the <span class="backrest">pgBackRest</span> configuration file, resulting in one configuration file.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH &quot;/&quot; PROJECT_CONFIG_INCLUDE_PATH
+example: --config-include-path=/conf/pgbackrest/conf.d</pre>
+</div></div><div class="section3"><a id="command-server/category-general/option-config-path"></a><div class="section3-header"><div class="section3-number">
+13.2.4
+</div><div class="section3-title">
+Config Path Option (<span class="id">--config-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Base path of <span class="backrest">pgBackRest</span> configuration files.
+</div><div class="section-body-text">
+This setting is used to override the default base path setting for the <span class="br-option">--config</span> and <span class="br-option">--config-include-path</span> options unless they are explicitly set on the command-line.<br>
+<br>
+For example, passing only <span class="id">--config-path=/conf/pgbackrest</span> results in the <span class="br-option">--config</span> default being set to <span class="id">/conf/pgbackrest/pgbackrest.conf</span> and the <span class="br-option">--config-include-path</span> default being set to <span class="id">/conf/pgbackrest/conf.d</span>.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH
+example: --config-path=/conf/pgbackrest</pre>
+</div></div><div class="section3"><a id="command-server/category-general/option-io-timeout"></a><div class="section3-header"><div class="section3-number">
+13.2.5
+</div><div class="section3-title">
+I/O Timeout Option (<span class="id">--io-timeout</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+I/O timeout.
+</div><div class="section-body-text">
+Timeout, in seconds, used for connections and read/write operations.<br>
+<br>
+Note that the entire read/write operation does not need to complete within this timeout but <i>some</i> progress must be made, even if it is only a single byte.
+</div>
+<pre class="code-block">default: 60
+allowed: 0.1-3600
+example: --io-timeout=120</pre>
+</div></div><div class="section3"><a id="command-server/category-general/option-protocol-timeout"></a><div class="section3-header"><div class="section3-number">
+13.2.6
+</div><div class="section3-title">
+Protocol Timeout Option (<span class="id">--protocol-timeout</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Protocol timeout.
+</div><div class="section-body-text">
+Sets the timeout, in seconds, that the local or remote process will wait for a new message to be received on the protocol layer. This prevents processes from waiting indefinitely for a message.<br>
+<div class="admonition"><div class="note">NOTE:</div><div class="note-text">The <span class="br-option">protocol-timeout</span> option must be greater than the <span class="br-option">db-timeout</span> option.</div></div>
+</div>
+<pre class="code-block">default: 1830
+allowed: 0.1-604800
+example: --protocol-timeout=630</pre>
+</div></div><div class="section3"><a id="command-server/category-general/option-sck-keep-alive"></a><div class="section3-header"><div class="section3-number">
+13.2.7
+</div><div class="section3-title">
+Keep Alive Option (<span class="id">--sck-keep-alive</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Keep-alive enable.
+</div><div class="section-body-text">
+Enables keep-alive messages on socket connections.
+</div>
+<pre class="code-block">default: y
+example: --no-sck-keep-alive</pre>
+</div></div><div class="section3"><a id="command-server/category-general/option-tcp-keep-alive-count"></a><div class="section3-header"><div class="section3-number">
+13.2.8
+</div><div class="section3-title">
+Keep Alive Count Option (<span class="id">--tcp-keep-alive-count</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Keep-alive count.
+</div><div class="section-body-text">
+Specifies the number of TCP keep-alive messages that can be lost before the connection is considered dead.<br>
+<br>
+This option is available on systems that support the <span class="id">TCP_KEEPCNT</span> socket option.
+</div>
+<pre class="code-block">allowed: 1-32
+example: --tcp-keep-alive-count=3</pre>
+</div></div><div class="section3"><a id="command-server/category-general/option-tcp-keep-alive-idle"></a><div class="section3-header"><div class="section3-number">
+13.2.9
+</div><div class="section3-title">
+Keep Alive Idle Option (<span class="id">--tcp-keep-alive-idle</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Keep-alive idle time.
+</div><div class="section-body-text">
+Specifies the amount of time (in seconds) with no network activity after which the operating system should send a TCP keep-alive message.<br>
+<br>
+This option is available on systems that support the <span class="id">TCP_KEEPIDLE</span> socket option.
+</div>
+<pre class="code-block">allowed: 1-3600
+example: --tcp-keep-alive-idle=60</pre>
+</div></div><div class="section3"><a id="command-server/category-general/option-tcp-keep-alive-interval"></a><div class="section3-header"><div class="section3-number">
+13.2.10
+</div><div class="section3-title">
+Keep Alive Interval Option (<span class="id">--tcp-keep-alive-interval</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Keep-alive interval time.
+</div><div class="section-body-text">
+Specifies the amount of time (in seconds) after which a TCP keep-alive message that has not been acknowledged should be retransmitted.<br>
+<br>
+This option is available on systems that support the <span class="id">TCP_KEEPINTVL</span> socket option.
+</div>
+<pre class="code-block">allowed: 1-900
+example: --tcp-keep-alive-interval=30</pre>
+</div></div></div></div><div class="section2"><a id="command-server/category-log"></a><div class="section2-header"><div class="section2-number">
+13.3
+</div><div class="section2-title">
+Log Options
+</div></div><div class="section-body"><div class="section3"><a id="command-server/category-log/option-log-level-console"></a><div class="section3-header"><div class="section3-number">
+13.3.1
+</div><div class="section3-title">
+Console Log Level Option (<span class="id">--log-level-console</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Level for console logging.
+</div><div class="section-body-text">
+The following log levels are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
+</div>
+<pre class="code-block">default: warn
+example: --log-level-console=error</pre>
+</div></div><div class="section3"><a id="command-server/category-log/option-log-level-file"></a><div class="section3-header"><div class="section3-number">
+13.3.2
+</div><div class="section3-title">
+File Log Level Option (<span class="id">--log-level-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Level for file logging.
+</div><div class="section-body-text">
+The following log levels are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
+</div>
+<pre class="code-block">default: info
+example: --log-level-file=debug</pre>
+</div></div><div class="section3"><a id="command-server/category-log/option-log-level-stderr"></a><div class="section3-header"><div class="section3-number">
+13.3.3
+</div><div class="section3-title">
+Std Error Log Level Option (<span class="id">--log-level-stderr</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Level for stderr logging.
+</div><div class="section-body-text">
+Specifies which log levels will output to <span class="id">stderr</span> rather than <span class="id">stdout</span> (specified by <span class="br-option">log-level-console</span>). The timestamp and process will not be output to <span class="id">stderr</span>.<br>
+<br>
+The following log levels are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
+</div>
+<pre class="code-block">default: warn
+example: --log-level-stderr=error</pre>
+</div></div><div class="section3"><a id="command-server/category-log/option-log-path"></a><div class="section3-header"><div class="section3-number">
+13.3.4
+</div><div class="section3-title">
+Log Path Option (<span class="id">--log-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Path where log files are stored.
+</div><div class="section-body-text">
+The log path provides a location for <span class="backrest">pgBackRest</span> to store log files. Note that if <span class="br-setting">log-level-file=off</span> then no log path is required.
+</div>
+<pre class="code-block">default: /var/log/pgbackrest
+example: --log-path=/backup/db/log</pre>
+</div></div><div class="section3"><a id="command-server/category-log/option-log-timestamp"></a><div class="section3-header"><div class="section3-number">
+13.3.5
+</div><div class="section3-title">
+Log Timestamp Option (<span class="id">--log-timestamp</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Enable timestamp in logging.
+</div><div class="section-body-text">
+Enables the timestamp in console and file logging. This option is disabled in special situations such as generating documentation.
+</div>
+<pre class="code-block">default: y
+example: --no-log-timestamp</pre>
+</div></div></div></div></div></div><div class="page-footer">
+Copyright © 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 24, 2023
+</div></body></html>

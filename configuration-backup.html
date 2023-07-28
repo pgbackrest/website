@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>pgBackRest Configuration Reference: backup</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore" property="og:site_name">
+<meta content="pgBackRest Configuration Reference: backup" property="og:title">
+<meta content="website" property="og:type">
+<link href="favicon.png" rel="icon" type="image/png">
+<meta content="image/png" property="og:image:type">
+<meta content="http://www.pgbackrest.org/logo.png" property="og:image">
+<meta content="The pgBackRest Configuration Reference details all configuration options." name="description">
+<meta content="The pgBackRest Configuration Reference details all configuration options." property="og:description">
+<link href="default.css" rel="stylesheet" type="text/css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
+</head><body><div class="section1"><a id="section-backup"></a><div class="section1-header"><div class="section1-number">
+3
+</div><div class="section1-title">
+Backup Options (<span class="id">backup</span>)
+</div></div><div class="section-intro">
+The <span class="br-setting">backup</span> section defines settings related to backup.
+</div><div class="section-body"><div class="section2"><a id="section-backup/option-annotation"></a><div class="section2-header"><div class="section2-number">
+3.1
+</div><div class="section2-title">
+Backup annotation(s) Option (<span class="id">--annotation</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Annotate backup with user-defined key/value pairs.
+</div><div class="section-body-text">
+Users can attach informative key/value pairs to the backup. This option may be used multiple times to attach multiple annotations.<br>
+<br>
+Annotations are output by the <span class="cmd">info</span> command text output when a backup is specified with <span class="br-option">--set</span> and always appear in the JSON output.
+</div>
+<pre class="code-block">example: annotation=source=&quot;Sunday backup for website database&quot;</pre>
+</div></div><div class="section2"><a id="section-backup/option-archive-check"></a><div class="section2-header"><div class="section2-number">
+3.2
+</div><div class="section2-title">
+Check Archive Option (<span class="id">--archive-check</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Check that WAL segments are in the archive before backup completes.
+</div><div class="section-body-text">
+Checks that all WAL segments required to make the backup consistent are present in the WAL archive. It&#39;s a good idea to leave this as the default unless you are using another method for archiving.<br>
+<br>
+This option must be enabled if <span class="br-option">archive-copy</span> is enabled.
+</div>
+<pre class="code-block">default: y
+example: archive-check=n</pre>
+</div></div><div class="section2"><a id="section-backup/option-archive-copy"></a><div class="section2-header"><div class="section2-number">
+3.3
+</div><div class="section2-title">
+Copy Archive Option (<span class="id">--archive-copy</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Copy WAL segments needed for consistency to the backup.
+</div><div class="section-body-text">
+This slightly paranoid option protects against corruption in the WAL segment archive by storing the WAL segments required for consistency directly in the backup. WAL segments are still stored in the archive so this option will use additional space.<br>
+<br>
+It is best if the <span class="cmd">archive-push</span> and <span class="cmd">backup</span> commands have the same <span class="br-setting">compress-type</span> (e.g. <span class="id">lz4</span>) when using this option. Otherwise, the WAL segments will need to be recompressed with the <span class="br-setting">compress-type</span> used by the backup, which can be fairly expensive depending on how much WAL was generated during the backup.<br>
+<br>
+On restore, the WAL segments will be present in <span class="path">pg_xlog/pg_wal</span> and <span class="postgres">PostgreSQL</span> will use them in preference to calling the <span class="id">restore_command</span>.<br>
+<br>
+The <span class="br-option">archive-check</span> option must be enabled if <span class="br-option">archive-copy</span> is enabled.
+</div>
+<pre class="code-block">default: n
+example: archive-copy=y</pre>
+</div></div><div class="section2"><a id="section-backup/option-archive-mode-check"></a><div class="section2-header"><div class="section2-number">
+3.4
+</div><div class="section2-title">
+Check Archive Mode Option (<span class="id">--archive-mode-check</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Check the <span class="postgres">PostgreSQL</span> <span class="br-setting">archive_mode</span> setting.
+</div><div class="section-body-text">
+Enabled by default, this option disallows <span class="postgres">PostgreSQL</span> <span class="br-setting">archive_mode=always</span>.<br>
+<br>
+WAL segments pushed from a standby server might be logically the same as WAL segments pushed from the primary but have different checksums. Disabling archiving from multiple sources is recommended to avoid conflicts.<br>
+<div class="admonition"><div class="caution">CAUTION:</div><div class="caution-text">If this option is disabled then it is critical to ensure that only one archiver is writing to the repository via the <span class="cmd">archive-push</span> command.</div></div>
+</div>
+<pre class="code-block">default: y
+example: archive-mode-check=n</pre>
+</div></div><div class="section2"><a id="section-backup/option-backup-standby"></a><div class="section2-header"><div class="section2-number">
+3.5
+</div><div class="section2-title">
+Backup from Standby Option (<span class="id">--backup-standby</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Backup from the standby cluster.
+</div><div class="section-body-text">
+Enable backup from standby to reduce load on the primary cluster. This option requires that both the <span class="host">primary</span> and <span class="host">standby</span> hosts be configured.
+</div>
+<pre class="code-block">default: n
+example: backup-standby=y</pre>
+</div></div><div class="section2"><a id="section-backup/option-checksum-page"></a><div class="section2-header"><div class="section2-number">
+3.6
+</div><div class="section2-title">
+Page Checksums Option (<span class="id">--checksum-page</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Validate data page checksums.
+</div><div class="section-body-text">
+Directs <span class="backrest">pgBackRest</span> to validate all data page checksums while backing up a cluster. This option is automatically enabled when data page checksums are enabled on the cluster.<br>
+<br>
+Failures in checksum validation will not abort a backup. Rather, warnings will be emitted in the log (and to the console with default settings) and the list of invalid pages will be stored in the backup manifest.
+</div>
+<pre class="code-block">example: checksum-page=n</pre>
+</div></div><div class="section2"><a id="section-backup/option-exclude"></a><div class="section2-header"><div class="section2-number">
+3.7
+</div><div class="section2-title">
+Path/File Exclusions Option (<span class="id">--exclude</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Exclude paths/files from the backup.
+</div><div class="section-body-text">
+All exclusions are relative to <span class="path">$PGDATA</span>. If the exclusion ends with / then only files in the specified directory will be excluded, e.g. <span class="br-option">--exclude=junk/</span> will exclude all files in the <span class="path">$PGDATA/junk</span> directory but include the directory itself. If the exclusion does not end with / then the file may match the exclusion exactly or match with / appended to the exclusion, e.g. <span class="br-option">--exclude=junk</span> will exclude the <span class="path">$PGDATA/junk</span> directory and all the files it contains.<br>
+<br>
+<b>Be careful using this feature -- it is very easy to exclude something critical that will make the backup inconsistent. Be sure to test your restores!</b><br>
+<br>
+All excluded files will be logged at <span class="id">info</span> level along with the exclusion rule. Be sure to audit the list of excluded files to ensure nothing unexpected is being excluded.<br>
+<div class="admonition"><div class="note">NOTE:</div><div class="note-text">Exclusions are not honored on delta restores. Any files/directories that were excluded by the backup will be <i>removed</i> on delta restore.</div></div>This option should not be used to exclude <span class="postgres">PostgreSQL</span> logs from a backup. Logs can be moved out of the <span class="id">PGDATA</span> directory using the <span class="postgres">PostgreSQL</span> <span class="br-setting">log_directory</span> setting, which has the benefit of allowing logs to be preserved after a restore.<br>
+<br>
+Multiple exclusions may be specified on the command-line or in a configuration file.
+</div>
+<pre class="code-block">example: exclude=junk/</pre>
+</div></div><div class="section2"><a id="section-backup/option-expire-auto"></a><div class="section2-header"><div class="section2-number">
+3.8
+</div><div class="section2-title">
+Expire Auto Option (<span class="id">--expire-auto</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Automatically run the <span class="cmd">expire</span> command after a successful backup.
+</div><div class="section-body-text">
+The setting is enabled by default. Use caution when disabling this option as doing so will result in retaining all backups and archives indefinitely, which could cause your repository to run out of space. The <span class="cmd">expire</span> command will need to be run regularly to prevent this from happening.
+</div>
+<pre class="code-block">default: y
+example: expire-auto=y</pre>
+</div></div><div class="section2"><a id="section-backup/option-manifest-save-threshold"></a><div class="section2-header"><div class="section2-number">
+3.9
+</div><div class="section2-title">
+Manifest Save Threshold Option (<span class="id">--manifest-save-threshold</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Manifest save threshold during backup.
+</div><div class="section-body-text">
+Defines how often the manifest will be saved during a backup. Saving the manifest is important because it stores the checksums and allows the resume function to work efficiently. The actual threshold used is 1% of the backup size or <span class="br-setting">manifest-save-threshold</span>, whichever is greater.
+</div>
+<pre class="code-block">default: 1GiB
+allowed: 1-1TiB
+example: manifest-save-threshold=8GiB</pre>
+</div></div><div class="section2"><a id="section-backup/option-page-header-check"></a><div class="section2-header"><div class="section2-number">
+3.10
+</div><div class="section2-title">
+Page Header Check Option (<span class="id">--page-header-check</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Check PostgreSQL page headers.
+</div><div class="section-body-text">
+Enabled by default, this option adds page header checks.<br>
+<br>
+Disabling this option should be avoided except when necessary, e.g. if pages are encrypted.
+</div>
+<pre class="code-block">default: y
+example: page-header-check=n</pre>
+</div></div><div class="section2"><a id="section-backup/option-resume"></a><div class="section2-header"><div class="section2-number">
+3.11
+</div><div class="section2-title">
+Resume Option (<span class="id">--resume</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Allow resume of failed backup.
+</div><div class="section-body-text">
+Defines whether the resume feature is enabled. Resume can greatly reduce the amount of time required to run a backup after a previous backup of the same type has failed. It adds complexity, however, so it may be desirable to disable in environments that do not require the feature.
+</div>
+<pre class="code-block">default: y
+example: resume=n</pre>
+</div></div><div class="section2"><a id="section-backup/option-start-fast"></a><div class="section2-header"><div class="section2-number">
+3.12
+</div><div class="section2-title">
+Start Fast Option (<span class="id">--start-fast</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Force a checkpoint to start backup quickly.
+</div><div class="section-body-text">
+Forces a checkpoint (by passing <span class="id">y</span> to the <span class="id">fast</span> parameter of the backup start function) so the backup begins immediately. Otherwise the backup will start after the next regular checkpoint.
+</div>
+<pre class="code-block">default: n
+example: start-fast=y</pre>
+</div></div><div class="section2"><a id="section-backup/option-stop-auto"></a><div class="section2-header"><div class="section2-number">
+3.13
+</div><div class="section2-title">
+Stop Auto Option (<span class="id">--stop-auto</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Stop prior failed backup on new backup.
+</div><div class="section-body-text">
+This will only be done if an exclusive advisory lock can be acquired to demonstrate that the prior failed backup process has really stopped.<br>
+<br>
+This feature relies on pg_is_in_backup() so only works on <span class="postgres">PostgreSQL</span> &gt;= <span class="id">9.3</span>.<br>
+<br>
+This feature is not supported for <span class="postgres">PostgreSQL</span> &gt;= <span class="id">9.6</span> since backups are run in non-exclusive mode.<br>
+<br>
+The setting is disabled by default because it assumes that <span class="backrest">pgBackRest</span> is the only process doing exclusive online backups. It depends on an advisory lock that only <span class="backrest">pgBackRest</span> sets so it may abort other processes that do exclusive online backups. Note that <span class="cmd">base_backup</span> and <span class="cmd">pg_dump</span> are safe to use with this setting because they do not call <span class="id">pg_start_backup()</span> so are not exclusive.
+</div>
+<pre class="code-block">default: n
+example: stop-auto=y</pre>
+</div></div></div></div><div class="page-footer">
+Copyright © 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 24, 2023
+</div></body></html>

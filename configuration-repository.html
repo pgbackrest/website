@@ -1,0 +1,752 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>pgBackRest Configuration Reference: repository</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore" property="og:site_name">
+<meta content="pgBackRest Configuration Reference: repository" property="og:title">
+<meta content="website" property="og:type">
+<link href="favicon.png" rel="icon" type="image/png">
+<meta content="image/png" property="og:image:type">
+<meta content="http://www.pgbackrest.org/logo.png" property="og:image">
+<meta content="The pgBackRest Configuration Reference details all configuration options." name="description">
+<meta content="The pgBackRest Configuration Reference details all configuration options." property="og:description">
+<link href="default.css" rel="stylesheet" type="text/css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
+</head><body><div class="section1"><a id="section-repository"></a><div class="section1-header"><div class="section1-number">
+6
+</div><div class="section1-title">
+Repository Options (<span class="id">repository</span>)
+</div></div><div class="section-intro">
+The <span class="br-setting">repository</span> section defines options used to configure the repository.<br>
+<br>
+<b>Indexing</b>: All <span class="br-setting">repo-</span> options are indexed to allow for configuring multiple repositories. For example, a single repository is configured with the <span class="br-setting">repo1-path</span>, <span class="br-setting">repo1-host</span>, etc. options. If there is more than one repository configured and the <span class="br-option">--repo</span> option is not specified for a command, the repositories will be acted upon in highest priority order (e.g. repo1 then repo2).<br>
+<br>
+The <span class="br-setting">repo-retention-*</span> options define how long backups will be retained. Expiration only occurs when the count of complete backups exceeds the allowed retention. In other words, if <span class="br-setting">repo1-retention-full-type</span> is set to <span class="br-setting">count</span> (default) and <span class="br-setting">repo1-retention-full</span> is set to 2, then there must be 3 complete backups before the oldest will be expired. If <span class="br-setting">repo1-retention-full-type</span> is set to <span class="br-setting">time</span> then <span class="br-setting">repo1-retention-full</span> represents days so there must be at least that many days worth of full backups before expiration can occur. Make sure you always have enough space for retention + 1 backups.
+</div><div class="section-body"><div class="section2"><a id="section-repository/option-repo"></a><div class="section2-header"><div class="section2-number">
+6.1
+</div><div class="section2-title">
+Set Repository Option (<span class="id">--repo</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Set repository.
+</div><div class="section-body-text">
+Set the repository for a command to operate on.<br>
+<br>
+For example, this option may be used to perform a restore from a specific repository, rather than letting <span class="backrest">pgBackRest</span> choose.
+</div>
+<pre class="code-block">allowed: 1-256
+example: repo=1</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-azure-account"></a><div class="section2-header"><div class="section2-number">
+6.2
+</div><div class="section2-title">
+Azure Repository Account Option (<span class="id">--repo-azure-account</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Azure repository account.
+</div><div class="section-body-text">
+Azure account used to store the repository.
+</div>
+<pre class="code-block">example: repo1-azure-account=pg-backup</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-azure-container"></a><div class="section2-header"><div class="section2-number">
+6.3
+</div><div class="section2-title">
+Azure Repository Container Option (<span class="id">--repo-azure-container</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Azure repository container.
+</div><div class="section-body-text">
+Azure container used to store the repository.<br>
+<br>
+<span class="backrest">pgBackRest</span> repositories can be stored in the container root by setting <span class="br-option">repo-path=/</span> but it is usually best to specify a prefix, such as <span class="path">/repo</span>, so logs and other Azure-generated content can also be stored in the container.
+</div>
+<pre class="code-block">example: repo1-azure-container=pg-backup</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-azure-endpoint"></a><div class="section2-header"><div class="section2-number">
+6.4
+</div><div class="section2-title">
+Azure Repository Endpoint Option (<span class="id">--repo-azure-endpoint</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Azure repository endpoint.
+</div><div class="section-body-text">
+Endpoint used to connect to the blob service. The default is generally correct unless using Azure Government.<br>
+<br>
+For custom/test configurations the <span class="br-setting">repo-storage-ca-file</span>, <span class="br-setting">repo-storage-ca-path</span>, <span class="br-setting">repo-storage-host</span>, <span class="br-setting">repo-storage-port</span>, and <span class="br-setting">repo-storage-verify-tls</span> options may be useful.
+</div>
+<pre class="code-block">default: blob.core.windows.net
+example: repo1-azure-endpoint=blob.core.usgovcloudapi.net</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-azure-key"></a><div class="section2-header"><div class="section2-number">
+6.5
+</div><div class="section2-title">
+Azure Repository Key Option (<span class="id">--repo-azure-key</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Azure repository key.
+</div><div class="section-body-text">
+A shared key or shared access signature depending on the <span class="br-option">repo-azure-key-type</span> option.
+</div>
+<pre class="code-block">example: repo1-azure-key=T+9+aov82qNhrcXSNGZCzm9mjd4d75/oxxOr6r1JVpgTLA==</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-azure-key-type"></a><div class="section2-header"><div class="section2-number">
+6.6
+</div><div class="section2-title">
+Azure Repository Key Type Option (<span class="id">--repo-azure-key-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Azure repository key type.
+</div><div class="section-body-text">
+The following types are supported for authorization:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">shared</span> - Shared key</li><li class="list-unordered"><span class="id">sas</span> - Shared access signature</li></ul>
+</div>
+<pre class="code-block">default: shared
+example: repo1-azure-key-type=sas</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-azure-uri-style"></a><div class="section2-header"><div class="section2-number">
+6.7
+</div><div class="section2-title">
+Azure Repository URI Style Option (<span class="id">--repo-azure-uri-style</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Azure URI Style.
+</div><div class="section-body-text">
+The following URI styles are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">host</span> - Connect to <span class="id">account.endpoint</span> host.</li><li class="list-unordered"><span class="id">path</span> - Connect to <span class="id">endpoint</span> host and prepend account to URIs.</li></ul>
+</div>
+<pre class="code-block">default: host
+example: repo1-azure-uri-style=path</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-block"></a><div class="section2-header"><div class="section2-number">
+6.8
+</div><div class="section2-title">
+Block Incremental Backup Option (<span class="id">--repo-block</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Enable block incremental backup.
+</div><div class="section-body-text">
+Block incremental allows for more granular backups by splitting files into blocks that can be backed up independently. This saves space in the repository and can improve delta restore performance because individual blocks can be fetched without reading the entire file from the repository.<br>
+<div class="admonition"><div class="note">NOTE:</div><div class="note-text">The <span class="br-option">repo-bundle</span> option must be enabled before <span class="br-option">repo-block</span> can be enabled.</div></div>The block size for a file is determined based on the file size and age. Generally, older/larger files will get larger block sizes. If a file is old enough, it will not be backed up using block incremental.<br>
+<br>
+Block incremental is most efficient when enabled for all backup types, including full. This makes the full a bit larger but subsequent differential and incremental backups can make use of the block maps generated by the full backup to save space.
+</div>
+<pre class="code-block">default: n
+example: repo1-block=y</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-bundle"></a><div class="section2-header"><div class="section2-number">
+6.9
+</div><div class="section2-title">
+Repository Bundles Option (<span class="id">--repo-bundle</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Bundle files in repository.
+</div><div class="section-body-text">
+Bundle (combine) smaller files to reduce the total number of files written to the repository. Writing fewer files is generally more efficient, especially on object stores such as <span class="host">S3</span>. In addition, zero-length files are not stored (except in the manifest), which saves time and space.
+</div>
+<pre class="code-block">default: n
+example: repo1-bundle=y</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-bundle-limit"></a><div class="section2-header"><div class="section2-number">
+6.10
+</div><div class="section2-title">
+Repository Bundle Limit Option (<span class="id">--repo-bundle-limit</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Limit for file bundles.
+</div><div class="section-body-text">
+Size limit for files that will be included in bundles. Files larger than this size will be stored separately.<br>
+<br>
+Bundled files cannot be reused when a backup is resumed, so this option controls the files that can be resumed, i.e. higher values result in fewer resumable files.
+</div>
+<pre class="code-block">default: 2MiB
+allowed: 8KiB-1PiB
+example: repo1-bundle-limit=10MiB</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-bundle-size"></a><div class="section2-header"><div class="section2-number">
+6.11
+</div><div class="section2-title">
+Repository Bundle Size Option (<span class="id">--repo-bundle-size</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Target size for file bundles.
+</div><div class="section-body-text">
+Defines the total size of files that will be added to a single bundle. Most bundles will be smaller than this size but it is possible that some will be slightly larger, so do not set this option to the maximum size that your file system allows.<br>
+<br>
+In general, it is not a good idea to set this option too high because retries will need to redo the entire bundle.
+</div>
+<pre class="code-block">default: 20MiB
+allowed: 1MiB-1PiB
+example: repo1-bundle-size=10MiB</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-cipher-pass"></a><div class="section2-header"><div class="section2-number">
+6.12
+</div><div class="section2-title">
+Repository Cipher Passphrase Option (<span class="id">--repo-cipher-pass</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository cipher passphrase.
+</div><div class="section-body-text">
+Passphrase used to encrypt/decrypt files of the repository.
+</div>
+<pre class="code-block">example: repo1-cipher-pass=zWaf6XtpjIVZC5444yXB+cgFDFl7MxGlgkZSaoPvTGirhPygu4jOKOXf9LO4vjfO</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-cipher-type"></a><div class="section2-header"><div class="section2-number">
+6.13
+</div><div class="section2-title">
+Repository Cipher Type Option (<span class="id">--repo-cipher-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Cipher used to encrypt the repository.
+</div><div class="section-body-text">
+The following cipher types are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">none</span> - The repository is not encrypted</li><li class="list-unordered"><span class="id">aes-256-cbc</span> - Advanced Encryption Standard with 256 bit key length</li></ul>Note that encryption is always performed client-side even if the repository type (e.g. S3) supports encryption.
+</div>
+<pre class="code-block">default: none
+example: repo1-cipher-type=aes-256-cbc</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-gcs-bucket"></a><div class="section2-header"><div class="section2-number">
+6.14
+</div><div class="section2-title">
+GCS Repository Bucket Option (<span class="id">--repo-gcs-bucket</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+GCS repository bucket.
+</div><div class="section-body-text">
+GCS bucket used to store the repository.<br>
+<br>
+<span class="backrest">pgBackRest</span> repositories can be stored in the bucket root by setting <span class="br-option">repo-path=/</span> but it is usually best to specify a prefix, such as <span class="path">/repo</span>, so logs and other GCS-generated content can also be stored in the bucket.
+</div>
+<pre class="code-block">example: repo1-gcs-bucket=/pg-backup</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-gcs-endpoint"></a><div class="section2-header"><div class="section2-number">
+6.15
+</div><div class="section2-title">
+GCS Repository Endpoint Option (<span class="id">--repo-gcs-endpoint</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+GCS repository endpoint.
+</div><div class="section-body-text">
+Endpoint used to connect to the storage service. May be updated to use a local GCS server or alternate endpoint.
+</div>
+<pre class="code-block">default: storage.googleapis.com
+example: repo1-gcs-endpoint=localhost</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-gcs-key"></a><div class="section2-header"><div class="section2-number">
+6.16
+</div><div class="section2-title">
+GCS Repository Key Option (<span class="id">--repo-gcs-key</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+GCS repository key.
+</div><div class="section-body-text">
+A token or service key file depending on the <span class="br-option">repo-gcs-key-type</span> option.
+</div>
+<pre class="code-block">example: repo1-gcs-key=/etc/pgbackrest/gcs-key.json</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-gcs-key-type"></a><div class="section2-header"><div class="section2-number">
+6.17
+</div><div class="section2-title">
+GCS Repository Key Type Option (<span class="id">--repo-gcs-key-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+GCS repository key type.
+</div><div class="section-body-text">
+The following types are supported for authorization:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">auto</span> - Authorize using the instance service account.</li><li class="list-unordered"><span class="id">service</span> - Service account from locally stored key.</li><li class="list-unordered"><span class="id">token</span> - For local testing, e.g. <span class="file">fakegcs</span>.</li></ul>
+</div>
+<pre class="code-block">default: service
+example: repo1-gcs-key-type=auto</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-hardlink"></a><div class="section2-header"><div class="section2-number">
+6.18
+</div><div class="section2-title">
+Repository Hardlink Option (<span class="id">--repo-hardlink</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Hardlink files between backups in the repository.
+</div><div class="section-body-text">
+Enable hard-linking of files in differential and incremental backups to their full backups. This gives the appearance that each backup is a full backup at the file-system level. Be careful, though, because modifying files that are hard-linked can affect all the backups in the set.
+</div>
+<pre class="code-block">default: n
+example: repo1-hardlink=y</pre>
+<div class="section-body-text">
+Deprecated Name: hardlink
+</div></div></div><div class="section2"><a id="section-repository/option-repo-host"></a><div class="section2-header"><div class="section2-number">
+6.19
+</div><div class="section2-title">
+Repository Host Option (<span class="id">--repo-host</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host when operating remotely.
+</div><div class="section-body-text">
+When backing up and archiving to a locally mounted filesystem this setting is not required.
+</div>
+<pre class="code-block">example: repo1-host=repo1.domain.com</pre>
+<div class="section-body-text">
+Deprecated Name: backup-host
+</div></div></div><div class="section2"><a id="section-repository/option-repo-host-ca-file"></a><div class="section2-header"><div class="section2-number">
+6.20
+</div><div class="section2-title">
+Repository Host Certificate Authority File Option (<span class="id">--repo-host-ca-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host certificate authority file.
+</div><div class="section-body-text">
+Use a CA file other than the system default for connecting to the repository host.
+</div>
+<pre class="code-block">example: repo1-host-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-host-ca-path"></a><div class="section2-header"><div class="section2-number">
+6.21
+</div><div class="section2-title">
+Repository Host Certificate Authority Path Option (<span class="id">--repo-host-ca-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host certificate authority path.
+</div><div class="section-body-text">
+Use a CA path other than the system default for connecting to the repository host.
+</div>
+<pre class="code-block">example: repo1-host-ca-path=/etc/pki/tls/certs</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-host-cert-file"></a><div class="section2-header"><div class="section2-number">
+6.22
+</div><div class="section2-title">
+Repository Host Certificate File Option (<span class="id">--repo-host-cert-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host certificate file.
+</div><div class="section-body-text">
+Sent to repository host to prove client identity.
+</div>
+<pre class="code-block">example: repo1-host-cert-file=/path/to/client.crt</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-host-cmd"></a><div class="section2-header"><div class="section2-number">
+6.23
+</div><div class="section2-title">
+Repository Host Command Option (<span class="id">--repo-host-cmd</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host <span class="backrest">pgBackRest</span> command.
+</div><div class="section-body-text">
+Required only if the path to the <span class="backrest">pgBackRest</span> command is different on the local and repository hosts. If not defined, the repository host command will be set the same as the local command.
+</div>
+<pre class="code-block">example: repo1-host-cmd=/usr/lib/backrest/bin/pgbackrest</pre>
+<div class="section-body-text">
+Deprecated Name: backup-cmd
+</div></div></div><div class="section2"><a id="section-repository/option-repo-host-config"></a><div class="section2-header"><div class="section2-number">
+6.24
+</div><div class="section2-title">
+Repository Host Configuration Option (<span class="id">--repo-host-config</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> repository host configuration file.
+</div><div class="section-body-text">
+Sets the location of the configuration file on the repository host. This is only required if the repository host configuration file is in a different location than the local configuration file.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH &quot;/&quot; PROJECT_CONFIG_FILE
+example: repo1-host-config=/conf/pgbackrest/pgbackrest.conf</pre>
+<div class="section-body-text">
+Deprecated Name: backup-config
+</div></div></div><div class="section2"><a id="section-repository/option-repo-host-config-include-path"></a><div class="section2-header"><div class="section2-number">
+6.25
+</div><div class="section2-title">
+Repository Host Configuration Include Path Option (<span class="id">--repo-host-config-include-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> repository host configuration include path.
+</div><div class="section-body-text">
+Sets the location of the configuration include path on the repository host. This is only required if the repository host configuration include path is in a different location than the local configuration include path.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH &quot;/&quot; PROJECT_CONFIG_INCLUDE_PATH
+example: repo1-host-config-include-path=/conf/pgbackrest/conf.d</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-host-config-path"></a><div class="section2-header"><div class="section2-number">
+6.26
+</div><div class="section2-title">
+Repository Host Configuration Path Option (<span class="id">--repo-host-config-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> repository host configuration path.
+</div><div class="section-body-text">
+Sets the location of the configuration path on the repository host. This is only required if the repository host configuration path is in a different location than the local configuration path.
+</div>
+<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH
+example: repo1-host-config-path=/conf/pgbackrest</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-host-key-file"></a><div class="section2-header"><div class="section2-number">
+6.27
+</div><div class="section2-title">
+Repository Host Key File Option (<span class="id">--repo-host-key-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host key file.
+</div><div class="section-body-text">
+Proves client certificate was sent by owner.
+</div>
+<pre class="code-block">example: repo1-host-key-file=/path/to/client.key</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-host-port"></a><div class="section2-header"><div class="section2-number">
+6.28
+</div><div class="section2-title">
+Repository Host Port Option (<span class="id">--repo-host-port</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host port when <span class="br-setting">repo-host</span> is set.
+</div><div class="section-body-text">
+Use this option to specify a non-default port for the repository host protocol.
+</div>
+<pre class="code-block">allowed: 0-65535
+example: repo1-host-port=25</pre>
+<div class="section-body-text">
+Deprecated Name: backup-ssh-port
+</div></div></div><div class="section2"><a id="section-repository/option-repo-host-type"></a><div class="section2-header"><div class="section2-number">
+6.29
+</div><div class="section2-title">
+Repository Host Protocol Type Option (<span class="id">--repo-host-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host protocol type.
+</div><div class="section-body-text">
+The following protocol types are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">ssh</span> - Secure Shell.</li><li class="list-unordered"><span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.</li></ul>
+</div>
+<pre class="code-block">default: ssh
+example: repo1-host-type=tls</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-host-user"></a><div class="section2-header"><div class="section2-number">
+6.30
+</div><div class="section2-title">
+Repository Host User Option (<span class="id">--repo-host-user</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository host user when <span class="br-setting">repo-host</span> is set.
+</div><div class="section-body-text">
+Defines the user that will be used for operations on the repository host. Preferably this is not the <span class="id">postgres</span> user but rather some other user like <span class="id">pgbackrest</span>. If <span class="postgres">PostgreSQL</span> runs on the repository host the <span class="id">postgres</span> user can be placed in the <span class="id">pgbackrest</span> group so it has read permissions on the repository without being able to damage the contents accidentally.
+</div>
+<pre class="code-block">default: pgbackrest
+example: repo1-host-user=repo-user</pre>
+<div class="section-body-text">
+Deprecated Name: backup-user
+</div></div></div><div class="section2"><a id="section-repository/option-repo-path"></a><div class="section2-header"><div class="section2-number">
+6.31
+</div><div class="section2-title">
+Repository Path Option (<span class="id">--repo-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Path where backups and archive are stored.
+</div><div class="section-body-text">
+The repository is where <span class="backrest">pgBackRest</span> stores backups and archives WAL segments.<br>
+<br>
+It may be difficult to estimate in advance how much space you&#39;ll need. The best thing to do is take some backups then record the size of different types of backups (full/incr/diff) and measure the amount of WAL generated per day. This will give you a general idea of how much space you&#39;ll need, though of course requirements will likely change over time as your database evolves.
+</div>
+<pre class="code-block">default: /var/lib/pgbackrest
+example: repo1-path=/backup/db/backrest</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-retention-archive"></a><div class="section2-header"><div class="section2-number">
+6.32
+</div><div class="section2-title">
+Archive Retention Option (<span class="id">--repo-retention-archive</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Number of backups worth of continuous WAL to retain.
+</div><div class="section-body-text">
+<div class="admonition"><div class="note">NOTE:</div><div class="note-text">WAL segments required to make a backup consistent are always retained until the backup is expired regardless of how this option is configured.</div></div>If this value is not set and <span class="br-setting">repo-retention-full-type</span> is <span class="br-setting">count</span> (default), then the archive to expire will default to the <span class="br-setting">repo-retention-full</span> (or <span class="br-setting">repo-retention-diff</span>) value corresponding to the <span class="br-setting">repo-retention-archive-type</span> if set to <span class="br-setting">full</span> (or <span class="br-setting">diff</span>). This will ensure that WAL is only expired for backups that are already expired. If <span class="br-setting">repo-retention-full-type</span> is <span class="br-setting">time</span>, then this value will default to removing archives that are earlier than the oldest full backup retained after satisfying the <span class="br-setting">repo-retention-full</span> setting.<br>
+<br>
+This option must be set if <span class="br-setting">repo-retention-archive-type</span> is set to <span class="br-setting">incr</span>. If disk space is at a premium, then this setting, in conjunction with <span class="br-setting">repo-retention-archive-type</span>, can be used to aggressively expire WAL segments. However, doing so negates the ability to perform PITR from the backups with expired WAL and is therefore <b>not</b> recommended.
+</div>
+<pre class="code-block">allowed: 1-9999999
+example: repo1-retention-archive=2</pre>
+<div class="section-body-text">
+Deprecated Name: retention-archive
+</div></div></div><div class="section2"><a id="section-repository/option-repo-retention-archive-type"></a><div class="section2-header"><div class="section2-number">
+6.33
+</div><div class="section2-title">
+Archive Retention Type Option (<span class="id">--repo-retention-archive-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Backup type for WAL retention.
+</div><div class="section-body-text">
+If set to <span class="br-setting">full</span> <span class="backrest">pgBackRest</span> will keep archive logs for the number of full backups defined by <span class="br-setting">repo-retention-archive</span>. If set to <span class="br-setting">diff</span> (differential) <span class="backrest">pgBackRest</span> will keep archive logs for the number of full and differential backups defined by <span class="br-setting">repo-retention-archive</span>, meaning if the last backup taken was a full backup, it will be counted as a differential for the purpose of repo-retention. If set to <span class="br-setting">incr</span> (incremental) <span class="backrest">pgBackRest</span> will keep archive logs for the number of full, differential, and incremental backups defined by <span class="br-setting">repo-retention-archive</span>. It is recommended that this setting not be changed from the default which will only expire WAL in conjunction with expiring full backups.
+</div>
+<pre class="code-block">default: full
+example: repo1-retention-archive-type=diff</pre>
+<div class="section-body-text">
+Deprecated Name: retention-archive-type
+</div></div></div><div class="section2"><a id="section-repository/option-repo-retention-diff"></a><div class="section2-header"><div class="section2-number">
+6.34
+</div><div class="section2-title">
+Differential Retention Option (<span class="id">--repo-retention-diff</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Number of differential backups to retain.
+</div><div class="section-body-text">
+When a differential backup expires, all incremental backups associated with the differential backup will also expire. When not defined all differential backups will be kept until the full backups they depend on expire.
+</div>
+<pre class="code-block">allowed: 1-9999999
+example: repo1-retention-diff=3</pre>
+<div class="section-body-text">
+Deprecated Name: retention-diff
+</div></div></div><div class="section2"><a id="section-repository/option-repo-retention-full"></a><div class="section2-header"><div class="section2-number">
+6.35
+</div><div class="section2-title">
+Full Retention Option (<span class="id">--repo-retention-full</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Full backup retention count/time.
+</div><div class="section-body-text">
+When a full backup expires, all differential and incremental backups associated with the full backup will also expire. When the option is not defined a warning will be issued. If indefinite retention is desired then set the option to the max value.
+</div>
+<pre class="code-block">allowed: 1-9999999
+example: repo1-retention-full=2</pre>
+<div class="section-body-text">
+Deprecated Name: retention-full
+</div></div></div><div class="section2"><a id="section-repository/option-repo-retention-full-type"></a><div class="section2-header"><div class="section2-number">
+6.36
+</div><div class="section2-title">
+Full Retention Type Option (<span class="id">--repo-retention-full-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Retention type for full backups.
+</div><div class="section-body-text">
+Determines whether the <span class="br-setting">repo-retention-full</span> setting represents a time period (days) or count of full backups to keep. If set to <span class="br-setting">time</span> then full backups older than <span class="br-setting">repo-retention-full</span> will be removed from the repository if there is at least one backup that is equal to or greater than the <span class="br-setting">repo-retention-full</span> setting. For example, if <span class="br-setting">repo-retention-full</span> is 30 (days) and there are 2 full backups: one 25 days old and one 35 days old, no full backups will be expired because expiring the 35 day old backup would leave only the 25 day old backup, which would violate the 30 day retention policy of having at least one backup 30 days old before an older one can be expired. Archived WAL older than the oldest full backup remaining will be automatically expired unless <span class="br-setting">repo-retention-archive-type</span> and <span class="br-setting">repo-retention-archive</span> are explicitly set.
+</div>
+<pre class="code-block">default: count
+example: repo1-retention-full-type=time</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-retention-history"></a><div class="section2-header"><div class="section2-number">
+6.37
+</div><div class="section2-title">
+Backup History Retention Option (<span class="id">--repo-retention-history</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Days of backup history manifests to retain.
+</div><div class="section-body-text">
+A copy of the backup manifest is stored in the <span class="path">backup.history</span> path when a backup completes. By default these files are never expired since they are useful for data mining, e.g. measuring backup and WAL growth over time.<br>
+<br>
+Set <span class="br-setting">repo-retention-history</span> to define the number of days of backup history manifests to retain. Unexpired backups are always kept in the backup history. Specify <span class="br-option">repo-retention-history=0</span> to retain the backup history only for unexpired backups.<br>
+<br>
+When a full backup history manifest is expired, all differential and incremental backup history manifests associated with the full backup also expire.
+</div>
+<pre class="code-block">allowed: 0-9999999
+example: repo1-retention-history=365</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-s3-bucket"></a><div class="section2-header"><div class="section2-number">
+6.38
+</div><div class="section2-title">
+S3 Repository Bucket Option (<span class="id">--repo-s3-bucket</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository bucket.
+</div><div class="section-body-text">
+S3 bucket used to store the repository.<br>
+<br>
+<span class="backrest">pgBackRest</span> repositories can be stored in the bucket root by setting <span class="br-option">repo-path=/</span> but it is usually best to specify a prefix, such as <span class="path">/repo</span>, so logs and other AWS generated content can also be stored in the bucket.
+</div>
+<pre class="code-block">example: repo1-s3-bucket=pg-backup</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-s3-endpoint"></a><div class="section2-header"><div class="section2-number">
+6.39
+</div><div class="section2-title">
+S3 Repository Endpoint Option (<span class="id">--repo-s3-endpoint</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository endpoint.
+</div><div class="section-body-text">
+The AWS endpoint should be valid for the selected region.<br>
+<br>
+For custom/test configurations the <span class="br-setting">repo-storage-ca-file</span>, <span class="br-setting">repo-storage-ca-path</span>, <span class="br-setting">repo-storage-host</span>, <span class="br-setting">repo-storage-port</span>, and <span class="br-setting">repo-storage-verify-tls</span> options may be useful.
+</div>
+<pre class="code-block">example: repo1-s3-endpoint=s3.amazonaws.com</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-s3-key"></a><div class="section2-header"><div class="section2-number">
+6.40
+</div><div class="section2-title">
+S3 Repository Access Key Option (<span class="id">--repo-s3-key</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository access key.
+</div><div class="section-body-text">
+AWS key used to access this bucket.
+</div>
+<pre class="code-block">example: repo1-s3-key=AKIAIOSFODNN7EXAMPLE</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-s3-key-secret"></a><div class="section2-header"><div class="section2-number">
+6.41
+</div><div class="section2-title">
+S3 Repository Secret Access Key Option (<span class="id">--repo-s3-key-secret</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository secret access key.
+</div><div class="section-body-text">
+AWS secret key used to access this bucket.
+</div>
+<pre class="code-block">example: repo1-s3-key-secret=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-s3-key-type"></a><div class="section2-header"><div class="section2-number">
+6.42
+</div><div class="section2-title">
+S3 Repository Key Type Option (<span class="id">--repo-s3-key-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository key type.
+</div><div class="section-body-text">
+The following types are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">shared</span> - Shared keys</li><li class="list-unordered"><span class="id">auto</span> - Automatically retrieve temporary credentials</li><li class="list-unordered"><span class="id">web-id</span> - Automatically retrieve web identity credentials</li></ul>
+</div>
+<pre class="code-block">default: shared
+example: repo1-s3-key-type=auto</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-s3-kms-key-id"></a><div class="section2-header"><div class="section2-number">
+6.43
+</div><div class="section2-title">
+S3 Repository KMS Key ID Option (<span class="id">--repo-s3-kms-key-id</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository KMS key.
+</div><div class="section-body-text">
+Setting this option enables S3 server-side encryption using the specified AWS key management service key.
+</div>
+<pre class="code-block">example: repo1-s3-kms-key-id=bceb4f13-6939-4be3-910d-df54dee817b7</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-s3-region"></a><div class="section2-header"><div class="section2-number">
+6.44
+</div><div class="section2-title">
+S3 Repository Region Option (<span class="id">--repo-s3-region</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository region.
+</div><div class="section-body-text">
+The AWS region where the bucket was created.
+</div>
+<pre class="code-block">example: repo1-s3-region=us-east-1</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-s3-role"></a><div class="section2-header"><div class="section2-number">
+6.45
+</div><div class="section2-title">
+S3 Repository Role Option (<span class="id">--repo-s3-role</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository role.
+</div><div class="section-body-text">
+The AWS role name (not the full ARN) used to retrieve temporary credentials when <span class="br-option">repo-s3-key-type=auto</span>.
+</div>
+<pre class="code-block">example: repo1-s3-role=authrole</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-s3-token"></a><div class="section2-header"><div class="section2-number">
+6.46
+</div><div class="section2-title">
+S3 Repository Security Token Option (<span class="id">--repo-s3-token</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 repository security token.
+</div><div class="section-body-text">
+AWS security token used with temporary credentials.
+</div>
+<pre class="code-block">example: repo1-s3-token=AQoDYXdzEPT//////////wEXAMPLEtc764bNrC9SAPBSM22 ...</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-s3-uri-style"></a><div class="section2-header"><div class="section2-number">
+6.47
+</div><div class="section2-title">
+S3 Repository URI Style Option (<span class="id">--repo-s3-uri-style</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+S3 URI Style.
+</div><div class="section-body-text">
+The following URI styles are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">host</span> - Connect to <span class="id">bucket.endpoint</span> host.</li><li class="list-unordered"><span class="id">path</span> - Connect to <span class="id">endpoint</span> host and prepend bucket to URIs.</li></ul>
+</div>
+<pre class="code-block">default: host
+example: repo1-s3-uri-style=path</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-sftp-host"></a><div class="section2-header"><div class="section2-number">
+6.48
+</div><div class="section2-title">
+SFTP Repository Host Option (<span class="id">--repo-sftp-host</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP repository host.
+</div><div class="section-body-text">
+The SFTP host containing the repository.
+</div>
+<pre class="code-block">example: repo1-sftp-host=sftprepo.domain</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-sftp-host-fingerprint"></a><div class="section2-header"><div class="section2-number">
+6.49
+</div><div class="section2-title">
+SFTP Repository Host Fingerprint Option (<span class="id">--repo-sftp-host-fingerprint</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP repository host fingerprint.
+</div><div class="section-body-text">
+SFTP repository host fingerprint generation should match the <span class="br-setting">repo-sftp-host-key-hash-type</span>. Generate the fingeprint via <span class="id">awk &#39;{print $2}&#39; ssh_host_xxx_key.pub | base64 -d | (md5sum or sha1sum) -b</span>. The ssh host keys are normally found in the <span class="path">/etc/ssh</span> directory.
+</div>
+<pre class="code-block">example: repo1-sftp-host-fingerprint=f84e172dfead7aeeeae6c1fdfb5aa8cf</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-sftp-host-key-hash-type"></a><div class="section2-header"><div class="section2-number">
+6.50
+</div><div class="section2-title">
+SFTP Repository Host Key Hash Type Option (<span class="id">--repo-sftp-host-key-hash-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP repository host key hash type.
+</div><div class="section-body-text">
+SFTP repository host key hash type. Declares the hash type to be used to compute the digest of the remote system&#39;s host key on SSH startup. Newer versions of libssh2 support <span class="id">sha256</span> in addition to md5 and sha1.
+</div>
+<pre class="code-block">example: repo1-sftp-host-key-hash-type=sha256</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-sftp-host-port"></a><div class="section2-header"><div class="section2-number">
+6.51
+</div><div class="section2-title">
+SFTP Repository Host Port Option (<span class="id">--repo-sftp-host-port</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP repository host port.
+</div><div class="section-body-text">
+SFTP repository host port.
+</div>
+<pre class="code-block">default: 22
+allowed: 1-65535
+example: repo1-sftp-host-port=22</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-sftp-host-user"></a><div class="section2-header"><div class="section2-number">
+6.52
+</div><div class="section2-title">
+SFTP Repository Host User Option (<span class="id">--repo-sftp-host-user</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP repository host user.
+</div><div class="section-body-text">
+User on the host used to store the repository.
+</div>
+<pre class="code-block">example: repo1-sftp-host-user=pg-backup</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-sftp-private-key-file"></a><div class="section2-header"><div class="section2-number">
+6.53
+</div><div class="section2-title">
+SFTP Repository Private Key File Option (<span class="id">--repo-sftp-private-key-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP private key file.
+</div><div class="section-body-text">
+SFTP private key file used for authentication.
+</div>
+<pre class="code-block">example: repo1-sftp-private-key-file=~/.ssh/id_ed25519</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-sftp-private-key-passphrase"></a><div class="section2-header"><div class="section2-number">
+6.54
+</div><div class="section2-title">
+SFTP Repository Private Key Passphrase Option (<span class="id">--repo-sftp-private-key-passphrase</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP private key passphrase.
+</div><div class="section-body-text">
+Passphrase used to access the private key. This is an optional feature when creating an SSH public/private key pair.
+</div>
+<pre class="code-block">example: repo1-sftp-private-key-passphrase=BeSureToGenerateAndUseASecurePassphrase</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-sftp-public-key-file"></a><div class="section2-header"><div class="section2-number">
+6.55
+</div><div class="section2-title">
+SFTP Repository Public Key File Option (<span class="id">--repo-sftp-public-key-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+SFTP public key file.
+</div><div class="section-body-text">
+SFTP public key file used for authentication. Optional if compiled against OpenSSL, required if compiled against a different library.
+</div>
+<pre class="code-block">example: repo1-sftp-public-key-file=~/.ssh/id_ed25519.pub</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-storage-ca-file"></a><div class="section2-header"><div class="section2-number">
+6.56
+</div><div class="section2-title">
+Repository Storage CA File Option (<span class="id">--repo-storage-ca-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository storage CA file.
+</div><div class="section-body-text">
+Use a CA file other than the system default for storage (e.g. S3, Azure) certificates.
+</div>
+<pre class="code-block">example: repo1-storage-ca-file=/etc/pki/tls/certs/ca-bundle.crt</pre>
+<div class="section-body-text">
+Deprecated Names: repo-azure-ca-file, repo-s3-ca-file
+</div></div></div><div class="section2"><a id="section-repository/option-repo-storage-ca-path"></a><div class="section2-header"><div class="section2-number">
+6.57
+</div><div class="section2-title">
+Repository Storage TLS CA Path Option (<span class="id">--repo-storage-ca-path</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository storage CA path.
+</div><div class="section-body-text">
+Use a CA path other than the system default for storage (e.g. S3, Azure) certificates.
+</div>
+<pre class="code-block">example: repo1-storage-ca-path=/etc/pki/tls/certs</pre>
+<div class="section-body-text">
+Deprecated Names: repo-azure-ca-path, repo-s3-ca-path
+</div></div></div><div class="section2"><a id="section-repository/option-repo-storage-host"></a><div class="section2-header"><div class="section2-number">
+6.58
+</div><div class="section2-title">
+Repository Storage Host Option (<span class="id">--repo-storage-host</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository storage host.
+</div><div class="section-body-text">
+Connect to a host other than the storage (e.g. S3, Azure) endpoint. This is typically used for testing.
+</div>
+<pre class="code-block">example: repo1-storage-host=127.0.0.1</pre>
+<div class="section-body-text">
+Deprecated Names: repo-azure-host, repo-s3-host
+</div></div></div><div class="section2"><a id="section-repository/option-repo-storage-port"></a><div class="section2-header"><div class="section2-number">
+6.59
+</div><div class="section2-title">
+Repository Storage Port Option (<span class="id">--repo-storage-port</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository storage port.
+</div><div class="section-body-text">
+Port to use when connecting to the storage (e.g. S3, Azure) endpoint (or host if specified).
+</div>
+<pre class="code-block">default: 443
+allowed: 1-65535
+example: repo1-storage-port=9000</pre>
+<div class="section-body-text">
+Deprecated Names: repo-azure-port, repo-s3-port
+</div></div></div><div class="section2"><a id="section-repository/option-repo-storage-upload-chunk-size"></a><div class="section2-header"><div class="section2-number">
+6.60
+</div><div class="section2-title">
+Repository Storage Upload Chunk Size Option (<span class="id">--repo-storage-upload-chunk-size</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository storage upload chunk size.
+</div><div class="section-body-text">
+Object stores such as S3 allow files to be uploaded in chunks when the file is too large to be stored in memory. Even if the file can be stored in memory, it is more memory efficient to limit the amount of memory used for uploads.<br>
+<br>
+A larger chunk size will generally lead to better performance because it will minimize upload requests and allow more files to be uploaded in a single request rather than in chunks. The disadvantage is that memory usage will be higher and because the chunk buffer must be allocated per process, larger <span class="br-option">process-max</span> values will lead to more memory being consumed overall.<br>
+<br>
+Default chunk sizes by repo type:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">azure</span> - 4MiB</li><li class="list-unordered"><span class="id">gcs</span> - 4MiB</li><li class="list-unordered"><span class="id">s3</span> - 5MiB</li></ul>Note that valid chunk sizes vary by storage type and by platform. For example, <span class="host">AWS S3</span> has a minimum chunk size of 5MiB but <span class="host">S3</span> clones may accept lower values. Terminology for chunk size varies by storage type, so when searching min/max values use <q>part size</q> for <span class="host">AWS S3</span>, <q>chunk size</q> for <span class="host">GCS</span>, and <q>block size</q> for <span class="host">Azure</span>. No attempt is made to validate configured chunk sizes so selecting an invalid value will lead to errors from the storage service or undefined behavior.
+</div>
+<pre class="code-block">allowed: 64KiB-1TiB
+example: repo1-storage-upload-chunk-size=16MiB</pre>
+</div></div><div class="section2"><a id="section-repository/option-repo-storage-verify-tls"></a><div class="section2-header"><div class="section2-number">
+6.61
+</div><div class="section2-title">
+Repository Storage Certificate Verify Option (<span class="id">--repo-storage-verify-tls</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Repository storage certificate verify.
+</div><div class="section-body-text">
+This option provides the ability to enable/disable verification of the storage (e.g. S3, Azure) server TLS certificate. Disabling should only be used for testing or other scenarios where a certificate has been self-signed.
+</div>
+<pre class="code-block">default: y
+example: repo1-storage-verify-tls=n</pre>
+<div class="section-body-text">
+Deprecated Names: repo-azure-verify-tls, repo-s3-verify-ssl, repo-s3-verify-tls
+</div></div></div><div class="section2"><a id="section-repository/option-repo-type"></a><div class="section2-header"><div class="section2-number">
+6.62
+</div><div class="section2-title">
+Repository Type Option (<span class="id">--repo-type</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+Type of storage used for the repository.
+</div><div class="section-body-text">
+The following repository types are supported:<br>
+<ul class="list-unordered"><li class="list-unordered"><span class="id">azure</span> - Azure Blob Storage Service</li><li class="list-unordered"><span class="id">cifs</span> - Like <span class="id">posix</span>, but disables links and directory fsyncs</li><li class="list-unordered"><span class="id">gcs</span> - Google Cloud Storage</li><li class="list-unordered"><span class="id">posix</span> - Posix-compliant file systems</li><li class="list-unordered"><span class="id">s3</span> - AWS Simple Storage Service</li><li class="list-unordered"><span class="id">sftp</span> - Secure File Transfer Protocol</li></ul>When an <span class="host">NFS</span> mount is used as a <span class="id">posix</span> repository, the same rules apply to <span class="backrest">pgBackRest</span> as described in the <span class="postgres">PostgreSQL</span> documentation: <a href="https://www.postgresql.org/docs/current/creating-cluster.html#CREATING-CLUSTER-FILESYSTEM">Creating a Database Cluster - File Systems</a>.
+</div>
+<pre class="code-block">default: posix
+example: repo1-type=cifs</pre>
+</div></div></div></div><div class="page-footer">
+Copyright © 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 24, 2023
+</div></body></html>

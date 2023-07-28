@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>pgBackRest Configuration Reference: server</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore" property="og:site_name">
+<meta content="pgBackRest Configuration Reference: server" property="og:title">
+<meta content="website" property="og:type">
+<link href="favicon.png" rel="icon" type="image/png">
+<meta content="image/png" property="og:image:type">
+<meta content="http://www.pgbackrest.org/logo.png" property="og:image">
+<meta content="The pgBackRest Configuration Reference details all configuration options." name="description">
+<meta content="The pgBackRest Configuration Reference details all configuration options." property="og:description">
+<link href="default.css" rel="stylesheet" type="text/css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
+</head><body><div class="section1"><a id="section-server"></a><div class="section1-header"><div class="section1-number">
+8
+</div><div class="section1-title">
+Server Options (<span class="id">server</span>)
+</div></div><div class="section-intro">
+The <span class="br-setting">server</span> section defines options used for configuring the <span class="host">TLS</span> server.
+</div><div class="section-body"><div class="section2"><a id="section-server/option-tls-server-address"></a><div class="section2-header"><div class="section2-number">
+8.1
+</div><div class="section2-title">
+TLS Server Address Option (<span class="id">--tls-server-address</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+TLS server address.
+</div><div class="section-body-text">
+IP address the server will listen on for client requests.
+</div>
+<pre class="code-block">default: localhost
+example: tls-server-address=::*</pre>
+</div></div><div class="section2"><a id="section-server/option-tls-server-auth"></a><div class="section2-header"><div class="section2-number">
+8.2
+</div><div class="section2-title">
+TLS Server Authorized Clients Option (<span class="id">--tls-server-auth</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+TLS server authorized clients.
+</div><div class="section-body-text">
+Clients are authorized on the server by verifying their certificate and checking their certificate CN (Common Name) against a list on the server configured with the <span class="br-option">tls-server-auth</span> option.<br>
+<br>
+A client CN can be authorized for as many stanzas as needed by repeating the <span class="br-option">tls-server-auth</span> option, or for all stanzas by specifying <span class="br-option">tls-server-auth=client-cn=*</span>. Wildcards may not be specified for the client CN.
+</div>
+<pre class="code-block">example: tls-server-auth=client-cn=stanza1</pre>
+</div></div><div class="section2"><a id="section-server/option-tls-server-ca-file"></a><div class="section2-header"><div class="section2-number">
+8.3
+</div><div class="section2-title">
+TLS Server Certificate Authorities Option (<span class="id">--tls-server-ca-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+TLS server certificate authorities.
+</div><div class="section-body-text">
+Checks that client certificates are signed by a trusted certificate authority.
+</div>
+<pre class="code-block">example: tls-server-ca-file=/path/to/server.ca</pre>
+</div></div><div class="section2"><a id="section-server/option-tls-server-cert-file"></a><div class="section2-header"><div class="section2-number">
+8.4
+</div><div class="section2-title">
+TLS Server Certificate Option (<span class="id">--tls-server-cert-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+TLS server certificate file.
+</div><div class="section-body-text">
+Sent to the client to show the server identity.
+</div>
+<pre class="code-block">example: tls-server-cert-file=/path/to/server.crt</pre>
+</div></div><div class="section2"><a id="section-server/option-tls-server-key-file"></a><div class="section2-header"><div class="section2-number">
+8.5
+</div><div class="section2-title">
+TLS Server Key Option (<span class="id">--tls-server-key-file</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+TLS server key file.
+</div><div class="section-body-text">
+Proves server certificate was sent by the owner.
+</div>
+<pre class="code-block">example: tls-server-key-file=/path/to/server.key</pre>
+</div></div><div class="section2"><a id="section-server/option-tls-server-port"></a><div class="section2-header"><div class="section2-number">
+8.6
+</div><div class="section2-title">
+TLS Server Port Option (<span class="id">--tls-server-port</span>)
+</div></div><div class="section-body"><div class="section-body-text">
+TLS server port.
+</div><div class="section-body-text">
+Port the server will listen on for client requests.
+</div>
+<pre class="code-block">default: 8432
+allowed: 1-65535
+example: tls-server-port=8000</pre>
+</div></div></div></div><div class="page-footer">
+Copyright © 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 24, 2023
+</div></body></html>
