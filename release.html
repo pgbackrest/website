@@ -32,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.47">
-v2.47 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.48">
+v2.48 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -48,6 +48,56 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.48"></a><div class="section2-header"><div class="section2-title">
+v2.48 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Repository Storage Tags
+</div><div class="section2-subsubtitle">
+Released September 25, 2023
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Fix issue restoring block incremental without a block list. (<i>Reviewed by Stephen Frost, Burak Yurdakul. Reported by Burak Yurdakul.</i>)
+</li></ul><div class="section-body-text">
+<b> Features:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Add <span class="br-option">--repo-storage-tag</span> option to create object tags. (<i>Reviewed by Stephen Frost, Stefan Fercot, Timoth&eacute;e Peignier.</i>)
+</li><li class="list-unordered">
+Add known hosts checking for <span class="host">SFTP</span> storage driver. (<i>Contributed by Reid Thompson. Reviewed by Stephen Frost, David Steele.</i>)
+</li><li class="list-unordered">
+Support for dual stack connections. (<i>Reviewed by Stephen Frost.</i>)
+</li><li class="list-unordered">
+Add backup size completed/total to <span class="cmd">info</span> command <span class="host">JSON</span> output. (<i>Contributed by Stefan Fercot. Reviewed by David Steele.</i>)
+</li></ul><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Multi-stanza check command. (<i>Reviewed by Stephen Frost.</i>)
+</li><li class="list-unordered">
+Retry reads of <span class="file">pg_control</span> until checksum is valid. (<i>Reviewed by Stefan Fercot, Stephen Frost.</i>)
+</li><li class="list-unordered">
+Optimize WAL segment check after successful backup. (<i>Reviewed by Stephen Frost.</i>)
+</li><li class="list-unordered">
+Improve <span class="host">GCS</span> multi-part performance. (<i>Reviewed by Reid Thompson.</i>)
+</li><li class="list-unordered">
+Allow <span class="cmd">archive-get</span> command to run when stanza is stopped. (<i>Reviewed by Tom Swartz, David Christensen, Reid Thompson.</i>)
+</li><li class="list-unordered">
+Accept leading tilde in paths for SFTP public/private keys. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Reload GCS credentials before renewing authentication token. (<i>Reviewed by Stephen Frost. Suggested by Daniel Farina.</i>)
+</li></ul><div class="section2-subtitle">
+Additional Notes
+</div><div class="section-body-text">
+<b>Documentation Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Fix configuration reference example for the <span class="br-option">tls-server-address</span> option. (<i>Fixed by Hartmut Goebel. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Fix command reference example for the <span class="br-option">filter</span> option.
+</li></ul><div class="section-body-text">
+<b>Test Suite Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Allow <span class="id">storage/sftp</span> unit test to run without <span class="id">libssh2</span> installed. (<i>Contributed by Reid Thompson. Reviewed by David Steele. Suggested by Wu Ning.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.47"></a><div class="section2-header"><div class="section2-title">
 v2.47 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -82,9 +132,7 @@ Additional Notes
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Clarify preference to install from packages in the user guide. (<i>Reviewed by Stefan Fercot. Suggested by dr-kd.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.46"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.46"></a><div class="section2-header"><div class="section2-title">
 v2.46 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Block Incremental Backup and SFTP Storage
@@ -2983,5 +3031,5 @@ Additional Notes
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 24, 2023
+Copyright &copy; 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated September 25, 2023
 </div></body></html>
