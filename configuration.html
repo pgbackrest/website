@@ -342,53 +342,53 @@ PostgreSQL Socket Path Option (<span class="id">--pg-socket-path</span>)
 PostgreSQL Database User Option (<span class="id">--pg-user</span>)
 </a></div></div></div></div></div><div class="page-body"><div class="section1"><a id="introduction"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Introduction
-</div></div><div class="section-intro">
-<span class="backrest">pgBackRest</span> can be used entirely with command-line parameters but a configuration file is more practical for installations that are complex or set a lot of options. The default location for the configuration file is <span class="file">/etc/pgbackrest/pgbackrest.conf</span>. If no file exists in that location then the old default of <span class="file">/etc/pgbackrest.conf</span> will be checked.<br/>
-<br/>
-The following option types are used:<br/>
-<br/>
-<b>String</b>: A text string, commonly an identifier, password, etc.<br/>
-<br/>
-Command line example: <span class="br-setting">--stanza=demo</span><br/>Configuration file example: <span class="br-setting">repo1-cipher-pass=zWaf6XtpjIVZC5444yXB...</span><br/>
-<br/>
-<b>Path</b>: Used to uniquely identify a location in a directory structure. Paths must begin with /, double // is not allowed, and no ending / is expected.<br/>
-<br/>
-Command line example: <span class="br-setting">--repo1-path=/var/lib/pgbackrest</span><br/>Configuration file example: <span class="br-setting">repo1-path=/var/lib/pgbackrest</span><br/>
-<br/>
-<b>Boolean</b>: Enables or disables the option. Only y/n are valid argument values.<br/>
-<br/>
-Command line examples: <span class="br-setting">--start-fast</span>, <span class="br-setting">--no-start-fast</span>, <span class="br-setting">--start-fast=y</span>, <span class="br-setting">--start-fast=n</span><br/>Configuration file examples: <span class="br-setting">start-fast=y</span>, <span class="br-setting">start-fast=n</span><br/>
-<br/>
-<b>Integer</b>: Used for ports, retention/retry counts, parallel processes allowed, etc.<br/>
-<br/>
-Command line example: <span class="br-setting">--compress-level=3</span><br/>Configuration file example: <span class="br-setting">pg1-port=5432</span><br/>
-<br/>
-<b>Size</b>: Used for buffer sizes, disk usage, etc. Size can be specified in bytes (default) or KiB, MiB, GiB, TiB, or PiB where the multiplier is a power of 1024. For example, the case-insensitive value 5GiB (or 5GB, 5g) can be used instead of 5368709120. Fractional values such as 2.5GiB are not allowed, use 2560MiB instead.<br/>
-<br/>
-Command line example: <span class="br-setting">--archive-get-queue-max=1GiB</span><br/>Configuration file example: <span class="br-setting">buffer-size=2MiB</span><br/>
-<br/>
-<b>Time</b>: Time in seconds.<br/>
-<br/>
-Command line example: <span class="br-setting">--io-timeout=90</span><br/>Configuration file example: <span class="br-setting">db-timeout=600</span><br/>
-<br/>
-<b>List</b>: Option may be provided multiple times.<br/>
-<br/>
-Command line example: <span class="br-setting">--db-exclude=db1 --db-exclude=db2 --db-exclude=db5</span><br/>Configuration file example, each on its own line: <span class="br-setting">db-exclude=db1 db-exclude=db2 db-exclude=db5</span><br/>
-<br/>
-<b>Key/Value</b>: Option may be provided multiple times in the form <span class="id">key=value</span>.<br/>
-<br/>
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> can be used entirely with command-line parameters but a configuration file is more practical for installations that are complex or set a lot of options. The default location for the configuration file is <span class="file">/etc/pgbackrest/pgbackrest.conf</span>. If no file exists in that location then the old default of <span class="file">/etc/pgbackrest.conf</span> will be checked.
+</div><div class="section-body-text">
+The following option types are used:
+</div><div class="section-body-text">
+<b>String</b>: A text string, commonly an identifier, password, etc.
+</div><div class="section-body-text">
+Command line example: <span class="br-setting">--stanza=demo</span><br/>Configuration file example: <span class="br-setting">repo1-cipher-pass=zWaf6XtpjIVZC5444yXB...</span>
+</div><div class="section-body-text">
+<b>Path</b>: Used to uniquely identify a location in a directory structure. Paths must begin with /, double // is not allowed, and no ending / is expected.
+</div><div class="section-body-text">
+Command line example: <span class="br-setting">--repo1-path=/var/lib/pgbackrest</span><br/>Configuration file example: <span class="br-setting">repo1-path=/var/lib/pgbackrest</span>
+</div><div class="section-body-text">
+<b>Boolean</b>: Enables or disables the option. Only y/n are valid argument values.
+</div><div class="section-body-text">
+Command line examples: <span class="br-setting">--start-fast</span>, <span class="br-setting">--no-start-fast</span>, <span class="br-setting">--start-fast=y</span>, <span class="br-setting">--start-fast=n</span><br/>Configuration file examples: <span class="br-setting">start-fast=y</span>, <span class="br-setting">start-fast=n</span>
+</div><div class="section-body-text">
+<b>Integer</b>: Used for ports, retention/retry counts, parallel processes allowed, etc.
+</div><div class="section-body-text">
+Command line example: <span class="br-setting">--compress-level=3</span><br/>Configuration file example: <span class="br-setting">pg1-port=5432</span>
+</div><div class="section-body-text">
+<b>Size</b>: Used for buffer sizes, disk usage, etc. Size can be specified in bytes (default) or KiB, MiB, GiB, TiB, or PiB where the multiplier is a power of 1024. For example, the case-insensitive value 5GiB (or 5GB, 5g) can be used instead of 5368709120. Fractional values such as 2.5GiB are not allowed, use 2560MiB instead.
+</div><div class="section-body-text">
+Command line example: <span class="br-setting">--archive-get-queue-max=1GiB</span><br/>Configuration file example: <span class="br-setting">buffer-size=2MiB</span>
+</div><div class="section-body-text">
+<b>Time</b>: Time in seconds.
+</div><div class="section-body-text">
+Command line example: <span class="br-setting">--io-timeout=90</span><br/>Configuration file example: <span class="br-setting">db-timeout=600</span>
+</div><div class="section-body-text">
+<b>List</b>: Option may be provided multiple times.
+</div><div class="section-body-text">
+Command line example: <span class="br-setting">--db-exclude=db1 --db-exclude=db2 --db-exclude=db5</span><br/>Configuration file example, each on its own line: <span class="br-setting">db-exclude=db1 db-exclude=db2 db-exclude=db5</span>
+</div><div class="section-body-text">
+<b>Key/Value</b>: Option may be provided multiple times in the form <span class="id">key=value</span>.
+</div><div class="section-body-text">
 Command line example: <span class="br-setting">--tablespace-map=ts_01=/db/ts_01 --tablespace-map=ts_02=/db/ts_02</span><br/>Configuration file example, each on its own line: <span class="br-setting">tablespace-map=ts_01=/db/ts_01 tablespace-map=ts_02=/db/ts_02</span>
-</div><div class="section-body"></div></div><div class="section1"><a id="section-archive"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
+</div></div></div><div class="section1"><a id="section-archive"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Archive Options
-</div></div><div class="section-intro">
+</div></div><div class="section-body"><div class="section-body-text">
 The <span class="br-setting">archive</span> section defines options for the <span class="cmd">archive-push</span> and <span class="cmd">archive-get</span> commands.
-</div><div class="section-body"><div class="section2"><a id="section-archive/option-archive-async"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
+</div><div class="section2"><a id="section-archive/option-archive-async"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Asynchronous Archiving Option (<span class="id">--archive-async</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Push/get WAL segments asynchronously.
 </div><div class="section-body-text">
-Enables asynchronous operation for the <span class="cmd">archive-push</span> and <span class="cmd">archive-get</span> commands.<br/>
-<br/>
+Enables asynchronous operation for the <span class="cmd">archive-push</span> and <span class="cmd">archive-get</span> commands.
+</div><div class="section-body-text">
 Asynchronous operation is more efficient because it can reuse connections and take advantage of parallelism. See the <span class="br-option">spool-path</span>, <span class="br-option">archive-get-queue-max</span>, and <span class="br-option">archive-push-queue-max</span> options for more information.
 </div>
 <pre class="code-block">default: n
@@ -408,8 +408,8 @@ Check WAL Headers Option (<span class="id">--archive-header-check</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Check PostgreSQL version/id in WAL headers.
 </div><div class="section-body-text">
-Enabled by default, this option checks the WAL header against the <span class="postgres">PostgreSQL</span> version and system identifier to ensure that the WAL is being copied to the correct stanza. This is in addition to checking <span class="file">pg_control</span> against the stanza and verifying that WAL is being copied from the same <span class="postgres">PostgreSQL</span> data directory where <span class="file">pg_control</span> is located.<br/>
-<br/>
+Enabled by default, this option checks the WAL header against the <span class="postgres">PostgreSQL</span> version and system identifier to ensure that the WAL is being copied to the correct stanza. This is in addition to checking <span class="file">pg_control</span> against the stanza and verifying that WAL is being copied from the same <span class="postgres">PostgreSQL</span> data directory where <span class="file">pg_control</span> is located.
+</div><div class="section-body-text">
 Therefore, disabling this check is fairly safe but should only be done when needed, e.g. if the WAL is encrypted.
 </div>
 <pre class="code-block">default: y
@@ -419,10 +419,10 @@ Retry Missing WAL Segment Option (<span class="id">--archive-missing-retry</span
 </div></div><div class="section-body"><div class="section-body-text">
 Retry missing WAL segment
 </div><div class="section-body-text">
-Retry a WAL segment that was previously reported as missing by the <span class="cmd">archive-get</span> command when in asynchronous mode. This prevents notifications in the spool path from a prior restore from being used and possibly causing a recovery failure if consistency has not been reached.<br/>
-<br/>
-Disabling this option allows <span class="postgres">PostgreSQL</span> to more reliably recognize when the end of the WAL in the archive has been reached, which permits it to switch over to streaming from the primary. With retries enabled, a steady stream of WAL being archived will cause <span class="postgres">PostgreSQL</span> to continue getting WAL from the archive rather than switch to streaming.<br/>
-<br/>
+Retry a WAL segment that was previously reported as missing by the <span class="cmd">archive-get</span> command when in asynchronous mode. This prevents notifications in the spool path from a prior restore from being used and possibly causing a recovery failure if consistency has not been reached.
+</div><div class="section-body-text">
+Disabling this option allows <span class="postgres">PostgreSQL</span> to more reliably recognize when the end of the WAL in the archive has been reached, which permits it to switch over to streaming from the primary. With retries enabled, a steady stream of WAL being archived will cause <span class="postgres">PostgreSQL</span> to continue getting WAL from the archive rather than switch to streaming.
+</div><div class="section-body-text">
 When disabling this option it is important to ensure that the spool path for the stanza is empty. The <span class="cmd">restore</span> command does this automatically if the spool path is configured at restore time. Otherwise, it is up to the user to ensure the spool path is empty.
 </div>
 <pre class="code-block">default: y
@@ -432,11 +432,16 @@ Maximum Archive Push Queue Size Option (<span class="id">--archive-push-queue-ma
 </div></div><div class="section-body"><div class="section-body-text">
 Maximum size of the <span class="postgres">PostgreSQL</span> archive queue.
 </div><div class="section-body-text">
-After the limit is reached, the following will happen:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="backrest">pgBackRest</span> will notify <span class="postgres">PostgreSQL</span> that the WAL was successfully archived, then <b>DROP IT</b>.</li><li class="list-unordered">A warning will be output to the <span class="postgres">PostgreSQL</span> log.</li></ul>If this occurs then the archive log stream will be interrupted and PITR will not be possible past that point. A new backup will be required to regain full restore capability.<br/>
-<br/>
-In asynchronous mode the entire queue will be dropped to prevent spurts of WAL getting through before the queue limit is exceeded again.<br/>
-<br/>
+After the limit is reached, the following will happen:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="backrest">pgBackRest</span> will notify <span class="postgres">PostgreSQL</span> that the WAL was successfully archived, then <b>DROP IT</b>.
+</li><li class="list-unordered">
+A warning will be output to the <span class="postgres">PostgreSQL</span> log.
+</li></ul><div class="section-body-text">
+If this occurs then the archive log stream will be interrupted and PITR will not be possible past that point. A new backup will be required to regain full restore capability.
+</div><div class="section-body-text">
+In asynchronous mode the entire queue will be dropped to prevent spurts of WAL getting through before the queue limit is exceeded again.
+</div><div class="section-body-text">
 The purpose of this feature is to prevent the log volume from filling up at which point <span class="postgres">PostgreSQL</span> will stop completely. Better to lose the backup than have <span class="postgres">PostgreSQL</span> go down.
 </div>
 <pre class="code-block">allowed: 0-4PiB
@@ -455,15 +460,15 @@ allowed: 0.1-86400
 example: archive-timeout=30</pre>
 </div></div></div></div><div class="section1"><a id="section-backup"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Backup Options
-</div></div><div class="section-intro">
+</div></div><div class="section-body"><div class="section-body-text">
 The <span class="br-setting">backup</span> section defines settings related to backup.
-</div><div class="section-body"><div class="section2"><a id="section-backup/option-annotation"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
+</div><div class="section2"><a id="section-backup/option-annotation"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Backup Annotation Option (<span class="id">--annotation</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Annotate backup with user-defined key/value pairs.
 </div><div class="section-body-text">
-Users can attach informative key/value pairs to the backup. This option may be used multiple times to attach multiple annotations.<br/>
-<br/>
+Users can attach informative key/value pairs to the backup. This option may be used multiple times to attach multiple annotations.
+</div><div class="section-body-text">
 Annotations are output by the <span class="cmd">info</span> command text output when a backup is specified with <span class="br-option">--set</span> and always appear in the JSON output.
 </div>
 <pre class="code-block">example: annotation=source="Sunday backup for website database"</pre>
@@ -472,8 +477,8 @@ Check Archive Option (<span class="id">--archive-check</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Check that WAL segments are in the archive before backup completes.
 </div><div class="section-body-text">
-Checks that all WAL segments required to make the backup consistent are present in the WAL archive. It's a good idea to leave this as the default unless you are using another method for archiving.<br/>
-<br/>
+Checks that all WAL segments required to make the backup consistent are present in the WAL archive. It's a good idea to leave this as the default unless you are using another method for archiving.
+</div><div class="section-body-text">
 This option must be enabled if <span class="br-option">archive-copy</span> is enabled.
 </div>
 <pre class="code-block">default: y
@@ -483,12 +488,12 @@ Copy Archive Option (<span class="id">--archive-copy</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Copy WAL segments needed for consistency to the backup.
 </div><div class="section-body-text">
-This slightly paranoid option protects against corruption in the WAL segment archive by storing the WAL segments required for consistency directly in the backup. WAL segments are still stored in the archive so this option will use additional space.<br/>
-<br/>
-It is best if the <span class="cmd">archive-push</span> and <span class="cmd">backup</span> commands have the same <span class="br-setting">compress-type</span> (e.g. <span class="id">lz4</span>) when using this option. Otherwise, the WAL segments will need to be recompressed with the <span class="br-setting">compress-type</span> used by the backup, which can be fairly expensive depending on how much WAL was generated during the backup.<br/>
-<br/>
-On restore, the WAL segments will be present in <span class="path">pg_xlog/pg_wal</span> and <span class="postgres">PostgreSQL</span> will use them in preference to calling the <span class="id">restore_command</span>.<br/>
-<br/>
+This slightly paranoid option protects against corruption in the WAL segment archive by storing the WAL segments required for consistency directly in the backup. WAL segments are still stored in the archive so this option will use additional space.
+</div><div class="section-body-text">
+It is best if the <span class="cmd">archive-push</span> and <span class="cmd">backup</span> commands have the same <span class="br-setting">compress-type</span> (e.g. <span class="id">lz4</span>) when using this option. Otherwise, the WAL segments will need to be recompressed with the <span class="br-setting">compress-type</span> used by the backup, which can be fairly expensive depending on how much WAL was generated during the backup.
+</div><div class="section-body-text">
+On restore, the WAL segments will be present in <span class="path">pg_xlog/pg_wal</span> and <span class="postgres">PostgreSQL</span> will use them in preference to calling the <span class="id">restore_command</span>.
+</div><div class="section-body-text">
 The <span class="br-option">archive-check</span> option must be enabled if <span class="br-option">archive-copy</span> is enabled.
 </div>
 <pre class="code-block">default: n
@@ -498,11 +503,14 @@ Check Archive Mode Option (<span class="id">--archive-mode-check</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Check the <span class="postgres">PostgreSQL</span> <span class="br-setting">archive_mode</span> setting.
 </div><div class="section-body-text">
-Enabled by default, this option disallows <span class="postgres">PostgreSQL</span> <span class="br-setting">archive_mode=always</span>.<br/>
-<br/>
-WAL segments pushed from a standby server might be logically the same as WAL segments pushed from the primary but have different checksums. Disabling archiving from multiple sources is recommended to avoid conflicts.<br/>
-<div class="admonition"><div class="caution">CAUTION:</div><div class="caution-text">If this option is disabled then it is critical to ensure that only one archiver is writing to the repository via the <span class="cmd">archive-push</span> command.</div></div>
-</div>
+Enabled by default, this option disallows <span class="postgres">PostgreSQL</span> <span class="br-setting">archive_mode=always</span>.
+</div><div class="section-body-text">
+WAL segments pushed from a standby server might be logically the same as WAL segments pushed from the primary but have different checksums. Disabling archiving from multiple sources is recommended to avoid conflicts.
+</div><div class="admonition"><div class="caution">
+CAUTION:
+</div><div class="caution-text">
+If this option is disabled then it is critical to ensure that only one archiver is writing to the repository via the <span class="cmd">archive-push</span> command.
+</div></div>
 <pre class="code-block">default: y
 example: archive-mode-check=n</pre>
 </div></div><div class="section2"><a id="section-backup/option-backup-standby"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -519,8 +527,8 @@ Page Checksums Option (<span class="id">--checksum-page</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Validate data page checksums.
 </div><div class="section-body-text">
-Directs <span class="backrest">pgBackRest</span> to validate all data page checksums while backing up a cluster. This option is automatically enabled when data page checksums are enabled on the cluster.<br/>
-<br/>
+Directs <span class="backrest">pgBackRest</span> to validate all data page checksums while backing up a cluster. This option is automatically enabled when data page checksums are enabled on the cluster.
+</div><div class="section-body-text">
 Failures in checksum validation will not abort a backup. Rather, warnings will be emitted in the log (and to the console with default settings) and the list of invalid pages will be stored in the backup manifest.
 </div>
 <pre class="code-block">example: checksum-page=n</pre>
@@ -529,13 +537,18 @@ Path/File Exclusions Option (<span class="id">--exclude</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Exclude paths/files from the backup.
 </div><div class="section-body-text">
-All exclusions are relative to <span class="path">$PGDATA</span>. If the exclusion ends with / then only files in the specified directory will be excluded, e.g. <span class="br-option">--exclude=junk/</span> will exclude all files in the <span class="path">$PGDATA/junk</span> directory but include the directory itself. If the exclusion does not end with / then the file may match the exclusion exactly or match with / appended to the exclusion, e.g. <span class="br-option">--exclude=junk</span> will exclude the <span class="path">$PGDATA/junk</span> directory and all the files it contains.<br/>
-<br/>
-<b>Be careful using this feature -- it is very easy to exclude something critical that will make the backup inconsistent. Be sure to test your restores!</b><br/>
-<br/>
-All excluded files will be logged at <span class="id">info</span> level along with the exclusion rule. Be sure to audit the list of excluded files to ensure nothing unexpected is being excluded.<br/>
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">Exclusions are not honored on delta restores. Any files/directories that were excluded by the backup will be <i>removed</i> on delta restore.</div></div>This option should not be used to exclude <span class="postgres">PostgreSQL</span> logs from a backup. Logs can be moved out of the <span class="id">PGDATA</span> directory using the <span class="postgres">PostgreSQL</span> <span class="br-setting">log_directory</span> setting, which has the benefit of allowing logs to be preserved after a restore.<br/>
-<br/>
+All exclusions are relative to <span class="path">$PGDATA</span>. If the exclusion ends with / then only files in the specified directory will be excluded, e.g. <span class="br-option">--exclude=junk/</span> will exclude all files in the <span class="path">$PGDATA/junk</span> directory but include the directory itself. If the exclusion does not end with / then the file may match the exclusion exactly or match with / appended to the exclusion, e.g. <span class="br-option">--exclude=junk</span> will exclude the <span class="path">$PGDATA/junk</span> directory and all the files it contains.
+</div><div class="section-body-text">
+<b>Be careful using this feature -- it is very easy to exclude something critical that will make the backup inconsistent. Be sure to test your restores!</b>
+</div><div class="section-body-text">
+All excluded files will be logged at <span class="id">info</span> level along with the exclusion rule. Be sure to audit the list of excluded files to ensure nothing unexpected is being excluded.
+</div><div class="admonition"><div class="note">
+NOTE:
+</div><div class="note-text">
+Exclusions are not honored on delta restores. Any files/directories that were excluded by the backup will be <i>removed</i> on delta restore.
+</div></div><div class="section-body-text">
+This option should not be used to exclude <span class="postgres">PostgreSQL</span> logs from a backup. Logs can be moved out of the <span class="id">PGDATA</span> directory using the <span class="postgres">PostgreSQL</span> <span class="br-setting">log_directory</span> setting, which has the benefit of allowing logs to be preserved after a restore.
+</div><div class="section-body-text">
 Multiple exclusions may be specified on the command-line or in a configuration file.
 </div>
 <pre class="code-block">example: exclude=junk/</pre>
@@ -563,8 +576,8 @@ Page Header Check Option (<span class="id">--page-header-check</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Check PostgreSQL page headers.
 </div><div class="section-body-text">
-Enabled by default, this option adds page header checks.<br/>
-<br/>
+Enabled by default, this option adds page header checks.
+</div><div class="section-body-text">
 Disabling this option should be avoided except when necessary, e.g. if pages are encrypted.
 </div>
 <pre class="code-block">default: y
@@ -592,27 +605,27 @@ Stop Auto Option (<span class="id">--stop-auto</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Stop prior failed backup on new backup.
 </div><div class="section-body-text">
-This will only be done if an exclusive advisory lock can be acquired to demonstrate that the prior failed backup process has really stopped.<br/>
-<br/>
-This feature relies on pg_is_in_backup() so only works on <span class="postgres">PostgreSQL</span> >= <span class="id">9.3</span>.<br/>
-<br/>
-This feature is not supported for <span class="postgres">PostgreSQL</span> >= <span class="id">9.6</span> since backups are run in non-exclusive mode.<br/>
-<br/>
+This will only be done if an exclusive advisory lock can be acquired to demonstrate that the prior failed backup process has really stopped.
+</div><div class="section-body-text">
+This feature relies on pg_is_in_backup() so only works on <span class="postgres">PostgreSQL</span> >= <span class="id">9.3</span>.
+</div><div class="section-body-text">
+This feature is not supported for <span class="postgres">PostgreSQL</span> >= <span class="id">9.6</span> since backups are run in non-exclusive mode.
+</div><div class="section-body-text">
 The setting is disabled by default because it assumes that <span class="backrest">pgBackRest</span> is the only process doing exclusive online backups. It depends on an advisory lock that only <span class="backrest">pgBackRest</span> sets so it may abort other processes that do exclusive online backups. Note that <span class="cmd">base_backup</span> and <span class="cmd">pg_dump</span> are safe to use with this setting because they do not call <span class="id">pg_start_backup()</span> so are not exclusive.
 </div>
 <pre class="code-block">default: n
 example: stop-auto=y</pre>
 </div></div></div></div><div class="section1"><a id="section-general"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 General Options
-</div></div><div class="section-intro">
+</div></div><div class="section-body"><div class="section-body-text">
 The <span class="br-setting">general</span> section defines options that are common for many commands.
-</div><div class="section-body"><div class="section2"><a id="section-general/option-buffer-size"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
+</div><div class="section2"><a id="section-general/option-buffer-size"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Buffer Size Option (<span class="id">--buffer-size</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Buffer size for I/O operations.
 </div><div class="section-body-text">
-Buffer size used for copy, compress, encrypt, and other operations. The number of buffers used depends on options and each operation may use additional memory, e.g. <span class="id">gz</span> compression may use an additional 256KiB of memory.<br/>
-<br/>
+Buffer size used for copy, compress, encrypt, and other operations. The number of buffers used depends on options and each operation may use additional memory, e.g. <span class="id">gz</span> compression may use an additional 256KiB of memory.
+</div><div class="section-body-text">
 Allowed values are <span class="id">16KiB</span>, <span class="id">32KiB</span>, <span class="id">64KiB</span>, <span class="id">128KiB</span>, <span class="id">256KiB</span>, <span class="id">512KiB</span>, <span class="id">1MiB</span>, <span class="id">2MiB</span>, <span class="id">4MiB</span>, <span class="id">8MiB</span>, and <span class="id">16MiB</span>.
 </div>
 <pre class="code-block">default: 1MiB
@@ -622,9 +635,12 @@ pgBackRest Command Option (<span class="id">--cmd</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 <span class="backrest">pgBackRest</span> command.
 </div><div class="section-body-text">
-<span class="backrest">pgBackRest</span> may generate a command string, e.g. when the <span class="cmd">restore</span> command generates the <span class="pg-setting">restore_command</span> setting. The command used to run the <span class="backrest">pgBackRest</span> process will be used in this case unless the <span class="br-option">cmd</span> option is provided.<br/>
-<div class="admonition"><div class="caution">CAUTION:</div><div class="caution-text">Wrapping the <span class="backrest">pgBackRest</span> command may cause unpredictable behavior and is not recommended.</div></div>
-</div>
+<span class="backrest">pgBackRest</span> may generate a command string, e.g. when the <span class="cmd">restore</span> command generates the <span class="pg-setting">restore_command</span> setting. The command used to run the <span class="backrest">pgBackRest</span> process will be used in this case unless the <span class="br-option">cmd</span> option is provided.
+</div><div class="admonition"><div class="caution">
+CAUTION:
+</div><div class="caution-text">
+Wrapping the <span class="backrest">pgBackRest</span> command may cause unpredictable behavior and is not recommended.
+</div></div>
 <pre class="code-block">example: cmd=/var/lib/pgsql/bin/pgbackrest_wrapper.sh</pre>
 </div></div><div class="section2"><a id="section-general/option-cmd-ssh"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 SSH Client Command Option (<span class="id">--cmd-ssh</span>)
@@ -640,8 +656,8 @@ Compress Option (<span class="id">--compress</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Use file compression.
 </div><div class="section-body-text">
-Backup files are compatible with command-line compression tools.<br/>
-<br/>
+Backup files are compatible with command-line compression tools.
+</div><div class="section-body-text">
 This option is now deprecated. The <span class="br-setting">compress-type</span> option should be used instead.
 </div>
 <pre class="code-block">default: y
@@ -651,11 +667,18 @@ Compress Level Option (<span class="id">--compress-level</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 File compression level.
 </div><div class="section-body-text">
-Sets the level to be used for file compression when <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> or <span class="br-setting">compress=y</span> (deprecated).<br/>
-<br/>
-The following are the defaults levels based on <span class="br-setting">compress-type</span> when <span class="br-setting">compress-level</span> is not specified:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">bz2</span> - 9</li><li class="list-unordered"><span class="id">gz</span> - 6</li><li class="list-unordered"><span class="id">lz4</span> - 1</li><li class="list-unordered"><span class="id">zst</span> - 3</li></ul>
-</div>
+Sets the level to be used for file compression when <span class="br-setting">compress-type</span> does not equal <span class="id">none</span> or <span class="br-setting">compress=y</span> (deprecated).
+</div><div class="section-body-text">
+The following are the defaults levels based on <span class="br-setting">compress-type</span> when <span class="br-setting">compress-level</span> is not specified:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">bz2</span> - 9
+</li><li class="list-unordered">
+<span class="id">gz</span> - 6
+</li><li class="list-unordered">
+<span class="id">lz4</span> - 1
+</li><li class="list-unordered">
+<span class="id">zst</span> - 3
+</li></ul>
 <pre class="code-block">example: compress-level=9</pre>
 </div></div><div class="section2"><a id="section-general/option-compress-level-network"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Network Compress Level Option (<span class="id">--compress-level-network</span>)
@@ -672,9 +695,18 @@ Compress Type Option (<span class="id">--compress-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 File compression type.
 </div><div class="section-body-text">
-The following compression types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">none</span> - no compression</li><li class="list-unordered"><span class="id">bz2</span> - bzip2 compression format</li><li class="list-unordered"><span class="id">gz</span> - gzip compression format</li><li class="list-unordered"><span class="id">lz4</span> - lz4 compression format (not available on all platforms)</li><li class="list-unordered"><span class="id">zst</span> - Zstandard compression format (not available on all platforms)</li></ul>
-</div>
+The following compression types are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">none</span> - no compression
+</li><li class="list-unordered">
+<span class="id">bz2</span> - bzip2 compression format
+</li><li class="list-unordered">
+<span class="id">gz</span> - gzip compression format
+</li><li class="list-unordered">
+<span class="id">lz4</span> - lz4 compression format (not available on all platforms)
+</li><li class="list-unordered">
+<span class="id">zst</span> - Zstandard compression format (not available on all platforms)
+</li></ul>
 <pre class="code-block">default: gz
 example: compress-type=none</pre>
 </div></div><div class="section2"><a id="section-general/option-config"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -700,8 +732,8 @@ Config Path Option (<span class="id">--config-path</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Base path of <span class="backrest">pgBackRest</span> configuration files.
 </div><div class="section-body-text">
-This setting is used to override the default base path setting for the <span class="br-option">--config</span> and <span class="br-option">--config-include-path</span> options unless they are explicitly set on the command-line.<br/>
-<br/>
+This setting is used to override the default base path setting for the <span class="br-option">--config</span> and <span class="br-option">--config-include-path</span> options unless they are explicitly set on the command-line.
+</div><div class="section-body-text">
 For example, passing only <span class="id">--config-path=/conf/pgbackrest</span> results in the <span class="br-option">--config</span> default being set to <span class="id">/conf/pgbackrest/pgbackrest.conf</span> and the <span class="br-option">--config-include-path</span> default being set to <span class="id">/conf/pgbackrest/conf.d</span>.
 </div>
 <pre class="code-block">default: CFGOPTDEF_CONFIG_PATH
@@ -711,9 +743,12 @@ Database Timeout Option (<span class="id">--db-timeout</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Database query timeout.
 </div><div class="section-body-text">
-Sets the timeout, in seconds, for queries against the database. This includes the backup start/stop functions which can each take a substantial amount of time. Because of this the timeout should be kept high unless you know that these functions will return quickly (i.e. if you have set <span class="br-setting">start-fast=y</span> and you know that the database cluster will not generate many WAL segments during the backup).<br/>
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">The <span class="br-option">db-timeout</span> option must be less than the <span class="br-option">protocol-timeout</span> option.</div></div>
-</div>
+Sets the timeout, in seconds, for queries against the database. This includes the backup start/stop functions which can each take a substantial amount of time. Because of this the timeout should be kept high unless you know that these functions will return quickly (i.e. if you have set <span class="br-setting">start-fast=y</span> and you know that the database cluster will not generate many WAL segments during the backup).
+</div><div class="admonition"><div class="note">
+NOTE:
+</div><div class="note-text">
+The <span class="br-option">db-timeout</span> option must be less than the <span class="br-option">protocol-timeout</span> option.
+</div></div>
 <pre class="code-block">default: 1800
 allowed: 0.1-604800
 example: db-timeout=600</pre>
@@ -722,8 +757,8 @@ Delta Option (<span class="id">--delta</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Restore or backup using checksums.
 </div><div class="section-body-text">
-During a restore, by default the <span class="postgres">PostgreSQL</span> data and tablespace directories are expected to be present but empty. This option performs a delta restore using checksums.<br/>
-<br/>
+During a restore, by default the <span class="postgres">PostgreSQL</span> data and tablespace directories are expected to be present but empty. This option performs a delta restore using checksums.
+</div><div class="section-body-text">
 During a backup, this option will use checksums instead of the timestamps to determine if files will be copied.
 </div>
 <pre class="code-block">default: n
@@ -742,8 +777,8 @@ I/O Timeout Option (<span class="id">--io-timeout</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 I/O timeout.
 </div><div class="section-body-text">
-Timeout, in seconds, used for connections and read/write operations.<br/>
-<br/>
+Timeout, in seconds, used for connections and read/write operations.
+</div><div class="section-body-text">
 Note that the entire read/write operation does not need to complete within this timeout but <i>some</i> progress must be made, even if it is only a single byte.
 </div>
 <pre class="code-block">default: 60
@@ -763,8 +798,8 @@ Neutral Umask Option (<span class="id">--neutral-umask</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Use a neutral umask.
 </div><div class="section-body-text">
-Sets the umask to 0000 so modes in the repository are created in a sensible way. The default directory mode is 0750 and default file mode is 0640. The lock and log directories set the directory and file mode to 0770 and 0660 respectively.<br/>
-<br/>
+Sets the umask to 0000 so modes in the repository are created in a sensible way. The default directory mode is 0750 and default file mode is 0640. The lock and log directories set the directory and file mode to 0770 and 0660 respectively.
+</div><div class="section-body-text">
 To use the executing user's umask instead specify <span class="br-setting">neutral-umask=n</span> in the config file or <span class="br-setting">--no-neutral-umask</span> on the command line.
 </div>
 <pre class="code-block">default: y
@@ -784,9 +819,12 @@ Protocol Timeout Option (<span class="id">--protocol-timeout</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Protocol timeout.
 </div><div class="section-body-text">
-Sets the timeout, in seconds, that the local or remote process will wait for a new message to be received on the protocol layer. This prevents processes from waiting indefinitely for a message.<br/>
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">The <span class="br-option">protocol-timeout</span> option must be greater than the <span class="br-option">db-timeout</span> option.</div></div>
-</div>
+Sets the timeout, in seconds, that the local or remote process will wait for a new message to be received on the protocol layer. This prevents processes from waiting indefinitely for a message.
+</div><div class="admonition"><div class="note">
+NOTE:
+</div><div class="note-text">
+The <span class="br-option">protocol-timeout</span> option must be greater than the <span class="br-option">db-timeout</span> option.
+</div></div>
 <pre class="code-block">default: 1830
 allowed: 0.1-604800
 example: protocol-timeout=630</pre>
@@ -813,14 +851,14 @@ Spool Path Option (<span class="id">--spool-path</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Path where transient data is stored.
 </div><div class="section-body-text">
-This path is used to store data for the asynchronous <span class="cmd">archive-push</span> and <span class="cmd">archive-get</span> command.<br/>
-<br/>
-The asynchronous <span class="cmd">archive-push</span> command writes acknowledgements into the spool path when it has successfully stored WAL in the archive (and errors on failure) so the foreground process can quickly notify <span class="postgres">PostgreSQL</span>. Acknowledgement files are very small (zero on success and a few hundred bytes on error).<br/>
-<br/>
-The asynchronous <span class="cmd">archive-get</span> command queues WAL in the spool path so it can be provided very quickly when <span class="postgres">PostgreSQL</span> requests it. Moving files to <span class="postgres">PostgreSQL</span> is most efficient when the spool path is on the same filesystem as <span class="path">pg_xlog</span>/<span class="path">pg_wal</span>.<br/>
-<br/>
-The data stored in the spool path is not strictly temporary since it can and should survive a reboot. However, loss of the data in the spool path is not a problem. <span class="backrest">pgBackRest</span> will simply recheck each WAL segment to ensure it is safely archived for <span class="cmd">archive-push</span> and rebuild the queue for <span class="cmd">archive-get</span>.<br/>
-<br/>
+This path is used to store data for the asynchronous <span class="cmd">archive-push</span> and <span class="cmd">archive-get</span> command.
+</div><div class="section-body-text">
+The asynchronous <span class="cmd">archive-push</span> command writes acknowledgements into the spool path when it has successfully stored WAL in the archive (and errors on failure) so the foreground process can quickly notify <span class="postgres">PostgreSQL</span>. Acknowledgement files are very small (zero on success and a few hundred bytes on error).
+</div><div class="section-body-text">
+The asynchronous <span class="cmd">archive-get</span> command queues WAL in the spool path so it can be provided very quickly when <span class="postgres">PostgreSQL</span> requests it. Moving files to <span class="postgres">PostgreSQL</span> is most efficient when the spool path is on the same filesystem as <span class="path">pg_xlog</span>/<span class="path">pg_wal</span>.
+</div><div class="section-body-text">
+The data stored in the spool path is not strictly temporary since it can and should survive a reboot. However, loss of the data in the spool path is not a problem. <span class="backrest">pgBackRest</span> will simply recheck each WAL segment to ensure it is safely archived for <span class="cmd">archive-push</span> and rebuild the queue for <span class="cmd">archive-get</span>.
+</div><div class="section-body-text">
 The spool path is intended to be located on a local Posix-compatible filesystem, not a remote filesystem such as <span class="host">NFS</span> or <span class="host">CIFS</span>.
 </div>
 <pre class="code-block">default: /var/spool/pgbackrest
@@ -830,8 +868,8 @@ Stanza Option (<span class="id">--stanza</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Defines the stanza.
 </div><div class="section-body-text">
-A stanza is the configuration for a <span class="postgres">PostgreSQL</span> database cluster that defines where it is located, how it will be backed up, archiving options, etc. Most db servers will only have one <span class="postgres">PostgreSQL</span> database cluster and therefore one stanza, whereas backup servers will have a stanza for every database cluster that needs to be backed up.<br/>
-<br/>
+A stanza is the configuration for a <span class="postgres">PostgreSQL</span> database cluster that defines where it is located, how it will be backed up, archiving options, etc. Most db servers will only have one <span class="postgres">PostgreSQL</span> database cluster and therefore one stanza, whereas backup servers will have a stanza for every database cluster that needs to be backed up.
+</div><div class="section-body-text">
 It is tempting to name the stanza after the primary cluster but a better name describes the databases contained in the cluster. Because the stanza name will be used for the primary and all replicas it is more appropriate to choose a name that describes the actual function of the cluster, such as app or dw, rather than the local cluster name, such as main or prod.
 </div>
 <pre class="code-block">example: stanza=main</pre>
@@ -840,8 +878,8 @@ Keep Alive Count Option (<span class="id">--tcp-keep-alive-count</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Keep-alive count.
 </div><div class="section-body-text">
-Specifies the number of TCP keep-alive messages that can be lost before the connection is considered dead.<br/>
-<br/>
+Specifies the number of TCP keep-alive messages that can be lost before the connection is considered dead.
+</div><div class="section-body-text">
 This option is available on systems that support the <span class="id">TCP_KEEPCNT</span> socket option.
 </div>
 <pre class="code-block">allowed: 1-32
@@ -851,8 +889,8 @@ Keep Alive Idle Option (<span class="id">--tcp-keep-alive-idle</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Keep-alive idle time.
 </div><div class="section-body-text">
-Specifies the amount of time (in seconds) with no network activity after which the operating system should send a TCP keep-alive message.<br/>
-<br/>
+Specifies the amount of time (in seconds) with no network activity after which the operating system should send a TCP keep-alive message.
+</div><div class="section-body-text">
 This option is available on systems that support the <span class="id">TCP_KEEPIDLE</span> socket option.
 </div>
 <pre class="code-block">allowed: 1-3600
@@ -862,25 +900,41 @@ Keep Alive Interval Option (<span class="id">--tcp-keep-alive-interval</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Keep-alive interval time.
 </div><div class="section-body-text">
-Specifies the amount of time (in seconds) after which a TCP keep-alive message that has not been acknowledged should be retransmitted.<br/>
-<br/>
+Specifies the amount of time (in seconds) after which a TCP keep-alive message that has not been acknowledged should be retransmitted.
+</div><div class="section-body-text">
 This option is available on systems that support the <span class="id">TCP_KEEPINTVL</span> socket option.
 </div>
 <pre class="code-block">allowed: 1-900
 example: tcp-keep-alive-interval=30</pre>
 </div></div></div></div><div class="section1"><a id="section-log"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Log Options
-</div></div><div class="section-intro">
-The <span class="br-setting">log</span> section defines logging-related settings.<br/>
-<div class="admonition"><div class="caution">CAUTION:</div><div class="caution-text">Trace-level logging may expose secrets such as keys and passwords. Use with caution!</div></div>
-</div><div class="section-body"><div class="section2"><a id="section-log/option-log-level-console"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
+</div></div><div class="section-body"><div class="section-body-text">
+The <span class="br-setting">log</span> section defines logging-related settings.
+</div><div class="admonition"><div class="caution">
+CAUTION:
+</div><div class="caution-text">
+Trace-level logging may expose secrets such as keys and passwords. Use with caution!
+</div></div><div class="section2"><a id="section-log/option-log-level-console"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Console Log Level Option (<span class="id">--log-level-console</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Level for console logging.
 </div><div class="section-body-text">
-The following log levels are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
-</div>
+The following log levels are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">off</span> - No logging at all (not recommended)
+</li><li class="list-unordered">
+<span class="id">error</span> - Log only errors
+</li><li class="list-unordered">
+<span class="id">warn</span> - Log warnings and errors
+</li><li class="list-unordered">
+<span class="id">info</span> - Log info, warnings, and errors
+</li><li class="list-unordered">
+<span class="id">detail</span> - Log detail, info, warnings, and errors
+</li><li class="list-unordered">
+<span class="id">debug</span> - Log debug, detail, info, warnings, and errors
+</li><li class="list-unordered">
+<span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors
+</li></ul>
 <pre class="code-block">default: warn
 example: log-level-console=error</pre>
 </div></div><div class="section2"><a id="section-log/option-log-level-file"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -888,9 +942,22 @@ File Log Level Option (<span class="id">--log-level-file</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Level for file logging.
 </div><div class="section-body-text">
-The following log levels are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
-</div>
+The following log levels are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">off</span> - No logging at all (not recommended)
+</li><li class="list-unordered">
+<span class="id">error</span> - Log only errors
+</li><li class="list-unordered">
+<span class="id">warn</span> - Log warnings and errors
+</li><li class="list-unordered">
+<span class="id">info</span> - Log info, warnings, and errors
+</li><li class="list-unordered">
+<span class="id">detail</span> - Log detail, info, warnings, and errors
+</li><li class="list-unordered">
+<span class="id">debug</span> - Log debug, detail, info, warnings, and errors
+</li><li class="list-unordered">
+<span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors
+</li></ul>
 <pre class="code-block">default: info
 example: log-level-file=debug</pre>
 </div></div><div class="section2"><a id="section-log/option-log-level-stderr"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -898,11 +965,24 @@ Std Error Log Level Option (<span class="id">--log-level-stderr</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Level for stderr logging.
 </div><div class="section-body-text">
-Specifies which log levels will output to <span class="id">stderr</span> rather than <span class="id">stdout</span> (specified by <span class="br-option">log-level-console</span>). The timestamp and process will not be output to <span class="id">stderr</span>.<br/>
-<br/>
-The following log levels are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - No logging at all (not recommended)</li><li class="list-unordered"><span class="id">error</span> - Log only errors</li><li class="list-unordered"><span class="id">warn</span> - Log warnings and errors</li><li class="list-unordered"><span class="id">info</span> - Log info, warnings, and errors</li><li class="list-unordered"><span class="id">detail</span> - Log detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">debug</span> - Log debug, detail, info, warnings, and errors</li><li class="list-unordered"><span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors</li></ul>
-</div>
+Specifies which log levels will output to <span class="id">stderr</span> rather than <span class="id">stdout</span> (specified by <span class="br-option">log-level-console</span>). The timestamp and process will not be output to <span class="id">stderr</span>.
+</div><div class="section-body-text">
+The following log levels are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">off</span> - No logging at all (not recommended)
+</li><li class="list-unordered">
+<span class="id">error</span> - Log only errors
+</li><li class="list-unordered">
+<span class="id">warn</span> - Log warnings and errors
+</li><li class="list-unordered">
+<span class="id">info</span> - Log info, warnings, and errors
+</li><li class="list-unordered">
+<span class="id">detail</span> - Log detail, info, warnings, and errors
+</li><li class="list-unordered">
+<span class="id">debug</span> - Log debug, detail, info, warnings, and errors
+</li><li class="list-unordered">
+<span class="id">trace</span> - Log trace (very verbose debugging), debug, info, warnings, and errors
+</li></ul>
 <pre class="code-block">default: warn
 example: log-level-stderr=error</pre>
 </div></div><div class="section2"><a id="section-log/option-log-path"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -934,19 +1014,19 @@ Enables the timestamp in console and file logging. This option is disabled in sp
 example: log-timestamp=n</pre>
 </div></div></div></div><div class="section1"><a id="section-repository"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Repository Options
-</div></div><div class="section-intro">
-The <span class="br-setting">repository</span> section defines options used to configure the repository.<br/>
-<br/>
-<b>Indexing</b>: All <span class="br-setting">repo-</span> options are indexed to allow for configuring multiple repositories. For example, a single repository is configured with the <span class="br-setting">repo1-path</span>, <span class="br-setting">repo1-host</span>, etc. options. If there is more than one repository configured and the <span class="br-option">--repo</span> option is not specified for a command, the repositories will be acted upon in highest priority order (e.g. repo1 then repo2).<br/>
-<br/>
+</div></div><div class="section-body"><div class="section-body-text">
+The <span class="br-setting">repository</span> section defines options used to configure the repository.
+</div><div class="section-body-text">
+<b>Indexing</b>: All <span class="br-setting">repo-</span> options are indexed to allow for configuring multiple repositories. For example, a single repository is configured with the <span class="br-setting">repo1-path</span>, <span class="br-setting">repo1-host</span>, etc. options. If there is more than one repository configured and the <span class="br-option">--repo</span> option is not specified for a command, the repositories will be acted upon in highest priority order (e.g. repo1 then repo2).
+</div><div class="section-body-text">
 The <span class="br-setting">repo-retention-*</span> options define how long backups will be retained. Expiration only occurs when the count of complete backups exceeds the allowed retention. In other words, if <span class="br-setting">repo1-retention-full-type</span> is set to <span class="br-setting">count</span> (default) and <span class="br-setting">repo1-retention-full</span> is set to 2, then there must be 3 complete backups before the oldest will be expired. If <span class="br-setting">repo1-retention-full-type</span> is set to <span class="br-setting">time</span> then <span class="br-setting">repo1-retention-full</span> represents days so there must be at least that many days worth of full backups before expiration can occur. Make sure you always have enough space for retention + 1 backups.
-</div><div class="section-body"><div class="section2"><a id="section-repository/option-repo"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
+</div><div class="section2"><a id="section-repository/option-repo"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Set Repository Option (<span class="id">--repo</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Set repository.
 </div><div class="section-body-text">
-Set the repository for a command to operate on.<br/>
-<br/>
+Set the repository for a command to operate on.
+</div><div class="section-body-text">
 For example, this option may be used to perform a restore from a specific repository, rather than letting <span class="backrest">pgBackRest</span> choose.
 </div>
 <pre class="code-block">allowed: 1-256
@@ -964,8 +1044,8 @@ Azure Repository Container Option (<span class="id">--repo-azure-container</span
 </div></div><div class="section-body"><div class="section-body-text">
 Azure repository container.
 </div><div class="section-body-text">
-Azure container used to store the repository.<br/>
-<br/>
+Azure container used to store the repository.
+</div><div class="section-body-text">
 <span class="backrest">pgBackRest</span> repositories can be stored in the container root by setting <span class="br-option">repo-path=/</span> but it is usually best to specify a prefix, such as <span class="path">/repo</span>, so logs and other Azure-generated content can also be stored in the container.
 </div>
 <pre class="code-block">example: repo1-azure-container=pg-backup</pre>
@@ -974,8 +1054,8 @@ Azure Repository Endpoint Option (<span class="id">--repo-azure-endpoint</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Azure repository endpoint.
 </div><div class="section-body-text">
-Endpoint used to connect to the blob service. The default is generally correct unless using Azure Government.<br/>
-<br/>
+Endpoint used to connect to the blob service. The default is generally correct unless using Azure Government.
+</div><div class="section-body-text">
 For custom/test configurations the <span class="br-setting">repo-storage-ca-file</span>, <span class="br-setting">repo-storage-ca-path</span>, <span class="br-setting">repo-storage-host</span>, <span class="br-setting">repo-storage-port</span>, and <span class="br-setting">repo-storage-verify-tls</span> options may be useful.
 </div>
 <pre class="code-block">default: blob.core.windows.net
@@ -993,9 +1073,12 @@ Azure Repository Key Type Option (<span class="id">--repo-azure-key-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Azure repository key type.
 </div><div class="section-body-text">
-The following types are supported for authorization:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">shared</span> - Shared key</li><li class="list-unordered"><span class="id">sas</span> - Shared access signature</li></ul>
-</div>
+The following types are supported for authorization:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">shared</span> - Shared key
+</li><li class="list-unordered">
+<span class="id">sas</span> - Shared access signature
+</li></ul>
 <pre class="code-block">default: shared
 example: repo1-azure-key-type=sas</pre>
 </div></div><div class="section2"><a id="section-repository/option-repo-azure-uri-style"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -1003,9 +1086,12 @@ Azure Repository URI Style Option (<span class="id">--repo-azure-uri-style</span
 </div></div><div class="section-body"><div class="section-body-text">
 Azure URI Style.
 </div><div class="section-body-text">
-The following URI styles are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">host</span> - Connect to <span class="id">account.endpoint</span> host.</li><li class="list-unordered"><span class="id">path</span> - Connect to <span class="id">endpoint</span> host and prepend account to URIs.</li></ul>
-</div>
+The following URI styles are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">host</span> - Connect to <span class="id">account.endpoint</span> host.
+</li><li class="list-unordered">
+<span class="id">path</span> - Connect to <span class="id">endpoint</span> host and prepend account to URIs.
+</li></ul>
 <pre class="code-block">default: host
 example: repo1-azure-uri-style=path</pre>
 </div></div><div class="section2"><a id="section-repository/option-repo-block"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -1013,9 +1099,14 @@ Block Incremental Backup Option (<span class="id">--repo-block</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Enable block incremental backup.
 </div><div class="section-body-text">
-Block incremental allows for more granular backups by splitting files into blocks that can be backed up independently. This saves space in the repository and can improve delta restore performance because individual blocks can be fetched without reading the entire file from the repository.<br/>
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">The <span class="br-option">repo-bundle</span> option must be enabled before <span class="br-option">repo-block</span> can be enabled.</div></div>The block size for a file is determined based on the file size and age. Generally, older/larger files will get larger block sizes. If a file is old enough, it will not be backed up using block incremental.<br/>
-<br/>
+Block incremental allows for more granular backups by splitting files into blocks that can be backed up independently. This saves space in the repository and can improve delta restore performance because individual blocks can be fetched without reading the entire file from the repository.
+</div><div class="admonition"><div class="note">
+NOTE:
+</div><div class="note-text">
+The <span class="br-option">repo-bundle</span> option must be enabled before <span class="br-option">repo-block</span> can be enabled.
+</div></div><div class="section-body-text">
+The block size for a file is determined based on the file size and age. Generally, older/larger files will get larger block sizes. If a file is old enough, it will not be backed up using block incremental.
+</div><div class="section-body-text">
 Block incremental is most efficient when enabled for all backup types, including full. This makes the full a bit larger but subsequent differential and incremental backups can make use of the block maps generated by the full backup to save space.
 </div>
 <pre class="code-block">default: n
@@ -1034,8 +1125,8 @@ Repository Bundle Limit Option (<span class="id">--repo-bundle-limit</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Limit for file bundles.
 </div><div class="section-body-text">
-Size limit for files that will be included in bundles. Files larger than this size will be stored separately.<br/>
-<br/>
+Size limit for files that will be included in bundles. Files larger than this size will be stored separately.
+</div><div class="section-body-text">
 Bundled files cannot be reused when a backup is resumed, so this option controls the files that can be resumed, i.e. higher values result in fewer resumable files.
 </div>
 <pre class="code-block">default: 2MiB
@@ -1046,8 +1137,8 @@ Repository Bundle Size Option (<span class="id">--repo-bundle-size</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Target size for file bundles.
 </div><div class="section-body-text">
-Defines the total size of files that will be added to a single bundle. Most bundles will be smaller than this size but it is possible that some will be slightly larger, so do not set this option to the maximum size that your file system allows.<br/>
-<br/>
+Defines the total size of files that will be added to a single bundle. Most bundles will be smaller than this size but it is possible that some will be slightly larger, so do not set this option to the maximum size that your file system allows.
+</div><div class="section-body-text">
 In general, it is not a good idea to set this option too high because retries will need to redo the entire bundle.
 </div>
 <pre class="code-block">default: 20MiB
@@ -1066,8 +1157,13 @@ Repository Cipher Type Option (<span class="id">--repo-cipher-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Cipher used to encrypt the repository.
 </div><div class="section-body-text">
-The following cipher types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">none</span> - The repository is not encrypted</li><li class="list-unordered"><span class="id">aes-256-cbc</span> - Advanced Encryption Standard with 256 bit key length</li></ul>Note that encryption is always performed client-side even if the repository type (e.g. S3) supports encryption.
+The following cipher types are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">none</span> - The repository is not encrypted
+</li><li class="list-unordered">
+<span class="id">aes-256-cbc</span> - Advanced Encryption Standard with 256 bit key length
+</li></ul><div class="section-body-text">
+Note that encryption is always performed client-side even if the repository type (e.g. S3) supports encryption.
 </div>
 <pre class="code-block">default: none
 example: repo1-cipher-type=aes-256-cbc</pre>
@@ -1076,8 +1172,8 @@ GCS Repository Bucket Option (<span class="id">--repo-gcs-bucket</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 GCS repository bucket.
 </div><div class="section-body-text">
-GCS bucket used to store the repository.<br/>
-<br/>
+GCS bucket used to store the repository.
+</div><div class="section-body-text">
 <span class="backrest">pgBackRest</span> repositories can be stored in the bucket root by setting <span class="br-option">repo-path=/</span> but it is usually best to specify a prefix, such as <span class="path">/repo</span>, so logs and other GCS-generated content can also be stored in the bucket.
 </div>
 <pre class="code-block">example: repo1-gcs-bucket=/pg-backup</pre>
@@ -1103,8 +1199,15 @@ GCS Repository Key Type Option (<span class="id">--repo-gcs-key-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 GCS repository key type.
 </div><div class="section-body-text">
-The following types are supported for authorization:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">auto</span> - Authorize using the instance service account.</li><li class="list-unordered"><span class="id">service</span> - Service account from locally stored key.</li><li class="list-unordered"><span class="id">token</span> - For local testing, e.g. <span class="file">fakegcs</span>.</li></ul>When <span class="br-option">repo-gcs-key-type=service</span> the credentials will be reloaded when the authentication token is renewed.
+The following types are supported for authorization:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">auto</span> - Authorize using the instance service account.
+</li><li class="list-unordered">
+<span class="id">service</span> - Service account from locally stored key.
+</li><li class="list-unordered">
+<span class="id">token</span> - For local testing, e.g. <span class="file">fakegcs</span>.
+</li></ul><div class="section-body-text">
+When <span class="br-option">repo-gcs-key-type=service</span> the credentials will be reloaded when the authentication token is renewed.
 </div>
 <pre class="code-block">default: service
 example: repo1-gcs-key-type=auto</pre>
@@ -1216,9 +1319,12 @@ Repository Host Protocol Type Option (<span class="id">--repo-host-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository host protocol type.
 </div><div class="section-body-text">
-The following protocol types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">ssh</span> - Secure Shell.</li><li class="list-unordered"><span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.</li></ul>
-</div>
+The following protocol types are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">ssh</span> - Secure Shell.
+</li><li class="list-unordered">
+<span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.
+</li></ul>
 <pre class="code-block">default: ssh
 example: repo1-host-type=tls</pre>
 </div></div><div class="section2"><a id="section-repository/option-repo-host-user"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -1237,8 +1343,8 @@ Repository Path Option (<span class="id">--repo-path</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Path where backups and archive are stored.
 </div><div class="section-body-text">
-The repository is where <span class="backrest">pgBackRest</span> stores backups and archives WAL segments.<br/>
-<br/>
+The repository is where <span class="backrest">pgBackRest</span> stores backups and archives WAL segments.
+</div><div class="section-body-text">
 It may be difficult to estimate in advance how much space you'll need. The best thing to do is take some backups then record the size of different types of backups (full/incr/diff) and measure the amount of WAL generated per day. This will give you a general idea of how much space you'll need, though of course requirements will likely change over time as your database evolves.
 </div>
 <pre class="code-block">default: /var/lib/pgbackrest
@@ -1247,9 +1353,13 @@ example: repo1-path=/backup/db/backrest</pre>
 Archive Retention Option (<span class="id">--repo-retention-archive</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Number of backups worth of continuous WAL to retain.
+</div><div class="admonition"><div class="note">
+NOTE:
+</div><div class="note-text">
+WAL segments required to make a backup consistent are always retained until the backup is expired regardless of how this option is configured.
+</div></div><div class="section-body-text">
+If this value is not set and <span class="br-setting">repo-retention-full-type</span> is <span class="br-setting">count</span> (default), then the archive to expire will default to the <span class="br-setting">repo-retention-full</span> (or <span class="br-setting">repo-retention-diff</span>) value corresponding to the <span class="br-setting">repo-retention-archive-type</span> if set to <span class="br-setting">full</span> (or <span class="br-setting">diff</span>). This will ensure that WAL is only expired for backups that are already expired. If <span class="br-setting">repo-retention-full-type</span> is <span class="br-setting">time</span>, then this value will default to removing archives that are earlier than the oldest full backup retained after satisfying the <span class="br-setting">repo-retention-full</span> setting.
 </div><div class="section-body-text">
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">WAL segments required to make a backup consistent are always retained until the backup is expired regardless of how this option is configured.</div></div>If this value is not set and <span class="br-setting">repo-retention-full-type</span> is <span class="br-setting">count</span> (default), then the archive to expire will default to the <span class="br-setting">repo-retention-full</span> (or <span class="br-setting">repo-retention-diff</span>) value corresponding to the <span class="br-setting">repo-retention-archive-type</span> if set to <span class="br-setting">full</span> (or <span class="br-setting">diff</span>). This will ensure that WAL is only expired for backups that are already expired. If <span class="br-setting">repo-retention-full-type</span> is <span class="br-setting">time</span>, then this value will default to removing archives that are earlier than the oldest full backup retained after satisfying the <span class="br-setting">repo-retention-full</span> setting.<br/>
-<br/>
 This option must be set if <span class="br-setting">repo-retention-archive-type</span> is set to <span class="br-setting">incr</span>. If disk space is at a premium, then this setting, in conjunction with <span class="br-setting">repo-retention-archive-type</span>, can be used to aggressively expire WAL segments. However, doing so negates the ability to perform PITR from the backups with expired WAL and is therefore <b>not</b> recommended.
 </div>
 <pre class="code-block">allowed: 1-9999999
@@ -1303,10 +1413,10 @@ Backup History Retention Option (<span class="id">--repo-retention-history</span
 </div></div><div class="section-body"><div class="section-body-text">
 Days of backup history manifests to retain.
 </div><div class="section-body-text">
-A copy of the backup manifest is stored in the <span class="path">backup.history</span> path when a backup completes. By default these files are never expired since they are useful for data mining, e.g. measuring backup and WAL growth over time.<br/>
-<br/>
-Set <span class="br-setting">repo-retention-history</span> to define the number of days of backup history manifests to retain. Unexpired backups are always kept in the backup history. Specify <span class="br-option">repo-retention-history=0</span> to retain the backup history only for unexpired backups.<br/>
-<br/>
+A copy of the backup manifest is stored in the <span class="path">backup.history</span> path when a backup completes. By default these files are never expired since they are useful for data mining, e.g. measuring backup and WAL growth over time.
+</div><div class="section-body-text">
+Set <span class="br-setting">repo-retention-history</span> to define the number of days of backup history manifests to retain. Unexpired backups are always kept in the backup history. Specify <span class="br-option">repo-retention-history=0</span> to retain the backup history only for unexpired backups.
+</div><div class="section-body-text">
 When a full backup history manifest is expired, all differential and incremental backup history manifests associated with the full backup also expire.
 </div>
 <pre class="code-block">allowed: 0-9999999
@@ -1316,8 +1426,8 @@ S3 Repository Bucket Option (<span class="id">--repo-s3-bucket</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 S3 repository bucket.
 </div><div class="section-body-text">
-S3 bucket used to store the repository.<br/>
-<br/>
+S3 bucket used to store the repository.
+</div><div class="section-body-text">
 <span class="backrest">pgBackRest</span> repositories can be stored in the bucket root by setting <span class="br-option">repo-path=/</span> but it is usually best to specify a prefix, such as <span class="path">/repo</span>, so logs and other AWS generated content can also be stored in the bucket.
 </div>
 <pre class="code-block">example: repo1-s3-bucket=pg-backup</pre>
@@ -1326,8 +1436,8 @@ S3 Repository Endpoint Option (<span class="id">--repo-s3-endpoint</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 S3 repository endpoint.
 </div><div class="section-body-text">
-The AWS endpoint should be valid for the selected region.<br/>
-<br/>
+The AWS endpoint should be valid for the selected region.
+</div><div class="section-body-text">
 For custom/test configurations the <span class="br-setting">repo-storage-ca-file</span>, <span class="br-setting">repo-storage-ca-path</span>, <span class="br-setting">repo-storage-host</span>, <span class="br-setting">repo-storage-port</span>, and <span class="br-setting">repo-storage-verify-tls</span> options may be useful.
 </div>
 <pre class="code-block">example: repo1-s3-endpoint=s3.amazonaws.com</pre>
@@ -1352,9 +1462,14 @@ S3 Repository Key Type Option (<span class="id">--repo-s3-key-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 S3 repository key type.
 </div><div class="section-body-text">
-The following types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">shared</span> - Shared keys</li><li class="list-unordered"><span class="id">auto</span> - Automatically retrieve temporary credentials</li><li class="list-unordered"><span class="id">web-id</span> - Automatically retrieve web identity credentials</li></ul>
-</div>
+The following types are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">shared</span> - Shared keys
+</li><li class="list-unordered">
+<span class="id">auto</span> - Automatically retrieve temporary credentials
+</li><li class="list-unordered">
+<span class="id">web-id</span> - Automatically retrieve web identity credentials
+</li></ul>
 <pre class="code-block">default: shared
 example: repo1-s3-key-type=auto</pre>
 </div></div><div class="section2"><a id="section-repository/option-repo-s3-kms-key-id"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -1394,9 +1509,12 @@ S3 Repository URI Style Option (<span class="id">--repo-s3-uri-style</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 S3 URI Style.
 </div><div class="section-body-text">
-The following URI styles are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">host</span> - Connect to <span class="id">bucket.endpoint</span> host.</li><li class="list-unordered"><span class="id">path</span> - Connect to <span class="id">endpoint</span> host and prepend bucket to URIs.</li></ul>
-</div>
+The following URI styles are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">host</span> - Connect to <span class="id">bucket.endpoint</span> host.
+</li><li class="list-unordered">
+<span class="id">path</span> - Connect to <span class="id">endpoint</span> host and prepend bucket to URIs.
+</li></ul>
 <pre class="code-block">default: host
 example: repo1-s3-uri-style=path</pre>
 </div></div><div class="section2"><a id="section-repository/option-repo-sftp-host"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -1420,9 +1538,16 @@ SFTP Host Key Check Type Option (<span class="id">--repo-sftp-host-key-check-typ
 </div></div><div class="section-body"><div class="section-body-text">
 SFTP host key check type.
 </div><div class="section-body-text">
-The following SFTP host key check types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">strict</span> - <span class="backrest">pgBackRest</span> will never automatically add host keys to the ~/.ssh/known_hosts file, and refuses to connect to hosts whose host key has changed or is not found in the known hosts files. This option forces the user to manually add all new hosts.</li><li class="list-unordered"><span class="id">accept-new</span> - <span class="backrest">pgBackRest</span> will automatically add new host keys to the user's known hosts file, but will not permit connections to hosts with changed host keys.</li><li class="list-unordered"><span class="id">fingerprint</span> - <span class="backrest">pgBackRest</span> will check the host key against the fingerprint specified by the <span class="br-option">repo-sftp-host-fingerprint</span> option.</li><li class="list-unordered"><span class="id">none</span> - no host key checking will be performed.</li></ul>
-</div>
+The following SFTP host key check types are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">strict</span> - <span class="backrest">pgBackRest</span> will never automatically add host keys to the ~/.ssh/known_hosts file, and refuses to connect to hosts whose host key has changed or is not found in the known hosts files. This option forces the user to manually add all new hosts.
+</li><li class="list-unordered">
+<span class="id">accept-new</span> - <span class="backrest">pgBackRest</span> will automatically add new host keys to the user's known hosts file, but will not permit connections to hosts with changed host keys.
+</li><li class="list-unordered">
+<span class="id">fingerprint</span> - <span class="backrest">pgBackRest</span> will check the host key against the fingerprint specified by the <span class="br-option">repo-sftp-host-fingerprint</span> option.
+</li><li class="list-unordered">
+<span class="id">none</span> - no host key checking will be performed.
+</li></ul>
 <pre class="code-block">default: strict
 example: repo1-sftp-host-key-check-type=accept-new</pre>
 </div></div><div class="section2"><a id="section-repository/option-repo-sftp-host-key-hash-type"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -1530,8 +1655,8 @@ Repository Storage Tag Option (<span class="id">--repo-storage-tag</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Repository storage tag(s).
 </div><div class="section-body-text">
-Specify tags that will be added to objects when the repository is an object store (e.g. S3). The option can be repeated to add multiple tags.<br/>
-<br/>
+Specify tags that will be added to objects when the repository is an object store (e.g. S3). The option can be repeated to add multiple tags.
+</div><div class="section-body-text">
 There is no provision in <span class="backrest">pgBackRest</span> to modify these tags so be sure to set them correctly before running <span class="cmd">stanza-create</span> to ensure uniform tags across the entire repository.
 </div>
 <pre class="code-block">example: repo1-storage-tag=key1=value1</pre>
@@ -1540,12 +1665,19 @@ Repository Storage Upload Chunk Size Option (<span class="id">--repo-storage-upl
 </div></div><div class="section-body"><div class="section-body-text">
 Repository storage upload chunk size.
 </div><div class="section-body-text">
-Object stores such as S3 allow files to be uploaded in chunks when the file is too large to be stored in memory. Even if the file can be stored in memory, it is more memory efficient to limit the amount of memory used for uploads.<br/>
-<br/>
-A larger chunk size will generally lead to better performance because it will minimize upload requests and allow more files to be uploaded in a single request rather than in chunks. The disadvantage is that memory usage will be higher and because the chunk buffer must be allocated per process, larger <span class="br-option">process-max</span> values will lead to more memory being consumed overall.<br/>
-<br/>
-Default chunk sizes by repo type:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">azure</span> - 4MiB</li><li class="list-unordered"><span class="id">gcs</span> - 4MiB</li><li class="list-unordered"><span class="id">s3</span> - 5MiB</li></ul>Note that valid chunk sizes vary by storage type and by platform. For example, <span class="host">AWS S3</span> has a minimum chunk size of 5MiB but <span class="host">S3</span> clones may accept lower values. Terminology for chunk size varies by storage type, so when searching min/max values use <q>part size</q> for <span class="host">AWS S3</span>, <q>chunk size</q> for <span class="host">GCS</span>, and <q>block size</q> for <span class="host">Azure</span>. No attempt is made to validate configured chunk sizes so selecting an invalid value will lead to errors from the storage service or undefined behavior.
+Object stores such as S3 allow files to be uploaded in chunks when the file is too large to be stored in memory. Even if the file can be stored in memory, it is more memory efficient to limit the amount of memory used for uploads.
+</div><div class="section-body-text">
+A larger chunk size will generally lead to better performance because it will minimize upload requests and allow more files to be uploaded in a single request rather than in chunks. The disadvantage is that memory usage will be higher and because the chunk buffer must be allocated per process, larger <span class="br-option">process-max</span> values will lead to more memory being consumed overall.
+</div><div class="section-body-text">
+Default chunk sizes by repo type:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">azure</span> - 4MiB
+</li><li class="list-unordered">
+<span class="id">gcs</span> - 4MiB
+</li><li class="list-unordered">
+<span class="id">s3</span> - 5MiB
+</li></ul><div class="section-body-text">
+Note that valid chunk sizes vary by storage type and by platform. For example, <span class="host">AWS S3</span> has a minimum chunk size of 5MiB but <span class="host">S3</span> clones may accept lower values. Terminology for chunk size varies by storage type, so when searching min/max values use <q>part size</q> for <span class="host">AWS S3</span>, <q>chunk size</q> for <span class="host">GCS</span>, and <q>block size</q> for <span class="host">Azure</span>. No attempt is made to validate configured chunk sizes so selecting an invalid value will lead to errors from the storage service or undefined behavior.
 </div>
 <pre class="code-block">allowed: 64KiB-1TiB
 example: repo1-storage-upload-chunk-size=16MiB</pre>
@@ -1565,24 +1697,42 @@ Repository Type Option (<span class="id">--repo-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Type of storage used for the repository.
 </div><div class="section-body-text">
-The following repository types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">azure</span> - Azure Blob Storage Service</li><li class="list-unordered"><span class="id">cifs</span> - Like <span class="id">posix</span>, but disables links and directory fsyncs</li><li class="list-unordered"><span class="id">gcs</span> - Google Cloud Storage</li><li class="list-unordered"><span class="id">posix</span> - Posix-compliant file systems</li><li class="list-unordered"><span class="id">s3</span> - AWS Simple Storage Service</li><li class="list-unordered"><span class="id">sftp</span> - Secure File Transfer Protocol</li></ul>When an <span class="host">NFS</span> mount is used as a <span class="id">posix</span> repository, the same rules apply to <span class="backrest">pgBackRest</span> as described in the <span class="postgres">PostgreSQL</span> documentation: <a href="https://www.postgresql.org/docs/current/creating-cluster.html#CREATING-CLUSTER-FILESYSTEM">Creating a Database Cluster - File Systems</a>.
+The following repository types are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">azure</span> - Azure Blob Storage Service
+</li><li class="list-unordered">
+<span class="id">cifs</span> - Like <span class="id">posix</span>, but disables links and directory fsyncs
+</li><li class="list-unordered">
+<span class="id">gcs</span> - Google Cloud Storage
+</li><li class="list-unordered">
+<span class="id">posix</span> - Posix-compliant file systems
+</li><li class="list-unordered">
+<span class="id">s3</span> - AWS Simple Storage Service
+</li><li class="list-unordered">
+<span class="id">sftp</span> - Secure File Transfer Protocol
+</li></ul><div class="section-body-text">
+When an <span class="host">NFS</span> mount is used as a <span class="id">posix</span> repository, the same rules apply to <span class="backrest">pgBackRest</span> as described in the <span class="postgres">PostgreSQL</span> documentation: <a href="https://www.postgresql.org/docs/current/creating-cluster.html#CREATING-CLUSTER-FILESYSTEM">Creating a Database Cluster - File Systems</a>.
 </div>
 <pre class="code-block">default: posix
 example: repo1-type=cifs</pre>
 </div></div></div></div><div class="section1"><a id="section-restore"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Restore Options
-</div></div><div class="section-intro">
+</div></div><div class="section-body"><div class="section-body-text">
 The <span class="br-setting">restore</span> section defines settings used for restoring backups.
-</div><div class="section-body"><div class="section2"><a id="section-restore/option-archive-mode"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
+</div><div class="section2"><a id="section-restore/option-archive-mode"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Archive Mode Option (<span class="id">--archive-mode</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Preserve or disable archiving on restored cluster.
 </div><div class="section-body-text">
-This option allows archiving to be preserved or disabled on a restored cluster. This is useful when the cluster must be promoted to do some work but is not intended to become the new primary. In this case it is not a good idea to push WAL from the cluster into the repository.<br/>
-<br/>
-The following modes are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">off</span> - disable archiving by setting <span class="br-setting">archive_mode=off</span>.</li><li class="list-unordered"><span class="id">preserve</span> - preserve current <span class="br-setting">archive_mode</span> setting.</li></ul><b>NOTE</b>: This option is not available on <span class="postgres">PostgreSQL</span> &lt; 12.
+This option allows archiving to be preserved or disabled on a restored cluster. This is useful when the cluster must be promoted to do some work but is not intended to become the new primary. In this case it is not a good idea to push WAL from the cluster into the repository.
+</div><div class="section-body-text">
+The following modes are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">off</span> - disable archiving by setting <span class="br-setting">archive_mode=off</span>.
+</li><li class="list-unordered">
+<span class="id">preserve</span> - preserve current <span class="br-setting">archive_mode</span> setting.
+</li></ul><div class="section-body-text">
+<b>NOTE</b>: This option is not available on <span class="postgres">PostgreSQL</span> &lt; 12.
 </div>
 <pre class="code-block">default: preserve
 example: archive-mode=off</pre>
@@ -1591,8 +1741,8 @@ Exclude Database Option (<span class="id">--db-exclude</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Restore excluding the specified databases.
 </div><div class="section-body-text">
-Databases excluded will be restored as sparse, zeroed files to save space but still allow <span class="postgres">PostgreSQL</span> to perform recovery. After recovery, those databases will not be accessible but can be removed with the <span class="id">drop database</span> command. The <span class="br-setting">--db-exclude</span> option can be passed multiple times to specify more than one database to exclude.<br/>
-<br/>
+Databases excluded will be restored as sparse, zeroed files to save space but still allow <span class="postgres">PostgreSQL</span> to perform recovery. After recovery, those databases will not be accessible but can be removed with the <span class="id">drop database</span> command. The <span class="br-setting">--db-exclude</span> option can be passed multiple times to specify more than one database to exclude.
+</div><div class="section-body-text">
 When used in combination with the <span class="br-setting">--db-include</span> option, <span class="br-setting">--db-exclude</span> will only apply to standard system databases (<span class="id">template0</span>, <span class="id">template1</span>, and <span class="id">postgres</span>).
 </div>
 <pre class="code-block">example: db-exclude=db_main</pre>
@@ -1601,9 +1751,14 @@ Include Database Option (<span class="id">--db-include</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Restore only specified databases.
 </div><div class="section-body-text">
-This feature allows only selected databases to be restored. Databases not specifically included will be restored as sparse, zeroed files to save space but still allow <span class="postgres">PostgreSQL</span> to perform recovery. After recovery, the databases that were not included will not be accessible but can be removed with the <span class="id">drop database</span> command.<br/>
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">built-in databases (<span class="id">template0</span>, <span class="id">template1</span>, and <span class="id">postgres</span>) are always restored unless specifically excluded.</div></div>The <span class="br-setting">--db-include</span> option can be passed multiple times to specify more than one database to include.<br/>
-<br/>
+This feature allows only selected databases to be restored. Databases not specifically included will be restored as sparse, zeroed files to save space but still allow <span class="postgres">PostgreSQL</span> to perform recovery. After recovery, the databases that were not included will not be accessible but can be removed with the <span class="id">drop database</span> command.
+</div><div class="admonition"><div class="note">
+NOTE:
+</div><div class="note-text">
+built-in databases (<span class="id">template0</span>, <span class="id">template1</span>, and <span class="id">postgres</span>) are always restored unless specifically excluded.
+</div></div><div class="section-body-text">
+The <span class="br-setting">--db-include</span> option can be passed multiple times to specify more than one database to include.
+</div><div class="section-body-text">
 See <a href="user-guide.html#restore/option-db-include">Restore Selected Databases</a> for additional information and caveats.
 </div>
 <pre class="code-block">example: db-include=db_main</pre>
@@ -1629,8 +1784,13 @@ Recovery Option Option (<span class="id">--recovery-option</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Set an option in <span class="file">recovery.conf</span>.
 </div><div class="section-body-text">
-See http://www.postgresql.org/docs/X.X/static/recovery-config.html for details on recovery.conf options (replace X.X with your <span class="postgres">PostgreSQL</span> version). This option can be used multiple times.<br/>
-<div class="admonition"><div class="note">NOTE:</div><div class="note-text">The <span class="br-setting">restore_command</span> option will be automatically generated but can be overridden with this option. Be careful about specifying your own <span class="br-setting">restore_command</span> as <span class="backrest">pgBackRest</span> is designed to handle this for you. Target Recovery options (recovery_target_name, recovery_target_time, etc.) are generated automatically by <span class="backrest">pgBackRest</span> and should not be set with this option.</div></div>Since <span class="backrest">pgBackRest</span> does not start <span class="postgres">PostgreSQL</span> after writing the <span class="file">recovery.conf</span> file, it is always possible to edit/check <span class="file">recovery.conf</span> before manually restarting.
+See http://www.postgresql.org/docs/X.X/static/recovery-config.html for details on recovery.conf options (replace X.X with your <span class="postgres">PostgreSQL</span> version). This option can be used multiple times.
+</div><div class="admonition"><div class="note">
+NOTE:
+</div><div class="note-text">
+The <span class="br-setting">restore_command</span> option will be automatically generated but can be overridden with this option. Be careful about specifying your own <span class="br-setting">restore_command</span> as <span class="backrest">pgBackRest</span> is designed to handle this for you. Target Recovery options (recovery_target_name, recovery_target_time, etc.) are generated automatically by <span class="backrest">pgBackRest</span> and should not be set with this option.
+</div></div><div class="section-body-text">
+Since <span class="backrest">pgBackRest</span> does not start <span class="postgres">PostgreSQL</span> after writing the <span class="file">recovery.conf</span> file, it is always possible to edit/check <span class="file">recovery.conf</span> before manually restarting.
 </div>
 <pre class="code-block">example: recovery-option=primary_conninfo=db.mydomain.com</pre>
 </div></div><div class="section2"><a id="section-restore/option-tablespace-map"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -1638,8 +1798,8 @@ Tablespace Map Option (<span class="id">--tablespace-map</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Restore a tablespace into the specified directory.
 </div><div class="section-body-text">
-Moves a tablespace to a new location during the restore. This is useful when tablespace locations are not the same on a replica, or an upgraded system has different mount points.<br/>
-<br/>
+Moves a tablespace to a new location during the restore. This is useful when tablespace locations are not the same on a replica, or an upgraded system has different mount points.
+</div><div class="section-body-text">
 Tablespace locations are not stored in pg_tablespace so moving tablespaces can be done with impunity. However, moving a tablespace to the <span class="br-setting">data_directory</span> is not recommended and may cause problems. For more information on moving tablespaces http://www.databasesoup.com/2013/11/moving-tablespaces.html is a good resource.
 </div>
 <pre class="code-block">example: tablespace-map=ts_01=/db/ts_01</pre>
@@ -1648,16 +1808,16 @@ Map All Tablespaces Option (<span class="id">--tablespace-map-all</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Restore all tablespaces into the specified directory.
 </div><div class="section-body-text">
-Tablespaces are restored into their original locations by default. This behavior can be modified for each tablespace with the <span class="br-setting">tablespace-map</span> option, but it is sometimes preferable to remap all tablespaces to a new directory all at once. This is particularly useful for development or staging systems that may not have the same storage layout as the original system where the backup was generated.<br/>
-<br/>
+Tablespaces are restored into their original locations by default. This behavior can be modified for each tablespace with the <span class="br-setting">tablespace-map</span> option, but it is sometimes preferable to remap all tablespaces to a new directory all at once. This is particularly useful for development or staging systems that may not have the same storage layout as the original system where the backup was generated.
+</div><div class="section-body-text">
 The path specified will be the parent path used to create all the tablespaces in the backup.
 </div>
 <pre class="code-block">example: tablespace-map-all=/data/tablespace</pre>
 </div></div></div></div><div class="section1"><a id="section-server"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Server Options
-</div></div><div class="section-intro">
+</div></div><div class="section-body"><div class="section-body-text">
 The <span class="br-setting">server</span> section defines options used for configuring the <span class="host">TLS</span> server.
-</div><div class="section-body"><div class="section2"><a id="section-server/option-tls-server-address"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
+</div><div class="section2"><a id="section-server/option-tls-server-address"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 TLS Server Address Option (<span class="id">--tls-server-address</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 TLS server address.
@@ -1671,8 +1831,8 @@ TLS Server Authorized Clients Option (<span class="id">--tls-server-auth</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 TLS server authorized clients.
 </div><div class="section-body-text">
-Clients are authorized on the server by verifying their certificate and checking their certificate CN (Common Name) against a list on the server configured with the <span class="br-option">tls-server-auth</span> option.<br/>
-<br/>
+Clients are authorized on the server by verifying their certificate and checking their certificate CN (Common Name) against a list on the server configured with the <span class="br-option">tls-server-auth</span> option.
+</div><div class="section-body-text">
 A client CN can be authorized for as many stanzas as needed by repeating the <span class="br-option">tls-server-auth</span> option, or for all stanzas by specifying <span class="br-option">tls-server-auth=client-cn=*</span>. Wildcards may not be specified for the client CN.
 </div>
 <pre class="code-block">example: tls-server-auth=client-cn=stanza1</pre>
@@ -1712,17 +1872,17 @@ allowed: 1-65535
 example: tls-server-port=8000</pre>
 </div></div></div></div><div class="section1"><a id="section-stanza"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Stanza Options
-</div></div><div class="section-intro">
-A stanza defines the backup configuration for a specific <span class="postgres">PostgreSQL</span> database cluster. The stanza section must define the database cluster path and host/user if the database cluster is remote. Also, any global configuration sections can be overridden to define stanza-specific settings.<br/>
-<br/>
+</div></div><div class="section-body"><div class="section-body-text">
+A stanza defines the backup configuration for a specific <span class="postgres">PostgreSQL</span> database cluster. The stanza section must define the database cluster path and host/user if the database cluster is remote. Also, any global configuration sections can be overridden to define stanza-specific settings.
+</div><div class="section-body-text">
 <b>Indexing</b>: All <span class="br-setting">pg-</span> options are indexed to allow for configuring multiple <span class="postgres">PostgreSQL</span> hosts. For example, a single primary is configured with the <span class="br-setting">pg1-path</span>, <span class="br-setting">pg1-port</span>, etc. options. If a standby is configured then index the <span class="br-setting">pg-</span> options on the repository host as <span class="br-setting">pg2-</span> (e.g. pg2-host, pg2-path, etc).
-</div><div class="section-body"><div class="section2"><a id="section-stanza/option-pg-database"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
+</div><div class="section2"><a id="section-stanza/option-pg-database"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 PostgreSQL Database Option (<span class="id">--pg-database</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 <span class="postgres">PostgreSQL</span> database.
 </div><div class="section-body-text">
-The database name used when connecting to <span class="postgres">PostgreSQL</span>. The default is usually best but some installations may not contain this database.<br/>
-<br/>
+The database name used when connecting to <span class="postgres">PostgreSQL</span>. The default is usually best but some installations may not contain this database.
+</div><div class="section-body-text">
 Note that for legacy reasons the setting of the <span class="id">PGDATABASE</span> environment variable will be ignored.
 </div>
 <pre class="code-block">default: postgres
@@ -1824,9 +1984,12 @@ PostgreSQL Host Protocol Type Option (<span class="id">--pg-host-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 <span class="postgres">PostgreSQL</span> host protocol type.
 </div><div class="section-body-text">
-The following protocol types are supported:<br/>
-<ul class="list-unordered"><li class="list-unordered"><span class="id">ssh</span> - Secure Shell.</li><li class="list-unordered"><span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.</li></ul>
-</div>
+The following protocol types are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">ssh</span> - Secure Shell.
+</li><li class="list-unordered">
+<span class="id">tls</span> - <span class="backrest">pgBackRest</span> TLS server.
+</li></ul>
 <pre class="code-block">default: ssh
 example: pg1-host-type=tls</pre>
 </div></div><div class="section2"><a id="section-stanza/option-pg-host-user"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -1845,8 +2008,8 @@ PostgreSQL Path Option (<span class="id">--pg-path</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 <span class="postgres">PostgreSQL</span> data directory.
 </div><div class="section-body-text">
-This should be the same as the <span class="br-setting">data_directory</span> setting in <span class="file">postgresql.conf</span>. Even though this value can be read from <span class="file">postgresql.conf</span> or <span class="postgres">PostgreSQL</span> it is prudent to set it in case those resources are not available during a restore or offline backup scenario.<br/>
-<br/>
+This should be the same as the <span class="br-setting">data_directory</span> setting in <span class="file">postgresql.conf</span>. Even though this value can be read from <span class="file">postgresql.conf</span> or <span class="postgres">PostgreSQL</span> it is prudent to set it in case those resources are not available during a restore or offline backup scenario.
+</div><div class="section-body-text">
 The <span class="br-setting">pg-path</span> option is tested against the value reported by <span class="postgres">PostgreSQL</span> on every online backup so it should always be current.
 </div>
 <pre class="code-block">example: pg1-path=/data/db</pre>
