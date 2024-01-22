@@ -32,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.49">
-v2.49 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.50">
+v2.50 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -48,6 +48,30 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.50"></a><div class="section2-header"><div class="section2-title">
+v2.50 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Performance Improvements and Bug Fixes
+</div><div class="section2-subsubtitle">
+Released January 22, 2024
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Fix short read in block incremental restore. (<i>Reviewed by Stephen Frost, Brent Graveland. Reported by Adol Rodriguez, Brent Graveland.</i>)
+</li><li class="list-unordered">
+Fix overflow suppressing backup progress in <span class="cmd">info</span> output. (<i>Fixed by Robert Donovan. Reviewed by Joe Wildish.</i>)
+</li></ul><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Preserve partial files during block incremental delta restore. (<i>Reviewed by Stephen Frost.</i>)
+</li><li class="list-unordered">
+Add support for alternate compile-time page sizes. (<i>Contributed by Viktor Kurilko. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Skip files truncated during backup when bundling. (<i>Contributed by Georgy Shelkovy. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Improve <span class="host">SFTP</span> storage error messages. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.49"></a><div class="section2-header"><div class="section2-title">
 v2.49 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -76,9 +100,7 @@ Update point-in-time recovery documentation for <span class="postgres">PostgreSQ
 <b>Test Suite Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Allow <span class="id">config/load</span> unit test to run without <span class="id">libssh2</span> installed. (<i>Contributed by Reid Thompson. Reviewed by David Steele. Suggested by Wu Ning.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.48"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.48"></a><div class="section2-header"><div class="section2-title">
 v2.48 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Repository Storage Tags
@@ -3059,5 +3081,5 @@ Additional Notes
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2023, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated November 27, 2023
+Copyright &copy; 2015-2024, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated January 22, 2024
 </div></body></html>
