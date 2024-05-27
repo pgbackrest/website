@@ -1,0 +1,615 @@
+/*******************************************************************************
+Html and body
+*******************************************************************************/
+html
+{
+    font-family: Avenir, Corbel, sans-serif;
+    font-size: 12pt;
+    margin-top: 8px;
+    margin-left: 1%;
+    margin-right: 1%;
+    width: 98%;
+}
+
+body
+{
+    background: #f8f8f8;
+    margin: 0px auto;
+    padding: 0px;
+    width: 100%;
+    text-align: justify;
+    font-weight: 400;
+    counter-reset: section1-counter;
+    counter-reset: section1-toc-counter;
+}
+
+a:link, a:visited, a:hover, a:active
+{
+    text-decoration: underline;
+    color: black;
+    display: inline-block;
+}
+
+@media (min-width: 1000px)
+{
+    body
+    {
+        width: 1000px;
+    }
+}
+
+@media (prefers-color-scheme: dark)
+{
+    body
+    {
+        color: #e2e2e2;
+        background: #181818;
+        font-weight: 350;
+    }
+
+    body a:link, body a:visited, body a:hover, body a:active
+    {
+        text-decoration: underline;
+        color: #e2e2e2;
+    }
+}
+
+/*******************************************************************************
+Header
+*******************************************************************************/
+.page-header
+{
+    width:100%;
+    text-align:center;
+}
+
+.page-header-title
+{
+    font-size: xx-large;
+    font-weight: bolder;
+}
+
+.page-header-subtitle
+{
+    position: relative;
+    top: -.25em;
+    font-size: large;
+    font-weight: bold;
+}
+
+.page-header-logo
+{
+    float: left;
+    margin-top: 0.3em;
+}
+
+.page-header-logo > img
+{
+    width: 69px;
+    height: 69px;
+}
+
+/*******************************************************************************
+Menu
+*******************************************************************************/
+/*.page-menu*/
+
+.menu-body
+{
+    text-align: center;
+}
+
+.menu
+{
+    white-space: nowrap;
+    display: inline;
+    margin-left: .5em;
+    font-size: 13pt;
+}
+
+.menu:first-of-type
+{
+    margin-left: 0px;
+}
+
+.menu:before
+{
+    content: "[";
+}
+
+.menu:after
+{
+    content: "]";
+}
+
+/*.menu-link*/
+
+a.menu-link:link, a.menu-link:visited, a.menu-link:active
+{
+    text-decoration: none;
+}
+
+a.menu-link:hover
+{
+    text-decoration: underline;
+}
+
+/*******************************************************************************
+Table of Contents
+*******************************************************************************/
+.page-toc-body
+{
+    margin-top: .25em;
+    margin-bottom: 2em;
+}
+
+.section1-toc:first-of-type
+{
+    margin-top: 0;
+}
+
+.section1-toc
+{
+    margin-top: .5em;
+}
+
+.section1-toc-number
+{
+    display: inline;
+    font-size: 14pt;
+    margin-right: .75em;
+    counter-reset: section2-toc-counter;
+}
+
+.section1-toc-number:before
+{
+    counter-increment: section1-toc-counter;
+    content: counter(section1-toc-counter);
+}
+
+.section1-toc-title
+{
+    display: inline;
+    font-size: 14pt;
+}
+
+.section2-toc
+{
+    margin-left: 1.8em;
+}
+
+.section2-toc-number
+{
+    display: inline;
+    margin-right: .75em;
+    counter-reset: section3-toc-counter;
+}
+
+.section2-toc-number:before
+{
+    counter-increment: section2-toc-counter;
+    content: counter(section1-toc-counter) "." counter(section2-toc-counter);
+}
+
+.section2-toc-title
+{
+    display: inline;
+}
+
+.section3-toc
+{
+    margin-left: 2.3em;
+}
+
+.section3-toc-number
+{
+    display: inline;
+    margin-right: .75em;
+}
+
+.section3-toc-number:before
+{
+    counter-increment: section3-toc-counter;
+    content: counter(section1-toc-counter) "." counter(section2-toc-counter) "." counter(section3-toc-counter);
+}
+
+.section3-toc-title
+{
+    display: inline;
+}
+
+/*******************************************************************************
+Section
+*******************************************************************************/
+.section1
+{
+    margin-top: 2.5em;
+    counter-reset: section2-counter;
+    counter-increment: section1-counter;
+}
+
+.section1:first-of-type
+{
+    margin-top: 1em;
+}
+
+.section2, .section3
+{
+    margin-top: 1em;
+}
+
+.section2
+{
+    counter-reset: section3-counter;
+    counter-increment: section2-counter;
+}
+
+.section3
+{
+    counter-increment: section3-counter;
+}
+
+.section1-header, .section2-header, .section3-header, .page-toc-header
+{
+    margin-top: .5em;
+    font-weight: 500;
+}
+
+.section1-header, .page-toc-header
+{
+    border-radius: 3px;
+    background-color: #205581;
+    color: #f2f2f2;
+    font-size: 22pt;
+    padding-left: .5em;
+    margin-bottom: .5em;
+}
+
+.section1-number, .section2-number, .section3-number
+{
+    display: inline;
+    margin-right: .5em;
+}
+
+.section1-title, .section2-title, .section3-title
+{
+    display: inline;
+}
+
+.section1-subtitle, .section2-subtitle, .section3-subtitle
+{
+    font-weight: bold;
+    font-size: 16pt;
+    margin-top: .5em;
+}
+
+.section1-subsubtitle, .section2-subsubtitle, .section3-subsubtitle
+{
+    font-style: italic;
+    font-size: 14pt;
+    margin-top: 0px;
+}
+
+.section1-number:before
+{
+    content: counter(section1-counter);
+}
+
+.section1-subtitle
+{
+    font-size: 16pt;
+}
+
+.section1-subsubtitle
+{
+    font-size: 14pt;
+}
+
+.section2
+{
+    margin-top: 1em;
+}
+
+.section2-header
+{
+    border-bottom: 2px #27689d solid;
+    color: #27689d;
+    font-size: 16pt;
+}
+
+.section2-number:before
+{
+    content: counter(section1-counter) "." counter(section2-counter);
+}
+
+.section2-subtitle, .section2-subtitle
+{
+    font-size: 14pt;
+}
+
+.section2-subsubtitle, .section3-subsubtitle
+{
+    font-size: 12pt;
+}
+
+.section3
+{
+    margin-left: 1em;
+    margin-top: 1em;
+}
+
+.section3:first-of-type
+{
+    border-top: none;
+}
+
+.section3-header
+{
+    display: inline;
+    font-size: 14pt;
+    color: #27689d;
+    border-bottom: 1px #27689d solid;
+}
+
+.section3-number:before
+{
+    content: counter(section1-counter) "." counter(section2-counter) "." counter(section3-counter);
+}
+
+.section-intro
+{
+    margin-top: .75em;
+}
+
+/*.section-body*/
+
+/*******************************************************************************
+Table Elements
+*******************************************************************************/
+.table
+{
+    margin-top: .5em;
+    border-spacing: .5em 0;
+}
+
+.table-caption
+{
+    text-align: left;
+    font-size: 12pt;
+    font-weight: bold;
+    color: #27689d;
+}
+
+.table-header-row
+{
+}
+
+.table-header-left,
+.table-header-center,
+.table-header-right
+{
+    white-space: nowrap;
+    border-bottom: 1px black solid;
+}
+
+.table-header-left
+{
+    text-align: left;
+}
+
+.table-header-center
+{
+    text-align: center;
+}
+
+.table-header-right
+{
+    text-align: right;
+}
+
+.table-header-fill
+{
+    width: 100%;
+}
+
+.table-row
+{
+}
+
+.table-data-left,
+.table-data-center,
+.table-data-right
+{
+    white-space: nowrap;
+}
+
+.table-data-left
+{
+    padding-top: 0px;
+    text-align: left;
+}
+
+.table-data-center
+{
+    text-align: center;
+}
+
+.table-data-right
+{
+    text-align: right;
+}
+
+/*******************************************************************************
+Config, Execute, Code Block, Release Elements
+*******************************************************************************/
+.section-body-text
+{
+    margin-top: 1em;
+}
+
+.section-body-text:first-of-type
+{
+    margin-top: .75em;
+}
+
+.execute,
+.config,
+.code-block
+{
+    /*white-space: nowrap;*/
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-top: .8em;
+    margin-bottom: 1em;
+}
+
+.execute-title,
+.config-title
+{
+    font-size: 11pt;
+    margin-bottom: .125em;
+}
+
+.execute-body,
+.config-body,
+.code-block
+{
+    border-radius: 3px;
+    background-color: #444444;
+    font-family: monospace;
+    unicode-bidi: embed;
+    color: #f8f8f8;
+    /*color: white;*/
+    font-size: 10pt;
+}
+
+.execute-body-cmd,
+.execute-body-output, .execute-body-output-highlight,
+.config-body-title,
+.code-block
+{
+    padding-left: .5em;
+    padding-right: .5em;
+}
+
+/* Would rather not use pre at all, but Firefox won't copy code samples correctly without it */
+pre
+{
+    margin: 0px;
+    padding: 0px;
+    white-space: pre-wrap;
+}
+
+.execute-body-cmd:before
+{
+    content: "$ ";
+}
+
+.execute-body-cmd:first-of-type, .execute-body-output,
+.config-body-title, .config-body-output,
+.code-block,
+.execute-body-output-highlight, .execute-body-output-highlight-error
+{
+    padding-top: .25em;
+}
+
+.execute-body-cmd, .execute-body-output,
+.config-body-title, .config-body-output,
+.code-block,
+.execute-body-output-highlight, .execute-body-output-highlight-error
+{
+    padding-bottom: .25em;
+}
+
+.execute-body-output,
+.config-body-output,
+.code-block
+{
+    border-radius: 3px;
+    background-color: #606060;
+}
+
+.execute-body-output-highlight
+{
+    border-radius: 3px;
+    background-color: #1e7b1e;
+}
+
+.execute-body-output-highlight-error
+{
+    border-radius: 3px;
+    background-color: #a32929;
+}
+
+.execute-body-output, .execute-body-output-highlight, .execute-body-output-highlight-error,
+.config-body-output
+{
+    padding-left: 1.75em;
+}
+
+/*.code-block*/
+
+/*.section-body-execute-output*/
+
+/*******************************************************************************
+Lists
+*******************************************************************************/
+ul.list-unordered
+{
+    margin-top: .5em;
+}
+
+li.list-unordered
+{
+    margin-top: .5em;
+}
+
+/*******************************************************************************
+Admonition
+*******************************************************************************/
+.admonition
+{
+    padding-left: 20px;
+    font-style: italic;
+    margin: 10px 0px;
+}
+
+.admonition>.note, .admonition>.warning, .admonition>.caution, .admonition>.important, .admonition>.tip
+{
+    font-weight: bold;
+    float: left;
+    padding-right: 10px;
+}
+
+.admonition>.note-text, .admonition>.warning-text, .admonition>.caution-text, .admonition>.important-text, .admonition>.tip-text
+{
+    overflow: hidden;
+}
+
+/*******************************************************************************
+Keywords
+*******************************************************************************/
+.backrest, .cmd, .postgres, .host, .proper
+{
+    font-weight: 500;
+}
+
+.path, .br-option, .br-setting, .pg-option, .pg-setting, .id, .user, .file, .path
+{
+    unicode-bidi: embed;
+    font-family: monospace;
+    white-space: nowrap;
+}
+
+/*******************************************************************************
+Footer
+*******************************************************************************/
+.page-footer
+{
+    border-top: 2px #cccccc solid;
+    margin-top: 1em;
+    padding-top: .25em;
+    font-size: x-small;
+    white-space: nowrap;
+    text-align: center;
+}
