@@ -82,18 +82,10 @@ Compress Level Option (<span class="id">--compress-level</span>)
 Network Compress Level Option (<span class="id">--compress-level-network</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-compress-type">
 Compress Type Option (<span class="id">--compress-type</span>)
-</a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-config">
-Config Option (<span class="id">--config</span>)
-</a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-config-include-path">
-Config Include Path Option (<span class="id">--config-include-path</span>)
-</a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-config-path">
-Config Path Option (<span class="id">--config-path</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-db-timeout">
 Database Timeout Option (<span class="id">--db-timeout</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-delta">
 Delta Option (<span class="id">--delta</span>)
-</a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-dry-run">
-Dry Run Option (<span class="id">--dry-run</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-io-timeout">
 I/O Timeout Option (<span class="id">--io-timeout</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-lock-path">
@@ -104,14 +96,10 @@ Neutral Umask Option (<span class="id">--neutral-umask</span>)
 Process Maximum Option (<span class="id">--process-max</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-protocol-timeout">
 Protocol Timeout Option (<span class="id">--protocol-timeout</span>)
-</a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-raw">
-Raw Data Option (<span class="id">--raw</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-sck-keep-alive">
 Keep Alive Option (<span class="id">--sck-keep-alive</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-spool-path">
 Spool Path Option (<span class="id">--spool-path</span>)
-</a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-stanza">
-Stanza Option (<span class="id">--stanza</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-tcp-keep-alive-count">
 Keep Alive Count Option (<span class="id">--tcp-keep-alive-count</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-general/option-tcp-keep-alive-idle">
@@ -142,9 +130,7 @@ Page Header Check Option (<span class="id">--page-header-check</span>)
 Force PostgreSQL Version Option (<span class="id">--pg-version-force</span>)
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-number"></div><div class="section1-toc-title"><a href="#section-repository">
 Repository Options
-</a></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-repository/option-repo">
-Set Repository Option (<span class="id">--repo</span>)
-</a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-repository/option-repo-azure-account">
+</a></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-repository/option-repo-azure-account">
 Azure Repository Account Option (<span class="id">--repo-azure-account</span>)
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#section-repository/option-repo-azure-container">
 Azure Repository Container Option (<span class="id">--repo-azure-container</span>)
@@ -687,35 +673,6 @@ The following compression types are supported:
 </li></ul>
 <pre class="code-block">default: gz
 example: compress-type=none</pre>
-</div></div><div class="section2"><a id="section-general/option-config"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
-Config Option (<span class="id">--config</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> configuration file.
-</div><div class="section-body-text">
-Use this option to specify a different configuration file than the default.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH "/" PROJECT_CONFIG_FILE
-example: config=/conf/pgbackrest/pgbackrest.conf</pre>
-</div></div><div class="section2"><a id="section-general/option-config-include-path"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
-Config Include Path Option (<span class="id">--config-include-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Path to additional <span class="backrest">pgBackRest</span> configuration files.
-</div><div class="section-body-text">
-Configuration files existing in the specified location with extension <span class="file">.conf</span> will be concatenated with the <span class="backrest">pgBackRest</span> configuration file, resulting in one configuration file.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH "/" PROJECT_CONFIG_INCLUDE_PATH
-example: config-include-path=/conf/pgbackrest/conf.d</pre>
-</div></div><div class="section2"><a id="section-general/option-config-path"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
-Config Path Option (<span class="id">--config-path</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Base path of <span class="backrest">pgBackRest</span> configuration files.
-</div><div class="section-body-text">
-This setting is used to override the default base path setting for the <span class="br-option">--config</span> and <span class="br-option">--config-include-path</span> options unless they are explicitly set on the command-line.
-</div><div class="section-body-text">
-For example, passing only <span class="id">--config-path=/conf/pgbackrest</span> results in the <span class="br-option">--config</span> default being set to <span class="id">/conf/pgbackrest/pgbackrest.conf</span> and the <span class="br-option">--config-include-path</span> default being set to <span class="id">/conf/pgbackrest/conf.d</span>.
-</div>
-<pre class="code-block">default: CFGOPTDEF_CONFIG_PATH
-example: config-path=/conf/pgbackrest</pre>
 </div></div><div class="section2"><a id="section-general/option-db-timeout"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Database Timeout Option (<span class="id">--db-timeout</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -741,15 +698,6 @@ During a backup, this option will use checksums instead of the timestamps to det
 </div>
 <pre class="code-block">default: n
 example: delta=y</pre>
-</div></div><div class="section2"><a id="section-general/option-dry-run"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
-Dry Run Option (<span class="id">--dry-run</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Execute a dry-run for the command.
-</div><div class="section-body-text">
-The <span class="br-option">--dry-run</span> option is a command-line only option and can be passed when it is desirable to determine what modifications will be made by the command without the command actually making any modifications.
-</div>
-<pre class="code-block">default: n
-example: dry-run=y</pre>
 </div></div><div class="section2"><a id="section-general/option-io-timeout"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 I/O Timeout Option (<span class="id">--io-timeout</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -806,15 +754,6 @@ The <span class="br-option">protocol-timeout</span> option must be greater than 
 <pre class="code-block">default: 31m
 allowed: 100ms-7d
 example: protocol-timeout=630</pre>
-</div></div><div class="section2"><a id="section-general/option-raw"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
-Raw Data Option (<span class="id">--raw</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Do not transform data.
-</div><div class="section-body-text">
-Do not transform (i.e, encrypt, decompress, etc.) data for the current command.
-</div>
-<pre class="code-block">default: n
-example: raw=y</pre>
 </div></div><div class="section2"><a id="section-general/option-sck-keep-alive"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Keep Alive Option (<span class="id">--sck-keep-alive</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -841,16 +780,6 @@ The spool path is intended to be located on a local Posix-compatible filesystem,
 </div>
 <pre class="code-block">default: /var/spool/pgbackrest
 example: spool-path=/backup/db/spool</pre>
-</div></div><div class="section2"><a id="section-general/option-stanza"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
-Stanza Option (<span class="id">--stanza</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Defines the stanza.
-</div><div class="section-body-text">
-A stanza is the configuration for a <span class="postgres">PostgreSQL</span> database cluster that defines where it is located, how it will be backed up, archiving options, etc. Most db servers will only have one <span class="postgres">PostgreSQL</span> database cluster and therefore one stanza, whereas backup servers will have a stanza for every database cluster that needs to be backed up.
-</div><div class="section-body-text">
-It is tempting to name the stanza after the primary cluster but a better name describes the databases contained in the cluster. Because the stanza name will be used for the primary and all replicas it is more appropriate to choose a name that describes the actual function of the cluster, such as app or dw, rather than the local cluster name, such as main or prod.
-</div>
-<pre class="code-block">example: stanza=main</pre>
 </div></div><div class="section2"><a id="section-general/option-tcp-keep-alive-count"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Keep Alive Count Option (<span class="id">--tcp-keep-alive-count</span>)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -1042,18 +971,7 @@ The <span class="br-setting">repository</span> section defines options used to c
 <b>Indexing</b>: All <span class="br-setting">repo-</span> options are indexed to allow for configuring multiple repositories. For example, a single repository is configured with the <span class="br-setting">repo1-path</span>, <span class="br-setting">repo1-host</span>, etc. options. If there is more than one repository configured and the <span class="br-option">--repo</span> option is not specified for a command, the repositories will be acted upon in highest priority order (e.g. repo1 then repo2).
 </div><div class="section-body-text">
 The <span class="br-setting">repo-retention-*</span> options define how long backups will be retained. Expiration only occurs when the count of complete backups exceeds the allowed retention. In other words, if <span class="br-setting">repo1-retention-full-type</span> is set to <span class="br-setting">count</span> (default) and <span class="br-setting">repo1-retention-full</span> is set to 2, then there must be 3 complete backups before the oldest will be expired. If <span class="br-setting">repo1-retention-full-type</span> is set to <span class="br-setting">time</span> then <span class="br-setting">repo1-retention-full</span> represents days so there must be at least that many days worth of full backups before expiration can occur. Make sure you always have enough space for retention + 1 backups.
-</div><div class="section2"><a id="section-repository/option-repo"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
-Set Repository Option (<span class="id">--repo</span>)
-</div></div><div class="section-body"><div class="section-body-text">
-Set repository.
-</div><div class="section-body-text">
-Set the repository for a command to operate on.
-</div><div class="section-body-text">
-For example, this option may be used to perform a restore from a specific repository, rather than letting <span class="backrest">pgBackRest</span> choose.
-</div>
-<pre class="code-block">allowed: 1-256
-example: repo=1</pre>
-</div></div><div class="section2"><a id="section-repository/option-repo-azure-account"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
+</div><div class="section2"><a id="section-repository/option-repo-azure-account"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Azure Repository Account Option (<span class="id">--repo-azure-account</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Azure repository account.
@@ -2078,5 +1996,5 @@ The database user name used when connecting to <span class="postgres">PostgreSQL
 </div>
 <pre class="code-block">example: pg1-user=backupuser</pre>
 </div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2024, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated August 19, 2024
+Copyright &copy; 2015-2024, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated September 20, 2024
 </div></body></html>
