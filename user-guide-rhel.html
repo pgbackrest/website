@@ -72,6 +72,8 @@ Configure Repository Encryption
 Create the Stanza
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#quickstart/check-configuration">
 Check the Configuration
+</a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#quickstart/performance-tuning">
+Performance Tuning
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#quickstart/perform-backup">
 Perform a Backup
 </a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#quickstart/schedule-backup">
@@ -535,7 +537,25 @@ P00   INFO: check repo1 configuration (primary)
 P00   INFO: check repo1 archive for WAL (primary)</pre>
 <pre class="execute-body-output-highlight">P00   INFO: WAL segment 000000010000000000000001 successfully archived to '/var/lib/pgbackrest/archive/demo/12-1/0000000100000000/000000010000000000000001-6df514f6bc17c9c74be471f0960e4c705332bd4e.gz' on repo1</pre>
 <pre class="execute-body-output">P00   INFO: check command end: completed successfully</pre>
-</div></div></div></div><div class="section2"><a id="quickstart/perform-backup"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
+</div></div></div></div><div class="section2"><a id="quickstart/performance-tuning"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
+Performance Tuning
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> has a number of performance options that are not enabled by default to maintain backward compatibility in the repository. However, when creating a new repository the following options are recommended. They can also be used on an existing repository with the caveat that older versions of <span class="backrest">pgBackRest</span> will not be able to read the repository. This incompatibility depends on when the feature was introduced, which will be noted in the list below.
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="br-option">compress-type</span> - determines the compression algorithm used by the <span class="cmd">backup</span> and <span class="cmd">archive-push</span> commands. The default is <span class="id">gz</span> (Gzip) but <span class="id">zst</span> (Zstandard) is recommended because it is much faster and provides compression similar to <span class="id">gz</span>. <span class="id">zst</span> has been supported by the <span class="br-option">compress-type</span> option since <a href="release.html#2.27">v2.27</a>. See <a href="configuration.html#section-general/option-compress-type">Compress Type</a> for more details.
+</li><li class="list-unordered">
+<span class="br-option">repo-bundle</span> - combines small files during backup to save space and improve the speed of both the <span class="cmd">backup</span> and <span class="cmd">restore</span> commands, especially on object stores. The <span class="br-option">repo-bundle</span> option was introduced in <a href="release.html#2.39">v2.39</a>. See <a href="#backup/bundle">File Bundling</a> for more details.
+</li><li class="list-unordered">
+<span class="br-option">repo-block</span> - stores only the portions of of files that have changed rather than the entire file during <span class="id">diff</span>/<span class="id">incr</span> <span class="cmd">backup</span>. This saves space and increases the speed of the <span class="cmd">backup</span>. The <span class="br-option">repo-block</span> option was introduced in <a href="release.html#2.46">v2.46</a> but at least <a href="release.html#2.52.1">v2.52.1</a> is recommended. See <a href="#backup/block">Block Incremental</a> for more details.
+</li></ul><div class="section-body-text">
+There are other performance options that are not enabled by default because they require additional configuration or because the default is safe (but not optimal). These options are available in all v2 versions of <span class="backrest">pgBackRest</span>.
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="br-option">process-max</span> - determines how many processes will be used for commands. The default is 1, which is almost never the appropriate value. Each command uses <span class="br-option">process-max</span> differently so refer to each command's documentation for details on usage.
+</li><li class="list-unordered">
+<span class="br-option">archive-async</span> - archives WAL files to the repository in batch which greatly increases archiving speed. It is not enabled by default because it requires a spool path to be created. See <a href="#async-archiving">Asynchronous Archiving</a> for more details.
+</li><li class="list-unordered">
+<span class="br-option">backup-standby</span> - performs the backup on a standby rather than the primary to reduce load on the primary. It is not enabled by default because it requires additional configuration and the presence of one or more standby hosts. See <a href="#standby-backup">Backup from a Standby</a> for more details.
+</li></ul></div></div><div class="section2"><a id="quickstart/perform-backup"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Perform a Backup
 </div></div><div class="section-body"><div class="section-body-text">
 By default <span class="backrest">pgBackRest</span> will wait for the next regularly scheduled checkpoint before starting a backup. Depending on the <span class="pg-option">checkpoint_timeout</span> and <span class="pg-option">checkpoint_segments</span> settings in <span class="postgres">PostgreSQL</span> it may be quite some time before a checkpoint completes and the backup can begin. Generally, it is best to set <span class="br-setting">start-fast=y</span> so that the backup starts immediately. This forces a checkpoint, but since backups are usually run once a day an additional checkpoint should not have a noticeable impact on performance. However, on very busy clusters it may be best to pass <span class="br-setting">--start-fast</span> on the command-line as needed.
@@ -2982,5 +3002,5 @@ tls-server-ca-file=/etc/pgbackrest/cert/ca.crt<br/>
 tls-server-cert-file=/etc/pgbackrest/cert/server.crt<br/>
 tls-server-key-file=/etc/pgbackrest/cert/server.key
 </div></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2024, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated August 19, 2024
+Copyright &copy; 2015-2024, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated September 20, 2024
 </div></body></html>
