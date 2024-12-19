@@ -367,7 +367,7 @@ When creating the <span class="file">/etc/pgbackrest/pgbackrest.conf</span> file
 [demo]<br/>
 pg1-path=/var/lib/postgresql/15/demo
 </div></div></div><div class="section-body-text">
-<span class="backrest">pgBackRest</span> configuration files follow the Windows INI convention. Sections are denoted by text in brackets and key/value pairs are contained in each section. Lines beginning with <span class="id">#</span> are ignored and can be used as comments.
+<span class="backrest">pgBackRest</span> configuration files follow a Windows INI-like convention. Sections are denoted by text in brackets and key/value pairs are contained in each section. Lines beginning with <span class="id">#</span> are ignored and can be used as comments. Quoting is not supported and whitespace is trimmed from keys and values. Sections will be merged if they appear more than once.
 </div><div class="section-body-text">
 There are multiple ways the <span class="backrest">pgBackRest</span> configuration files can be loaded:
 </div><ul class="list-unordered"><li class="list-unordered">
@@ -381,7 +381,7 @@ There are multiple ways the <span class="backrest">pgBackRest</span> configurati
 </li><li class="list-unordered">
 <span class="br-option">config-path</span> is specified: this setting will override the base path for the default location of the config file and/or the base path of the default config-include-path setting unless the config and/or config-include-path option is explicitly set.
 </li></ul><div class="section-body-text">
-The files are concatenated as if they were one big file; order doesn't matter, but there is precedence based on sections. The precedence (highest to lowest) is:
+Files are concatenated as if they were one big file and each file must be valid individually. This means sections must be specified in each file where they are needed to store a key/value. Order doesn't matter but there is precedence based on sections. The precedence (highest to lowest) is:
 </div><ul class="list-unordered"><li class="list-unordered">
 [<i>stanza</i>:<i>command</i>]
 </li><li class="list-unordered">
@@ -2947,5 +2947,5 @@ repo1-path=/var/lib/pgbackrest<br/>
 repo1-retention-full=2<br/>
 start-fast=y
 </div></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2024, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated December 16, 2024
+Copyright &copy; 2015-2024, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated December 19, 2024
 </div></body></html>
