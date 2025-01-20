@@ -58,9 +58,7 @@ Released January 20, 2025
 <b> Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fix issue after disabling bundling with block incremental enabled. (<i>Reviewed by David Christensen.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Clarify behavior of multiple configuration files. (<i>Reviewed by Paul Bierly. Suggested by Paul Bierly.</i>)
@@ -76,9 +74,7 @@ Released December 16, 2024
 <b> Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fix issue with <span class="cmd">version</span>/<span class="cmd">help</span> commands attempting to load <span class="file">pgbackrest.conf</span>. (<i>Reviewed by Stefan Fercot. Reported by Bradford Boyle, Julian.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Test Suite Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Stabilize async archiving in integration tests. (<i>Contributed by Viktor Kurilko. Reviewed by David Steele.</i>)
@@ -114,9 +110,7 @@ Save <span class="file">backup.info</span> only when contents have changed. (<i>
 Remove limitation on reading files in parallel during restore. (<i>Reviewed by David Christensen.</i>)
 </li><li class="list-unordered">
 Improve <span class="host">SFTP</span> error messages. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add performance tuning section to user guide. (<i>Reviewed by Stefan Fercot.</i>)
@@ -174,9 +168,7 @@ Default <span class="br-setting">log-level-stderr</span> option to <span class="
 Allow alternative WAL segment sizes for PostgreSQL &le; 10. (<i>Contributed by Viktor Kurilko. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Add hint to check <span class="host">SFTP</span> authorization log. (<i>Contributed by Vitalii Zurian. Reviewed by Reid Thompson, David Steele.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Clarify <span class="cmd">archive-push</span> multi-repo behavior. (<i>Reviewed by Stefan Fercot.</i>)
@@ -214,9 +206,7 @@ Allow explicit disabling of optional dependencies in meson builds. (<i>Contribut
 Dynamically find <span class="host">python</span> in <span class="host">meson</span> build. (<i>Contributed by Michael Schout. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Tag <span class="id">pgbackrest</span> build target in meson as installable. (<i>Contributed by Bradford Boyle. Reviewed by David Steele.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Update <span class="cmd">start</span>/<span class="cmd">stop</span> documentation to reflect actual functionality. (<i>Reviewed by Stefan Fercot.</i>)
@@ -254,9 +244,7 @@ Update resume functionality for block incremental. (<i>Reviewed by Stephen Frost
 Allow <span class="br-setting">--version</span> and <span class="br-setting">--help</span> for version and help. (<i>Reviewed by Greg Sabino Mullane. Suggested by Greg Sabino Mullane.</i>)
 </li><li class="list-unordered">
 Add detailed backtrace to <span class="host">autoconf</span>/<span class="host">make</span> build. (<i>Reviewed by Stephen Frost.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Update references to <span class="file">recovery.conf</span>. (<i>Reviewed by Stefan Fercot. Suggested by Stephen Frost.</i>)
@@ -298,9 +286,7 @@ Fix recursive path remove in <span class="host">SFTP</span> storage driver. (<i>
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Remove support for <span class="host">PostgreSQL</span> <span class="id">9.3</span>. (<i>Reviewed by Stephen Frost.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Document maintainer options. (<i>Reviewed by Stefan Fercot.</i>)
@@ -346,9 +332,7 @@ Allow <span class="cmd">archive-get</span> command to run when stanza is stopped
 Accept leading tilde in paths for SFTP public/private keys. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Reload GCS credentials before renewing authentication token. (<i>Reviewed by Stephen Frost. Suggested by Daniel Farina.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fix configuration reference example for the <span class="br-option">tls-server-address</span> option. (<i>Fixed by Hartmut Goebel. Reviewed by David Steele.</i>)
@@ -386,9 +370,7 @@ Improve performance of <span class="host">SFTP</span> storage driver. (<i>Contri
 Add timezone offset to <span class="cmd">info</span> command date/time output. (<i>Reviewed by Stefan Fercot, Philip Hurst. Suggested by Philip Hurst.</i>)
 </li><li class="list-unordered">
 Centralize error handling for unsupported features. (<i>Reviewed by Stefan Fercot.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Clarify preference to install from packages in the user guide. (<i>Reviewed by Stefan Fercot. Suggested by dr-kd.</i>)
@@ -414,9 +396,7 @@ Allow page header checks to be skipped. (<i>Reviewed by David Christensen. Sugge
 Avoid <span class="id">chown()</span> on recovery files during restore. (<i>Reviewed by Stefan Fercot, Marcelo Henrique Neppel. Suggested by Marcelo Henrique Neppel.</i>)
 </li><li class="list-unordered">
 Add error retry detail for HTTP retries.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add warning about using recovery <span class="br-option">type=none</span>. (<i>Reviewed by Stefan Fercot.</i>)
@@ -440,9 +420,7 @@ Block incremental backup (BETA). (<i>Reviewed by John Morris, Stephen Frost, Ste
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Keep only one all-default group index. (<i>Reviewed by Stefan Fercot.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add explicit instructions for upgrading between <span class="id">2.x</span> versions. (<i>Contributed by Christophe Courtois. Reviewed by David Steele.</i>)
@@ -462,9 +440,7 @@ Remove support for <span class="host">PostgreSQL</span> <span class="id">9.0</sp
 Restore errors when no backup matches the current version of <span class="postgres">PostgreSQL</span>. (<i>Contributed by Stefan Fercot. Reviewed by David Steele. Suggested by Soulou.</i>)
 </li><li class="list-unordered">
 Add <span class="br-option">compress-level</span> range checking for each <span class="br-option">compress-type</span>. (<i>Reviewed by Stefan Fercot. Suggested by gkleen, ViperRu.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add warning about enabling <q>hierarchical namespace</q> on Azure storage. (<i>Reviewed by Stefan Fercot. Suggested by Vojtech Galda, Pluggi, asjonos.</i>)
@@ -508,9 +484,7 @@ Fix protocol error on short read of remote file. (<i>Reviewed by Stephen Frost.<
 Do not store references for zero-length files when bundling. (<i>Reviewed by Stefan Fercot.</i>)
 </li><li class="list-unordered">
 Use more generic descriptions for <span class="id">pg_start_backup()</span>/<span class="id">pg_stop_backup()</span>. (<i>Reviewed by Greg Sabino Mullane, David Christensen. Suggested by Greg Sabino Mullane.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Test Suite Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Update <span class="file">test.pl</span> <span class="br-setting">--psql-bin</span> option to match command-line help. (<i>Contributed by Koshi Shibagaki. Reviewed by David Steele.</i>)
@@ -542,9 +516,7 @@ Update archive.info timestamps after a successful backup. (<i>Reviewed by Stefan
 Move standby timeline check after checkpoint. (<i>Reviewed by Stefan Fercot, Keith Fiske. Suggested by Keith Fiske.</i>)
 </li><li class="list-unordered">
 Improve warning message on backup resume. (<i>Suggested by Cynthia Shang.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add absolute path for <span class="id">kill</span> in <span class="file">pgbackrest.service</span>. (<i>Suggested by Don Seiler.</i>)
@@ -572,9 +544,7 @@ Disable incremental manifest save when <span class="br-option">resume=n</span>. 
 Set backup percent complete to zero before copy start. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Use <span class="host">S3</span> <span class="id">IsTruncated</span> flag to determine list continuation. (<i>Reviewed by John Morris, Soulou. Suggested by Christian Montagne.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Skip internal options in the configuration reference. (<i>Reported by Francisco Miguel Biete Banon.</i>)
@@ -638,9 +608,7 @@ Add <span class="id">ClockError</span> for unexpected clock skew and timezone ch
 Strip extensions from history manifest before showing in error message. (<i>Reviewed by Stefan Fercot.</i>)
 </li><li class="list-unordered">
 Add user:group to lock permission error. (<i>Reviewed by Reid Thompson.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fix incorrect reference to <span class="id">stanza-update</span> in the user guide. (<i>Fixed by Abubakar Mohammed. Reviewed by David Steele.</i>)
@@ -696,9 +664,7 @@ Do not retry fatal errors. (<i>Reviewed by Reid Thompson.</i>)
 Remove support for <span class="host">PostgreSQL</span> <span class="id">8.3</span>/<span class="id">8.4</span>. (<i>Reviewed by Reid Thompson, Stefan Fercot.</i>)
 </li><li class="list-unordered">
 Remove logic that tried to determine additional file system compression. (<i>Reviewed by Reid Thompson, Stefan Fercot.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Move <span class="id">repo</span> options in <span class="host">TLS</span> documentation to the <span class="id">global</span> section. (<i>Reported by Anton Kurochkin.</i>)
@@ -754,9 +720,7 @@ Add verb to HTTP error output. (<i>Contributed by Christoph Berg. Reviewed by Da
 Allow y/n arguments for boolean command-line options. (<i>Contributed by Reid Thompson. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Make backup size logging exactly match <span class="cmd">info</span> command output. (<i>Contributed by Reid Thompson. Reviewed by David Steele. Suggested by Mahomed Hussein.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Display size option default and allowed values with appropriate units. (<i>Reviewed by Reid Thompson.</i>)
@@ -824,9 +788,7 @@ Change level of <span class="cmd">backup</span>/<span class="cmd">restore</span>
 Loop while waiting for checkpoint LSN to reach replay LSN. (<i>Contributed by Stefan Fercot. Reviewed by David Steele. Suggested by Fatih Mencutekin.</i>)
 </li><li class="list-unordered">
 Log <span class="cmd">backup</span> file total and <span class="cmd">restore</span> size/file total. (<i>Reviewed by Cynthia Shang.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fix incorrect host names in user guide. (<i>Reviewed by Stefan Fercot. Reported by Greg Sabino Mullane.</i>)
@@ -882,9 +844,7 @@ Change archive expiration logging from detail to info level. (<i>Contributed by 
 Remove stanza archive spool path on <span class="cmd">restore</span>. (<i>Reviewed by Cynthia Shang, Stefan Fercot.</i>)
 </li><li class="list-unordered">
 Do not write files atomically or sync paths during <span class="cmd">backup</span> copy. (<i>Reviewed by Stephen Frost, Stefan Fercot, Cynthia Shang.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Update contributing documentation. (<i>Contributed by Cynthia Shang. Reviewed by David Steele, Stefan Fercot.</i>)
@@ -928,9 +888,7 @@ Consolidate less commonly used repository storage options. (<i>Reviewed by Cynth
 Allow custom <span class="br-setting">config-path</span> default with <span class="id">./configure --with-configdir</span>. (<i>Contributed by Michael Schout. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Log archive copy during <span class="cmd">backup</span>. (<i>Reviewed by Cynthia Shang, Stefan Fercot.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Update reference to include links to user guide examples. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
@@ -964,9 +922,7 @@ Add <span class="br-setting">archive-mode-check</span> option. (<i>Contributed b
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Improve <span class="cmd">archive-get</span> performance. (<i>Reviewed by Cynthia Shang.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Improve <span class="cmd">expire</span> command documentation. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
@@ -1000,9 +956,7 @@ Improve <span class="cmd">info</span> command output when a stanza is specified 
 Improve performance of large file lists in <span class="cmd">backup</span>/<span class="cmd">restore</span> commands. (<i>Reviewed by Cynthia Shang, Oscar.</i>)
 </li><li class="list-unordered">
 Add retries to <span class="postgres">PostgreSQL</span> sleep when starting a backup. (<i>Reviewed by Cynthia Shang. Suggested by Vitaliy Kukharik.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Replace <span class="host">RHEL/CentOS 6</span> documentation with <span class="host">RHEL/CentOS 8</span>.
@@ -1030,9 +984,7 @@ Improve working directory error message. (<i>Reviewed by Stefan Fercot.</i>)
 Add hint about starting the stanza when WAL segment not found. (<i>Contributed by David Christensen. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Add hint for protocol version mismatch. (<i>Reviewed by Cynthia Shang. Suggested by loop-evgeny.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add note that <span class="backrest">pgBackRest</span> versions must match when running remotely. (<i>Reviewed by Cynthia Shang. Suggested by loop-evgeny.</i>)
@@ -1074,9 +1026,7 @@ Delay backup remote connection close until after archive check. (<i>Contributed 
 Improve detailed error output. (<i>Reviewed by Cynthia Shang.</i>)
 </li><li class="list-unordered">
 Improve TLS error reporting. (<i>Reviewed by Cynthia Shang, Stephen Frost.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add <span class="id">none</span> to <span class="br-option">compress-type</span> option reference and fix example. (<i>Reported by Ugo Bellavance, Don Seiler.</i>)
@@ -1122,9 +1072,7 @@ Improve error when <span class="br-option">pg1-path</span> option missing for <s
 Add hint when checksum delta is enabled after a timeline switch. (<i>Reviewed by Matt Bunter, Cynthia Shang.</i>)
 </li><li class="list-unordered">
 Use <span class="postgres">PostgreSQL</span> instead of <span class="id">postma&#115;ter</span> where appropriate. (<i>Reviewed by Cynthia Shang.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fix incorrect example for <span class="br-option">repo-retention-full-type</span> option. (<i>Reported by H&ouml;seyin S&ouml;nmez.</i>)
@@ -1254,9 +1202,7 @@ Auto-select backup set on restore when time target is specified. Auto-selection 
 Skip <span class="file">pg_internal.init</span> temp file during backup. (<i>Reviewed by Cynthia Shang. Suggested by Michael Paquier.</i>)
 </li><li class="list-unordered">
 Add more validations to the manifest on <span class="cmd">backup</span>. (<i>Reviewed by Cynthia Shang.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Prevent <span class="host">lock-bot</span> from adding comments to locked issues. (<i>Suggested by Christoph Berg.</i>)
@@ -1342,9 +1288,7 @@ Fix handling of repeated HTTP headers. When HTTP headers are repeated they shoul
 <span class="host">JSON</span> output from the <span class="cmd">info</span> command is no longer pretty-printed. Monitoring systems can more easily ingest the <span class="host">JSON</span> without linefeeds. External tools such as <span class="id">jq</span> can be used to pretty-print if desired. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 The <span class="cmd">check</span> command is implemented entirely in C. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Document how to contribute to <span class="backrest">pgBackRest</span>. (<i>Contributed by Cynthia Shang, David Steele.</i>)
@@ -1376,9 +1320,7 @@ Add <span class="id">standby</span> restore type. This restore type automaticall
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 The <span class="cmd">restore</span> command is implemented entirely in C. (<i>Reviewed by Cynthia Shang.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Document the relationship between <span class="br-option">db-timeout</span> and <span class="br-option">protocol-timeout</span>. (<i>Contributed by Cynthia Shang. Reviewed by David Steele. Suggested by James Chanco Jr.</i>)
@@ -1406,9 +1348,7 @@ The <span class="cmd">stanza-create/update/delete</span> commands are implemente
 The <span class="cmd">start</span>/<span class="cmd">stop</span> commands are implemented entirely in C. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Create log directories/files with <span class="id">0750</span>/<span class="id">0640</span> mode. (<i>Suggested by Damiano Albani.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fix <span class="id">yum.p.o</span> package being installed when custom package specified. (<i>Reported by Joe Ayers, John Harvey.</i>)
@@ -1462,9 +1402,7 @@ Remove hard-coded <span class="postgres">PostgreSQL</span> user so <span class="
 Honor <span class="host">configure</span> <span class="br-setting">--prefix</span> option. (<i>Suggested by Daniel Westermann.</i>)
 </li><li class="list-unordered">
 Rename <span class="br-option">repo-s3-verify-ssl</span> option to <span class="br-option">repo-s3-verify-tls</span>. The new name is preferred because pgBackRest does not support any SSL protocol versions (they are all considered to be insecure). The old name will continue to be accepted.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add FAQ to the documentation. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
@@ -1486,9 +1424,7 @@ Fix segfault when <span class="br-option">process-max</span> > 8 for <span class
 Bypass database checks when <span class="cmd">stanza-delete</span> issued with <span class="br-option">force</span>. (<i>Contributed by Cynthia Shang. Reviewed by David Steele. Suggested by hatifnatt.</i>)
 </li><li class="list-unordered">
 Add <span class="file">configure</span> script for improved multi-platform support.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add user guides for <span class="host">CentOS</span>/<span class="host">RHEL</span> <span class="host">6</span>/<span class="host">7</span>.
@@ -1532,9 +1468,7 @@ The <span class="cmd">archive-push</span> command is implemented entirely in C.
 Increase <span class="br-option">process-max</span> limit to <span class="id">999</span>. (<i>Suggested by Rakshitha-BR.</i>)
 </li><li class="list-unordered">
 Improve error message when an <span class="host">S3</span> bucket name contains dots.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Clarify that S3-compatible object stores are supported. (<i>Suggested by Magnus Hagander.</i>)
@@ -1566,9 +1500,7 @@ Add hints when unable to find a WAL segment in the archive. (<i>Suggested by Han
 Improve error when hostname cannot be found in a certificate. (<i>Suggested by James Badger.</i>)
 </li><li class="list-unordered">
 Add additional options to <span class="file">backup.manifest</span> for debugging purposes. (<i>Contributed by blogh. Reviewed by David Steele.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Update default documentation version to <span class="postgres">PostgreSQL</span> 10.
@@ -1606,9 +1538,7 @@ Add <span class="id">_DARWIN_C_SOURCE</span> flag to Makefile for <span class="h
 Update address lookup in C TLS client to use modern methods. (<i>Suggested by Bruno Friedmann.</i>)
 </li><li class="list-unordered">
 Include Posix-compliant header for <span class="id">strcasecmp()</span> and <span class="id">fd_set</span>. (<i>Suggested by ucando.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fix hard-coded repository path. (<i>Reported by Heath Lord.</i>)
@@ -1646,9 +1576,7 @@ Reorder <span class="cmd">info</span> command text output so most recent backup 
 Change file ownership only when required.
 </li><li class="list-unordered">
 Redact <span class="id">authentication</span> header when throwing <span class="host">S3</span> errors. (<i>Suggested by Brad Nicholson.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Clarify when <span class="br-option">target-action</span> is effective and <span class="postgres">PostgreSQL</span> version support. (<i>Suggested by Keith Fiske.</i>)
@@ -1708,9 +1636,7 @@ Improve <span class="cmd">info</span> command to display the stanza cipher type.
 Improve support for special characters in filenames.
 </li><li class="list-unordered">
 Allow <span class="br-option">delta</span> option to be specified in the <span class="backrest">pgBackRest</span> configuration file. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Use <span class="id">command</span> in <span class="file">authorized_hosts</span> to improve SSH security. (<i>Suggested by Stephen Frost, Magnus Hagander.</i>)
@@ -1752,9 +1678,7 @@ Allow zero-size files in backup manifest to reference a prior manifest regardles
 Improve asynchronous <span class="cmd">archive-get</span>/<span class="cmd">archive-push</span> performance by directly checking status files. (<i>Contributed by Stephen Frost. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Improve error message when a command is missing the <span class="br-option">stanza</span> option. (<i>Suggested by Sarah Conway.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fix invalid log level in <span class="br-option">log-path</span> option reference. (<i>Reported by Camilo Aguilar.</i>)
@@ -1792,9 +1716,7 @@ Fix non-compliant ISO-8601 timestamp format in S3 authorization headers. AWS and
 Improve the HTTP client to set <span class="id">content-length</span> to 0 when not specified by the server. S3 (and gateways) always set <span class="id">content-length</span> or <span class="id">transfer-encoding</span> but <span class="id">HTTP 1.1</span> does not require it and proxies (e.g. <span class="host">HAProxy</span>) may not include either. (<i>Suggested by Adam K. Sumner.</i>)
 </li><li class="list-unordered">
 Set <span class="id">search_path = 'pg_catalog'</span> on <span class="postgres">PostgreSQL</span> connections. (<i>Suggested by Stephen Frost.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Create a new section to describe building <span class="backrest">pgBackRest</span> and build on a separate host.
@@ -1856,9 +1778,7 @@ Make backup/restore path sync more efficient. Scanning the entire directory can 
 Show command parameters as well as command options in initial info log message.
 </li><li class="list-unordered">
 Rename archive-queue-max option to archive-push-queue-max. This is consistent with the new <span class="br-option">archive-get-queue-max</span> option. The old option name will continue to be accepted.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Update docs with 32-bit support and caveats. 32-bit support was added in <span class="host">v1.26</span>. (<i>Reported by Viorel Tabara.</i>)
@@ -1900,9 +1820,7 @@ Fix manifest test in the <span class="cmd">check</span> command when tablespaces
 Error when multiple arguments are set in the config file for an option that does not accept multiple arguments. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Remove extraneous sudo commands from <span class="file">src/Makefile</span>. (<i>Contributed by Adrian Vondendriesch. Reviewed by David Steele.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Show index in examples for indexed options, i.e. <span class="id">repo-*</span>, <span class="id">pg-*</span>. (<i>Suggested by Stephen Frost.</i>)
@@ -1942,9 +1860,7 @@ The C library is now required. This eliminates conditional loading and eases dev
 The <span class="file">pgbackrest</span> executable is now a C binary instead of Perl. This allows certain time-critical commands (like async <span class="cmd">archive-push</span>) to run more quickly.
 </li><li class="list-unordered">
 Rename <span class="id">db-*</span> options to <span class="id">pg-*</span> and <span class="id">backup-*</span> options to <span class="id">repo-*</span> to improve consistency. <span class="id">repo-*</span> options are now indexed although currently only one is allowed.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 All clusters in the documentation are initialized with checksums.
@@ -1990,9 +1906,7 @@ Improve performance of HTTPS client. Buffering now takes the <span class="id">pe
 Improve S3 delete performance. The constant <span class="id">S3_BATCH_MAX</span> had been replaced with a hard-coded value of 2, probably during testing.
 </li><li class="list-unordered">
 Make backup/restore path sync more efficient. Scanning the entire directory can be very expensive if there are a lot of small tables. The backup manifest contains the path list so use it to perform syncs instead of scanning the backup/restore path. Remove recursive path sync functionality since it is no longer used.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Update docs with 32-bit support and caveats. 32-bit support was added in <span class="host">v1.26</span>. (<i>Reported by Viorel Tabara.</i>)
@@ -2024,9 +1938,7 @@ Add <span class="cmd">stanza-delete</span> command to cleanup unused stanzas. (<
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Improve <span class="cmd">stanza-create</span> command so that it does not error when the stanza already exists. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Update <span class="cmd">stanza-create --force</span> documentation to urge caution when using. (<i>Suggested by Jason O'Donnell.</i>)
@@ -2046,9 +1958,7 @@ Fixed an issue where WAL was not expired on <span class="postgres">PostgreSQL</s
 Fixed an issue where the <span class="br-option">--no-config</span> option was not passed to child processes. This meant the child processes would still read the local config file and possibly cause unexpected behaviors.
 </li><li class="list-unordered">
 Fixed <span class="cmd">info</span> command to eliminate <span class="id">"db (prior)"</span> output if no backups or archives exist for a prior version of the cluster. (<i>Fixed by Cynthia Shang. Reviewed by David Steele. Reported by Stephen Frost.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Document the relationship between the <span class="br-option">archive-copy</span> and <span class="br-option">archive-check</span> options. (<i>Suggested by Markus Nullmeier.</i>)
@@ -2082,9 +1992,7 @@ Repository encryption support. (<i>Contributed by Cynthia Shang, David Steele.</
 Disable gzip filter when <span class="br-option">--compress-level-network=0</span>. The filter was used with compress level set to 0 which added overhead without any benefit.
 </li><li class="list-unordered">
 Inflate performance improvement for gzip filter.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add template to improve initial information gathered for issue submissions. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
@@ -2114,9 +2022,7 @@ Fix instances where <span class="id">database-id</span> was not rendered as an i
 <b> Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Improve performance of list requests on S3. Any beginning literal portion of a filter expression is used to generate a search prefix which often helps keep the request small enough to avoid rate limiting. (<i>Suggested by Mihail Shvein.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Test Suite Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add I/O performance tests.
@@ -2142,9 +2048,7 @@ Exclude <span class="file">pg_internal.init</span> files from backup since they 
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Open log file after async process is completely separated from the main process to prevent the main process from also logging to the file. (<i>Suggested by Jens Wilke.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add passwordless SSH configuration.
@@ -2178,9 +2082,7 @@ Allow <span class="id">content-length</span> (in addition to chunked encoding) w
 Increase HTTP timeout for S3.
 </li><li class="list-unordered">
 Add HTTP retries to harden against transient S3 network errors.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fixed document generation to include section summaries on the Configuration page. (<i>Fixed by Cynthia Shang. Reviewed by David Steele.</i>)
@@ -2216,9 +2118,7 @@ Added <span class="br-option">--backup-ssh-port</span> and <span class="br-optio
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Retry when S3 returns an internal error (500).
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fix description of <span class="br-option">--online</span> based on the command context.
@@ -2248,9 +2148,7 @@ Fixed missing flag in C library build that resulted in a mismatched binary on 32
 <b> Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add <span class="br-option">s3-repo-ca-path</span> and <span class="br-option">s3-repo-ca-file</span> options to accommodate systems where CAs are not automatically found by <span class="id">IO::Socket::SSL</span>, i.e. <span class="host">RHEL7</span>, or to load custom CAs. (<i>Suggested by Scott Frazer.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Test Suite Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add documentation builds to CI.
@@ -2272,9 +2170,7 @@ Fixed config warnings raised from a remote process causing errors in the ma&#115
 <b> Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 <span class="host">Amazon S3</span> repository support. (<i>Reviewed by Cynthia Shang.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Changed invalid <span class="br-setting">max-archive-mb</span> option in configuration reference to <span class="br-setting">archive-queue-max</span>.
@@ -2328,9 +2224,7 @@ Released March 2, 2017
 Fixed an issue where tables over 1GB would report page checksum warnings after the first segment. (<i>Reported by Stephen Frost.</i>)
 </li><li class="list-unordered">
 Fixed an issue where databases created with a non-default tablespace would raise bogus warnings about <span class="file">pg_filenode.map</span> and <span class="file">pg_internal.init</span> not being page aligned. (<i>Reported by blogh.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Test Suite Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Continuous integration using <span class="id">travis-ci</span>.
@@ -2362,9 +2256,7 @@ Fixed a race condition in parallel archiving where creation of new paths generat
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Improved performance of <span class="id">wal archive min/max</span> provided by the <span class="cmd">info</span> command. (<i>Suggested by Jens Wilke.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Updated async archiving documentation to more accurately describe how the new method works and how it differs from the old method. (<i>Suggested by Jens Wilke.</i>)
@@ -2420,9 +2312,7 @@ Remove <span class="br-option">--lock</span> option. This option was introduced 
 Added <span class="br-option">--log-timestamp</span> option to allow timestamps to be suppressed in logging. This is primarily used to avoid filters in the automated documentation.
 </li><li class="list-unordered">
 Return proper error code when unable to convert a relative path to an absolute path. (<i>Suggested by Yogesh Sharma.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Added documentation to the User Guide for the <span class="br-option">process-max</span> option. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
@@ -2458,9 +2348,7 @@ Added a predictable log entry to signal that a command has completed successfull
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 For simplicity, the <span class="file">pg_control</span> file is now copied with the rest of the files instead of by itself of at the end of the process. The <span class="cmd">backup</span> command does not require this behavior and the <span class="cmd">restore</span> copies to a temporary file which is renamed at the end of the restore.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fixed an issue that suppressed exceptions in PDF builds.
@@ -2536,9 +2424,7 @@ Clarified error message when unable to acquire <span class="backrest">pgBackRest
 <span class="backrest">pgBackRest</span> version number included in command start INFO log output.
 </li><li class="list-unordered">
 Process ID logged for local process start/stop INFO log output.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Added <span class="br-option">archive-timeout</span> option documentation to the user guide. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
@@ -2584,9 +2470,7 @@ The <span class="br-setting">archive-start</span> and <span class="br-setting">a
 Additional warnings when archive retention settings may not have the intended effect or would allow indefinite retention. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Experimental support for non-exclusive backups in <span class="postgres">PostgreSQL</span> 9.6 rc1. Changes to the control/catalog/WAL versions in subsequent release candidates may break compatibility but <span class="backrest">pgBackRest</span> will be updated with each release to keep pace.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fixed minor documentation reproducibility issues related to binary paths.
@@ -2636,9 +2520,7 @@ Released August 9, 2016
 <b> Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fixed an issue where tablespace paths that had $PGDATA as a substring would be identified as a subdirectories of $PGDATA even when they were not. Also hardened relative path checking a bit. (<i>Reported by Chris Fort.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Added documentation for scheduling backups with cron. (<i>Contributed by Cynthia Shang. Reviewed by David Steele.</i>)
@@ -2678,9 +2560,7 @@ Suppress banners on SSH protocol connections.
 Improved remote error messages to identify the host where the error was raised.
 </li><li class="list-unordered">
 All remote types now take locks. The exceptions date to when the test harness and <span class="backrest">pgBackRest</span> were running in the same VM and no longer apply.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Added clarification on why the default for the <span class="br-option">backrest-user</span> option is <span class="id">backrest</span>. (<i>Suggested by Michael Vitale.</i>)
@@ -2716,9 +2596,7 @@ Experimental support for non-exclusive backups in <span class="postgres">Postgre
 Improved handling of users/groups captured during backup that do not exist on the restore host. Also explicitly handle the case where user/group is not mapped to a name.
 </li><li class="list-unordered">
 Option handling is now far more strict. Previously it was possible for a command to use an option that was not explicitly assigned to it. This was especially true for the <span class="br-option">backup-host</span> and <span class="br-option">db-host</span> options which are used to determine locality.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Allow a static date to be used for documentation to generate reproducible builds. (<i>Suggested by Adrian Vondendriesch.</i>)
@@ -2738,9 +2616,7 @@ Released June 2, 2016
 <b> Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fix usage of sprintf() due to new constraints in Perl 5.22. Parameters not referenced in the format string are no longer allowed. (<i>Fixed by Adrian Vondendriesch. Reviewed by David Steele.</i>)
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Fixed syntax that was not compatible with Perl 5.2X. (<i>Fixed by Christoph Berg, Adrian Vondendriesch. Reviewed by David Steele.</i>)
@@ -2830,9 +2706,7 @@ Copy <span class="file">global/pg_control</span> last during backups.
 Write <span class="id">.info</span> and <span class="id">.manifest</span> files to temp before moving them to their final locations and fsync'ing.
 </li><li class="list-unordered">
 Rename <span class="br-setting">--no-start-stop</span> option to <span class="br-setting">--no-online</span>.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Test Suite Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Static source analysis using Perl-Critic, currently passes on gentle.
@@ -2904,9 +2778,7 @@ Symlinks are no longer created in backup directories in the repository. These sy
 Added better messaging for backup expiration. Full and differential backup expirations are logged on a single line along with a list of all dependent backups expired.
 </li><li class="list-unordered">
 Archive retention is automatically set to full backup retention if not explicitly configured.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Added documentation in the user guide for delta restores, expiration, dedicated backup hosts, starting and stopping <span class="backrest">pgBackRest</span>, and replication.
@@ -2920,9 +2792,7 @@ Released October 28, 2015
 <b> Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 The <span class="file">backup_label.old</span> and <span class="file">recovery.done</span> files are now excluded from backups.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Added a new user guide that covers <span class="backrest">pgBackRest</span> basics and some advanced topics including PITR. Much more to come, but it's a start. (<i>Contributed by David Steele, Stephen Frost. Reviewed by Michael Renner, Cynthia Shang, Eric Radman, Dmitry Didovicher.</i>)
@@ -2976,9 +2846,7 @@ Experimental support for <span class="postgres">PostgreSQL</span> 9.5 alpha2. Th
 Renamed <span class="br-setting">recovery-setting</span> option and section to <span class="br-setting">recovery-option</span> to be more consistent with <span class="backrest">pgBackRest</span> naming conventions.
 </li><li class="list-unordered">
 Added dynamic module loading to speed up commands, especially asynchronous archiving.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Command-line help is now extracted from the same XML source that is used for the other documentation and includes much more detail.
@@ -3012,9 +2880,7 @@ Experimental support for <span class="postgres">PostgreSQL</span> 9.5 alpha1. Th
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Now using Perl <span class="id">DBI</span> and <span class="id">DBD::Pg</span> for connections to <span class="postgres">PostgreSQL</span> rather than <span class="cmd">psql</span>. The <span class="br-setting">cmd-psql</span> and <span class="br-setting">cmd-psql-option</span> settings have been removed and replaced with <span class="br-setting">db-port</span> and <span class="br-setting">db-socket-path</span>. Follow the instructions in the Installation Guide to install <span class="id">DBD::Pg</span> on your operating system.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Test Suite Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Added vagrant test configurations for Ubuntu 14.04 and CentOS 7.
@@ -3030,9 +2896,7 @@ Released July 13, 2015
 Removed dependency on CPAN packages for multi-threaded operation. While it might not be a bad idea to update the <span class="id">threads</span> and <span class="id">Thread::Queue</span> packages, it is no longer necessary.
 </li><li class="list-unordered">
 Modified wait backoff to use a Fibonacci rather than geometric sequence. This will make wait time grow less aggressively while still giving reasonable values.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Test Suite Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Added vagrant test configurations for Ubuntu 12.04 and CentOS 6.
@@ -3098,9 +2962,7 @@ Various command behavior and logging fixes. (<i>Reviewed by Michael Renner. Sugg
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Replaced <span class="id">JSON</span> module with <span class="id">JSON::PP</span> which ships with core Perl.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Bug Fixes:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Various help fixes. (<i>Reviewed by Michael Renner. Reported by Michael Renner.</i>)
@@ -3148,9 +3010,7 @@ Pushing duplicate WAL now generates an error. This worked before only if checksu
 <b> Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Database System IDs are used to make sure that all WAL in an archive matches up. This should help prevent misconfigurations that send WAL from multiple clusters to the same archive.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Test Suite Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Regression tests working back to <span class="postgres">PostgreSQL</span> 8.3.
@@ -3180,9 +3040,7 @@ Added option <span class="br-setting">--no-start-stop</span> to allow backups wh
 Checksum for <span class="file">backup.manifest</span> to detect a corrupted/modified manifest.
 </li><li class="list-unordered">
 Link <span class="path">latest</span> always points to the last backup. This has been added for convenience and to make restores simpler.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Test Suite Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 More comprehensive unit tests in all areas.
@@ -3192,8 +3050,6 @@ v0.30 Release Notes
 Core Restructuring and Unit Tests
 </div><div class="section2-subsubtitle">
 Released October 5, 2014
-</div><div class="section2-subtitle">
-Additional Notes
 </div><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
@@ -3284,9 +3140,7 @@ Backups are multi-threaded, but the <span class="id">Net::OpenSSH</span> library
 Checksums are lost on any resumed backup. Only the final backup will record checksum on multiple resumes. Checksums from previous backups are correctly recorded and a full backup will reset everything.
 </li><li class="list-unordered">
 The <span class="file">backup.manifest</span> is being written as <span class="id">Storable</span> because <span class="id">Config::IniFile</span> does not seem to handle large files well. Would definitely like to save these as human-readable text.
-</li></ul><div class="section2-subtitle">
-Additional Notes
-</div><div class="section-body-text">
+</li></ul><div class="section-body-text">
 <b>Documentation Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
