@@ -8262,7 +8262,11 @@ Restore all tablespaces into the specified directory.
 Tablespaces are restored into their original locations by default. This behavior can be modified for each tablespace with the <span class="br-setting">tablespace-map</span> option, but it is sometimes preferable to remap all tablespaces to a new directory all at once. This is particularly useful for development or staging systems that may not have the same storage layout as the original system where the backup was generated.
 </div><div class="section-body-text">
 The path specified will be the parent path used to create all the tablespaces in the backup.
-</div>
+</div><div class="admonition"><div class="caution">
+CAUTION:
+</div><div class="caution-text">
+Tablespaces created after the backup started will not be mapped. Make a new backup after a tablespace is created if tablespace mapping is required.
+</div></div>
 <pre class="code-block">example: --tablespace-map-all=/data/tablespace</pre>
 </div></div><div class="section3"><a id="command-restore/category-command/option-target"></a><div class="section3-header"><div class="section3-number"></div><div class="section3-title">
 Target Option (<span class="id">--target</span>)
@@ -13699,5 +13703,5 @@ Version Command (<span class="id">version</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Displays installed <span class="backrest">pgBackRest</span> version.
 </div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated January 20, 2025
+Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated January 28, 2025
 </div></body></html>
