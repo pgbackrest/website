@@ -183,9 +183,9 @@ Introduction
 </div></div><div class="section-body"><div class="section-body-text">
 This user guide is intended to be followed sequentially from beginning to end &mdash; each section depends on the last. For example, the <a href="#restore">Restore</a> section relies on setup that is performed in the <a href="#quickstart">Quick Start</a> section. Once <span class="backrest">pgBackRest</span> is up and running then skipping around is possible but following the user guide in order is recommended the first time through.
 </div><div class="section-body-text">
-Although the examples in this guide are targeted at <span class="host">Debian/Ubuntu</span> and <span class="postgres">PostgreSQL</span> 15, it should be fairly easy to apply the examples to any Unix distribution and <span class="postgres">PostgreSQL</span> version. The only OS-specific commands are those to create, start, stop, and drop <span class="postgres">PostgreSQL</span> clusters. The <span class="backrest">pgBackRest</span> commands will be the same on any Unix system though the location of the executable may vary. While <span class="backrest">pgBackRest</span> strives to operate consistently across versions of <span class="postgres">PostgreSQL</span>, there are subtle differences between versions of <span class="postgres">PostgreSQL</span> that may show up in this guide when illustrating certain examples, e.g. <span class="postgres">PostgreSQL</span> path/file names and settings.
+Although the examples in this guide are targeted at <span class="host">Debian/Ubuntu</span> and <span class="postgres">PostgreSQL</span> 16, it should be fairly easy to apply the examples to any Unix distribution and <span class="postgres">PostgreSQL</span> version. The only OS-specific commands are those to create, start, stop, and drop <span class="postgres">PostgreSQL</span> clusters. The <span class="backrest">pgBackRest</span> commands will be the same on any Unix system though the location of the executable may vary. While <span class="backrest">pgBackRest</span> strives to operate consistently across versions of <span class="postgres">PostgreSQL</span>, there are subtle differences between versions of <span class="postgres">PostgreSQL</span> that may show up in this guide when illustrating certain examples, e.g. <span class="postgres">PostgreSQL</span> path/file names and settings.
 </div><div class="section-body-text">
-Configuration information and documentation for PostgreSQL can be found in the <span class="postgres">PostgreSQL</span> <a href="http://www.postgresql.org/docs/15/static/index.html">Manual</a>.
+Configuration information and documentation for PostgreSQL can be found in the <span class="postgres">PostgreSQL</span> <a href="http://www.postgresql.org/docs/16/static/index.html">Manual</a>.
 </div><div class="section-body-text">
 A somewhat novel approach is taken to documentation in this user guide. Each command is run on a virtual machine when the documentation is built from the XML source. This means you can have a high confidence that the commands work correctly in the order presented. Output is captured and displayed below the command when appropriate. If the output is not included it is because it was deemed not relevant or was considered a distraction from the narrative.
 </div><div class="section-body-text">
@@ -244,20 +244,22 @@ Many option names have changed to improve consistency although the old names fro
 Upgrading pgBackRest from v2.x to v2.y
 </div></div><div class="section-body"><div class="section-body-text">
 Upgrading from <span class="host">v2.x</span> to <span class="host">v2.y</span> is straight-forward. The repository format has not changed, so for most installations it is simply a matter of installing binaries for the new version. It is also possible to downgrade if you have not used new features that are unsupported by the older version.
-</div></div></div></div></div><div class="section1"><a id="build"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
+</div><div class="admonition"><div class="important">
+IMPORTANT:
+</div><div class="important-text">
+The local and remote <span class="backrest">pgBackRest</span> versions must match exactly so they should be upgraded together. If there is a mismatch, WAL archiving and backups will not function until the versions match. In such a case, the following error will be reported: <span class="id">[ProtocolError] expected value '2.x' for greeting key 'version' but got '2.y'</span>.
+</div></div></div></div></div></div><div class="section1"><a id="build"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Build
 </div></div><div class="section-body"><div class="section-body-text">
 Installing <span class="backrest">pgBackRest</span> from a package is preferable to building from source. See <a href="#installation">Installation</a> for more information about packages.
 </div><div class="section-body-text">
 When building from source it is best to use a build host rather than building on production. Many of the tools required for the build should generally not be installed in production. <span class="backrest">pgBackRest</span> consists of a single executable so it is easy to copy to a new host once it is built.
-</div><div class="section-body-text">
-The preferred build method is <span class="host">meson</span>/<span class="host">ninja</span> as shown below. The <span class="host">autoconf</span>/<span class="host">make</span> method is also provided for legacy purposes, see <a href="user-guide-rhel.html#build">Build</a>.
 </div><div class="execute"><div class="execute-title">
-<span class="host">build</span> <b>&#x21d2;</b> Download version <span class="id">2.54.2</span> of <span class="backrest">pgBackRest</span> to <span class="path">/build</span> path
+<span class="host">build</span> <b>&#x21d2;</b> Download version <span class="id">2.55.0</span> of <span class="backrest">pgBackRest</span> to <span class="path">/build</span> path
 </div><div class="execute-body">
 <pre class="execute-body-cmd">mkdir -p /build</pre>
 <pre class="execute-body-cmd">wget -q -O - \
-       https://github.com/pgbackrest/pgbackrest/archive/release/2.54.2.tar.gz | \
+       https://github.com/pgbackrest/pgbackrest/archive/release/2.55.0.tar.gz | \
        tar zx -C /build</pre>
 </div></div><div class="execute"><div class="execute-title">
 <span class="host">build</span> <b>&#x21d2;</b> Install build dependencies
@@ -267,7 +269,7 @@ The preferred build method is <span class="host">meson</span>/<span class="host"
 </div></div><div class="execute"><div class="execute-title">
 <span class="host">build</span> <b>&#x21d2;</b> Configure and compile <span class="backrest">pgBackRest</span>
 </div><div class="execute-body">
-<pre class="execute-body-cmd">meson setup /build/pgbackrest /build/pgbackrest-release-2.54.2</pre>
+<pre class="execute-body-cmd">meson setup /build/pgbackrest /build/pgbackrest-release-2.55.0</pre>
 <pre class="execute-body-cmd">ninja -C /build/pgbackrest</pre>
 </div></div></div></div><div class="section1"><a id="installation"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Installation
@@ -306,7 +308,7 @@ If packages are not provided for your distribution/version you can <a href="#bui
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Make sure the installation worked
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest</pre>
-<pre class="execute-body-output">pgBackRest 2.54.2 - General help
+<pre class="execute-body-output">pgBackRest 2.55.0 - General help
 
 Usage:
     pgbackrest [options] [command]
@@ -330,7 +332,7 @@ Commands:
     stanza-upgrade  upgrade a stanza
     start           allow pgBackRest processes to run
     stop            stop pgBackRest processes from running
-    verify          verify contents of the repository
+    verify          verify contents of a repository
     version         get version
 
 Use 'pgbackrest help [command]' for more information.</pre>
@@ -345,12 +347,12 @@ Creating the demo cluster is optional but is strongly recommended, especially fo
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Create the demo cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo -u postgres /usr/lib/postgresql/15/bin/initdb \
-       -D /var/lib/postgresql/15/demo -k -A peer</pre>
-<pre class="execute-body-cmd">sudo pg_createcluster 15 demo</pre>
-<pre class="execute-body-output">Configuring already existing cluster (configuration: /etc/postgresql/15/demo, data: /var/lib/postgresql/15/demo, owner: 102:103)
+<pre class="execute-body-cmd">sudo -u postgres /usr/lib/postgresql/16/bin/initdb \
+       -D /var/lib/postgresql/16/demo -k -A peer</pre>
+<pre class="execute-body-cmd">sudo pg_createcluster 16 demo</pre>
+<pre class="execute-body-output">Configuring already existing cluster (configuration: /etc/postgresql/16/demo, data: /var/lib/postgresql/16/demo, owner: 102:103)
 Ver Cluster Port Status Owner    Data directory              Log file
-15  demo    5432 down   postgres /var/lib/postgresql/15/demo /var/log/postgresql/postgresql-15-demo.log</pre>
+16  demo    5432 down   postgres /var/lib/postgresql/16/demo /var/log/postgresql/postgresql-16-demo.log</pre>
 </div></div></div></div><div class="section2"><a id="quickstart/configure-stanza"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Configure Cluster Stanza
 </div></div><div class="section-body"><div class="section-body-text">
@@ -369,7 +371,7 @@ When creating the <span class="file">/etc/pgbackrest/pgbackrest.conf</span> file
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure the <span class="postgres">PostgreSQL</span> cluster data directory
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo
+pg1-path=/var/lib/postgresql/16/demo
 </div></div></div><div class="section-body-text">
 <span class="backrest">pgBackRest</span> configuration files follow a Windows INI-like convention. Sections are denoted by text in brackets and key/value pairs are contained in each section. Lines beginning with <span class="id">#</span> are ignored and can be used as comments. Quoting is not supported and whitespace is trimmed from keys and values. Sections will be merged if they appear more than once.
 </div><div class="section-body-text">
@@ -406,7 +408,7 @@ NOTE:
 <pre class="execute-body-cmd">sudo -u postgres bash -c ' \
        export PGBACKREST_LOG_PATH=/path/set/by/env &amp;&amp; \
        pgbackrest --log-level-console=error help backup log-path'</pre>
-<pre class="execute-body-output">pgBackRest 2.54.2 - 'backup' command - 'log-path' option help
+<pre class="execute-body-output">pgBackRest 2.55.0 - 'backup' command - 'log-path' option help
 
 Path where log files are stored.
 
@@ -435,7 +437,7 @@ The repository path must be configured so <span class="backrest">pgBackRest</spa
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure the <span class="backrest">pgBackRest</span> repository path
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 repo1-path=/var/lib/pgbackrest
@@ -446,7 +448,7 @@ Configure Archiving
 </div></div><div class="section-body"><div class="section-body-text">
 Backing up a running <span class="postgres">PostgreSQL</span> cluster requires WAL archiving to be enabled. Note that <i>at least</i> one WAL segment will be created during the backup process even if no explicit writes are made to the cluster.
 </div><div class="config"><div class="config-title">
-<span class="host">pg-primary</span>:<span class="file">/etc/postgresql/15/demo/postgresql.conf</span> <b>&#x21d2;</b> Configure archive settings
+<span class="host">pg-primary</span>:<span class="file">/etc/postgresql/16/demo/postgresql.conf</span> <b>&#x21d2;</b> Configure archive settings
 </div><div class="config-body"><div class="config-body-output">
 archive_command = 'pgbackrest --stanza=demo archive-push %p'<br/>
 archive_mode = on<br/>
@@ -459,7 +461,7 @@ The <span class="postgres">PostgreSQL</span> cluster must be restarted after mak
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Restart the demo cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo restart</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo restart</pre>
 </div></div><div class="section-body-text">
 When archiving a WAL segment is expected to take more than 60 seconds (the default) to reach the <span class="backrest">pgBackRest</span> repository, then the <span class="backrest">pgBackRest</span> <span class="br-option">archive-timeout</span> option should be increased. Note that this option is not the same as the <span class="postgres">PostgreSQL</span> <span class="pg-option">archive_timeout</span> option which is used to force a WAL segment switch; useful for databases where there are long periods of inactivity. For more information on the <span class="postgres">PostgreSQL</span> <span class="pg-option">archive_timeout</span> option, see <span class="postgres">PostgreSQL</span> <a href="https://www.postgresql.org/docs/current/static/runtime-config-wal.html">Write Ahead Log</a>.
 </div><div class="section-body-text">
@@ -468,7 +470,7 @@ The <span class="cmd">archive-push</span> command can be configured with its own
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Config <span class="cmd">archive-push</span> to use a lower compression level
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 repo1-path=/var/lib/pgbackrest<br/>
@@ -485,7 +487,7 @@ Configure Retention
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure retention to 2 full backups
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 repo1-path=/var/lib/pgbackrest<br/>
@@ -505,7 +507,7 @@ It is important to use a long, random passphrase for the cipher key. A good way 
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="backrest">pgBackRest</span> repository encryption
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 repo1-cipher-pass=zWaf6XtpjIVZC5444yXB+cgFDFl7MxGlgkZSaoPvTGirhPygu4jOKOXf9LO4vjfO<br/>
@@ -525,7 +527,7 @@ The <span class="cmd">stanza-create</span> command must be run to initialize the
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Create the stanza and check the configuration
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --log-level-console=info stanza-create</pre>
-<pre class="execute-body-output">P00   INFO: stanza-create command begin 2.54.2: --exec-id=1043-ef67e6ef --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --stanza=demo
+<pre class="execute-body-output">P00   INFO: stanza-create command begin 2.55.0: --exec-id=377-04baf9b7 --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --stanza=demo
 P00   INFO: stanza-create for stanza 'demo' on repo1</pre>
 <pre class="execute-body-output-highlight">P00   INFO: stanza-create command end: completed successfully</pre>
 </div></div></div></div><div class="section2"><a id="quickstart/check-configuration"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -538,10 +540,10 @@ Note that <span class="id">pg_create_restore_point('pgBackRest Archive Check')</
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Check the configuration
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --log-level-console=info check</pre>
-<pre class="execute-body-output">P00   INFO: check command begin 2.54.2: --exec-id=1051-3717e614 --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --stanza=demo
+<pre class="execute-body-output">P00   INFO: check command begin 2.55.0: --exec-id=385-22615bff --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --stanza=demo
 P00   INFO: check repo1 configuration (primary)
 P00   INFO: check repo1 archive for WAL (primary)</pre>
-<pre class="execute-body-output-highlight">P00   INFO: WAL segment 000000010000000000000001 successfully archived to '/var/lib/pgbackrest/archive/demo/15-1/0000000100000000/000000010000000000000001-e8049b6401a477af2dad70d29a124fc4d3e4a373.gz' on repo1</pre>
+<pre class="execute-body-output-highlight">P00   INFO: WAL segment 000000010000000000000001 successfully archived to '/var/lib/pgbackrest/archive/demo/16-1/0000000100000000/000000010000000000000001-0f20782f86d20ed6487132ce4e1f4674af053cc0.gz' on repo1</pre>
 <pre class="execute-body-output">P00   INFO: check command end: completed successfully</pre>
 </div></div></div></div><div class="section2"><a id="quickstart/performance-tuning"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Performance Tuning
@@ -550,9 +552,9 @@ Performance Tuning
 </div><ul class="list-unordered"><li class="list-unordered">
 <span class="br-option">compress-type</span> - determines the compression algorithm used by the <span class="cmd">backup</span> and <span class="cmd">archive-push</span> commands. The default is <span class="id">gz</span> (Gzip) but <span class="id">zst</span> (Zstandard) is recommended because it is much faster and provides compression similar to <span class="id">gz</span>. <span class="id">zst</span> has been supported by the <span class="br-option">compress-type</span> option since <a href="release.html#2.27">v2.27</a>. See <a href="configuration.html#section-general/option-compress-type">Compress Type</a> for more details.
 </li><li class="list-unordered">
-<span class="br-option">repo-bundle</span> - combines small files during backup to save space and improve the speed of both the <span class="cmd">backup</span> and <span class="cmd">restore</span> commands, especially on object stores. The <span class="br-option">repo-bundle</span> option was introduced in <a href="release.html#2.39">v2.39</a>. See <a href="#backup/bundle">File Bundling</a> for more details.
+<span class="br-option">repo-bundle</span> - combines small files during backup to save space and improve the speed of both the <span class="cmd">backup</span> and <span class="cmd">restore</span> commands, especially on object stores such as S3. The <span class="br-option">repo-bundle</span> option was introduced in <a href="release.html#2.39">v2.39</a>. See <a href="#backup/bundle">File Bundling</a> for more details.
 </li><li class="list-unordered">
-<span class="br-option">repo-block</span> - stores only the portions of of files that have changed rather than the entire file during <span class="id">diff</span>/<span class="id">incr</span> <span class="cmd">backup</span>. This saves space and increases the speed of the <span class="cmd">backup</span>. The <span class="br-option">repo-block</span> option was introduced in <a href="release.html#2.46">v2.46</a> but at least <a href="release.html#2.52.1">v2.52.1</a> is recommended. See <a href="#backup/block">Block Incremental</a> for more details.
+<span class="br-option">repo-block</span> - stores only the portions of files that have changed rather than the entire file during <span class="id">diff</span>/<span class="id">incr</span> <span class="cmd">backup</span>. This saves space and increases the speed of the <span class="cmd">backup</span>. The <span class="br-option">repo-block</span> option was introduced in <a href="release.html#2.46">v2.46</a> but at least <a href="release.html#2.52.1">v2.52.1</a> is recommended. See <a href="#backup/block">Block Incremental</a> for more details.
 </li></ul><div class="section-body-text">
 There are other performance options that are not enabled by default because they require additional configuration or because the default is safe (but not optimal). These options are available in all v2 versions of <span class="backrest">pgBackRest</span>.
 </div><ul class="list-unordered"><li class="list-unordered">
@@ -569,7 +571,7 @@ By default <span class="backrest">pgBackRest</span> will wait for the next regul
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure backup fast start
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 repo1-cipher-pass=zWaf6XtpjIVZC5444yXB+cgFDFl7MxGlgkZSaoPvTGirhPygu4jOKOXf9LO4vjfO<br/>
@@ -587,16 +589,16 @@ To perform a backup of the <span class="postgres">PostgreSQL</span> cluster run 
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo \
        --log-level-console=info backup</pre>
-<pre class="execute-body-output">P00   INFO: backup command begin 2.54.2: --exec-id=1075-c4ccfe93 --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo1-retention-full=2 --stanza=demo --start-fast</pre>
+<pre class="execute-body-output">P00   INFO: backup command begin 2.55.0: --exec-id=409-120f539e --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo1-retention-full=2 --stanza=demo --start-fast</pre>
 <pre class="execute-body-output-highlight">P00   WARN: no prior backup exists, incr backup has been changed to full</pre>
 <pre class="execute-body-output">P00   INFO: execute non-exclusive backup start: backup begins after the requested immediate checkpoint completes
 P00   INFO: backup start archive = 000000010000000000000002, lsn = 0/2000028
        [filtered 3 lines of output]
 P00   INFO: check archive for segment(s) 000000010000000000000002:000000010000000000000003
-P00   INFO: new backup label = 20250120-140844F</pre>
-<pre class="execute-body-output-highlight">P00   INFO: full backup size = 21.8MB, file total = 961</pre>
+P00   INFO: new backup label = 20250421-132216F</pre>
+<pre class="execute-body-output-highlight">P00   INFO: full backup size = 22.0MB, file total = 963</pre>
 <pre class="execute-body-output">P00   INFO: backup command end: completed successfully
-P00   INFO: expire command begin 2.54.2: --exec-id=1075-c4ccfe93 --log-level-console=info --no-log-timestamp --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo1-retention-full=2 --stanza=demo</pre>
+P00   INFO: expire command begin 2.55.0: --exec-id=409-120f539e --log-level-console=info --no-log-timestamp --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo1-retention-full=2 --stanza=demo</pre>
 </div></div><div class="section-body-text">
 By default <span class="backrest">pgBackRest</span> will attempt to perform an incremental backup. However, an incremental backup must be based on a full backup and since no full backup existed <span class="backrest">pgBackRest</span> ran a full backup instead.
 </div><div class="section-body-text">
@@ -608,10 +610,10 @@ The <span class="br-option">type</span> option can be used to specify a full or 
        --log-level-console=info backup</pre>
 <pre class="execute-body-output">       [filtered 7 lines of output]
 P00   INFO: check archive for segment(s) 000000010000000000000004:000000010000000000000005
-P00   INFO: new backup label = 20250120-140844F_20250120-140846D</pre>
-<pre class="execute-body-output-highlight">P00   INFO: diff backup size = 8.3KB, file total = 961</pre>
+P00   INFO: new backup label = 20250421-132216F_20250421-132219D</pre>
+<pre class="execute-body-output-highlight">P00   INFO: diff backup size = 8.3KB, file total = 963</pre>
 <pre class="execute-body-output">P00   INFO: backup command end: completed successfully
-P00   INFO: expire command begin 2.54.2: --exec-id=1099-5158fb3d --log-level-console=info --no-log-timestamp --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo1-retention-full=2 --stanza=demo</pre>
+P00   INFO: expire command begin 2.55.0: --exec-id=434-60cb387f --log-level-console=info --no-log-timestamp --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo1-retention-full=2 --stanza=demo</pre>
 </div></div><div class="section-body-text">
 This time there was no warning because a full backup already existed. While incremental backups can be based on a full <i>or</i> differential backup, differential backups must be based on a full backup. A full backup can be performed by running the <span class="cmd">backup</span> command with <span class="br-setting">--type=full</span>.
 </div><div class="section-body-text">
@@ -641,18 +643,18 @@ Use the <span class="cmd">info</span> command to get information about backups.
     cipher: aes-256-cbc
 
     db (current)
-        wal archive min/max (15): 000000010000000000000001/000000010000000000000005
+        wal archive min/max (16): 000000010000000000000001/000000010000000000000005
 </pre>
-<pre class="execute-body-output-highlight">        full backup: 20250120-140844F</pre>
-<pre class="execute-body-output">            timestamp start/stop: 2025-01-20 14:08:44+00 / 2025-01-20 14:08:46+00
+<pre class="execute-body-output-highlight">        full backup: 20250421-132216F</pre>
+<pre class="execute-body-output">            timestamp start/stop: 2025-04-21 13:22:16+00 / 2025-04-21 13:22:18+00
             wal start/stop: 000000010000000000000002 / 000000010000000000000003
-            database size: 21.8MB, database backup size: 21.8MB
+            database size: 22.0MB, database backup size: 22.0MB
             repo1: backup set size: 2.9MB, backup size: 2.9MB
 </pre>
-<pre class="execute-body-output-highlight">        diff backup: 20250120-140844F_20250120-140846D</pre>
-<pre class="execute-body-output">            timestamp start/stop: 2025-01-20 14:08:46+00 / 2025-01-20 14:08:48+00
+<pre class="execute-body-output-highlight">        diff backup: 20250421-132216F_20250421-132219D</pre>
+<pre class="execute-body-output">            timestamp start/stop: 2025-04-21 13:22:19+00 / 2025-04-21 13:22:21+00
             wal start/stop: 000000010000000000000004 / 000000010000000000000005
-            database size: 21.8MB, database backup size: 8.3KB
+            database size: 22.0MB, database backup size: 8.3KB
             repo1: backup set size: 2.9MB, backup size: 448B
             backup reference total: 1 full</pre>
 </div></div><div class="section-body-text">
@@ -682,30 +684,30 @@ Backups can protect you from a number of disaster scenarios, the most common of 
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Stop the demo cluster and delete the <span class="file">pg_control</span> file
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo stop</pre>
-<pre class="execute-body-cmd">sudo -u postgres rm /var/lib/postgresql/15/demo/global/pg_control</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo stop</pre>
+<pre class="execute-body-cmd">sudo -u postgres rm /var/lib/postgresql/16/demo/global/pg_control</pre>
 </div></div><div class="section-body-text">
 Starting the cluster without this important file will result in an error.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Attempt to start the corrupted demo cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo start</pre>
-<pre class="execute-body-output">Error: /usr/lib/postgresql/15/bin/pg_ctl /usr/lib/postgresql/15/bin/pg_ctl start -D /var/lib/postgresql/15/demo -l /var/log/postgresql/postgresql-15-demo.log -s -o  -c config_file="/etc/postgresql/15/demo/postgresql.conf"  exited with status 1: </pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo start</pre>
+<pre class="execute-body-output">Error: /usr/lib/postgresql/16/bin/pg_ctl /usr/lib/postgresql/16/bin/pg_ctl start -D /var/lib/postgresql/16/demo -l /var/log/postgresql/postgresql-16-demo.log -s -o  -c config_file="/etc/postgresql/16/demo/postgresql.conf"  exited with status 1: </pre>
 <pre class="execute-body-output-highlight-error">postgres: could not find the database system</pre>
-<pre class="execute-body-output">Expected to find it in the directory "/var/lib/postgresql/15/demo",
-but could not open file "/var/lib/postgresql/15/demo/global/pg_control": No such file or directory
+<pre class="execute-body-output">Expected to find it in the directory "/var/lib/postgresql/16/demo",
+but could not open file "/var/lib/postgresql/16/demo/global/pg_control": No such file or directory
 Examine the log output.</pre>
 </div></div><div class="section-body-text">
 To restore a backup of the <span class="postgres">PostgreSQL</span> cluster run <span class="backrest">pgBackRest</span> with the <span class="cmd">restore</span> command. The cluster needs to be stopped (in this case it is already stopped) and all files must be removed from the <span class="postgres">PostgreSQL</span> data directory.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Remove old files from demo cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo -u postgres find /var/lib/postgresql/15/demo -mindepth 1 -delete</pre>
+<pre class="execute-body-cmd">sudo -u postgres find /var/lib/postgresql/16/demo -mindepth 1 -delete</pre>
 </div></div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Restore the demo cluster and start <span class="postgres">PostgreSQL</span>
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo restore</pre>
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo start</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo start</pre>
 </div></div><div class="section-body-text">
 This time the cluster started successfully since the restore replaced the missing <span class="file">pg_control</span> file.
 </div><div class="section-body-text">
@@ -785,7 +787,7 @@ select name,
        /var/lib/postgresql/pgbackrest/doc/example/pgsql-pgbackrest-query.sql</pre>
 <pre class="execute-body-output">  name  | last_successful_backup |    last_archived_wal     
 --------+------------------------+--------------------------
- "demo" | 2025-01-20 14:08:48+00 | 000000010000000000000005
+ "demo" | 2025-04-21 13:22:21+00 | 000000010000000000000005
 (1 row)</pre>
 </div></div></div></div><div class="section2"><a id="monitor/jq"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Using <span class="host">jq</span>
@@ -802,7 +804,7 @@ Now <span class="host">jq</span> can be used to query the last successful backup
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --output=json --stanza=demo info | \
        jq '.[0] | .backup[-1] | .timestamp.stop'</pre>
-<pre class="execute-body-output">1737382128</pre>
+<pre class="execute-body-output">1745241741</pre>
 </div></div><div class="section-body-text">
 Or the last archived WAL.
 </div><div class="execute"><div class="execute-title">
@@ -837,7 +839,7 @@ The file bundling feature is enabled with the <span class="br-option">repo-bundl
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="br-option">repo1-bundle</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 repo1-bundle=y<br/>
@@ -874,7 +876,7 @@ The block incremental feature is enabled with the <span class="br-option">repo-b
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="br-option">repo1-block</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 repo1-block=y<br/>
@@ -901,19 +903,19 @@ Annotations are output by the <span class="cmd">info</span> command text output 
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Get info for the demo cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --set=20250120-140903F info</pre>
+<pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --set=20250421-132237F info</pre>
 <pre class="execute-body-output">stanza: demo
     status: ok
     cipher: aes-256-cbc
 
     db (current)
-        wal archive min/max (15): 000000020000000000000007/000000020000000000000009
+        wal archive min/max (16): 000000020000000000000007/000000020000000000000009
 
-        full backup: 20250120-140903F
-            timestamp start/stop: 2025-01-20 14:09:03+00 / 2025-01-20 14:09:05+00
+        full backup: 20250421-132237F
+            timestamp start/stop: 2025-04-21 13:22:37+00 / 2025-04-21 13:22:39+00
             wal start/stop: 000000020000000000000008 / 000000020000000000000009
-            lsn start/stop: 0/8000028 / 0/9000050
-            database size: 21.8MB, database backup size: 21.8MB
+            lsn start/stop: 0/8000028 / 0/9000088
+            database size: 22.0MB, database backup size: 22.0MB
             repo1: backup size: 2.9MB
             database list: postgres (5)</pre>
 <pre class="execute-body-output-highlight">            annotation(s)</pre>
@@ -924,21 +926,21 @@ Annotations included with the <span class="cmd">backup</span> command can be add
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Change backup annotations
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --set=20250120-140903F \
+<pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --set=20250421-132237F \
        --annotation=key= --annotation=new_key=new_value annotate</pre>
-<pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --set=20250120-140903F info</pre>
+<pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --set=20250421-132237F info</pre>
 <pre class="execute-body-output">stanza: demo
     status: ok
     cipher: aes-256-cbc
 
     db (current)
-        wal archive min/max (15): 000000020000000000000007/000000020000000000000009
+        wal archive min/max (16): 000000020000000000000007/000000020000000000000009
 
-        full backup: 20250120-140903F
-            timestamp start/stop: 2025-01-20 14:09:03+00 / 2025-01-20 14:09:05+00
+        full backup: 20250421-132237F
+            timestamp start/stop: 2025-04-21 13:22:37+00 / 2025-04-21 13:22:39+00
             wal start/stop: 000000020000000000000008 / 000000020000000000000009
-            lsn start/stop: 0/8000028 / 0/9000050
-            database size: 21.8MB, database backup size: 21.8MB
+            lsn start/stop: 0/8000028 / 0/9000088
+            database size: 22.0MB, database backup size: 22.0MB
             repo1: backup size: 2.9MB
             database list: postgres (5)</pre>
 <pre class="execute-body-output-highlight">            annotation(s)</pre>
@@ -949,7 +951,9 @@ Retention
 </div></div><div class="section-body"><div class="section-body-text">
 Generally it is best to retain as many backups as possible to provide a greater window for <a href="#pitr">Point-in-Time Recovery</a>, but practical concerns such as disk space must also be considered. Retention options remove older backups once they are no longer needed.
 </div><div class="section-body-text">
-<span class="backrest">pgBackRest</span> does full backup rotation based on the retention type which can be a count or a time period. When a count is specified, then expiration is not concerned with when the backups were created but with how many must be retained. Differential and Incremental backups are count-based but will always be expired when the backup they depend on is expired. See sections <a href="#retention/full">Full Backup Retention</a> and <a href="#retention/diff">Differential Backup Retention</a> for details and examples. Archived WAL is retained by default for backups that have not expired, however, although not recommended, this schedule can be modified per repository with the retention-archive options. See section <a href="#retention/archive">Archive Retention</a> for details and examples.<br/>
+<span class="backrest">pgBackRest</span> does full backup rotation based on the retention type which can be a count or a time period. When a count is specified, then expiration is not concerned with when the backups were created but with how many must be retained. Differential backups are count-based but will always be expired when the full backup they depend on is expired. Incremental backups are not expired by retention independently &mdash; they are always expired with their related full or differential backup. See sections <a href="#retention/full">Full Backup Retention</a> and <a href="#retention/diff">Differential Backup Retention</a> for details and examples.<br/>
+<br/>
+Archived WAL is retained by default for backups that have not expired, however, although not recommended, this schedule can be modified per repository with the retention-archive options. See section <a href="#retention/archive">Archive Retention</a> for details and examples.<br/>
 <br/>
 The <span class="cmd">expire</span> command is run automatically after each successful backup and can also be run by the user. When run by the user, expiration will occur as defined by the retention settings for each configured repository. If the <span class="br-option">--repo</span> option is provided, expiration will occur only on the specified repository. Expiration can also be limited by the user to a specific backup set with the <span class="br-option">--set</span> option and, unless the <span class="br-option">--repo</span> option is specified, all repositories will be searched and any matching the set criteria will be expired. It should be noted that the archive retention schedule will be checked and performed any time the <span class="cmd">expire</span> command is run.
 </div><div class="section2"><a id="retention/full"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
@@ -960,7 +964,7 @@ The <span class="br-option">repo1-retention-full-type</span> determines how the 
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="br-option">repo1-retention-full</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 repo1-block=y<br/>
@@ -980,10 +984,10 @@ Backup <span class="br-setting">repo1-retention-full=2</span> but currently ther
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --type=full \
        --log-level-console=detail backup</pre>
-<pre class="execute-body-output">       [filtered 973 lines of output]
-P00   INFO: repo1: remove expired backup 20250120-140859F
-P00 DETAIL: repo1: 15-1 archive retention on backup 20250120-140903F, start = 000000020000000000000008</pre>
-<pre class="execute-body-output-highlight">P00   INFO: repo1: 15-1 remove archive, start = 000000020000000000000007, stop = 000000020000000000000007</pre>
+<pre class="execute-body-output">       [filtered 975 lines of output]
+P00   INFO: repo1: remove expired backup 20250421-132234F
+P00 DETAIL: repo1: 16-1 archive retention on backup 20250421-132237F, start = 000000020000000000000008</pre>
+<pre class="execute-body-output-highlight">P00   INFO: repo1: 16-1 remove archive, start = 000000020000000000000007, stop = 000000020000000000000007</pre>
 <pre class="execute-body-output">P00   INFO: expire command end: completed successfully</pre>
 </div></div><div class="section-body-text">
 Archive <i>is</i> expired because WAL segments were generated before the oldest backup. These are not useful for recovery &mdash; only WAL segments generated after a backup can be used to recover that backup.
@@ -993,12 +997,12 @@ Archive <i>is</i> expired because WAL segments were generated before the oldest 
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --type=full \
        --log-level-console=info backup</pre>
 <pre class="execute-body-output">       [filtered 11 lines of output]
-P00   INFO: repo1: expire full backup 20250120-140903F
-P00   INFO: repo1: remove expired backup 20250120-140903F</pre>
-<pre class="execute-body-output-highlight">P00   INFO: repo1: 15-1 remove archive, start = 000000020000000000000008, stop = 00000002000000000000000A</pre>
+P00   INFO: repo1: expire full backup 20250421-132237F
+P00   INFO: repo1: remove expired backup 20250421-132237F</pre>
+<pre class="execute-body-output-highlight">P00   INFO: repo1: 16-1 remove archive, start = 000000020000000000000008, stop = 000000020000000000000009</pre>
 <pre class="execute-body-output">P00   INFO: expire command end: completed successfully</pre>
 </div></div><div class="section-body-text">
-The <span class="id">20250120-140844F</span> full backup is expired and archive retention is based on the <span class="id">20250120-140906F</span> which is now the oldest full backup.
+The <span class="id">20250421-132216F</span> full backup is expired and archive retention is based on the <span class="id">20250421-132241F</span> which is now the oldest full backup.
 </div></div></div><div class="section2"><a id="retention/diff"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Differential Backup Retention
 </div></div><div class="section-body"><div class="section-body-text">
@@ -1007,7 +1011,7 @@ Set <span class="br-option">repo1-retention-diff</span> to the number of differe
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="br-option">repo1-retention-diff</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 repo1-block=y<br/>
@@ -1022,7 +1026,7 @@ start-fast=y<br/>
 [global:archive-push]<br/>
 compress-level=3
 </div></div></div><div class="section-body-text">
-Backup <span class="br-setting">repo1-retention-diff=1</span> so two differentials will need to be performed before one is expired. An incremental backup is added to demonstrate incremental expiration. Incremental backups cannot be expired independently &mdash; they are always expired with their related full or differential backup.
+Backup <span class="br-setting">repo1-retention-diff=1</span> so two differentials will need to be performed before one is expired. An incremental backup is added to demonstrate incremental expiration, which in this case depends on the differential expiration.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Perform differential and incremental backups
 </div><div class="execute-body">
@@ -1037,10 +1041,10 @@ Now performing a differential backup will expire the previous differential and i
        --log-level-console=info backup</pre>
 <pre class="execute-body-output">       [filtered 10 lines of output]
 P00   INFO: backup command end: completed successfully
-P00   INFO: expire command begin 2.54.2: --exec-id=1539-ef642d81 --log-level-console=info --no-log-timestamp --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo1-retention-diff=1 --repo1-retention-full=2 --stanza=demo</pre>
-<pre class="execute-body-output-highlight">P00   INFO: repo1: expire diff backup set 20250120-140908F_20250120-140911D, 20250120-140908F_20250120-140912I</pre>
-<pre class="execute-body-output">P00   INFO: repo1: remove expired backup 20250120-140908F_20250120-140912I
-P00   INFO: repo1: remove expired backup 20250120-140908F_20250120-140911D
+P00   INFO: expire command begin 2.55.0: --exec-id=874-6ac36691 --log-level-console=info --no-log-timestamp --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo1-retention-diff=1 --repo1-retention-full=2 --stanza=demo</pre>
+<pre class="execute-body-output-highlight">P00   INFO: repo1: expire diff backup set 20250421-132243F_20250421-132246D, 20250421-132243F_20250421-132247I</pre>
+<pre class="execute-body-output">P00   INFO: repo1: remove expired backup 20250421-132243F_20250421-132247I
+P00   INFO: repo1: remove expired backup 20250421-132243F_20250421-132246D
 P00   INFO: expire command end: completed successfully</pre>
 </div></div></div></div><div class="section2"><a id="retention/archive"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Archive Retention
@@ -1052,7 +1056,7 @@ Expiring archive will never remove WAL segments that are required to make a back
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="br-option">repo1-retention-diff</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 repo1-block=y<br/>
@@ -1074,8 +1078,8 @@ compress-level=3
 <pre class="execute-body-output">       [filtered 6 lines of output]
 P00   INFO: backup stop archive = 000000020000000000000017, lsn = 0/17000050
 P00   INFO: check archive for segment(s) 000000020000000000000016:000000020000000000000017</pre>
-<pre class="execute-body-output-highlight">P00   INFO: new backup label = 20250120-140908F_20250120-140916D</pre>
-<pre class="execute-body-output">P00   INFO: diff backup size = 8.3KB, file total = 961
+<pre class="execute-body-output-highlight">P00   INFO: new backup label = 20250421-132243F_20250421-132252D</pre>
+<pre class="execute-body-output">P00   INFO: diff backup size = 8.3KB, file total = 963
 P00   INFO: backup command end: completed successfully
        [filtered 2 lines of output]</pre>
 </div></div><div class="execute"><div class="execute-title">
@@ -1083,16 +1087,16 @@ P00   INFO: backup command end: completed successfully
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --log-level-console=detail \
        --repo1-retention-archive-type=diff --repo1-retention-archive=1 expire</pre>
-<pre class="execute-body-output">P00   INFO: expire command begin 2.54.2: --exec-id=1615-8d8e3c0d --log-level-console=detail --no-log-timestamp --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo1-retention-archive=1 --repo1-retention-archive-type=diff --repo1-retention-diff=2 --repo1-retention-full=2 --stanza=demo
-P00 DETAIL: repo1: 15-1 archive retention on backup 20250120-140906F, start = 00000002000000000000000B, stop = 00000002000000000000000B
-P00 DETAIL: repo1: 15-1 archive retention on backup 20250120-140908F, start = 00000002000000000000000C, stop = 00000002000000000000000D</pre>
-<pre class="execute-body-output-highlight">P00 DETAIL: repo1: 15-1 archive retention on backup 20250120-140908F_20250120-140914D, start = 000000020000000000000012, stop = 000000020000000000000013</pre>
-<pre class="execute-body-output">P00 DETAIL: repo1: 15-1 archive retention on backup 20250120-140908F_20250120-140916D, start = 000000020000000000000016</pre>
-<pre class="execute-body-output-highlight">P00   INFO: repo1: 15-1 remove archive, start = 00000002000000000000000E, stop = 000000020000000000000011
-P00   INFO: repo1: 15-1 remove archive, start = 000000020000000000000014, stop = 000000020000000000000015</pre>
+<pre class="execute-body-output">P00   INFO: expire command begin 2.55.0: --exec-id=951-57bc7d40 --log-level-console=detail --no-log-timestamp --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo1-retention-archive=1 --repo1-retention-archive-type=diff --repo1-retention-diff=2 --repo1-retention-full=2 --stanza=demo
+P00 DETAIL: repo1: 16-1 archive retention on backup 20250421-132241F, start = 00000002000000000000000A, stop = 00000002000000000000000B
+P00 DETAIL: repo1: 16-1 archive retention on backup 20250421-132243F, start = 00000002000000000000000C, stop = 00000002000000000000000D</pre>
+<pre class="execute-body-output-highlight">P00 DETAIL: repo1: 16-1 archive retention on backup 20250421-132243F_20250421-132249D, start = 000000020000000000000012, stop = 000000020000000000000013</pre>
+<pre class="execute-body-output">P00 DETAIL: repo1: 16-1 archive retention on backup 20250421-132243F_20250421-132252D, start = 000000020000000000000016</pre>
+<pre class="execute-body-output-highlight">P00   INFO: repo1: 16-1 remove archive, start = 00000002000000000000000E, stop = 000000020000000000000011
+P00   INFO: repo1: 16-1 remove archive, start = 000000020000000000000014, stop = 000000020000000000000015</pre>
 <pre class="execute-body-output">P00   INFO: expire command end: completed successfully</pre>
 </div></div><div class="section-body-text">
-The <span class="id">20250120-140908F_20250120-140914D</span> differential backup has archived WAL segments that must be retained to make the older backups consistent even though they cannot be played any further forward with PITR. WAL segments generated after <span class="id">20250120-140908F_20250120-140914D</span> but before <span class="id">20250120-140908F_20250120-140916D</span> are removed. WAL segments generated after the new backup <span class="id">20250120-140908F_20250120-140916D</span> remain and can be used for PITR.
+The <span class="id">20250421-132243F_20250421-132249D</span> differential backup has archived WAL segments that must be retained to make the older backups consistent even though they cannot be played any further forward with PITR. WAL segments generated after <span class="id">20250421-132243F_20250421-132249D</span> but before <span class="id">20250421-132243F_20250421-132252D</span> are removed. WAL segments generated after the new backup <span class="id">20250421-132243F_20250421-132252D</span> remain and can be used for PITR.
 </div><div class="section-body-text">
 Since full backups are considered differential backups for the purpose of differential archive retention, if a full backup is now performed with the same settings, only the archive for that full backup is retained for PITR.
 </div></div></div></div></div><div class="section1"><a id="restore"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
@@ -1118,26 +1122,26 @@ Delta Option
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Stop the demo cluster, perform delta restore
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo stop</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo stop</pre>
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --delta \
        --log-level-console=detail restore</pre>
 <pre class="execute-body-output">       [filtered 2 lines of output]
-P00 DETAIL: check '/var/lib/postgresql/15/demo' exists
+P00 DETAIL: check '/var/lib/postgresql/16/demo' exists
 P00 DETAIL: remove 'global/pg_control' so cluster will not start if restore does not complete</pre>
-<pre class="execute-body-output-highlight">P00   INFO: remove invalid files/links/paths from '/var/lib/postgresql/15/demo'</pre>
-<pre class="execute-body-output">P00 DETAIL: remove invalid file '/var/lib/postgresql/15/demo/backup_label.old'
-P00 DETAIL: remove invalid file '/var/lib/postgresql/15/demo/base/1/pg_internal.init'
-       [filtered 767 lines of output]
-P01 DETAIL: restore file /var/lib/postgresql/15/demo/base/1/113 - exists and matches backup (bundle 20250120-140908F/1/2724744, 8KB, 88.05%) checksum 9c6671806c84144652aa7a1e989bc2cfe3d9bd40
-P01 DETAIL: restore file /var/lib/postgresql/15/demo/base/1/112 - exists and matches backup (bundle 20250120-140908F/1/2724832, 8KB, 88.09%) checksum 9890dd22d170e0de4f4d9404aba2557a33b9909b</pre>
-<pre class="execute-body-output-highlight">P01 DETAIL: restore file /var/lib/postgresql/15/demo/PG_VERSION - exists and matches backup (bundle 20250120-140908F/1/2724920, 3B, 88.09%) checksum 587b596f04f7db9c2cad3d6b87dd2b3a05de4f35</pre>
-<pre class="execute-body-output">P01 DETAIL: restore file /var/lib/postgresql/15/demo/base/5/2608_vm - exists and matches backup (bundle 20250120-140908F/1/2724944, 8KB, 88.13%) checksum 93a060702a9fbb99c8f16e8ebbabddd7b0b97224
-P01 DETAIL: restore file /var/lib/postgresql/15/demo/base/5/2608_fsm - exists and matches backup (bundle 20250120-140908F/1/2725016, 24KB, 88.23%) checksum 7e26c4edea1c898883d0a1a82be807734ab1dd6b
-       [filtered 232 lines of output]</pre>
+<pre class="execute-body-output-highlight">P00   INFO: remove invalid files/links/paths from '/var/lib/postgresql/16/demo'</pre>
+<pre class="execute-body-output">P00 DETAIL: remove invalid file '/var/lib/postgresql/16/demo/backup_label.old'
+P00 DETAIL: remove invalid file '/var/lib/postgresql/16/demo/base/1/pg_internal.init'
+       [filtered 14 lines of output]
+P01 DETAIL: restore file /var/lib/postgresql/16/demo/backup_label (260B, 0.00%) checksum c2b44a40bea599ae0e41169c76589711d996fc04
+P01 DETAIL: restore file /var/lib/postgresql/16/demo/pg_multixact/members/0000 - exists and matches backup (bundle 20250421-132243F/1/0, 8KB, 0.04%) checksum 0631457264ff7f8d5fb1edc2c0211992a67c73e6</pre>
+<pre class="execute-body-output-highlight">P01 DETAIL: restore file /var/lib/postgresql/16/demo/PG_VERSION - exists and matches backup (bundle 20250421-132243F/1/40, 3B, 0.04%) checksum 3596ea087bfdaf52380eae441077572ed289d657</pre>
+<pre class="execute-body-output">P01 DETAIL: restore file /var/lib/postgresql/16/demo/global/pg_filenode.map - exists and matches backup (bundle 20250421-132243F/1/64, 524B, 0.04%) checksum 3de878cf56cdb80345e88da11f91bc6d46f9f804
+P01 DETAIL: restore file /var/lib/postgresql/16/demo/global/6303 - exists and matches backup (bundle 20250421-132243F/1/232, 16KB, 0.11%) checksum 96cb6929d946c1f99979ee1454d0e507bce1356b
+       [filtered 987 lines of output]</pre>
 </div></div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Restart <span class="postgres">PostgreSQL</span>
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo start</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo start</pre>
 </div></div></div></div><div class="section2"><a id="restore/option-db-include"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Restore Selected Databases
 </div></div><div class="section-body"><div class="section-body-text">
@@ -1175,18 +1179,18 @@ One of the main reasons to use selective restore is to save space. The size of t
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Show space used by test1 database
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo -u postgres du -sh /var/lib/postgresql/15/demo/base/32768</pre>
-<pre class="execute-body-output">7.3M	/var/lib/postgresql/15/demo/base/32768</pre>
+<pre class="execute-body-cmd">sudo -u postgres du -sh /var/lib/postgresql/16/demo/base/32768</pre>
+<pre class="execute-body-output">7.4M	/var/lib/postgresql/16/demo/base/32768</pre>
 </div></div><div class="section-body-text">
 If the database to restore is not known, use the <span class="cmd">info</span> command <span class="br-option">set</span> option to discover databases that are part of the backup set.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Show database list for backup
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo \
-       --set=20250120-140908F_20250120-140923I info</pre>
+       --set=20250421-132243F_20250421-132301I info</pre>
 <pre class="execute-body-output">       [filtered 12 lines of output]
             repo1: backup size: 2.0MB
-            backup reference list: 20250120-140908F, 20250120-140908F_20250120-140916D</pre>
+            backup reference list: 20250421-132243F, 20250421-132243F_20250421-132252D</pre>
 <pre class="execute-body-output-highlight">            database list: postgres (5), test1 (32768), test2 (32769)</pre>
 </div></div><div class="section-body-text">
 Stop the cluster and restore only the test2 database. Built-in databases (<span class="id">template0</span>, <span class="id">template1</span>, and <span class="id">postgres</span>) are always restored.
@@ -1197,10 +1201,10 @@ Recovery may error unless <span class="br-option">--type=immediate</span> is spe
 </div></div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Restore from last backup including only the test2 database
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo stop</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo stop</pre>
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --delta \
        --db-include=test2 --type=immediate --target-action=promote restore</pre>
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo start</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo start</pre>
 </div></div><div class="section-body-text">
 Once recovery is complete the test2 database will contain all previously created tables and data.
 </div><div class="execute"><div class="execute-title">
@@ -1225,8 +1229,8 @@ It is clear that the test1 database uses far less disk space during the selectiv
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Show space used by test1 database after recovery
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo -u postgres du -sh /var/lib/postgresql/15/demo/base/32768</pre>
-<pre class="execute-body-output">8.0K	/var/lib/postgresql/15/demo/base/32768</pre>
+<pre class="execute-body-cmd">sudo -u postgres du -sh /var/lib/postgresql/16/demo/base/32768</pre>
+<pre class="execute-body-output">8.0K	/var/lib/postgresql/16/demo/base/32768</pre>
 </div></div><div class="section-body-text">
 At this point the only action that can be taken on the invalid test1 database is <span class="id">drop database</span>. <span class="backrest">pgBackRest</span> does not automatically drop the database since this cannot be done until recovery is complete and the cluster is accessible.
 </div><div class="execute"><div class="execute-title">
@@ -1272,7 +1276,7 @@ It is important to represent the time as reckoned by <span class="postgres">Post
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Get the time from <span class="postgres">PostgreSQL</span>
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres psql -Atc "select current_timestamp"</pre>
-<pre class="execute-body-output">2025-01-20 14:09:34.918261+00</pre>
+<pre class="execute-body-output">2025-04-21 13:23:13.75819+00</pre>
 </div></div><div class="section-body-text">
 Now that the time has been recorded the table is dropped. In practice finding the exact time that the table was dropped is a lot harder than in this example. It may not be possible to find the exact time, but some forensic work should be able to get you close.
 </div><div class="execute"><div class="execute-title">
@@ -1297,8 +1301,8 @@ If the wrong backup is selected for restore then recovery to the required time t
 <pre class="execute-body-output">       [filtered 38 lines of output]
             backup reference total: 1 full, 1 diff
 </pre>
-<pre class="execute-body-output-highlight">        incr backup: 20250120-140908F_20250120-140936I</pre>
-<pre class="execute-body-output">            timestamp start/stop: 2025-01-20 14:09:36+00 / 2025-01-20 14:09:37+00
+<pre class="execute-body-output-highlight">        incr backup: 20250421-132243F_20250421-132315I</pre>
+<pre class="execute-body-output">            timestamp start/stop: 2025-04-21 13:23:15+00 / 2025-04-21 13:23:16+00
             wal start/stop: 00000004000000000000001A / 00000004000000000000001A
        [filtered 2 lines of output]</pre>
 </div></div><div class="section-body-text">
@@ -1306,16 +1310,16 @@ It will not be possible to recover the lost table from this backup since <span c
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Attempt recovery from an incorrect backup
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo stop</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo stop</pre>
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --delta \
-       --set=20250120-140908F_20250120-140936I --target-timeline=current \
-       --type=time "--target=2025-01-20 14:09:34.918261+00" --target-action=promote restore</pre>
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo start</pre>
+       --set=20250421-132243F_20250421-132315I --target-timeline=current \
+       --type=time "--target=2025-04-21 13:23:13.75819+00" --target-action=promote restore</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo start</pre>
 <pre class="execute-body-output">       [filtered 13 lines of output]
 LOG:  database system is ready to accept read-only connections
-LOG:  redo done at 0/1A000100 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s</pre>
+LOG:  redo done at 0/1A000100 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.02 s</pre>
 <pre class="execute-body-output-highlight-error">FATAL:  recovery ended before configured recovery target was reached</pre>
-<pre class="execute-body-output">LOG:  startup process (PID 1984) exited with exit code 1
+<pre class="execute-body-output">LOG:  startup process (PID 1320) exited with exit code 1
 LOG:  terminating any other active server processes
        [filtered 3 lines of output]</pre>
 </div></div><div class="section-body-text">
@@ -1325,23 +1329,23 @@ NOTE:
 </div><div class="note-text">
 <span class="backrest">pgBackRest</span> cannot automatically select a backup when the restore type is <span class="id">xid</span> or <span class="id">name</span>.
 </div></div><div class="execute"><div class="execute-title">
-<span class="host">pg-primary</span> <b>&#x21d2;</b> Restore the demo cluster to <span class="id">2025-01-20 14:09:34.918261+00</span>
+<span class="host">pg-primary</span> <b>&#x21d2;</b> Restore the demo cluster to <span class="id">2025-04-21 13:23:13.75819+00</span>
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --delta \
-       --type=time "--target=2025-01-20 14:09:34.918261+00" \
+       --type=time "--target=2025-04-21 13:23:13.75819+00" \
        --target-action=promote restore</pre>
-<pre class="execute-body-cmd">sudo -u postgres cat /var/lib/postgresql/15/demo/postgresql.auto.conf</pre>
+<pre class="execute-body-cmd">sudo -u postgres cat /var/lib/postgresql/16/demo/postgresql.auto.conf</pre>
 <pre class="execute-body-output">       [filtered 9 lines of output]
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:09:39
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:23:18
 restore_command = 'pgbackrest --stanza=demo archive-get %f "%p"'</pre>
-<pre class="execute-body-output-highlight">recovery_target_time = '2025-01-20 14:09:34.918261+00'</pre>
+<pre class="execute-body-output-highlight">recovery_target_time = '2025-04-21 13:23:13.75819+00'</pre>
 <pre class="execute-body-output">recovery_target_action = 'promote'</pre>
 </div></div><div class="section-body-text">
 <span class="backrest">pgBackRest</span> has generated the recovery settings in <span class="file">postgresql.auto.conf</span> so <span class="postgres">PostgreSQL</span> can be started immediately. <span class="id">%f</span> is how <span class="postgres">PostgreSQL</span> specifies the WAL segment it needs and <span class="id">%p</span> is the location where it should be copied. Once <span class="postgres">PostgreSQL</span> has finished recovery the table will exist again and can be queried.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Start <span class="postgres">PostgreSQL</span> and check that the important table exists
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo start</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo start</pre>
 <pre class="execute-body-cmd">sudo -u postgres psql -c "select * from important_table"</pre>
 <pre class="execute-body-output">    message     
 ----------------</pre>
@@ -1352,19 +1356,19 @@ The <span class="postgres">PostgreSQL</span> log also contains valuable informat
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Examine the <span class="postgres">PostgreSQL</span> log output
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo -u postgres cat /var/log/postgresql/postgresql-15-demo.log</pre>
+<pre class="execute-body-cmd">sudo -u postgres cat /var/log/postgresql/postgresql-16-demo.log</pre>
 <pre class="execute-body-output">       [filtered 4 lines of output]
-LOG:  database system was interrupted; last known up at 2025-01-20 14:09:24 UTC
+LOG:  database system was interrupted; last known up at 2025-04-21 13:23:02 UTC
 LOG:  restored log file "00000004.history" from archive</pre>
-<pre class="execute-body-output-highlight">LOG:  starting point-in-time recovery to 2025-01-20 14:09:34.918261+00</pre>
+<pre class="execute-body-output-highlight">LOG:  starting point-in-time recovery to 2025-04-21 13:23:13.75819+00</pre>
 <pre class="execute-body-output">LOG:  starting backup recovery with redo LSN 0/19000028, checkpoint LSN 0/19000060, on timeline ID 3
 LOG:  restored log file "00000004.history" from archive
        [filtered 5 lines of output]
 LOG:  database system is ready to accept read-only connections
 LOG:  restored log file "00000004000000000000001A" from archive</pre>
-<pre class="execute-body-output-highlight">LOG:  recovery stopping before commit of transaction 734, time 2025-01-20 14:09:36.242313+00</pre>
-<pre class="execute-body-output">LOG:  redo done at 0/190253C8 system usage: CPU: user: 0.00 s, system: 0.01 s, elapsed: 0.08 s</pre>
-<pre class="execute-body-output-highlight">LOG:  last completed transaction was at log time 2025-01-20 14:09:33.631568+00</pre>
+<pre class="execute-body-output-highlight">LOG:  recovery stopping before commit of transaction 740, time 2025-04-21 13:23:15.21962+00</pre>
+<pre class="execute-body-output">LOG:  redo done at 0/19026050 system usage: CPU: user: 0.00 s, system: 0.01 s, elapsed: 0.12 s</pre>
+<pre class="execute-body-output-highlight">LOG:  last completed transaction was at log time 2025-04-21 13:23:12.423262+00</pre>
 <pre class="execute-body-output">LOG:  restored log file "000000040000000000000019" from archive
 LOG:  selected new timeline ID: 5
        [filtered 5 lines of output]</pre>
@@ -1379,19 +1383,19 @@ A stanza may only be deleted from one repository at a time. To delete the stanza
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Stop <span class="postgres">PostgreSQL</span> cluster to be removed
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo stop</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo stop</pre>
 </div></div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Stop <span class="backrest">pgBackRest</span> for the stanza
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --log-level-console=info stop</pre>
-<pre class="execute-body-output">P00   INFO: stop command begin 2.54.2: --exec-id=2106-2aeb3314 --log-level-console=info --no-log-timestamp --stanza=demo</pre>
+<pre class="execute-body-output">P00   INFO: stop command begin 2.55.0: --exec-id=1442-2351e0cf --log-level-console=info --no-log-timestamp --stanza=demo</pre>
 <pre class="execute-body-output-highlight">P00   INFO: stop command end: completed successfully</pre>
 </div></div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Delete the stanza from one repository
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --repo=1 \
        --log-level-console=info stanza-delete</pre>
-<pre class="execute-body-output">P00   INFO: stanza-delete command begin 2.54.2: --exec-id=2113-f7c2b9d8 --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --repo=1 --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --stanza=demo</pre>
+<pre class="execute-body-output">P00   INFO: stanza-delete command begin 2.55.0: --exec-id=1449-7a2289ac --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --repo=1 --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --stanza=demo</pre>
 <pre class="execute-body-output-highlight">P00   INFO: stanza-delete command end: completed successfully</pre>
 </div></div></div></div><div class="section1"><a id="multi-repo"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Multiple Repositories
@@ -1417,10 +1421,9 @@ Do not enable <q>hierarchical namespace</q> as this will cause errors during exp
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="host">Azure</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
-process-max=4<br/>
 repo1-block=y<br/>
 repo1-bundle=y<br/>
 repo1-cipher-pass=zWaf6XtpjIVZC5444yXB+cgFDFl7MxGlgkZSaoPvTGirhPygu4jOKOXf9LO4vjfO<br/>
@@ -1446,27 +1449,27 @@ Commands are run exactly as if the repository were stored on a local disk.
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Create the stanza
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --log-level-console=info stanza-create</pre>
-<pre class="execute-body-output">P00   INFO: stanza-create command begin 2.54.2: --exec-id=2183-8a5695d3 --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo2-type=azure --stanza=demo
+<pre class="execute-body-output">P00   INFO: stanza-create command begin 2.55.0: --exec-id=1520-adfe4b22 --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo2-type=azure --stanza=demo
 P00   INFO: stanza-create for stanza 'demo' on repo1
 P00   INFO: stanza-create for stanza 'demo' on repo2</pre>
 <pre class="execute-body-output-highlight">P00   INFO: stanza-create command end: completed successfully</pre>
 </div></div><div class="section-body-text">
-File creation time in object stores is relatively slow so commands benefit by increasing <span class="br-option">process-max</span> to parallelize file creation.
+File creation time in Azure is relatively slow so <span class="cmd">backup</span>/<span class="cmd">restore</span> performance is improved by enabling <a href="#backup/bundle">file bundling</a>.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Backup the demo cluster
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --repo=2 \
        --log-level-console=info backup</pre>
-<pre class="execute-body-output">P00   INFO: backup command begin 2.54.2: --exec-id=2191-48954bbb --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --process-max=4 --repo=2 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-block --repo1-bundle --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo1-retention-diff=2 --repo1-retention-full=2 --repo2-retention-full=4 --repo2-type=azure --stanza=demo --start-fast</pre>
+<pre class="execute-body-output">P00   INFO: backup command begin 2.55.0: --exec-id=1528-be60f53e --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --repo=2 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-block --repo1-bundle --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo1-retention-diff=2 --repo1-retention-full=2 --repo2-retention-full=4 --repo2-type=azure --stanza=demo --start-fast</pre>
 <pre class="execute-body-output-highlight">P00   WARN: no prior backup exists, incr backup has been changed to full</pre>
 <pre class="execute-body-output">P00   INFO: execute non-exclusive backup start: backup begins after the requested immediate checkpoint completes
 P00   INFO: backup start archive = 00000005000000000000001B, lsn = 0/1B000028
        [filtered 3 lines of output]
 P00   INFO: check archive for segment(s) 00000005000000000000001B:00000005000000000000001B
-P00   INFO: new backup label = 20250120-140950F</pre>
-<pre class="execute-body-output-highlight">P00   INFO: full backup size = 29.0MB, file total = 1263</pre>
+P00   INFO: new backup label = 20250421-132331F</pre>
+<pre class="execute-body-output-highlight">P00   INFO: full backup size = 29.1MB, file total = 1265</pre>
 <pre class="execute-body-output">P00   INFO: backup command end: completed successfully
-P00   INFO: expire command begin 2.54.2: --exec-id=2191-48954bbb --log-level-console=info --no-log-timestamp --repo=2 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo1-retention-diff=2 --repo1-retention-full=2 --repo2-retention-full=4 --repo2-type=azure --stanza=demo</pre>
+P00   INFO: expire command begin 2.55.0: --exec-id=1528-be60f53e --log-level-console=info --no-log-timestamp --repo=2 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo1-retention-diff=2 --repo1-retention-full=2 --repo2-retention-full=4 --repo2-type=azure --stanza=demo</pre>
 </div></div></div></div><div class="section1"><a id="s3-support"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 S3-Compatible Object Store Support
 </div></div><div class="section-body"><div class="section-body-text">
@@ -1475,10 +1478,9 @@ S3-Compatible Object Store Support
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="host">S3</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
-process-max=4<br/>
 repo1-block=y<br/>
 repo1-bundle=y<br/>
 repo1-cipher-pass=zWaf6XtpjIVZC5444yXB+cgFDFl7MxGlgkZSaoPvTGirhPygu4jOKOXf9LO4vjfO<br/>
@@ -1578,22 +1580,22 @@ P00   INFO: stanza 'demo' already exists on repo2 and is valid
 P00   INFO: stanza-create for stanza 'demo' on repo3</pre>
 <pre class="execute-body-output-highlight">P00   INFO: stanza-create command end: completed successfully</pre>
 </div></div><div class="section-body-text">
-File creation time in object stores is relatively slow so commands benefit by increasing <span class="br-option">process-max</span> to parallelize file creation.
+File creation time in S3 is relatively slow so <span class="cmd">backup</span>/<span class="cmd">restore</span> performance is improved by enabling <a href="#backup/bundle">file bundling</a>.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Backup the demo cluster
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --repo=3 \
        --log-level-console=info backup</pre>
-<pre class="execute-body-output">P00   INFO: backup command begin 2.54.2: --exec-id=2242-5ba2d189 --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --process-max=4 --repo=3 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-block --repo1-bundle --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo3-path=/demo-repo --repo1-retention-diff=2 --repo1-retention-full=2 --repo2-retention-full=4 --repo3-retention-full=4 --repo3-s3-bucket=demo-bucket --repo3-s3-endpoint=s3.us-east-1.amazonaws.com --repo3-s3-key=<redacted> --repo3-s3-key-secret=<redacted> --repo3-s3-region=us-east-1 --repo2-type=azure --repo3-type=s3 --stanza=demo --start-fast</pre>
+<pre class="execute-body-output">P00   INFO: backup command begin 2.55.0: --exec-id=1577-7000e92d --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --repo=3 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-block --repo1-bundle --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo3-path=/demo-repo --repo1-retention-diff=2 --repo1-retention-full=2 --repo2-retention-full=4 --repo3-retention-full=4 --repo3-s3-bucket=demo-bucket --repo3-s3-endpoint=s3.us-east-1.amazonaws.com --repo3-s3-key=<redacted> --repo3-s3-key-secret=<redacted> --repo3-s3-region=us-east-1 --repo2-type=azure --repo3-type=s3 --stanza=demo --start-fast</pre>
 <pre class="execute-body-output-highlight">P00   WARN: no prior backup exists, incr backup has been changed to full</pre>
 <pre class="execute-body-output">P00   INFO: execute non-exclusive backup start: backup begins after the requested immediate checkpoint completes
-P00   INFO: backup start archive = 00000005000000000000001C, lsn = 0/1C000028
+P00   INFO: backup start archive = 00000005000000000000001D, lsn = 0/1D000028
        [filtered 3 lines of output]
-P00   INFO: check archive for segment(s) 00000005000000000000001C:00000005000000000000001D
-P00   INFO: new backup label = 20250120-140959F</pre>
-<pre class="execute-body-output-highlight">P00   INFO: full backup size = 29.0MB, file total = 1263</pre>
+P00   INFO: check archive for segment(s) 00000005000000000000001D:00000005000000000000001D
+P00   INFO: new backup label = 20250421-132342F</pre>
+<pre class="execute-body-output-highlight">P00   INFO: full backup size = 29.1MB, file total = 1265</pre>
 <pre class="execute-body-output">P00   INFO: backup command end: completed successfully
-P00   INFO: expire command begin 2.54.2: --exec-id=2242-5ba2d189 --log-level-console=info --no-log-timestamp --repo=3 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo3-path=/demo-repo --repo1-retention-diff=2 --repo1-retention-full=2 --repo2-retention-full=4 --repo3-retention-full=4 --repo3-s3-bucket=demo-bucket --repo3-s3-endpoint=s3.us-east-1.amazonaws.com --repo3-s3-key=<redacted> --repo3-s3-key-secret=<redacted> --repo3-s3-region=us-east-1 --repo2-type=azure --repo3-type=s3 --stanza=demo</pre>
+P00   INFO: expire command begin 2.55.0: --exec-id=1577-7000e92d --log-level-console=info --no-log-timestamp --repo=3 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo3-path=/demo-repo --repo1-retention-diff=2 --repo1-retention-full=2 --repo2-retention-full=4 --repo3-retention-full=4 --repo3-s3-bucket=demo-bucket --repo3-s3-endpoint=s3.us-east-1.amazonaws.com --repo3-s3-key=<redacted> --repo3-s3-key-secret=<redacted> --repo3-s3-region=us-east-1 --repo2-type=azure --repo3-type=s3 --stanza=demo</pre>
 </div></div></div></div><div class="section1"><a id="sftp-support"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 SFTP Support
 </div></div><div class="section-body"><div class="section-body-text">
@@ -1602,7 +1604,7 @@ SFTP Support
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="host">SFTP</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 process-max=4<br/>
@@ -1672,7 +1674,7 @@ P00   INFO: stanza-create for stanza 'demo' on repo4</pre>
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --repo=4 \
        --log-level-console=info backup</pre>
-<pre class="execute-body-output">P00   INFO: backup command begin 2.54.2: --exec-id=2325-0690e879 --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --process-max=4 --repo=4 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-block --repo1-bundle --repo4-bundle --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo3-path=/demo-repo --repo4-path=/demo-repo --repo1-retention-diff=2 --repo1-retention-full=2 --repo2-retention-full=4 --repo3-retention-full=4 --repo3-s3-bucket=demo-bucket --repo3-s3-endpoint=s3.us-east-1.amazonaws.com --repo3-s3-key=<redacted> --repo3-s3-key-secret=<redacted> --repo3-s3-region=us-east-1 --repo4-sftp-host=sftp-server --repo4-sftp-host-key-hash-type=sha1 --repo4-sftp-host-user=pgbackrest --repo4-sftp-private-key-file=/var/lib/postgresql/.ssh/id_rsa_sftp --repo4-sftp-public-key-file=/var/lib/postgresql/.ssh/id_rsa_sftp.pub --repo2-type=azure --repo3-type=s3 --repo4-type=sftp --stanza=demo --start-fast
+<pre class="execute-body-output">P00   INFO: backup command begin 2.55.0: --exec-id=1658-f71182f2 --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --process-max=4 --repo=4 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-block --repo1-bundle --repo4-bundle --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo3-path=/demo-repo --repo4-path=/demo-repo --repo1-retention-diff=2 --repo1-retention-full=2 --repo2-retention-full=4 --repo3-retention-full=4 --repo3-s3-bucket=demo-bucket --repo3-s3-endpoint=s3.us-east-1.amazonaws.com --repo3-s3-key=<redacted> --repo3-s3-key-secret=<redacted> --repo3-s3-region=us-east-1 --repo4-sftp-host=sftp-server --repo4-sftp-host-key-hash-type=sha1 --repo4-sftp-host-user=pgbackrest --repo4-sftp-private-key-file=/var/lib/postgresql/.ssh/id_rsa_sftp --repo4-sftp-public-key-file=/var/lib/postgresql/.ssh/id_rsa_sftp.pub --repo2-type=azure --repo3-type=s3 --repo4-type=sftp --stanza=demo --start-fast
 P00   WARN: option 'repo4-retention-full' is not set for 'repo4-retention-full-type=count', the repository may run out of space
             HINT: to retain full backups indefinitely (without warning), set option 'repo4-retention-full' to the maximum.</pre>
 <pre class="execute-body-output-highlight">P00   WARN: no prior backup exists, incr backup has been changed to full</pre>
@@ -1680,10 +1682,10 @@ P00   WARN: option 'repo4-retention-full' is not set for 'repo4-retention-full-t
 P00   INFO: backup start archive = 00000005000000000000001E, lsn = 0/1E000028
        [filtered 3 lines of output]
 P00   INFO: check archive for segment(s) 00000005000000000000001E:00000005000000000000001F
-P00   INFO: new backup label = 20250120-141008F</pre>
-<pre class="execute-body-output-highlight">P00   INFO: full backup size = 29.0MB, file total = 1263</pre>
+P00   INFO: new backup label = 20250421-132353F</pre>
+<pre class="execute-body-output-highlight">P00   INFO: full backup size = 29.1MB, file total = 1265</pre>
 <pre class="execute-body-output">P00   INFO: backup command end: completed successfully
-P00   INFO: expire command begin 2.54.2: --exec-id=2325-0690e879 --log-level-console=info --no-log-timestamp --repo=4 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo3-path=/demo-repo --repo4-path=/demo-repo --repo1-retention-diff=2 --repo1-retention-full=2 --repo2-retention-full=4 --repo3-retention-full=4 --repo3-s3-bucket=demo-bucket --repo3-s3-endpoint=s3.us-east-1.amazonaws.com --repo3-s3-key=<redacted> --repo3-s3-key-secret=<redacted> --repo3-s3-region=us-east-1 --repo4-sftp-host=sftp-server --repo4-sftp-host-key-hash-type=sha1 --repo4-sftp-host-user=pgbackrest --repo4-sftp-private-key-file=/var/lib/postgresql/.ssh/id_rsa_sftp --repo4-sftp-public-key-file=/var/lib/postgresql/.ssh/id_rsa_sftp.pub --repo2-type=azure --repo3-type=s3 --repo4-type=sftp --stanza=demo
+P00   INFO: expire command begin 2.55.0: --exec-id=1658-f71182f2 --log-level-console=info --no-log-timestamp --repo=4 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo3-path=/demo-repo --repo4-path=/demo-repo --repo1-retention-diff=2 --repo1-retention-full=2 --repo2-retention-full=4 --repo3-retention-full=4 --repo3-s3-bucket=demo-bucket --repo3-s3-endpoint=s3.us-east-1.amazonaws.com --repo3-s3-key=<redacted> --repo3-s3-key-secret=<redacted> --repo3-s3-region=us-east-1 --repo4-sftp-host=sftp-server --repo4-sftp-host-key-hash-type=sha1 --repo4-sftp-host-user=pgbackrest --repo4-sftp-private-key-file=/var/lib/postgresql/.ssh/id_rsa_sftp --repo4-sftp-public-key-file=/var/lib/postgresql/.ssh/id_rsa_sftp.pub --repo2-type=azure --repo3-type=s3 --repo4-type=sftp --stanza=demo
 P00   INFO: expire command end: completed successfully</pre>
 </div></div></div></div><div class="section1"><a id="gcs-support"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 GCS-Compatible Object Store Support
@@ -1693,7 +1695,7 @@ GCS-Compatible Object Store Support
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="host">GCS</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 process-max=4<br/>
@@ -1739,7 +1741,7 @@ When running in <span class="host">GCE</span> set <span class="br-option">repo5-
 </div><div class="section-body-text">
 Commands are run exactly as if the repository were stored on a local disk.
 </div><div class="section-body-text">
-File creation time in object stores is relatively slow so commands benefit by increasing <span class="br-option">process-max</span> to parallelize file creation.
+File creation time in GCS is relatively slow so <span class="cmd">backup</span>/<span class="cmd">restore</span> performance is improved by enabling <a href="#backup/bundle">file bundling</a>.
 </div></div></div><div class="section1"><a id="repo-target-time"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Target Time for Repository
 </div></div><div class="section-body"><div class="section-body-text">
@@ -1755,7 +1757,7 @@ To demonstrate this feature the <span class="id">demo</span> stanza in the <span
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Delete stanza in <span class="host">S3</span> repository
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo stop</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo stop</pre>
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo stop</pre>
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --repo=3 stanza-delete</pre>
 </div></div><div class="section-body-text">
@@ -1773,24 +1775,24 @@ However, since the storage is versioned, it is possible to look at the repositor
 <span class="host">s3-server</span> <b>&#x21d2;</b> Use <span class="id">mc</span> to list versions of <span class="file">backup.info</span> in the bucket
 </div><div class="execute-body">
 <pre class="execute-body-cmd">mc ls --versions s3/demo-bucket/demo-repo/backup/demo/backup.info</pre>
-<pre class="execute-body-output-highlight">[2025-01-20 14:10:14 UTC]     0B STANDARD 54f5aa3c-5ad5-4dd5-bd6f-466f8d56bb3a v3 DEL backup.info
-[2025-01-20 14:10:05 UTC] 1.0KiB STANDARD 53464c6a-57e1-4e6f-a283-f58b332d2b2d v2 PUT backup.info
-[2025-01-20 14:09:59 UTC]   372B STANDARD 6369a86c-4c23-4750-a431-3082202a33b7 v1 PUT backup.info</pre>
-<pre class="execute-body-output">[2025-01-20 14:10:14 UTC]     0B STANDARD 16b4b7e6-4759-48df-8eb2-89ca642a864c v3 DEL backup.info.copy
-[2025-01-20 14:10:05 UTC] 1.0KiB STANDARD c53b921b-f9c1-4546-b49f-37905b479ad5 v2 PUT backup.info.copy</pre>
+<pre class="execute-body-output-highlight">[2025-04-21 13:24:01 UTC]     0B STANDARD cc69bf9a-ef6e-4e9d-bdfe-14b8cc7cbe79 v3 DEL backup.info
+[2025-04-21 13:23:49 UTC] 1.0KiB STANDARD c0a96670-2dbe-42d0-bc9f-e285d9aae810 v2 PUT backup.info
+[2025-04-21 13:23:42 UTC]   372B STANDARD 078af0c6-1d22-436d-bd92-05af190f796a v1 PUT backup.info</pre>
+<pre class="execute-body-output">[2025-04-21 13:24:01 UTC]     0B STANDARD abb8661b-9150-4de2-8428-8adc361c35f3 v3 DEL backup.info.copy
+[2025-04-21 13:23:49 UTC] 1.0KiB STANDARD a533578d-eb2c-49a0-bfc6-7e5ae4c2de59 v2 PUT backup.info.copy</pre>
 </div></div><div class="section-body-text">
 Now the <span class="cmd">info</span> command can be run with a target time that will show the repository before it was deleted.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Info with target time
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --repo=3 \
-       --repo-target-time="2025-01-20 14:10:05+00" info</pre>
+       --repo-target-time="2025-04-21 13:23:49+00" info</pre>
 <pre class="execute-body-output">       [filtered 5 lines of output]
-        wal archive min/max (15): 00000005000000000000001C/00000005000000000000001D
+        wal archive min/max (16): 00000005000000000000001C/00000005000000000000001D
 </pre>
-<pre class="execute-body-output-highlight">        full backup: 20250120-140959F</pre>
-<pre class="execute-body-output">            timestamp start/stop: 2025-01-20 14:09:59+00 / 2025-01-20 14:10:04+00
-            wal start/stop: 00000005000000000000001C / 00000005000000000000001D
+<pre class="execute-body-output-highlight">        full backup: 20250421-132342F</pre>
+<pre class="execute-body-output">            timestamp start/stop: 2025-04-21 13:23:42+00 / 2025-04-21 13:23:48+00
+            wal start/stop: 00000005000000000000001D / 00000005000000000000001D
             repo3: backup set size: 3.9MB, backup size: 3.9MB</pre>
 </div></div><div class="section-body-text">
 If the required backup is shown by the <span class="cmd">info</span> command then it can be restored using the same target time.
@@ -1798,13 +1800,13 @@ If the required backup is shown by the <span class="cmd">info</span> command the
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Restore with target time
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --repo=3 --delta \
-       --repo-target-time="2025-01-20 14:10:05+00" --log-level-console=info restore</pre>
-<pre class="execute-body-output">P00   INFO: restore command begin 2.54.2: --delta --exec-id=2402-adbd1c2d --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --process-max=4 --repo=3 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo5-gcs-bucket=demo-bucket --repo5-gcs-key=<redacted> --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo3-path=/demo-repo --repo4-path=/demo-repo --repo5-path=/demo-repo --repo3-s3-bucket=demo-bucket --repo3-s3-endpoint=s3.us-east-1.amazonaws.com --repo3-s3-key=<redacted> --repo3-s3-key-secret=<redacted> --repo3-s3-region=us-east-1 --repo4-sftp-host=sftp-server --repo4-sftp-host-key-hash-type=sha1 --repo4-sftp-host-user=pgbackrest --repo4-sftp-private-key-file=/var/lib/postgresql/.ssh/id_rsa_sftp --repo4-sftp-public-key-file=/var/lib/postgresql/.ssh/id_rsa_sftp.pub --repo-target-time="2025-01-20 14:10:05+00" --repo2-type=azure --repo3-type=s3 --repo4-type=sftp --repo5-type=gcs --stanza=demo</pre>
-<pre class="execute-body-output-highlight">P00   INFO: repo3: restore backup set 20250120-140959F, recovery will start at 2025-01-20 14:09:59</pre>
-<pre class="execute-body-output">P00   INFO: remove invalid files/links/paths from '/var/lib/postgresql/15/demo'
-P00   INFO: write updated /var/lib/postgresql/15/demo/postgresql.auto.conf
+       --repo-target-time="2025-04-21 13:23:49+00" --log-level-console=info restore</pre>
+<pre class="execute-body-output">P00   INFO: restore command begin 2.55.0: --delta --exec-id=1738-70f39985 --log-level-console=info --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --process-max=4 --repo=3 --repo2-azure-account=<redacted> --repo2-azure-container=demo-container --repo2-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo5-gcs-bucket=demo-bucket --repo5-gcs-key=<redacted> --repo1-path=/var/lib/pgbackrest --repo2-path=/demo-repo --repo3-path=/demo-repo --repo4-path=/demo-repo --repo5-path=/demo-repo --repo3-s3-bucket=demo-bucket --repo3-s3-endpoint=s3.us-east-1.amazonaws.com --repo3-s3-key=<redacted> --repo3-s3-key-secret=<redacted> --repo3-s3-region=us-east-1 --repo4-sftp-host=sftp-server --repo4-sftp-host-key-hash-type=sha1 --repo4-sftp-host-user=pgbackrest --repo4-sftp-private-key-file=/var/lib/postgresql/.ssh/id_rsa_sftp --repo4-sftp-public-key-file=/var/lib/postgresql/.ssh/id_rsa_sftp.pub --repo-target-time="2025-04-21 13:23:49+00" --repo2-type=azure --repo3-type=s3 --repo4-type=sftp --repo5-type=gcs --stanza=demo</pre>
+<pre class="execute-body-output-highlight">P00   INFO: repo3: restore backup set 20250421-132342F, recovery will start at 2025-04-21 13:23:42</pre>
+<pre class="execute-body-output">P00   INFO: remove invalid files/links/paths from '/var/lib/postgresql/16/demo'
+P00   INFO: write updated /var/lib/postgresql/16/demo/postgresql.auto.conf
        [filtered 2 lines of output]</pre>
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo start</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo start</pre>
 </div></div></div></div><div class="section1"><a id="repo-host"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Dedicated Repository Host
 </div></div><div class="section-body"><div class="section-body-text">
@@ -1913,7 +1915,7 @@ The <span class="host">repository</span> host must be configured with the <span 
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
 pg1-host=pg-primary<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 repo1-path=/var/lib/pgbackrest<br/>
@@ -1925,7 +1927,7 @@ The database host must be configured with the repository host/user. The default 
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="br-option">repo1-host</span>/<span class="br-option">repo1-host-user</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 log-level-file=detail<br/>
@@ -1970,9 +1972,9 @@ To perform a restore of the <span class="postgres">PostgreSQL</span> cluster run
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Stop the demo cluster, restore, and restart <span class="postgres">PostgreSQL</span>
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo stop</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo stop</pre>
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --delta restore</pre>
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo start</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo start</pre>
 </div></div></div></div></div></div><div class="section1"><a id="parallel-backup-restore"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Parallel Backup / Restore
 </div></div><div class="section-body"><div class="section-body-text">
@@ -1990,7 +1992,7 @@ The restore command can and should use all available CPUs because during a resto
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
 pg1-host=pg-primary<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 process-max=3<br/>
@@ -2010,18 +2012,18 @@ start-fast=y
     cipher: none
 
     db (current)
-        wal archive min/max (15): 000000070000000000000023/000000070000000000000025
+        wal archive min/max (16): 000000070000000000000023/000000070000000000000025
 
-        full backup: 20250120-141045F</pre>
-<pre class="execute-body-output-highlight">            timestamp start/stop: 2025-01-20 14:10:45+00 / 2025-01-20 14:10:49+00</pre>
+        full backup: 20250421-132437F</pre>
+<pre class="execute-body-output-highlight">            timestamp start/stop: 2025-04-21 13:24:37+00 / 2025-04-21 13:24:40+00</pre>
 <pre class="execute-body-output">            wal start/stop: 000000070000000000000023 / 000000070000000000000023
-            database size: 29.0MB, database backup size: 29.0MB
+            database size: 29.1MB, database backup size: 29.1MB
             repo1: backup set size: 3.9MB, backup size: 3.9MB
 
-        full backup: 20250120-141050F</pre>
-<pre class="execute-body-output-highlight">            timestamp start/stop: 2025-01-20 14:10:50+00 / 2025-01-20 14:10:55+00</pre>
+        full backup: 20250421-132442F</pre>
+<pre class="execute-body-output-highlight">            timestamp start/stop: 2025-04-21 13:24:42+00 / 2025-04-21 13:24:48+00</pre>
 <pre class="execute-body-output">            wal start/stop: 000000070000000000000024 / 000000070000000000000025
-            database size: 29.0MB, database backup size: 29.0MB
+            database size: 29.1MB, database backup size: 29.1MB
             repo1: backup set size: 3.9MB, backup size: 3.9MB</pre>
 </div></div><div class="section-body-text">
 The performance of the last backup should be improved by using multiple processes. For very small backups the difference may not be very apparent, but as the size of the database increases so will time savings.
@@ -2159,7 +2161,7 @@ A hot standby performs replication using the WAL archive and allows read-only qu
 <span class="host">pg-standby</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="backrest">pgBackRest</span> on the standby
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 log-level-file=detail<br/>
@@ -2169,7 +2171,7 @@ The demo cluster must be created (even though it will be overwritten on restore)
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Create demo cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_createcluster 15 demo</pre>
+<pre class="execute-body-cmd">sudo pg_createcluster 16 demo</pre>
 </div></div><div class="section-body-text">
 Now the standby can be created with the <span class="cmd">restore</span> command.
 </div><div class="admonition"><div class="important">
@@ -2180,33 +2182,33 @@ If the cluster is intended to be promoted without becoming the new primary (e.g.
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Restore the demo standby cluster
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --delta --type=standby restore</pre>
-<pre class="execute-body-cmd">sudo -u postgres cat /var/lib/postgresql/15/demo/postgresql.auto.conf</pre>
+<pre class="execute-body-cmd">sudo -u postgres cat /var/lib/postgresql/16/demo/postgresql.auto.conf</pre>
 <pre class="execute-body-output"># Do not edit this file manually!
 # It will be overwritten by the ALTER SYSTEM command.
 
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:08:50
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:22:24
 restore_command = 'pgbackrest --stanza=demo archive-get %f "%p"'
 
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:09:18
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:22:54
 restore_command = 'pgbackrest --stanza=demo archive-get %f "%p"'
 
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:09:39
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:23:18
 restore_command = 'pgbackrest --stanza=demo archive-get %f "%p"'
-# Removed by pgBackRest restore on 2025-01-20 14:10:16 # recovery_target_time = '2025-01-20 14:09:34.918261+00'
-# Removed by pgBackRest restore on 2025-01-20 14:10:16 # recovery_target_action = 'promote'
+# Removed by pgBackRest restore on 2025-04-21 13:24:04 # recovery_target_time = '2025-04-21 13:23:13.75819+00'
+# Removed by pgBackRest restore on 2025-04-21 13:24:04 # recovery_target_action = 'promote'
 
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:10:16
-restore_command = 'pgbackrest --repo=3 --repo-target-time="2025-01-20 14:10:05+00" --stanza=demo archive-get %f "%p"'
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:24:04
+restore_command = 'pgbackrest --repo=3 --repo-target-time="2025-04-21 13:23:49+00" --stanza=demo archive-get %f "%p"'
 
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:10:39
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:24:30
 restore_command = 'pgbackrest --stanza=demo archive-get %f "%p"'
 
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:11:09
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:25:04
 restore_command = 'pgbackrest --stanza=demo archive-get %f "%p"'</pre>
 </div></div><div class="section-body-text">
 The <span class="pg-setting">hot_standby</span> setting must be enabled before starting <span class="postgres">PostgreSQL</span> to allow read-only connections on <span class="host">pg-standby</span>. Otherwise, connection attempts will be refused. The rest of the configuration is in case the standby is promoted to a primary.
 </div><div class="config"><div class="config-title">
-<span class="host">pg-standby</span>:<span class="file">/etc/postgresql/15/demo/postgresql.conf</span> <b>&#x21d2;</b> Configure <span class="postgres">PostgreSQL</span>
+<span class="host">pg-standby</span>:<span class="file">/etc/postgresql/16/demo/postgresql.conf</span> <b>&#x21d2;</b> Configure <span class="postgres">PostgreSQL</span>
 </div><div class="config-body"><div class="config-body-output">
 archive_command = 'pgbackrest --stanza=demo archive-push %p'<br/>
 archive_mode = on<br/>
@@ -2216,16 +2218,16 @@ wal_level = replica
 </div></div></div><div class="execute"><div class="execute-title">
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Start <span class="postgres">PostgreSQL</span>
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo start</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo start</pre>
 </div></div><div class="section-body-text">
 The <span class="postgres">PostgreSQL</span> log gives valuable information about the recovery. Note especially that the cluster has entered standby mode and is ready to accept read-only connections.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Examine the <span class="postgres">PostgreSQL</span> log output for log messages indicating success
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo -u postgres cat /var/log/postgresql/postgresql-15-demo.log</pre>
+<pre class="execute-body-cmd">sudo -u postgres cat /var/log/postgresql/postgresql-16-demo.log</pre>
 <pre class="execute-body-output">       [filtered 3 lines of output]
 LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
-LOG:  database system was interrupted; last known up at 2025-01-20 14:10:50 UTC</pre>
+LOG:  database system was interrupted; last known up at 2025-04-21 13:24:42 UTC</pre>
 <pre class="execute-body-output-highlight">LOG:  entering standby mode</pre>
 <pre class="execute-body-output">LOG:  starting backup recovery with redo LSN 0/24000028, checkpoint LSN 0/24000060, on timeline ID 7
 LOG:  restored log file "00000007.history" from archive
@@ -2265,7 +2267,7 @@ This can be done manually by calling <span class="id">pg_switch_wal()</span> whi
 <pre class="execute-body-cmd">sudo -u postgres psql -c "select *, current_timestamp from pg_switch_wal()";</pre>
 <pre class="execute-body-output"> pg_switch_wal |       current_timestamp       
 ---------------+-------------------------------
- 0/26019A40    | 2025-01-20 14:11:16.898081+00
+ 0/2601A838    | 2025-04-21 13:25:12.350044+00
 (1 row)</pre>
 </div></div><div class="section-body-text">
 Now after a short delay the table will appear on <span class="host">pg-standby</span>.
@@ -2276,7 +2278,7 @@ Now after a short delay the table will appear on <span class="host">pg-standby</
        select *, current_timestamp from replicated_table"</pre>
 <pre class="execute-body-output">    message     |       current_timestamp       
 ----------------+-------------------------------</pre>
-<pre class="execute-body-output-highlight"> Important Data | 2025-01-20 14:11:18.084476+00</pre>
+<pre class="execute-body-output-highlight"> Important Data | 2025-04-21 13:25:18.355849+00</pre>
 <pre class="execute-body-output">(1 row)</pre>
 </div></div><div class="section-body-text">
 Check the standby configuration for access to the repository.
@@ -2284,7 +2286,7 @@ Check the standby configuration for access to the repository.
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Check the configuration
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --log-level-console=info check</pre>
-<pre class="execute-body-output">P00   INFO: check command begin 2.54.2: --exec-id=1119-d13849ec --log-level-console=info --log-level-file=detail --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --repo1-host=repository --stanza=demo
+<pre class="execute-body-output">P00   INFO: check command begin 2.55.0: --exec-id=578-68c225ee --log-level-console=info --log-level-file=detail --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --repo1-host=repository --stanza=demo
 P00   INFO: check repo1 (standby)</pre>
 <pre class="execute-body-output-highlight">P00   INFO: switch wal not performed because this is a standby</pre>
 <pre class="execute-body-output">P00   INFO: check command end: completed successfully</pre>
@@ -2307,15 +2309,15 @@ The <span class="file">pg_hba.conf</span> file must be updated to allow the stan
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres sh -c 'echo \
        "host    replication     replicator      172.17.0.8/32           md5" \
-       >> /etc/postgresql/15/demo/pg_hba.conf'</pre>
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo reload</pre>
+       >> /etc/postgresql/16/demo/pg_hba.conf'</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo reload</pre>
 </div></div><div class="section-body-text">
 The standby needs to know how to contact the primary so the <span class="pg-option">primary_conninfo</span> setting will be configured in <span class="backrest">pgBackRest</span>.
 </div><div class="config"><div class="config-title">
 <span class="host">pg-standby</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Set <span class="pg-option">primary_conninfo</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 recovery-option=primary_conninfo=host=172.17.0.6 port=5432 user=replicator<br/>
 <br/>
 [global]<br/>
@@ -2335,30 +2337,30 @@ Now the standby can be created with the <span class="cmd">restore</span> command
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Stop <span class="postgres">PostgreSQL</span> and restore the demo standby cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo stop</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo stop</pre>
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --delta --type=standby restore</pre>
-<pre class="execute-body-cmd">sudo -u postgres cat /var/lib/postgresql/15/demo/postgresql.auto.conf</pre>
+<pre class="execute-body-cmd">sudo -u postgres cat /var/lib/postgresql/16/demo/postgresql.auto.conf</pre>
 <pre class="execute-body-output"># Do not edit this file manually!
 # It will be overwritten by the ALTER SYSTEM command.
 
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:08:50
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:22:24
 restore_command = 'pgbackrest --stanza=demo archive-get %f "%p"'
 
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:09:18
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:22:54
 restore_command = 'pgbackrest --stanza=demo archive-get %f "%p"'
 
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:09:39
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:23:18
 restore_command = 'pgbackrest --stanza=demo archive-get %f "%p"'
-# Removed by pgBackRest restore on 2025-01-20 14:10:16 # recovery_target_time = '2025-01-20 14:09:34.918261+00'
-# Removed by pgBackRest restore on 2025-01-20 14:10:16 # recovery_target_action = 'promote'
+# Removed by pgBackRest restore on 2025-04-21 13:24:04 # recovery_target_time = '2025-04-21 13:23:13.75819+00'
+# Removed by pgBackRest restore on 2025-04-21 13:24:04 # recovery_target_action = 'promote'
 
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:10:16
-restore_command = 'pgbackrest --repo=3 --repo-target-time="2025-01-20 14:10:05+00" --stanza=demo archive-get %f "%p"'
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:24:04
+restore_command = 'pgbackrest --repo=3 --repo-target-time="2025-04-21 13:23:49+00" --stanza=demo archive-get %f "%p"'
 
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:10:39
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:24:30
 restore_command = 'pgbackrest --stanza=demo archive-get %f "%p"'
 
-# Recovery settings generated by pgBackRest restore on 2025-01-20 14:11:20
+# Recovery settings generated by pgBackRest restore on 2025-04-21 13:25:21
 primary_conninfo = 'host=172.17.0.6 port=5432 user=replicator'
 restore_command = 'pgbackrest --stanza=demo archive-get %f "%p"'</pre>
 </div></div><div class="admonition"><div class="note">
@@ -2368,13 +2370,13 @@ The <span class="pg-setting">primary_conninfo</span> setting has been written in
 </div></div><div class="execute"><div class="execute-title">
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Start <span class="postgres">PostgreSQL</span>
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo start</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo start</pre>
 </div></div><div class="section-body-text">
 The <span class="postgres">PostgreSQL</span> log will confirm that streaming replication has started.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Examine the <span class="postgres">PostgreSQL</span> log output for log messages indicating success
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo -u postgres cat /var/log/postgresql/postgresql-15-demo.log</pre>
+<pre class="execute-body-cmd">sudo -u postgres cat /var/log/postgresql/postgresql-16-demo.log</pre>
 <pre class="execute-body-output">       [filtered 13 lines of output]
 LOG:  consistent recovery state reached at 0/25000088
 LOG:  database system is ready to accept read-only connections</pre>
@@ -2391,18 +2393,18 @@ Now when a table is created on <span class="host">pg-primary</span> it will appe
        commit; \
        select *, current_timestamp from stream_table";</pre>
 <pre class="execute-body-output">       [filtered 4 lines of output]
-    message     |      current_timestamp       
-----------------+------------------------------</pre>
-<pre class="execute-body-output-highlight"> Important Data | 2025-01-20 14:11:26.74444+00</pre>
+    message     |       current_timestamp       
+----------------+-------------------------------</pre>
+<pre class="execute-body-output-highlight"> Important Data | 2025-04-21 13:25:28.605823+00</pre>
 <pre class="execute-body-output">(1 row)</pre>
 </div></div><div class="execute"><div class="execute-title">
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Query table on the standby
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres psql -c " \
        select *, current_timestamp from stream_table"</pre>
-<pre class="execute-body-output">    message     |      current_timestamp       
-----------------+------------------------------</pre>
-<pre class="execute-body-output-highlight"> Important Data | 2025-01-20 14:11:27.12324+00</pre>
+<pre class="execute-body-output">    message     |       current_timestamp       
+----------------+-------------------------------</pre>
+<pre class="execute-body-output-highlight"> Important Data | 2025-04-21 13:25:29.119293+00</pre>
 <pre class="execute-body-output">(1 row)</pre>
 </div></div></div></div></div></div><div class="section1"><a id="multi-stanza"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Multiple Stanzas
@@ -2483,7 +2485,7 @@ Configuration
 <span class="host">pg-alt</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure <span class="backrest">pgBackRest</span> on the new primary
 </div><div class="config-body"><div class="config-body-output">
 [demo-alt]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 log-level-file=detail<br/>
@@ -2493,11 +2495,11 @@ repo1-host=repository
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
 pg1-host=pg-primary<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [demo-alt]<br/>
 pg1-host=pg-alt<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 process-max=3<br/>
@@ -2509,14 +2511,14 @@ Setup Demo Cluster
 </div></div><div class="section-body"><div class="execute"><div class="execute-title">
 <span class="host">pg-alt</span> <b>&#x21d2;</b> Create the demo cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo -u postgres /usr/lib/postgresql/15/bin/initdb \
-       -D /var/lib/postgresql/15/demo -k -A peer</pre>
-<pre class="execute-body-cmd">sudo pg_createcluster 15 demo</pre>
-<pre class="execute-body-output">Configuring already existing cluster (configuration: /etc/postgresql/15/demo, data: /var/lib/postgresql/15/demo, owner: 102:103)
+<pre class="execute-body-cmd">sudo -u postgres /usr/lib/postgresql/16/bin/initdb \
+       -D /var/lib/postgresql/16/demo -k -A peer</pre>
+<pre class="execute-body-cmd">sudo pg_createcluster 16 demo</pre>
+<pre class="execute-body-output">Configuring already existing cluster (configuration: /etc/postgresql/16/demo, data: /var/lib/postgresql/16/demo, owner: 102:103)
 Ver Cluster Port Status Owner    Data directory              Log file
-15  demo    5432 down   postgres /var/lib/postgresql/15/demo /var/log/postgresql/postgresql-15-demo.log</pre>
+16  demo    5432 down   postgres /var/lib/postgresql/16/demo /var/log/postgresql/postgresql-16-demo.log</pre>
 </div></div><div class="config"><div class="config-title">
-<span class="host">pg-alt</span>:<span class="file">/etc/postgresql/15/demo/postgresql.conf</span> <b>&#x21d2;</b> Configure <span class="postgres">PostgreSQL</span> settings
+<span class="host">pg-alt</span>:<span class="file">/etc/postgresql/16/demo/postgresql.conf</span> <b>&#x21d2;</b> Configure <span class="postgres">PostgreSQL</span> settings
 </div><div class="config-body"><div class="config-body-output">
 archive_command = 'pgbackrest --stanza=demo-alt archive-push %p'<br/>
 archive_mode = on<br/>
@@ -2525,7 +2527,7 @@ wal_level = replica
 </div></div></div><div class="execute"><div class="execute-title">
 <span class="host">pg-alt</span> <b>&#x21d2;</b> Start the demo cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo restart</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo restart</pre>
 </div></div></div></div><div class="section2"><a id="multi-stanza/create-stanza"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Create the Stanza and Check Configuration
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2534,15 +2536,15 @@ The <span class="cmd">stanza-create</span> command must be run to initialize the
 <span class="host">pg-alt</span> <b>&#x21d2;</b> Create the stanza and check the configuration
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo-alt --log-level-console=info stanza-create</pre>
-<pre class="execute-body-output">P00   INFO: stanza-create command begin 2.54.2: --exec-id=1015-3590691a --log-level-console=info --log-level-file=detail --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --repo1-host=repository --stanza=demo-alt
+<pre class="execute-body-output">P00   INFO: stanza-create command begin 2.55.0: --exec-id=350-4c3a4d5f --log-level-console=info --log-level-file=detail --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --repo1-host=repository --stanza=demo-alt
 P00   INFO: stanza-create for stanza 'demo-alt' on repo1</pre>
 <pre class="execute-body-output-highlight">P00   INFO: stanza-create command end: completed successfully</pre>
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --log-level-console=info check</pre>
-<pre class="execute-body-output">P00   INFO: check command begin 2.54.2: --exec-id=1024-e19c1c29 --log-level-console=info --log-level-file=detail --no-log-timestamp --repo1-host=repository</pre>
+<pre class="execute-body-output">P00   INFO: check command begin 2.55.0: --exec-id=359-c12a2d8d --log-level-console=info --log-level-file=detail --no-log-timestamp --repo1-host=repository</pre>
 <pre class="execute-body-output-highlight">P00   INFO: check stanza 'demo-alt'</pre>
 <pre class="execute-body-output">P00   INFO: check repo1 configuration (primary)
 P00   INFO: check repo1 archive for WAL (primary)</pre>
-<pre class="execute-body-output-highlight">P00   INFO: WAL segment 000000010000000000000001 successfully archived to '/var/lib/pgbackrest/archive/demo-alt/15-1/0000000100000000/000000010000000000000001-30b8feeb83611972ddf2ff342b7f4a22758a5b8f.gz' on repo1</pre>
+<pre class="execute-body-output-highlight">P00   INFO: WAL segment 000000010000000000000001 successfully archived to '/var/lib/pgbackrest/archive/demo-alt/16-1/0000000100000000/000000010000000000000001-3c1c240bafc52d38daf4d168813a0bca920ab769.gz' on repo1</pre>
 <pre class="execute-body-output">P00   INFO: check command end: completed successfully</pre>
 </div></div><div class="section-body-text">
 If the <span class="cmd">check</span> command is run from the <span class="host">repository</span> host then all stanzas will be checked.
@@ -2550,15 +2552,15 @@ If the <span class="cmd">check</span> command is run from the <span class="host"
 <span class="host">repository</span> <b>&#x21d2;</b> Check the configuration for all stanzas
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u pgbackrest pgbackrest --log-level-console=info check</pre>
-<pre class="execute-body-output">P00   INFO: check command begin 2.54.2: --exec-id=1870-ddd2135a --log-level-console=info --no-log-timestamp --repo1-path=/var/lib/pgbackrest</pre>
+<pre class="execute-body-output">P00   INFO: check command begin 2.55.0: --exec-id=1239-b5ee7e8c --log-level-console=info --no-log-timestamp --repo1-path=/var/lib/pgbackrest</pre>
 <pre class="execute-body-output-highlight">P00   INFO: check stanza 'demo'</pre>
 <pre class="execute-body-output">P00   INFO: check repo1 configuration (primary)
 P00   INFO: check repo1 archive for WAL (primary)</pre>
-<pre class="execute-body-output-highlight">P00   INFO: WAL segment 000000070000000000000027 successfully archived to '/var/lib/pgbackrest/archive/demo/15-1/0000000700000000/000000070000000000000027-a2585c9e8c8db95c33a2bd8a2db79ea0f24d3d5c.gz' on repo1
+<pre class="execute-body-output-highlight">P00   INFO: WAL segment 000000070000000000000027 successfully archived to '/var/lib/pgbackrest/archive/demo/16-1/0000000700000000/000000070000000000000027-ca01f4409b28706fc8ce995286afd7c3daa2c3e3.gz' on repo1
 P00   INFO: check stanza 'demo-alt'</pre>
 <pre class="execute-body-output">P00   INFO: check repo1 configuration (primary)
 P00   INFO: check repo1 archive for WAL (primary)</pre>
-<pre class="execute-body-output-highlight">P00   INFO: WAL segment 000000010000000000000002 successfully archived to '/var/lib/pgbackrest/archive/demo-alt/15-1/0000000100000000/000000010000000000000002-0cdb1b46e62d41197b7a5ba2c92e78b7524386b5.gz' on repo1</pre>
+<pre class="execute-body-output-highlight">P00   INFO: WAL segment 000000010000000000000002 successfully archived to '/var/lib/pgbackrest/archive/demo-alt/16-1/0000000100000000/000000010000000000000002-610d0c18ced4092a83df2dcdc171e191a92be9a2.gz' on repo1</pre>
 <pre class="execute-body-output">P00   INFO: check command end: completed successfully</pre>
 </div></div></div></div></div></div><div class="section1"><a id="async-archiving"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Asynchronous Archiving
@@ -2582,7 +2584,7 @@ The spool path must be configured and asynchronous archiving enabled. Asynchrono
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure the spool path and asynchronous archiving
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 archive-async=y<br/>
@@ -2599,7 +2601,7 @@ process-max=2
 <span class="host">pg-standby</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Configure the spool path and asynchronous archiving
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 recovery-option=primary_conninfo=host=172.17.0.6 port=5432 user=replicator<br/>
 <br/>
 [global]<br/>
@@ -2627,7 +2629,7 @@ For demonstration purposes streaming replication will be broken to force <span c
 </div></div><div class="execute"><div class="execute-title">
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Restart standby to break connection
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo restart</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo restart</pre>
 </div></div><div class="section2"><a id="async-archiving/async-archive-push"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Archive Push
 </div></div><div class="section-body"><div class="section-body-text">
@@ -2650,10 +2652,10 @@ The <span class="file">[stanza]-archive-push-async.log</span> file can be used t
        select pg_create_restore_point('test async push'); select pg_switch_wal(); \
        select pg_create_restore_point('test async push'); select pg_switch_wal();"</pre>
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --log-level-console=info check</pre>
-<pre class="execute-body-output">P00   INFO: check command begin 2.54.2: --exec-id=3008-8509209b --log-level-console=info --log-level-file=detail --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --repo1-host=repository --stanza=demo
+<pre class="execute-body-output">P00   INFO: check command begin 2.55.0: --exec-id=2343-fa56562f --log-level-console=info --log-level-file=detail --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --repo1-host=repository --stanza=demo
 P00   INFO: check repo1 configuration (primary)
 P00   INFO: check repo1 archive for WAL (primary)</pre>
-<pre class="execute-body-output-highlight">P00   INFO: WAL segment 00000007000000000000002D successfully archived to '/var/lib/pgbackrest/archive/demo/15-1/0000000700000000/00000007000000000000002D-828d07722621e814cd2702d6d814bfbea57ffb0e.gz' on repo1</pre>
+<pre class="execute-body-output-highlight">P00   INFO: WAL segment 00000007000000000000002D successfully archived to '/var/lib/pgbackrest/archive/demo/16-1/0000000700000000/00000007000000000000002D-9b9ad0e1bb13f7f4499492eed7677a1653428a27.gz' on repo1</pre>
 <pre class="execute-body-output">P00   INFO: check command end: completed successfully</pre>
 </div></div><div class="section-body-text">
 Now the log file will contain parallel, asynchronous activity.
@@ -2662,13 +2664,13 @@ Now the log file will contain parallel, asynchronous activity.
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres cat /var/log/pgbackrest/demo-archive-push-async.log</pre>
 <pre class="execute-body-output">-------------------PROCESS START-------------------
-P00   INFO: archive-push:async command begin 2.54.2: [/var/lib/postgresql/15/demo/pg_wal] --archive-async --exec-id=2994-a8b2b629 --log-level-console=off --log-level-file=detail --log-level-stderr=off --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --process-max=2 --repo1-host=repository --spool-path=/var/spool/pgbackrest --stanza=demo</pre>
+P00   INFO: archive-push:async command begin 2.55.0: [/var/lib/postgresql/16/demo/pg_wal] --archive-async --exec-id=2329-fb8679e6 --log-level-console=off --log-level-file=detail --log-level-stderr=off --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --process-max=2 --repo1-host=repository --spool-path=/var/spool/pgbackrest --stanza=demo</pre>
 <pre class="execute-body-output-highlight">P00   INFO: push 1 WAL file(s) to archive: 000000070000000000000028
 P01 DETAIL: pushed WAL file '000000070000000000000028' to the archive</pre>
 <pre class="execute-body-output">P00   INFO: archive-push:async command end: completed successfully
 
 -------------------PROCESS START-------------------
-P00   INFO: archive-push:async command begin 2.54.2: [/var/lib/postgresql/15/demo/pg_wal] --archive-async --exec-id=3012-3829f762 --log-level-console=off --log-level-file=detail --log-level-stderr=off --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --process-max=2 --repo1-host=repository --spool-path=/var/spool/pgbackrest --stanza=demo</pre>
+P00   INFO: archive-push:async command begin 2.55.0: [/var/lib/postgresql/16/demo/pg_wal] --archive-async --exec-id=2347-65368df7 --log-level-console=off --log-level-file=detail --log-level-stderr=off --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --process-max=2 --repo1-host=repository --spool-path=/var/spool/pgbackrest --stanza=demo</pre>
 <pre class="execute-body-output-highlight">P00   INFO: push 5 WAL file(s) to archive: 000000070000000000000029...00000007000000000000002D
 P01 DETAIL: pushed WAL file '000000070000000000000029' to the archive
 P02 DETAIL: pushed WAL file '00000007000000000000002A' to the archive
@@ -2689,28 +2691,28 @@ The <span class="file">[stanza]-archive-get-async.log</span> file can be used to
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres cat /var/log/pgbackrest/demo-archive-get-async.log</pre>
 <pre class="execute-body-output">-------------------PROCESS START-------------------
-P00   INFO: archive-get:async command begin 2.54.2: [000000070000000000000024, 000000070000000000000025, 000000070000000000000026, 000000070000000000000027, 000000070000000000000028, 000000070000000000000029, 00000007000000000000002A, 00000007000000000000002B] --archive-async --exec-id=1318-24fd4529 --log-level-console=off --log-level-file=detail --log-level-stderr=off --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --process-max=2 --repo1-host=repository --spool-path=/var/spool/pgbackrest --stanza=demo
+P00   INFO: archive-get:async command begin 2.55.0: [000000070000000000000024, 000000070000000000000025, 000000070000000000000026, 000000070000000000000027, 000000070000000000000028, 000000070000000000000029, 00000007000000000000002A, 00000007000000000000002B] --archive-async --exec-id=782-e7977f4c --log-level-console=off --log-level-file=detail --log-level-stderr=off --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --process-max=2 --repo1-host=repository --spool-path=/var/spool/pgbackrest --stanza=demo
 P00   INFO: get 8 WAL file(s) from archive: 000000070000000000000024...00000007000000000000002B</pre>
-<pre class="execute-body-output-highlight">P02 DETAIL: found 000000070000000000000025 in the repo1: 15-1 archive
-P01 DETAIL: found 000000070000000000000024 in the repo1: 15-1 archive
-P02 DETAIL: found 000000070000000000000026 in the repo1: 15-1 archive
-P01 DETAIL: found 000000070000000000000027 in the repo1: 15-1 archive</pre>
+<pre class="execute-body-output-highlight">P01 DETAIL: found 000000070000000000000024 in the repo1: 16-1 archive
+P02 DETAIL: found 000000070000000000000025 in the repo1: 16-1 archive
+P01 DETAIL: found 000000070000000000000026 in the repo1: 16-1 archive
+P02 DETAIL: found 000000070000000000000027 in the repo1: 16-1 archive</pre>
 <pre class="execute-body-output">P00 DETAIL: unable to find 000000070000000000000028 in the archive
 P00   INFO: archive-get:async command end: completed successfully
        [filtered 14 lines of output]
-P00   INFO: archive-get:async command begin 2.54.2: [000000070000000000000028, 000000070000000000000029, 00000007000000000000002A, 00000007000000000000002B, 00000007000000000000002C, 00000007000000000000002D, 00000007000000000000002E, 00000007000000000000002F] --archive-async --exec-id=1361-dedf4daf --log-level-console=off --log-level-file=detail --log-level-stderr=off --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --process-max=2 --repo1-host=repository --spool-path=/var/spool/pgbackrest --stanza=demo
+P00   INFO: archive-get:async command begin 2.55.0: [000000070000000000000028, 000000070000000000000029, 00000007000000000000002A, 00000007000000000000002B, 00000007000000000000002C, 00000007000000000000002D, 00000007000000000000002E, 00000007000000000000002F] --archive-async --exec-id=825-0652b343 --log-level-console=off --log-level-file=detail --log-level-stderr=off --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --process-max=2 --repo1-host=repository --spool-path=/var/spool/pgbackrest --stanza=demo
 P00   INFO: get 8 WAL file(s) from archive: 000000070000000000000028...00000007000000000000002F</pre>
-<pre class="execute-body-output-highlight">P02 DETAIL: found 000000070000000000000029 in the repo1: 15-1 archive
-P01 DETAIL: found 000000070000000000000028 in the repo1: 15-1 archive
-P02 DETAIL: found 00000007000000000000002A in the repo1: 15-1 archive</pre>
+<pre class="execute-body-output-highlight">P01 DETAIL: found 000000070000000000000028 in the repo1: 16-1 archive
+P02 DETAIL: found 000000070000000000000029 in the repo1: 16-1 archive
+P01 DETAIL: found 00000007000000000000002A in the repo1: 16-1 archive</pre>
 <pre class="execute-body-output">P00 DETAIL: unable to find 00000007000000000000002B in the archive
 P00   INFO: archive-get:async command end: completed successfully
        [filtered 2 lines of output]
-P00   INFO: archive-get:async command begin 2.54.2: [00000007000000000000002B, 00000007000000000000002C, 00000007000000000000002D, 00000007000000000000002E, 00000007000000000000002F, 000000070000000000000030, 000000070000000000000031, 000000070000000000000032] --archive-async --exec-id=1374-f4d7024e --log-level-console=off --log-level-file=detail --log-level-stderr=off --no-log-timestamp --pg1-path=/var/lib/postgresql/15/demo --process-max=2 --repo1-host=repository --spool-path=/var/spool/pgbackrest --stanza=demo
+P00   INFO: archive-get:async command begin 2.55.0: [00000007000000000000002B, 00000007000000000000002C, 00000007000000000000002D, 00000007000000000000002E, 00000007000000000000002F, 000000070000000000000030, 000000070000000000000031, 000000070000000000000032] --archive-async --exec-id=838-91151505 --log-level-console=off --log-level-file=detail --log-level-stderr=off --no-log-timestamp --pg1-path=/var/lib/postgresql/16/demo --process-max=2 --repo1-host=repository --spool-path=/var/spool/pgbackrest --stanza=demo
 P00   INFO: get 8 WAL file(s) from archive: 00000007000000000000002B...000000070000000000000032</pre>
-<pre class="execute-body-output-highlight">P01 DETAIL: found 00000007000000000000002B in the repo1: 15-1 archive
-P02 DETAIL: found 00000007000000000000002C in the repo1: 15-1 archive
-P01 DETAIL: found 00000007000000000000002D in the repo1: 15-1 archive</pre>
+<pre class="execute-body-output-highlight">P02 DETAIL: found 00000007000000000000002C in the repo1: 16-1 archive
+P01 DETAIL: found 00000007000000000000002B in the repo1: 16-1 archive
+P02 DETAIL: found 00000007000000000000002D in the repo1: 16-1 archive</pre>
 <pre class="execute-body-output">P00 DETAIL: unable to find 00000007000000000000002E in the archive
 P00   INFO: archive-get:async command end: completed successfully
        [filtered 17 lines of output]</pre>
@@ -2728,13 +2730,13 @@ Backup from a Standby
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
 pg1-host=pg-primary<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 pg2-host=pg-standby<br/>
-pg2-path=/var/lib/postgresql/15/demo<br/>
+pg2-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [demo-alt]<br/>
 pg1-host=pg-alt<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 backup-standby=y<br/>
@@ -2754,10 +2756,10 @@ P00   INFO: backup start archive = 00000007000000000000002F, lsn = 0/2F000028</p
 <pre class="execute-body-output-highlight">P00   INFO: wait for replay on the standby to reach 0/2F000028
 P00   INFO: replay on the standby reached 0/2F000028</pre>
 <pre class="execute-body-output">P00   INFO: check archive for prior segment 00000007000000000000002E</pre>
-<pre class="execute-body-output-highlight">P01 DETAIL: backup file pg-primary:/var/lib/postgresql/15/demo/global/pg_control (8KB, 0.53%) checksum f6cfedd8a4c1ceb2a0cd9dbfda66e3ed504e0624</pre>
-<pre class="execute-body-output">P01 DETAIL: match file from prior backup pg-primary:/var/lib/postgresql/15/demo/pg_logical/replorigin_checkpoint (8B, 0.53%) checksum 347fc8f2df71bd4436e38bd1516ccd7ea0d46532
-P02 DETAIL: backup file pg-standby:/var/lib/postgresql/15/demo/base/5/1249 (456KB, 31.18%) checksum dc0e315892f80febda5c349e18304c3ace24a01d
-       [filtered 1276 lines of output]</pre>
+<pre class="execute-body-output-highlight">P01 DETAIL: backup file pg-primary:/var/lib/postgresql/16/demo/global/pg_control (8KB, 0.53%) checksum e76644f179dd23ad60eea0e6e5a1dba33c7832a0</pre>
+<pre class="execute-body-output">P01 DETAIL: match file from prior backup pg-primary:/var/lib/postgresql/16/demo/pg_logical/replorigin_checkpoint (8B, 0.53%) checksum 347fc8f2df71bd4436e38bd1516ccd7ea0d46532
+P02 DETAIL: backup file pg-standby:/var/lib/postgresql/16/demo/base/5/1249 (464KB, 31.38%) checksum ad21eff1041d8672b2fbccf2b8e4af4c4d4cf7b2
+       [filtered 1278 lines of output]</pre>
 </div></div><div class="section-body-text">
 This incremental backup shows that most of the files are copied from the <span class="host">pg-standby</span> host and only a few are copied from the <span class="host">pg-primary</span> host.
 </div><div class="section-body-text">
@@ -2771,30 +2773,30 @@ The following instructions are not meant to be a comprehensive guide for upgradi
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Stop old cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo stop</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo stop</pre>
 </div></div><div class="section-body-text">
 Stop the old cluster on the standby since it will be restored from the newly upgraded cluster.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Stop old cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 15 demo stop</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo stop</pre>
 </div></div><div class="section-body-text">
 Create the new cluster and perform upgrade.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Create new cluster and perform the upgrade
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo -u postgres /usr/lib/postgresql/16/bin/initdb \
-       -D /var/lib/postgresql/16/demo -k -A peer</pre>
-<pre class="execute-body-cmd">sudo pg_createcluster 16 demo</pre>
+<pre class="execute-body-cmd">sudo -u postgres /usr/lib/postgresql/17/bin/initdb \
+       -D /var/lib/postgresql/17/demo -k -A peer</pre>
+<pre class="execute-body-cmd">sudo pg_createcluster 17 demo</pre>
 <pre class="execute-body-cmd">sudo -u postgres sh -c 'cd /var/lib/postgresql &amp;&amp; \
-       /usr/lib/postgresql/16/bin/pg_upgrade \
-       --old-bindir=/usr/lib/postgresql/15/bin \
-       --new-bindir=/usr/lib/postgresql/16/bin \
-       --old-datadir=/var/lib/postgresql/15/demo \
-       --new-datadir=/var/lib/postgresql/16/demo \
-       --old-options=" -c config_file=/etc/postgresql/15/demo/postgresql.conf" \
-       --new-options=" -c config_file=/etc/postgresql/16/demo/postgresql.conf"'</pre>
-<pre class="execute-body-output">       [filtered 42 lines of output]
+       /usr/lib/postgresql/17/bin/pg_upgrade \
+       --old-bindir=/usr/lib/postgresql/16/bin \
+       --new-bindir=/usr/lib/postgresql/17/bin \
+       --old-datadir=/var/lib/postgresql/16/demo \
+       --new-datadir=/var/lib/postgresql/17/demo \
+       --old-options=" -c config_file=/etc/postgresql/16/demo/postgresql.conf" \
+       --new-options=" -c config_file=/etc/postgresql/17/demo/postgresql.conf"'</pre>
+<pre class="execute-body-output">       [filtered 40 lines of output]
 Checking for extension updates                                ok
 </pre>
 <pre class="execute-body-output-highlight">Upgrade Complete</pre>
@@ -2804,7 +2806,7 @@ Optimizer statistics are not transferred by pg_upgrade.
 </div></div><div class="section-body-text">
 Configure the new cluster settings and port.
 </div><div class="config"><div class="config-title">
-<span class="host">pg-primary</span>:<span class="file">/etc/postgresql/16/demo/postgresql.conf</span> <b>&#x21d2;</b> Configure <span class="postgres">PostgreSQL</span>
+<span class="host">pg-primary</span>:<span class="file">/etc/postgresql/17/demo/postgresql.conf</span> <b>&#x21d2;</b> Configure <span class="postgres">PostgreSQL</span>
 </div><div class="config-body"><div class="config-body-output">
 archive_command = 'pgbackrest --stanza=demo archive-push %p'<br/>
 archive_mode = on<br/>
@@ -2816,7 +2818,7 @@ Update the <span class="backrest">pgBackRest</span> configuration on all systems
 <span class="host">pg-primary</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Upgrade the <span class="br-option">pg1-path</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/16/demo<br/>
+pg1-path=/var/lib/postgresql/17/demo<br/>
 <br/>
 [global]<br/>
 archive-async=y<br/>
@@ -2833,7 +2835,7 @@ process-max=2
 <span class="host">pg-standby</span>:<span class="file">/etc/pgbackrest/pgbackrest.conf</span> <b>&#x21d2;</b> Upgrade the <span class="br-option">pg-path</span>
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
-pg1-path=/var/lib/postgresql/16/demo<br/>
+pg1-path=/var/lib/postgresql/17/demo<br/>
 recovery-option=primary_conninfo=host=172.17.0.6 port=5432 user=replicator<br/>
 <br/>
 [global]<br/>
@@ -2852,13 +2854,13 @@ process-max=2
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
 pg1-host=pg-primary<br/>
-pg1-path=/var/lib/postgresql/16/demo<br/>
+pg1-path=/var/lib/postgresql/17/demo<br/>
 pg2-host=pg-standby<br/>
-pg2-path=/var/lib/postgresql/16/demo<br/>
+pg2-path=/var/lib/postgresql/17/demo<br/>
 <br/>
 [demo-alt]<br/>
 pg1-host=pg-alt<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 backup-standby=n<br/>
@@ -2869,8 +2871,8 @@ start-fast=y
 </div></div></div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Copy hba configuration
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo cp /etc/postgresql/15/demo/pg_hba.conf \
-       /etc/postgresql/16/demo/pg_hba.conf</pre>
+<pre class="execute-body-cmd">sudo cp /etc/postgresql/16/demo/pg_hba.conf \
+       /etc/postgresql/17/demo/pg_hba.conf</pre>
 </div></div><div class="section-body-text">
 Before starting the new cluster, the <span class="cmd">stanza-upgrade</span> command must be run.
 </div><div class="execute"><div class="execute-title">
@@ -2878,7 +2880,7 @@ Before starting the new cluster, the <span class="cmd">stanza-upgrade</span> com
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --no-online \
        --log-level-console=info stanza-upgrade</pre>
-<pre class="execute-body-output">P00   INFO: stanza-upgrade command begin 2.54.2: --exec-id=3427-e3a53a71 --log-level-console=info --log-level-file=detail --no-log-timestamp --no-online --pg1-path=/var/lib/postgresql/16/demo --repo1-host=repository --stanza=demo
+<pre class="execute-body-output">P00   INFO: stanza-upgrade command begin 2.55.0: --exec-id=2737-74c8e868 --log-level-console=info --log-level-file=detail --no-log-timestamp --no-online --pg1-path=/var/lib/postgresql/17/demo --repo1-host=repository --stanza=demo
 P00   INFO: stanza-upgrade for stanza 'demo' on repo1</pre>
 <pre class="execute-body-output-highlight">P00   INFO: stanza-upgrade command end: completed successfully</pre>
 </div></div><div class="section-body-text">
@@ -2886,7 +2888,7 @@ Start the new cluster and confirm it is successfully installed.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Start new cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo start</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 17 demo start</pre>
 </div></div><div class="section-body-text">
 Test configuration using the <span class="cmd">check</span> command.
 </div><div class="execute"><div class="execute-title">
@@ -2899,14 +2901,14 @@ Remove the old cluster.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Remove old cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_dropcluster 15 demo</pre>
+<pre class="execute-body-cmd">sudo pg_dropcluster 16 demo</pre>
 </div></div><div class="section-body-text">
 Install the new <span class="postgres">PostgreSQL</span> binaries on the standby and create the cluster.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Remove old cluster and create the new cluster
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_dropcluster 15 demo</pre>
-<pre class="execute-body-cmd">sudo pg_createcluster 16 demo</pre>
+<pre class="execute-body-cmd">sudo pg_dropcluster 16 demo</pre>
+<pre class="execute-body-cmd">sudo pg_createcluster 17 demo</pre>
 </div></div><div class="section-body-text">
 Run the <span class="cmd">check</span> on the repository host. The warning regarding the standby being down is expected since the standby cluster is down. Running this command demonstrates that the repository server is aware of the standby and is configured properly for the primary server.
 </div><div class="execute"><div class="execute-title">
@@ -2926,13 +2928,13 @@ Run a full backup on the new cluster and then restore the standby from the backu
 </div><div class="execute-body">
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo --delta --type=standby restore</pre>
 </div></div><div class="config"><div class="config-title">
-<span class="host">pg-standby</span>:<span class="file">/etc/postgresql/16/demo/postgresql.conf</span> <b>&#x21d2;</b> Configure <span class="postgres">PostgreSQL</span>
+<span class="host">pg-standby</span>:<span class="file">/etc/postgresql/17/demo/postgresql.conf</span> <b>&#x21d2;</b> Configure <span class="postgres">PostgreSQL</span>
 </div><div class="config-body"><div class="config-body-output">
 hot_standby = on
 </div></div></div><div class="execute"><div class="execute-title">
 <span class="host">pg-standby</span> <b>&#x21d2;</b> Start <span class="postgres">PostgreSQL</span> and check the <span class="backrest">pgBackRest</span> configuration
 </div><div class="execute-body">
-<pre class="execute-body-cmd">sudo pg_ctlcluster 16 demo start</pre>
+<pre class="execute-body-cmd">sudo pg_ctlcluster 17 demo start</pre>
 <pre class="execute-body-cmd">sudo -u postgres pgbackrest --stanza=demo check</pre>
 </div></div><div class="section-body-text">
 Backup from standby can be enabled now that the standby is restored.
@@ -2941,13 +2943,13 @@ Backup from standby can be enabled now that the standby is restored.
 </div><div class="config-body"><div class="config-body-output">
 [demo]<br/>
 pg1-host=pg-primary<br/>
-pg1-path=/var/lib/postgresql/16/demo<br/>
+pg1-path=/var/lib/postgresql/17/demo<br/>
 pg2-host=pg-standby<br/>
-pg2-path=/var/lib/postgresql/16/demo<br/>
+pg2-path=/var/lib/postgresql/17/demo<br/>
 <br/>
 [demo-alt]<br/>
 pg1-host=pg-alt<br/>
-pg1-path=/var/lib/postgresql/15/demo<br/>
+pg1-path=/var/lib/postgresql/16/demo<br/>
 <br/>
 [global]<br/>
 backup-standby=y<br/>
@@ -2956,5 +2958,5 @@ repo1-path=/var/lib/pgbackrest<br/>
 repo1-retention-full=2<br/>
 start-fast=y
 </div></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated January 20, 2025
+Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated April 21, 2025
 </div></body></html>
