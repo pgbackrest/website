@@ -32,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.55.0">
-v2.55.0 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.55.1">
+v2.55.1 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -48,6 +48,20 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.55.1"></a><div class="section2-header"><div class="section2-title">
+v2.55.1 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Bug Fixes
+</div><div class="section2-subsubtitle">
+Released May 5, 2025
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Revert <q>calculate content-md5 on S3 only when required</q>. (<i>Reviewed by David Christensen. Reported by Frank Brendel.</i>)
+</li><li class="list-unordered">
+Fix lower bounds checking for option keys. (<i>Reviewed by David Christensen, Wolfgang Walther. Reported by Wolfgang Walther.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.55.0"></a><div class="section2-header"><div class="section2-title">
 v2.55.0 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -114,9 +128,7 @@ Change <span class="br-setting">--process-max</span> recommendation for object s
 Update <span class="br-setting">unix_socket_directory</span> to <span class="br-setting">unix_socket_directories</span>. (<i>Contributed by hyunkyu han. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Recommend not placing <span class="br-setting">spool-path</span> within <span class="path">pg_xlog</span>/<span class="path">pg_wal</span>. (<i>Reviewed by Mart&iacute;n Marqu&eacute;s, Don Seiler. Suggested by Mart&iacute;n Marqu&eacute;s.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.54.2"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.54.2"></a><div class="section2-header"><div class="section2-title">
 v2.54.2 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Bug Fix
@@ -3211,5 +3223,5 @@ The <span class="file">backup.manifest</span> is being written as <span class="i
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated April 21, 2025
+Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated May 5, 2025
 </div></body></html>
