@@ -32,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.55.1">
-v2.55.1 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.56.0">
+v2.56.0 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -48,6 +48,36 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.56.0"></a><div class="section2-header"><div class="section2-title">
+v2.56.0 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Progress Info Improvements
+</div><div class="section2-subsubtitle">
+Released July 21, 2025
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Fix issue with adhoc expiration when no backups in a repository. (<i>Reviewed by Stefan Fercot. Reported by Anup Gupta.</i>)
+</li></ul><div class="section-body-text">
+<b> Features:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Add restore progress to <span class="cmd">info</span> command output. (<i>Contributed by Denis Garsh, Maxim Michkov. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Add progress-only detail level for <span class="cmd">info</span> command output. (<i>Contributed by Denis Garsh. Reviewed by David Steele, Stefan Fercot.</i>)
+</li></ul><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Retry failed reads on object stores. (<i>Reviewed by David Christensen.</i>)
+</li><li class="list-unordered">
+Fix defaults in command-line help. (<i>Reviewed by David Christensen, Chris Bandy.</i>)
+</li></ul><div class="section-body-text">
+<b>Documentation Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Describe discrete option values in a list where appropriate. (<i>Contributed by Anton Kurochkin. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Fix <q>less than</q> in help output for <span class="br-setting">archive-mode</span> option. (<i>Contributed by Anton Kurochkin. Reviewed by David Steele.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.55.1"></a><div class="section2-header"><div class="section2-title">
 v2.55.1 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -60,9 +90,7 @@ Released May 5, 2025
 Revert <q>calculate content-md5 on S3 only when required</q>. (<i>Reviewed by David Christensen. Reported by Frank Brendel.</i>)
 </li><li class="list-unordered">
 Fix lower bounds checking for option keys. (<i>Reviewed by David Christensen, Wolfgang Walther. Reported by Wolfgang Walther.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.55.0"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.55.0"></a><div class="section2-header"><div class="section2-title">
 v2.55.0 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Verification Improvements and PostgreSQL 18 Support
@@ -3223,5 +3251,5 @@ The <span class="file">backup.manifest</span> is being written as <span class="i
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated May 5, 2025
+Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 21, 2025
 </div></body></html>
