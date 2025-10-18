@@ -32,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.56.0">
-v2.56.0 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.57.0">
+v2.57.0 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -48,6 +48,28 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.57.0"></a><div class="section2-header"><div class="section2-title">
+v2.57.0 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Suppress Repository Symlinks
+</div><div class="section2-subsubtitle">
+Released October 18, 2025
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Unnest HTTP/TLS/socket timeouts. (<i>Reviewed by David Christensen.</i>)
+</li><li class="list-unordered">
+Fix possible segfault in page checksum error message. (<i>Fixed by Zsolt Parragi. Reviewed by David Steele.</i>)
+</li></ul><div class="section-body-text">
+<b> Features:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Add <span class="br-setting">repo-symlink</span> option to suppress creation of repository symlinks. (<i>Reviewed by Douglas J Hunley. Suggested by Ron Johnson.</i>)
+</li></ul><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Add HTTP retries for 408 and 429 errors. (<i>Reviewed by David Christensen.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.56.0"></a><div class="section2-header"><div class="section2-title">
 v2.56.0 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -76,9 +98,7 @@ Fix defaults in command-line help. (<i>Reviewed by David Christensen, Chris Band
 Describe discrete option values in a list where appropriate. (<i>Contributed by Anton Kurochkin. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
 Fix <q>less than</q> in help output for <span class="br-setting">archive-mode</span> option. (<i>Contributed by Anton Kurochkin. Reviewed by David Steele.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.55.1"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.55.1"></a><div class="section2-header"><div class="section2-title">
 v2.55.1 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Bug Fixes
@@ -115,7 +135,7 @@ Allow verification of a specified backup. (<i>Contributed by Maxim Michkov. Revi
 </li><li class="list-unordered">
 Add support for S3/GCS requester pays. (<i>Contributed by Timoth&eacute;e Peignier. Reviewed by David Steele.</i>)
 </li><li class="list-unordered">
-<span class="host">PostgreSQL</span> 18 experimental support. (<i>Reviewed by Stefan Fercot.</i>)
+<span class="host">PostgreSQL</span> 18 support. (<i>Reviewed by Stefan Fercot.</i>)
 </li><li class="list-unordered">
 Allow connections to <span class="postgres">PostgreSQL</span> on abstract domain sockets. (<i>Reviewed by Chris Bandy. Suggested by Chris Bandy.</i>)
 </li><li class="list-unordered">
@@ -3251,5 +3271,5 @@ The <span class="file">backup.manifest</span> is being written as <span class="i
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 21, 2025
+Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 18, 2025
 </div></body></html>
