@@ -352,8 +352,8 @@ log_filename = 'postgresql.log'
 </div></div></div></div></div><div class="section2"><a id="quickstart/configure-stanza"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Configure Cluster Stanza
 </div></div><div class="section-body"><div class="section-body-text">
-A stanza is the configuration for a <span class="postgres">PostgreSQL</span> database cluster that defines where it is located, how it will be backed up, archiving options, etc. Most db servers will only have one <span class="postgres">PostgreSQL</span> database cluster and therefore one stanza, whereas backup servers will have a stanza for every database cluster that needs to be backed up.<br/>
-<br/>
+A stanza is the configuration for a <span class="postgres">PostgreSQL</span> database cluster that defines where it is located, how it will be backed up, archiving options, etc. Most db servers will only have one <span class="postgres">PostgreSQL</span> database cluster and therefore one stanza, whereas backup servers will have a stanza for every database cluster that needs to be backed up.
+</div><div class="section-body-text">
 It is tempting to name the stanza after the primary cluster but a better name describes the databases contained in the cluster. Because the stanza name will be used for the primary and all replicas it is more appropriate to choose a name that describes the actual function of the cluster, such as app or dw, rather than the local cluster name, such as main or prod.
 </div><div class="section-body-text">
 The name 'demo' describes the purpose of this cluster accurately so that will also make a good stanza name.
@@ -416,8 +416,8 @@ if log-level-file=off then no log path is required.
 </div></div></div></div><div class="section2"><a id="quickstart/create-repository"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Create the Repository
 </div></div><div class="section-body"><div class="section-body-text">
-The repository is where <span class="backrest">pgBackRest</span> stores backups and archives WAL segments.<br/>
-<br/>
+The repository is where <span class="backrest">pgBackRest</span> stores backups and archives WAL segments.
+</div><div class="section-body-text">
 It may be difficult to estimate in advance how much space you'll need. The best thing to do is take some backups then record the size of different types of backups (full/incr/diff) and measure the amount of WAL generated per day. This will give you a general idea of how much space you'll need, though of course requirements will likely change over time as your database evolves.
 </div><div class="section-body-text">
 For this demonstration the repository will be stored on the same host as the <span class="postgres">PostgreSQL</span> server. This is the simplest configuration and is useful in cases where traditional backup software is employed to backup the database host.
@@ -530,8 +530,8 @@ P00   INFO: stanza-create for stanza 'demo' on repo1</pre>
 </div></div></div></div><div class="section2"><a id="quickstart/check-configuration"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Check the Configuration
 </div></div><div class="section-body"><div class="section-body-text">
-The <span class="cmd">check</span> command validates that <span class="backrest">pgBackRest</span> and the <span class="pg-setting">archive_command</span> setting are configured correctly for archiving and backups for the specified stanza. It will attempt to check all repositories and databases that are configured for the host on which the command is run. It detects misconfigurations, particularly in archiving, that result in incomplete backups because required WAL segments did not reach the archive. The command can be run on the <span class="postgres">PostgreSQL</span> or repository host. The command may also be run on the standby host, however, since <span class="id">pg_switch_xlog()</span>/<span class="id">pg_switch_wal()</span> cannot be performed on the standby, the command will only test the repository configuration.<br/>
-<br/>
+The <span class="cmd">check</span> command validates that <span class="backrest">pgBackRest</span> and the <span class="pg-setting">archive_command</span> setting are configured correctly for archiving and backups for the specified stanza. It will attempt to check all repositories and databases that are configured for the host on which the command is run. It detects misconfigurations, particularly in archiving, that result in incomplete backups because required WAL segments did not reach the archive. The command can be run on the <span class="postgres">PostgreSQL</span> or repository host. The command may also be run on the standby host, however, since <span class="id">pg_switch_xlog()</span>/<span class="id">pg_switch_wal()</span> cannot be performed on the standby, the command will only test the repository configuration.
+</div><div class="section-body-text">
 Note that <span class="id">pg_create_restore_point('pgBackRest Archive Check')</span> and <span class="id">pg_switch_xlog()</span>/<span class="id">pg_switch_wal()</span> are called to force <span class="postgres">PostgreSQL</span> to archive a WAL segment.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Check the configuration
@@ -655,26 +655,26 @@ Use the <span class="cmd">info</span> command to get information about backups.
             repo1: backup set size: 2.9MB, backup size: 864B
             backup reference total: 1 full</pre>
 </div></div><div class="section-body-text">
-The <span class="cmd">info</span> command operates on a single stanza or all stanzas. Text output is the default and gives a human-readable summary of backups for the stanza(s) requested. This format is subject to change with any release.<br/>
-<br/>
-For machine-readable output use <span class="br-option">--output=json</span>. The JSON output contains far more information than the text output and is kept stable unless a bug is found.<br/>
-<br/>
-To speed up execution, limit the output to only progress information by specifying <span class="br-option">--detail-level=progress</span>. Note that this skips all checks except for availability of the stanza.<br/>
-<br/>
-Each stanza has a separate section and it is possible to limit output to a single stanza with the <span class="br-option">--stanza</span> option. The stanza '<span class="id">status</span>' gives a brief indication of the stanza's health. If this is '<span class="id">ok</span>' then <span class="backrest">pgBackRest</span> is functioning normally. If there are multiple repositories, then a status of '<span class="id">mixed</span>' indicates that the stanza is not in a healthy state on one or more of the repositories; in this case the state of the stanza will be detailed per repository. For cases in which an error on a repository occurred that is not one of the known error codes, then an error code of '<span class="id">other</span>' will be used and the full error details will be provided. The '<span class="id">wal archive min/max</span>' shows the minimum and maximum WAL currently stored in the archive and, in the case of multiple repositories, will be reported across all repositories unless the <span class="br-option">--repo</span> option is set. Note that there may be gaps due to archive retention policies or other reasons.<br/>
-<br/>
-The '<span class="id">backup/expire running</span>' and/or '<span class="id">restore running</span>' messages will appear beside the '<span class="id">status</span>' information if any of those commands are currently running on the host.<br/>
-<br/>
-The backups are displayed oldest to newest. The oldest backup will <i>always</i> be a full backup (indicated by an <span class="id">F</span> at the end of the label) but the newest backup can be full, differential (ends with <span class="id">D</span>), or incremental (ends with <span class="id">I</span>).<br/>
-<br/>
-The '<span class="id">timestamp start/stop</span>' defines the time period when the backup ran. The '<span class="id">timestamp stop</span>' can be used to determine the backup to use when performing Point-In-Time Recovery. More information about Point-In-Time Recovery can be found in the <a href="#pitr">Point-In-Time Recovery</a> section.<br/>
-<br/>
-The '<span class="id">wal start/stop</span>' defines the WAL range that is required to make the database consistent when restoring. The <span class="cmd">backup</span> command will ensure that this WAL range is in the archive before completing.<br/>
-<br/>
-The '<span class="id">database size</span>' is the full uncompressed size of the database while '<span class="id">database backup size</span>' is the amount of data in the database to actually back up (these will be the same for full backups).<br/>
-<br/>
-The '<span class="id">repo</span>' indicates in which repository this backup resides. The '<span class="id">backup set size</span>' includes all the files from this backup and any referenced backups in the repository that are required to restore the database from this backup while '<span class="id">backup size</span>' includes only the files in this backup (these will also be the same for full backups). Repository sizes reflect compressed file sizes if compression is enabled in <span class="backrest">pgBackRest</span>.<br/>
-<br/>
+The <span class="cmd">info</span> command operates on a single stanza or all stanzas. Text output is the default and gives a human-readable summary of backups for the stanza(s) requested. This format is subject to change with any release.
+</div><div class="section-body-text">
+For machine-readable output use <span class="br-option">--output=json</span>. The JSON output contains far more information than the text output and is kept stable unless a bug is found.
+</div><div class="section-body-text">
+To speed up execution, limit the output to only progress information by specifying <span class="br-option">--detail-level=progress</span>. Note that this skips all checks except for availability of the stanza.
+</div><div class="section-body-text">
+Each stanza has a separate section and it is possible to limit output to a single stanza with the <span class="br-option">--stanza</span> option. The stanza '<span class="id">status</span>' gives a brief indication of the stanza's health. If this is '<span class="id">ok</span>' then <span class="backrest">pgBackRest</span> is functioning normally. If there are multiple repositories, then a status of '<span class="id">mixed</span>' indicates that the stanza is not in a healthy state on one or more of the repositories; in this case the state of the stanza will be detailed per repository. For cases in which an error on a repository occurred that is not one of the known error codes, then an error code of '<span class="id">other</span>' will be used and the full error details will be provided. The '<span class="id">wal archive min/max</span>' shows the minimum and maximum WAL currently stored in the archive and, in the case of multiple repositories, will be reported across all repositories unless the <span class="br-option">--repo</span> option is set. Note that there may be gaps due to archive retention policies or other reasons.
+</div><div class="section-body-text">
+The '<span class="id">backup/expire running</span>' and/or '<span class="id">restore running</span>' messages will appear beside the '<span class="id">status</span>' information if any of those commands are currently running on the host.
+</div><div class="section-body-text">
+The backups are displayed oldest to newest. The oldest backup will <i>always</i> be a full backup (indicated by an <span class="id">F</span> at the end of the label) but the newest backup can be full, differential (ends with <span class="id">D</span>), or incremental (ends with <span class="id">I</span>).
+</div><div class="section-body-text">
+The '<span class="id">timestamp start/stop</span>' defines the time period when the backup ran. The '<span class="id">timestamp stop</span>' can be used to determine the backup to use when performing Point-In-Time Recovery. More information about Point-In-Time Recovery can be found in the <a href="#pitr">Point-In-Time Recovery</a> section.
+</div><div class="section-body-text">
+The '<span class="id">wal start/stop</span>' defines the WAL range that is required to make the database consistent when restoring. The <span class="cmd">backup</span> command will ensure that this WAL range is in the archive before completing.
+</div><div class="section-body-text">
+The '<span class="id">database size</span>' is the full uncompressed size of the database while '<span class="id">database backup size</span>' is the amount of data in the database to actually back up (these will be the same for full backups).
+</div><div class="section-body-text">
+The '<span class="id">repo</span>' indicates in which repository this backup resides. The '<span class="id">backup set size</span>' includes all the files from this backup and any referenced backups in the repository that are required to restore the database from this backup while '<span class="id">backup size</span>' includes only the files in this backup (these will also be the same for full backups). Repository sizes reflect compressed file sizes if compression is enabled in <span class="backrest">pgBackRest</span>.
+</div><div class="section-body-text">
 The '<span class="id">backup reference total</span>' summarizes the list of additional backups that are required to restore this backup. Use the <span class="br-option">--set</span> option to display the complete reference list.
 </div></div></div><div class="section2"><a id="quickstart/perform-restore"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Restore a Backup
@@ -790,10 +790,10 @@ select name,
 </div></div></div></div></div></div><div class="section1"><a id="backup"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Backup
 </div></div><div class="section-body"><div class="section-body-text">
-When multiple repositories are configured, <span class="backrest">pgBackRest</span> will backup to the highest priority repository (e.g. <span class="id">repo1</span>) unless the <span class="br-option">--repo</span> option is specified.<br/>
-<br/>
-<span class="backrest">pgBackRest</span> does not have a built-in scheduler so it's best to run it from cron or some other scheduling mechanism.<br/>
-<br/>
+When multiple repositories are configured, <span class="backrest">pgBackRest</span> will backup to the highest priority repository (e.g. <span class="id">repo1</span>) unless the <span class="br-option">--repo</span> option is specified.
+</div><div class="section-body-text">
+<span class="backrest">pgBackRest</span> does not have a built-in scheduler so it's best to run it from cron or some other scheduling mechanism.
+</div><div class="section-body-text">
 See <a href="#quickstart/perform-backup">Perform a Backup</a> for more details and examples.
 </div><div class="section2"><a id="backup/bundle"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 File Bundling
@@ -917,10 +917,10 @@ Retention
 </div></div><div class="section-body"><div class="section-body-text">
 Generally it is best to retain as many backups as possible to provide a greater window for <a href="#pitr">Point-in-Time Recovery</a>, but practical concerns such as disk space must also be considered. Retention options remove older backups once they are no longer needed.
 </div><div class="section-body-text">
-<span class="backrest">pgBackRest</span> does full backup rotation based on the retention type which can be a count or a time period. When a count is specified, then expiration is not concerned with when the backups were created but with how many must be retained. Differential backups are count-based but will always be expired when the full backup they depend on is expired. Incremental backups are not expired by retention independently &mdash; they are always expired with their related full or differential backup. See sections <a href="#retention/full">Full Backup Retention</a> and <a href="#retention/diff">Differential Backup Retention</a> for details and examples.<br/>
-<br/>
-Archived WAL is retained by default for backups that have not expired, however, although not recommended, this schedule can be modified per repository with the retention-archive options. See section <a href="#retention/archive">Archive Retention</a> for details and examples.<br/>
-<br/>
+<span class="backrest">pgBackRest</span> does full backup rotation based on the retention type which can be a count or a time period. When a count is specified, then expiration is not concerned with when the backups were created but with how many must be retained. Differential backups are count-based but will always be expired when the full backup they depend on is expired. Incremental backups are not expired by retention independently &mdash; they are always expired with their related full or differential backup. See sections <a href="#retention/full">Full Backup Retention</a> and <a href="#retention/diff">Differential Backup Retention</a> for details and examples.
+</div><div class="section-body-text">
+Archived WAL is retained by default for backups that have not expired, however, although not recommended, this schedule can be modified per repository with the retention-archive options. See section <a href="#retention/archive">Archive Retention</a> for details and examples.
+</div><div class="section-body-text">
 The <span class="cmd">expire</span> command is run automatically after each successful backup and can also be run by the user. When run by the user, expiration will occur as defined by the retention settings for each configured repository. If the <span class="br-option">--repo</span> option is provided, expiration will occur only on the specified repository. Expiration can also be limited by the user to a specific backup set with the <span class="br-option">--set</span> option and, unless the <span class="br-option">--repo</span> option is specified, all repositories will be searched and any matching the set criteria will be expired. It should be noted that the archive retention schedule will be checked and performed any time the <span class="cmd">expire</span> command is run.
 </div><div class="section2"><a id="retention/full"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Full Backup Retention
@@ -1068,10 +1068,10 @@ Since full backups are considered differential backups for the purpose of differ
 </div></div></div></div></div><div class="section1"><a id="restore"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Restore
 </div></div><div class="section-body"><div class="section-body-text">
-The restore command automatically defaults to selecting the latest backup from the first repository where backups exist (see <a href="#quickstart/perform-restore">Quick Start - Restore a Backup</a>). The order in which the repositories are checked is dictated by the <span class="file">pgbackrest.conf</span> (e.g. repo1 will be checked before repo2). To select from a specific repository, the <span class="br-option">--repo</span> option can be passed (e.g. <span class="br-option">--repo=1</span>). The <span class="br-option">--set</span> option can be passed if a backup other than the latest is desired.<br/>
-<br/>
-When PITR of <span class="br-option">--type=time</span> or <span class="br-option">--type=lsn</span> is specified, then the target time or target lsn must be specified with the <span class="br-option">--target</span> option. If a backup is not specified via the <span class="br-option">--set</span> option, then the configured repositories will be checked, in order, for a backup that contains the requested time or lsn. If no matching backup is found, the latest backup from the first repository containing backups will be used for <span class="br-option">--type=time</span> while no backup will be selected for <span class="br-option">--type=lsn</span>. For other types of PITR, e.g. <span class="id">xid</span>, the <span class="br-option">--set</span> option must be provided if the target is prior to the latest backup. See <a href="#pitr">Point-in-Time Recovery</a> for more details and examples.<br/>
-<br/>
+The restore command automatically defaults to selecting the latest backup from the first repository where backups exist (see <a href="#quickstart/perform-restore">Quick Start - Restore a Backup</a>). The order in which the repositories are checked is dictated by the <span class="file">pgbackrest.conf</span> (e.g. repo1 will be checked before repo2). To select from a specific repository, the <span class="br-option">--repo</span> option can be passed (e.g. <span class="br-option">--repo=1</span>). The <span class="br-option">--set</span> option can be passed if a backup other than the latest is desired.
+</div><div class="section-body-text">
+When PITR of <span class="br-option">--type=time</span> or <span class="br-option">--type=lsn</span> is specified, then the target time or target lsn must be specified with the <span class="br-option">--target</span> option. If a backup is not specified via the <span class="br-option">--set</span> option, then the configured repositories will be checked, in order, for a backup that contains the requested time or lsn. If no matching backup is found, the latest backup from the first repository containing backups will be used for <span class="br-option">--type=time</span> while no backup will be selected for <span class="br-option">--type=lsn</span>. For other types of PITR, e.g. <span class="id">xid</span>, the <span class="br-option">--set</span> option must be provided if the target is prior to the latest backup. See <a href="#pitr">Point-in-Time Recovery</a> for more details and examples.
+</div><div class="section-body-text">
 Replication slots are not included per recommendation of <span class="postgres">PostgreSQL</span>. See <a href="https://www.postgresql.org/docs/current/continuous-archiving.html#BACKUP-LOWLEVEL-BASE-BACKUP-DATA">Backing Up The Data Directory</a> in the <span class="postgres">PostgreSQL</span> documentation for more information.
 </div><div class="section-body-text">
 The following sections introduce additional <span class="cmd">restore</span> command features.
@@ -1330,10 +1330,22 @@ LOG:  database system is ready to accept connections</pre>
 </div></div></div></div><div class="section1"><a id="delete-stanza"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Delete a Stanza
 </div></div><div class="section-body"><div class="section-body-text">
-The <span class="cmd">stanza-delete</span> command removes data in the repository associated with a stanza.<br/>
-<div class="admonition"><div class="warning">WARNING:</div><div class="warning-text">Use this command with caution &mdash; it will permanently remove all backups and archives from the <span class="backrest">pgBackRest</span> repository for the specified stanza.</div></div>To delete a stanza:<br/>
-<ul class="list-unordered"><li class="list-unordered">Shut down the <span class="postgres">PostgreSQL</span> cluster associated with the stanza (or use --force to override).</li><li class="list-unordered">Run the <span class="cmd">stop</span> command on the host where the <span class="cmd">stanza-delete</span> command will be run.</li><li class="list-unordered">Run the <span class="cmd">stanza-delete</span> command.</li></ul>Once the command successfully completes, it is the responsibility of the user to remove the stanza from all <span class="backrest">pgBackRest</span> configuration files and/or environment variables.<br/>
-<br/>
+The <span class="cmd">stanza-delete</span> command removes data in the repository associated with a stanza.
+</div><div class="admonition"><div class="warning">
+WARNING:
+</div><div class="warning-text">
+Use this command with caution &mdash; it will permanently remove all backups and archives from the <span class="backrest">pgBackRest</span> repository for the specified stanza.
+</div></div><div class="section-body-text">
+To delete a stanza:
+</div><ul class="list-unordered"><li class="list-unordered">
+Shut down the <span class="postgres">PostgreSQL</span> cluster associated with the stanza (or use --force to override).
+</li><li class="list-unordered">
+Run the <span class="cmd">stop</span> command on the host where the <span class="cmd">stanza-delete</span> command will be run.
+</li><li class="list-unordered">
+Run the <span class="cmd">stanza-delete</span> command.
+</li></ul><div class="section-body-text">
+Once the command successfully completes, it is the responsibility of the user to remove the stanza from all <span class="backrest">pgBackRest</span> configuration files and/or environment variables.
+</div><div class="section-body-text">
 A stanza may only be deleted from one repository at a time. To delete the stanza from multiple repositories, repeat the <span class="cmd">stanza-delete</span> command for each repository while specifying the <span class="br-option">--repo</span> option.
 </div><div class="execute"><div class="execute-title">
 <span class="host">pg-primary</span> <b>&#x21d2;</b> Stop <span class="postgres">PostgreSQL</span> cluster to be removed
@@ -1700,12 +1712,12 @@ File creation time in GCS is relatively slow so <span class="cmd">backup</span>/
 </div></div></div><div class="section1"><a id="repo-target-time"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Target Time for Repository
 </div></div><div class="section-body"><div class="section-body-text">
-The target time defines the time that commands use to read a repository on versioned storage. This allows the command to read the repository as it was at a point-in-time in order to recover data that has been deleted or corrupted by user accident or malware.<br/>
-<br/>
-Versioned storage is supported by <span class="host">S3</span>, <span class="host">GCS</span>, and <span class="host">Azure</span> but is generally not enabled by default. In addition to enabling versioning, it may be useful to enable object locking for <span class="host">S3</span> and soft delete for <span class="host">GCS</span> or <span class="host">Azure</span>.<br/>
-<br/>
-When the <span class="br-option">repo-target-time</span> option is specified then the <span class="br-option">repo</span> option must also be provided. It is likely that not all repository types will support versioning and in general it makes sense to target a single repository for recovery.<br/>
-<br/>
+The target time defines the time that commands use to read a repository on versioned storage. This allows the command to read the repository as it was at a point-in-time in order to recover data that has been deleted or corrupted by user accident or malware.
+</div><div class="section-body-text">
+Versioned storage is supported by <span class="host">S3</span>, <span class="host">GCS</span>, and <span class="host">Azure</span> but is generally not enabled by default. In addition to enabling versioning, it may be useful to enable object locking for <span class="host">S3</span> and soft delete for <span class="host">GCS</span> or <span class="host">Azure</span>.
+</div><div class="section-body-text">
+When the <span class="br-option">repo-target-time</span> option is specified then the <span class="br-option">repo</span> option must also be provided. It is likely that not all repository types will support versioning and in general it makes sense to target a single repository for recovery.
+</div><div class="section-body-text">
 Note that comparisons to the storage timestamp are <= the timestamp provided and milliseconds are truncated from the timestamp when provided.
 </div><div class="section-body-text">
 To demonstrate this feature the <span class="id">demo</span> stanza in the <span class="host">S3</span> repo is deleted.
@@ -3061,5 +3073,5 @@ tls-server-ca-file=/etc/pgbackrest/cert/ca.crt<br/>
 tls-server-cert-file=/etc/pgbackrest/cert/server.crt<br/>
 tls-server-key-file=/etc/pgbackrest/cert/server.key
 </div></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 18, 2025
+Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated November 11, 2025
 </div></body></html>
