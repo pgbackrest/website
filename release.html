@@ -32,8 +32,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.57.0">
-v2.57.0 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.58.0">
+v2.58.0 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -48,6 +48,54 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.58.0"></a><div class="section2-header"><div class="section2-title">
+v2.58.0 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Object Storage Improvements
+</div><div class="section2-subsubtitle">
+Released January 19, 2026
+</div><div class="section-body-text">
+<b>IMPORTANT NOTE</b>: The minimum values for the <span class="br-setting">repo-storage-upload-chunk-size</span> option have increased. They now represent the minimum allowed by the vendors.
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Fix deadlock due to logging in signal handler. (<i>Fixed by Maxim Michkov. Reviewed by David Steele.</i>)
+</li></ul><div class="section-body-text">
+<b> Features:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+HTTP support for <span class="host">S3</span>, <span class="host">GCS</span>, and <span class="host">Azure</span>. (<i>Contributed by Will Morland. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Allow expiration of oldest full backup regardless of current retention. (<i>Contributed by Stefan Fercot. Reviewed by David Steele. Suggested by Ron Johnson.</i>)
+</li><li class="list-unordered">
+Support for <span class="host">Azure</span> managed identities. (<i>Contributed by Moiz Ibrar, Matthew Mols. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+<i><b>Experimental</b></i> support for <span class="host">S3</span> EKS pod identity. (<i>Contributed by Pierre BOUTELOUP. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Allow configuration of TLS cipher suites. (<i>Contributed by Gunnar "Nick" Bluth. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Allow process priority to be set. (<i>Reviewed by Douglas J Hunley.</i>)
+</li></ul><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Allow dots in S3 bucket names when using path-style URIs. (<i>Contributed by Joakim Hindersson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Require TLS >= 1.2 unless verification is disabled. (<i>Reviewed by Douglas J Hunley, Gunnar "Nick" Bluth.</i>)
+</li><li class="list-unordered">
+Dynamically size <span class="host">S3</span>/<span class="host">GCS</span>/<span class="host">Azure</span> chunks for large uploads. (<i>Reviewed by Douglas J Hunley. Suggested by Timoth&eacute;e Peignier.</i>)
+</li><li class="list-unordered">
+Optimize <span class="host">S3</span>/<span class="host">GCS</span>/<span class="host">Azure</span> chunk size for small files. (<i>Reviewed by Douglas J Hunley.</i>)
+</li><li class="list-unordered">
+Remove support for <span class="host">PostgreSQL</span> <span class="id">9.5</span>. (<i>Reviewed by Douglas J Hunley.</i>)
+</li><li class="list-unordered">
+Improve logging of default for options with an unresolved dependency. (<i>Reviewed by Stefan Fercot.</i>)
+</li></ul><div class="section-body-text">
+<b>Documentation Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Remove explicit <span class="br-setting">max_wal_senders</span>/<span class="br-setting">wal_level</span> configuration from user guide. (<i>Suggested by Jamie Nguyen.</i>)
+</li><li class="list-unordered">
+Clarify that bundling is useful for filesystems with large block sizes. (<i>Suggested by Ron Johnson.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.57.0"></a><div class="section2-header"><div class="section2-title">
 v2.57.0 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -68,9 +116,7 @@ Add <span class="br-setting">repo-symlink</span> option to suppress creation of 
 <b> Improvements:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 Add HTTP retries for 408 and 429 errors. (<i>Reviewed by David Christensen.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.56.0"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.56.0"></a><div class="section2-header"><div class="section2-title">
 v2.56.0 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Progress Info Improvements
@@ -3271,5 +3317,5 @@ The <span class="file">backup.manifest</span> is being written as <span class="i
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2025, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 18, 2025
+Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated January 19, 2026
 </div></body></html>
