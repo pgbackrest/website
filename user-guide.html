@@ -46,9 +46,7 @@ Write Ahead Log (WAL)
 Encryption
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-number"></div><div class="section1-toc-title"><a href="#upgrading">
 Upgrading pgBackRest
-</a></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#upgrading/v1-v2">
-Upgrading pgBackRest from v1 to v2
-</a></div></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#upgrading/v2.x">
+</a></div><div class="section2-toc"><div class="section2-toc-number"></div><div class="section2-toc-title"><a href="#upgrading/v2.x">
 Upgrading pgBackRest from v2.x to v2.y
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-number"></div><div class="section1-toc-title"><a href="#build">
 Build
@@ -222,25 +220,7 @@ Encryption is the process of converting data into a format that is unrecognizabl
 <span class="backrest">pgBackRest</span> will encrypt the repository based on a user-provided password, thereby preventing unauthorized access to data stored within the repository.
 </div></div></div></div></div><div class="section1"><a id="upgrading"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
 Upgrading pgBackRest
-</div></div><div class="section-body"><div class="section2"><a id="upgrading/v1-v2"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
-Upgrading pgBackRest from v1 to v2
-</div></div><div class="section-body"><div class="section-body-text">
-Upgrading from <span class="host">v1</span> to <span class="host">v2</span> is fairly straight-forward. The repository format has not changed and all non-deprecated options from <span class="host">v1</span> are accepted, so for most installations it is simply a matter of installing the new version.
-</div><div class="section-body-text">
-However, there are a few caveats:
-</div><ul class="list-unordered"><li class="list-unordered">
-The deprecated <span class="br-option">thread-max</span> option is no longer valid. Use <span class="br-option">process-max</span> instead.
-</li><li class="list-unordered">
-The deprecated <span class="br-option">archive-max-mb</span> option is no longer valid. This has been replaced with the <span class="br-option">archive-push-queue-max</span> option which has different semantics.
-</li><li class="list-unordered">
-The default for the <span class="br-option">backup-user</span> option has changed from <span class="id">backrest</span> to <span class="id">pgbackrest</span>.
-</li><li class="list-unordered">
-In <span class="host">v2.02</span> the default location of the <span class="backrest">pgBackRest</span> configuration file has changed from <span class="file">/etc/pgbackrest.conf</span> to <span class="file">/etc/pgbackrest/pgbackrest.conf</span>. If <span class="file">/etc/pgbackrest/pgbackrest.conf</span> does not exist, the <span class="file">/etc/pgbackrest.conf</span> file will be loaded instead, if it exists.
-</li></ul><div class="section-body-text">
-Many option names have changed to improve consistency although the old names from <span class="host">v1</span> are still accepted. In general, <span class="id">db-*</span> options have been renamed to <span class="id">pg-*</span> and <span class="id">backup-*</span>/<span class="id">retention-*</span> options have been renamed to <span class="id">repo-*</span> when appropriate.
-</div><div class="section-body-text">
-<span class="postgres">PostgreSQL</span> and repository options must be indexed when using the new names introduced in <span class="host">v2</span>, e.g. <span class="br-option">pg1-host</span>, <span class="br-option">pg1-path</span>, <span class="br-option">repo1-path</span>, <span class="br-option">repo1-type</span>, etc.
-</div></div></div><div class="section2"><a id="upgrading/v2.x"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
+</div></div><div class="section-body"><div class="section2"><a id="upgrading/v2.x"></a><div class="section2-header"><div class="section2-number"></div><div class="section2-title">
 Upgrading pgBackRest from v2.x to v2.y
 </div></div><div class="section-body"><div class="section-body-text">
 Upgrading from <span class="host">v2.x</span> to <span class="host">v2.y</span> is straight-forward. The repository format has not changed, so for most installations it is simply a matter of installing binaries for the new version. It is also possible to downgrade if you have not used new features that are unsupported by the older version.
@@ -2957,5 +2937,5 @@ repo1-path=/var/lib/pgbackrest<br/>
 repo1-retention-full=2<br/>
 start-fast=y
 </div></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated January 19, 2026
+Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated April 27, 2026
 </div></body></html>
