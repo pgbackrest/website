@@ -4,7 +4,7 @@
 <meta property="og:site_name" content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore"></meta>
 <meta property="og:title" content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore"></meta>
 <meta property="og:type" content="website"></meta>
-<link rel="icon" href="favicon.png" type="image/png"></link>
+<link rel="icon" href="logo.svg" type="image/svg+xml"></link>
 <meta property="og:image:type" content="image/png"></meta>
 <meta property="og:image" content="http://www.pgbackrest.org/logo.png"></meta>
 <meta name="description" content="pgBackRest is a reliable backup and restore solution for PostgreSQL that seamlessly scales up to the largest databases and workloads."></meta>
@@ -20,6 +20,8 @@ User Guides
 Configuration
 </a></div><div class="menu"><a class="menu-link" href="command.html">
 Commands
+</a></div><div class="menu"><a class="menu-link" href="news.html">
+News
 </a></div><div class="menu"><a class="menu-link" href="faq.html">
 FAQ
 </a></div><div class="menu"><a class="menu-link" href="metric.html">
@@ -31,7 +33,25 @@ Introduction
 </div><div class="section-body-text">
 <span class="backrest">pgBackRest</span> <a href="https://github.com/pgbackrest/pgbackrest/releases/tag/release/2.58.0">v2.58.0</a> is the current stable release. Release notes are on the <a href="http://www.pgbackrest.org/release.html">Releases</a> page.
 </div><div class="section-body-text">
-Please give us a star on <a href="https://github.com/pgbackrest/pgbackrest">GitHub</a> if you like <span class="backrest">pgBackRest</span>! Consider a <a href="https://github.com/sponsors/dwsteele">sponsorship</a> if you use <span class="backrest">pgBackRest</span> in your enterprise.
+Please give us a star on <a href="https://github.com/pgbackrest/pgbackrest">GitHub</a> if you like <span class="backrest">pgBackRest</span>!
+</div></div></div><div class="section1"><a id="news"></a><div class="section1-header"><div class="section1-title">
+News
+</div></div><div class="section-body"><div class="section-body-text">
+<b>May 18, 2026</b> - <a href="news.html#will-continue">pgBackRest Will Continue!</a>
+</div><div class="section-body-text">
+<b>May 7, 2026</b> - <a href="news.html#maintenance-update">Maintenance Update</a>
+</div><div class="section-body-text">
+<b>April 27, 2026</b> - <a href="news.html#no-longer-maintained">pgBackRest Is No Longer Being Maintained</a>
+</div></div></div><div class="section1"><a id="sponsors"></a><div class="section1-header"><div class="section1-title">
+Sponsors
+</div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> would not exist without sponsorship. Writing new features, fixing bugs, reviewing contributions, answering questions from the community, and maintenance all take a considerable amount of time. Please consider a <a href="https://github.com/sponsors/dwsteele">sponsorship</a> if you use <span class="backrest">pgBackRest</span> in your enterprise.
+</div><div class="section-body-text">
+Our sponsors:
+</div><div class="sponsor-list"><div class="sponsor"><a href="https://aws.amazon.com"><img class="sponsor-img sponsor-img-light" src="sponsor/aws-light.svg" alt="AWS" width="80"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/aws-dark.svg" alt="AWS" width="80"></img></a></div><div class="sponsor"><a href="https://supabase.com"><img class="sponsor-img sponsor-img-light" src="sponsor/supabase-light.svg" alt="Supabase" width="200"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/supabase-dark.svg" alt="Supabase" width="200"></img></a></div><div class="sponsor"><a href="https://pgedge.com"><img class="sponsor-img sponsor-img-light" src="sponsor/pgedge-light.svg" alt="pgEdge" width="155"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/pgedge-dark.svg" alt="pgEdge" width="155"></img></a></div><div class="sponsor"><a href="https://tigerdata.com"><img class="sponsor-img sponsor-img-light" src="sponsor/tigerdata-light.svg" alt="Tiger Data" width="180"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/tigerdata-dark.svg" alt="Tiger Data" width="180"></img></a></div><div class="sponsor"><a href="https://percona.com"><img class="sponsor-img sponsor-img-light" src="sponsor/percona-light.svg" alt="Percona" width="185"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/percona-dark.svg" alt="Percona" width="185"></img></a></div><div class="sponsor"><a href="https://eon.io"><img class="sponsor-img sponsor-img-light" src="sponsor/eon.svg" alt="Eon" width="90"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/eon.svg" alt="Eon" width="90"></img></a></div></div><div class="section-body-text">
+We are grateful to our sponsors for investing in open-source infrastructure that benefits the entire <span class="postgres">PostgreSQL</span> community.
+</div><div class="section-body-text">
+Past sponsors: <a href="https://crunchydata.com">Crunchy Data</a>, <a href="https://resonate.com">Resonate</a>.
 </div></div></div><div class="section1"><a id="features"></a><div class="section1-header"><div class="section1-title">
 Features
 </div></div><div class="section-body"><div class="section2"><a id="features/parallel-backup-restore"></a><div class="section2-header"><div class="section2-title">
@@ -53,7 +73,7 @@ Full, differential, and incremental backups are supported. <span class="backrest
 </div></div></div><div class="section2"><a id="features/backup-rotation"></a><div class="section2-header"><div class="section2-title">
 Backup Rotation & Archive Expiration
 </div></div><div class="section-body"><div class="section-body-text">
-Retention polices can be set for full and differential backups to create coverage for any time frame. The WAL archive can be maintained for all backups or strictly for the most recent backups. In the latter case WAL required to make older backups consistent will be maintained in the archive.
+Retention policies can be set for full and differential backups to create coverage for any time frame. The WAL archive can be maintained for all backups or strictly for the most recent backups. In the latter case WAL required to make older backups consistent will be maintained in the archive.
 </div></div></div><div class="section2"><a id="features/backup-integrity"></a><div class="section2-header"><div class="section2-title">
 Backup Integrity
 </div></div><div class="section-body"><div class="section-body-text">
@@ -129,23 +149,11 @@ Contributions to <span class="backrest">pgBackRest</span> are always welcome! Pl
 </div></div></div><div class="section1"><a id="support"></a><div class="section1-header"><div class="section1-title">
 Support
 </div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> is completely free and open source under the <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT</a> license. You may use it for personal or commercial purposes without any restrictions whatsoever. Bug reports are taken very seriously and will be addressed as quickly as possible. Please report bugs <a href="{[github-url-base}]/issues">here</a>.
+<span class="backrest">pgBackRest</span> is completely free and open source under the <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT</a> license. You may use it for personal or commercial purposes without any restrictions whatsoever. Bug reports are taken very seriously and will be addressed as quickly as possible. Please report bugs <a href="https://github.com/pgbackrest/pgbackrest/issues">here</a>.
 </div><div class="section-body-text">
-Creating a robust disaster recovery policy with proper replication and backup strategies can be a very complex and daunting task. You may find that you need help during the architecture phase and ongoing support to ensure that your enterprise continues running smoothly. There are a variety of <span class="postgres">PostgreSQL</span> support companies that can provide this service.
-</div></div></div><div class="section1"><a id="sponsorship"></a><div class="section1-header"><div class="section1-title">
-Sponsorship
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> would not exist without sponsors. Writing new features, fixing bugs, reviewing contributions, answering questions from the community, and maintenance all take a considerable amount of time. Please consider a <a href="https://github.com/sponsors/dwsteele">sponsorship</a> if you use <span class="backrest">pgBackRest</span> in your enterprise.
+Creating a robust disaster recovery policy with proper replication and backup strategies can be a very complex and daunting task. You may find that you need help during the architecture phase and ongoing support to ensure that your enterprise continues running smoothly.
 </div><div class="section-body-text">
-Current sponsors:
-</div><div class="sponsor-list"><div class="sponsor"><a href="https://supabase.com"><img class="sponsor-img" src="sponsor/supabase.svg" alt="Supabase"></img><div class="sponsor-title">
-Supabase
-</div></a></div></div><div class="section-body-text">
-Past sponsors: <a href="https://crunchydata.com">Crunchy Data</a>, <a href="https://resonate.com">Resonate</a>.
-</div></div></div><div class="section1"><a id="recognition"></a><div class="section1-header"><div class="section1-title">
-Recognition
-</div></div><div class="section-body"><div class="section-body-text">
-<a href="https://thenounproject.com/icon/armchair-129971">Armchair</a> graphic by <a href="https://thenounproject.com/sandorsz">Alexander Skowalsky</a>.
+Our <a href="#sponsors">sponsors</a> offer products and services that include <span class="backrest">pgBackRest</span> support and can help with your disaster recovery needs.
 </div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated April 27, 2026
+Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated May 18, 2026
 </div></body></html>
