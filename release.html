@@ -6,7 +6,7 @@
 <meta property="og:type" content="website"></meta>
 <link rel="icon" href="logo.svg" type="image/svg+xml"></link>
 <meta property="og:image:type" content="image/png"></meta>
-<meta property="og:image" content="http://www.pgbackrest.org/logo.png"></meta>
+<meta property="og:image" content="https://pgbackrest.org/logo.png"></meta>
 <meta name="description" content="The pgBackRest Releases detail each version of the software and lists the changes made in each version."></meta>
 <meta property="og:description" content="The pgBackRest Releases detail each version of the software and lists the changes made in each version."></meta>
 <link rel="stylesheet" href="default.css" type="text/css"></link>
@@ -34,8 +34,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.58.0">
-v2.58.0 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.59.0">
+v2.59.0 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -45,11 +45,107 @@ Introduction
 </div></div><div class="section-intro">
 <span class="backrest">pgBackRest</span> release numbers consist of two parts, major and minor. A major release <i>may</i> break compatibility with the prior major release, but <span class="host">v2</span> releases are fully compatible with <span class="host">v1</span> repositories and will accept all <span class="host">v1</span> options. Minor releases can include bug fixes and features but do not change the repository format and strive to avoid changing options and naming.<br/>
 <br/>
-Documentation for the <span class="host">v1</span> release can be found <a href="http://www.pgbackrest.org/1">here</a>.<br/>
+Documentation for the <span class="host">v1</span> release can be found <a href="https://pgbackrest.org/1">here</a>.<br/>
 <br/>
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.59.0"></a><div class="section2-header"><div class="section2-title">
+v2.59.0 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+PostgreSQL 19 Support
+</div><div class="section2-subsubtitle">
+Released July 20, 2026
+</div><div class="section-body-text">
+<b>NOTE TO PACKAGERS</b>: A new distribution tarball is available which simplifies the build process by providing pregenerated HTML documentation, man page, and code. The tarball is attached to each release as an asset and is named <span class="file">pgbackrest-{version}.tar.gz</span>. See the <span class="file">README.md</span> in the tarball for details. Please use the new distribution tarball to avoid the additional build tooling required to generate code in future releases. See <a href="news.html#distribution-tarball">New Distribution Tarball</a> for more information.<br/>
+<br/>
+<b>NOTE TO PACKAGERS</b>: There is a new optional dependency on <span class="id">libsystemd</span>.<br/>
+<br/>
+<b>IMPORTANT NOTE</b>: Starting with this release, only the <span class="cmd">restore</span> command may be run as root by default. Use <span class="br-setting">allow-root</span> to run other commands as root (though this is not recommended).
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Fix <span class="cmd">expire</span> removing a backup in progress on another host. (<i>Reviewed by Douglas J Hunley. Reported by Dmitrii.</i>)
+</li><li class="list-unordered">
+Fix <span class="br-setting">archive-push-queue-max</span> not enforced when a WAL file errors. (<i>Reviewed by Stefan Fercot. Reported by vut12.</i>)
+</li><li class="list-unordered">
+Fix async <span class="cmd">archive-get</span> failure during recovery across a timeline switch. (<i>Reviewed by Douglas J Hunley. Reported by Jimmy Yih.</i>)
+</li><li class="list-unordered">
+Fix potential buffer overrun in error module. (<i>Fixed by Christophe Pettus. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Fix use-after-free of parallel protocol client. (<i>Reviewed by Douglas J Hunley. Reported by Georgy Shelkovy.</i>)
+</li><li class="list-unordered">
+Fix heap overflow when a pg option is set without pg1. (<i>Reviewed by Douglas J Hunley. Reported by Naveen.</i>)
+</li></ul><div class="section-body-text">
+<b> Features:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="host">PostgreSQL 19beta2</span> support. (<i>Reviewed by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Add <span class="br-setting">archive-expire-before</span> option to clean up WAL archive. (<i>Contributed by Stefan Fercot. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Add batch delete for <span class="host">Azure</span> storage. (<i>Reviewed by Douglas J Hunley, Crispy.</i>)
+</li><li class="list-unordered">
+Add support for <span class="host">S3 Outposts</span>. (<i>Contributed by Shiva Kumar Ambigi. Reviewed by David Steele, Roberto Mello.</i>)
+</li><li class="list-unordered">
+Add <span class="host">S3</span> process authentication. (<i>Reviewed by Andrew Charlton. Suggested by Andrew Charlton.</i>)
+</li></ul><div class="section-body-text">
+<b> Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Reconnect SFTP storage after the server drops an idle connection. (<i>Reviewed by Stefan Fercot. Suggested by mustafa0x, tisserat.</i>)
+</li><li class="list-unordered">
+Add user/group caching for faster manifest build. (<i>Contributed by Gunnar Lindholm. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Add per-repo backup progress to <span class="cmd">info</span> command output. (<i>Contributed by Will Morland. Reviewed by David Steele, Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Add <span class="file">backup.info</span> checks to <span class="cmd">verify</span> command. (<i>Contributed by Denis Garsh. Reviewed by David Steele, Douglas J Hunley.</i>)
+</li><li class="list-unordered">
+Allow the <span class="host">S3</span> STS endpoint to be configured. (<i>Contributed by Simon Gratton. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Add <span class="br-setting">archive-push-batch-size</span> to limit WAL pushed per asynchronous run. (<i>Reviewed by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Exit async <span class="cmd">archive-push</span> on first error. (<i>Reviewed by Stefan Fercot. Suggested by Lardi&egrave;re S&eacute;bastien.</i>)
+</li><li class="list-unordered">
+Harden HTTP chunked response parsing. (<i>Contributed by Shubham. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Error when running as root unless <span class="br-setting">allow-root</span> is enabled. (<i>Reviewed by Douglas J Hunley.</i>)
+</li><li class="list-unordered">
+Fewer binary searches when building manifest. (<i>Contributed by Gunnar Lindholm. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Improve seek performance during block incremental delta restore. (<i>Reviewed by David Christensen, Douglas J Hunley.</i>)
+</li><li class="list-unordered">
+Bundle backup files in order rather than scanning for a better fit. (<i>Reviewed by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Report the underlying error when a query fails to complete. (<i>Reviewed by Andrew Pogrebnoi. Suggested by Marco Fontana.</i>)
+</li><li class="list-unordered">
+Report the actual error when an <span class="host">S3</span> credential request fails. (<i>Reviewed by Douglas J Hunley. Suggested by Mitchell Grice.</i>)
+</li><li class="list-unordered">
+Report <span class="cmd">archive-push</span> spool path errors to the PostgreSQL log. (<i>Reviewed by Douglas J Hunley. Suggested by Don Seiler.</i>)
+</li><li class="list-unordered">
+Hint that pgBackRest may be out of date when a version is unsupported.
+</li><li class="list-unordered">
+Add <span class="host">systemd</span> notify integration. (<i>Contributed by Andrew Jackson. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Suppress <span class="id">unused parameter</span> errors in <span class="host">meson</span> compiler probes. (<i>Contributed by J&ouml;rg Plate. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+<span class="host">C11</span> is now the minimum C standard. (<i>Reviewed by Mohammad Ali Nazir Kosar.</i>)
+</li></ul><div class="section-body-text">
+<b>Documentation Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Make <span class="br-setting">stanza</span> option internal for the <span class="cmd">repo-*</span> commands. (<i>Reviewed by Stefan Fercot.</i>)
+</li><li class="list-unordered">
+Document that info reads encryption settings from global section. (<i>Reviewed by Stefan Fercot. Suggested by Ron Johnson.</i>)
+</li><li class="list-unordered">
+Document that <span class="br-setting">expire-auto</span> uses the <span class="cmd">backup</span> command configuration. (<i>Reviewed by Stefan Fercot. Suggested by Lardi&egrave;re S&eacute;bastien.</i>)
+</li><li class="list-unordered">
+Document adjusting the <span class="host">logrotate</span> <span class="id">su</span> directive for a dedicated user. (<i>Reviewed by Douglas J Hunley. Suggested by lkanbus.</i>)
+</li><li class="list-unordered">
+Document that end-of-line comments are not supported in config files. (<i>Reviewed by Douglas J Hunley. Suggested by Alex Richman.</i>)
+</li></ul><div class="section-body-text">
+<b>Test Suite Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Fix Alpine group conflicts in CI containers. (<i>Contributed by Artur Zakirov. Reviewed by David Steele.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.58.0"></a><div class="section2-header"><div class="section2-title">
 v2.58.0 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -96,9 +192,7 @@ Improve logging of default for options with an unresolved dependency. (<i>Review
 Remove explicit <span class="br-setting">max_wal_senders</span>/<span class="br-setting">wal_level</span> configuration from user guide. (<i>Suggested by Jamie Nguyen.</i>)
 </li><li class="list-unordered">
 Clarify that bundling is useful for filesystems with large block sizes. (<i>Suggested by Ron Johnson.</i>)
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.57.0"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.57.0"></a><div class="section2-header"><div class="section2-title">
 v2.57.0 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Suppress Repository Symlinks
@@ -3319,5 +3413,5 @@ The <span class="file">backup.manifest</span> is being written as <span class="i
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated May 18, 2026
+Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated July 20, 2026
 </div></body></html>
