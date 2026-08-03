@@ -84,13 +84,17 @@
     var active = null;
     var pending = false;
 
+    var edge = null;
+
     function mark()
     {
         pending = false;
 
         fit();
 
-        var edge = parseFloat(window.getComputedStyle(anchorList[0]).scrollMarginTop) + 1;
+        if (edge === null)
+            edge = parseFloat(window.getComputedStyle(anchorList[0]).scrollMarginTop) + 1;
+
         var found = anchorList[0];
 
         for (var idx = 0; idx < anchorList.length; idx++)
@@ -127,8 +131,15 @@
         window.requestAnimationFrame(mark);
     }
 
+    function resize()
+    {
+        edge = null;
+
+        schedule();
+    }
+
     window.addEventListener("scroll", schedule, {passive: true});
-    window.addEventListener("resize", schedule, {passive: true});
+    window.addEventListener("resize", resize, {passive: true});
 
     mark();
 })();
