@@ -182,6 +182,39 @@
 
 (function()
 {
+    var bar = document.querySelector(".page-menu");
+    var menu = bar === null ? null : bar.querySelector(".menu-body");
+
+    if (menu === null)
+        return;
+
+    var pending = false;
+
+    function fade()
+    {
+        pending = false;
+
+        bar.classList.toggle("page-menu-fade-left", menu.scrollLeft > 1);
+        bar.classList.toggle("page-menu-fade-right", menu.scrollLeft + menu.clientWidth < menu.scrollWidth - 1);
+    }
+
+    function schedule()
+    {
+        if (pending)
+            return;
+
+        pending = true;
+        window.requestAnimationFrame(fade);
+    }
+
+    menu.addEventListener("scroll", schedule, {passive: true});
+    window.addEventListener("resize", schedule, {passive: true});
+
+    fade();
+})();
+
+(function()
+{
     var SAID_TIME = 2000;
 
     var buttonList = document.querySelectorAll(".code-copy");

@@ -28,6 +28,8 @@
     --border: #e3e8ef;
     --border-strong: #cbd4e1;
 
+    --menu-edge: var(--border);
+
     --accent: #0d5f9e;
     --accent-hover: #0a4a7c;
     --accent-soft: #e8f1f9;
@@ -66,6 +68,7 @@
         --text-muted: #94a3b8;
         --border: #1f2937;
         --border-strong: #334155;
+        --menu-edge: #1d2634;
 
         --accent: #64a8ef;
         --accent-hover: #8fc3f5;
@@ -209,6 +212,34 @@ a[id]
     overflow-x: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--border-strong) transparent;
+}
+
+.page-menu::before, .page-menu::after
+{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2rem;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.page-menu::before
+{
+    left: 0;
+    background: linear-gradient(to right, var(--menu-edge) 20%, transparent);
+}
+
+.page-menu::after
+{
+    right: 0;
+    background: linear-gradient(to left, var(--menu-edge) 20%, transparent);
+}
+
+.page-menu-fade-left::before, .page-menu-fade-right::after
+{
+    opacity: 1;
 }
 
 .menu:first-child
