@@ -234,7 +234,7 @@ a[id]
     white-space: nowrap;
 }
 
-a.menu-link:link, a.menu-link:visited
+a.menu-link:link, a.menu-link:visited, .menu-current
 {
     display: block;
     color: var(--text-muted);
@@ -248,6 +248,15 @@ a.menu-link:hover, a.menu-link:active
 {
     color: var(--accent);
     text-decoration: none;
+}
+
+.menu-current
+{
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: .5em;
 }
 
 .page-toc
