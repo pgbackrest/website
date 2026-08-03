@@ -135,7 +135,7 @@
 
 (function()
 {
-    var blockList = document.querySelectorAll("pre[tabindex], .config-body-output[tabindex]");
+    var blockList = document.querySelectorAll("pre[tabindex], .execute-body-output[tabindex], .config-body-output[tabindex]");
 
     if (blockList.length === 0)
         return;
@@ -167,4 +167,69 @@
     window.addEventListener("resize", schedule, {passive: true});
 
     reach();
+})();
+
+(function()
+{
+    var SAID_TIME = 2000;
+
+    var buttonList = document.querySelectorAll(".code-copy");
+
+    if (buttonList.length === 0 || navigator.clipboard === undefined)
+        return;
+
+    function copyText(button)
+    {
+        var block = button.closest(".execute-body-cmd, .config");
+        var lineList = block.querySelectorAll(".execute-cmd, .config-line, .config-line-add");
+        var result = "";
+
+        for (var idx = 0; idx < lineList.length; idx++)
+            result += lineList[idx].textContent + "\n";
+
+        return result;
+    }
+
+    function ready(button)
+    {
+        var timeout = null;
+
+        function reset()
+        {
+            button.classList.remove("code-copy-done", "code-copy-fail");
+            timeout = null;
+        }
+
+        function said(state)
+        {
+            if (timeout !== null)
+                window.clearTimeout(timeout);
+
+            reset();
+
+            button.classList.add(state);
+            timeout = window.setTimeout(reset, SAID_TIME);
+        }
+
+        function done()
+        {
+            said("code-copy-done");
+        }
+
+        function fail()
+        {
+            said("code-copy-fail");
+        }
+
+        function copy()
+        {
+            navigator.clipboard.writeText(copyText(button)).then(done, fail);
+        }
+
+        button.addEventListener("click", copy);
+        button.classList.add("code-copy-ready");
+    }
+
+    for (var buttonIdx = 0; buttonIdx < buttonList.length; buttonIdx++)
+        ready(buttonList[buttonIdx]);
 })();

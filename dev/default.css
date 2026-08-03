@@ -12,6 +12,13 @@
     --sidebar-width: clamp(13rem, 20vw, 17rem);
     --sidebar-gap: 1.5rem;
 
+    --icon-copy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'\
+        stroke='black' stroke-width='2'%3E%3Crect x='9' y='9' width='12' height='12' rx='2'/%3E%3Cpath d='M6 15H5a2 2 0 0 1-2-2V5a2\
+        2 0 0 1 2-2h8a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+    --icon-tick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'\
+        stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12.5l5.5 5.5L20\
+        7'/%3E%3C/svg%3E");
+
     --bg: #ffffff;
     --bg-surface: #f7f9fb;
     --bg-surface-2: #eef2f6;
@@ -161,9 +168,8 @@ a[id]
     padding-bottom: 1rem;
 }
 
-.page-header:before
+.page-header-logo
 {
-    content: "";
     flex: none;
     height: 3.5rem;
     aspect-ratio: 383.2 / 101.3;
@@ -173,7 +179,7 @@ a[id]
     background-size: contain;
 }
 
-.page-header-title
+.page-header-title, .page-header-logo-name
 {
     position: absolute;
     width: 1px;
@@ -679,6 +685,85 @@ li.list-unordered::marker
     color: var(--code-prompt);
 }
 
+.code-copy
+{
+    display: none;
+    flex: none;
+    margin-left: .6rem;
+    border: 1px solid var(--code-border);
+    border-radius: var(--radius);
+    background-color: var(--code-bg);
+    padding: .15rem .3rem;
+    color: var(--code-text);
+    cursor: pointer;
+}
+
+.code-copy-ready
+{
+    display: block;
+    opacity: 0;
+    transition: opacity .15s ease;
+}
+
+.execute-body-cmd:hover .code-copy-ready, .config:hover .code-copy-ready, .code-copy-ready:focus-visible
+{
+    opacity: 1;
+}
+
+@media (hover: none)
+{
+    .code-copy-ready
+    {
+        opacity: 1;
+    }
+}
+
+.code-copy:hover
+{
+    border-color: var(--border-strong);
+    background-color: var(--code-border);
+}
+
+.code-copy:before
+{
+    content: "";
+    display: block;
+    width: .9rem;
+    height: .9rem;
+    background-color: currentColor;
+    -webkit-mask: var(--icon-copy) no-repeat center / contain;
+    mask: var(--icon-copy) no-repeat center / contain;
+}
+
+.code-copy-done
+{
+    opacity: 1;
+    color: var(--tip-accent);
+}
+
+.code-copy-done:before
+{
+    -webkit-mask-image: var(--icon-tick);
+    mask-image: var(--icon-tick);
+}
+
+.code-copy-fail
+{
+    opacity: 1;
+    border-color: var(--warning-accent);
+    color: var(--warning-accent);
+}
+
+.config-title
+{
+    display: flow-root;
+}
+
+.config-title .code-copy
+{
+    float: right;
+}
+
 .execute-body, .config-body, .code-block
 {
     border: 1px solid var(--code-border);
@@ -698,7 +783,7 @@ li.list-unordered::marker
     padding: .7rem .9rem;
 }
 
-pre, .config-body-output
+pre, .execute-body-output, .config-body-output
 {
     overflow-x: auto;
     scrollbar-width: thin;
@@ -712,23 +797,27 @@ pre
     white-space: pre;
 }
 
-.config-body-output
-{
-    white-space: nowrap;
-}
-
 .execute-body-cmd
 {
+    display: flex;
+    align-items: flex-start;
+    padding-right: .9rem;
+}
+
+.execute-cmd
+{
+    flex: 1;
+    min-width: 0;
     padding: .1rem .9rem;
 }
 
-.execute-body-cmd:before
+.execute-cmd:before
 {
     content: "$ ";
     color: var(--code-prompt);
 }
 
-.execute-body-output, .execute-body-output-highlight, .execute-body-output-highlight-error, .config-body-output
+.execute-body-output, .config-body-output
 {
     margin: .4rem .9rem;
     border-radius: var(--radius);
@@ -736,14 +825,54 @@ pre
     padding: .35rem .7rem;
 }
 
-.execute-body-output-highlight
+.execute-line-list, .config-line-list
+{
+    width: max-content;
+    min-width: 100%;
+}
+
+.execute-line, .execute-line-highlight, .execute-line-highlight-error, .config-line, .config-line-add, .config-line-remove
+{
+
+    overflow-x: visible;
+
+    margin: 0 -.7rem;
+    padding: 0 .7rem;
+}
+
+.execute-line-highlight
 {
     background-color: var(--code-highlight-bg);
 }
 
-.execute-body-output-highlight-error
+.execute-line-highlight-error
 {
     background-color: var(--code-error-bg);
+}
+
+.config-line:before
+{
+    content: "  ";
+}
+
+.config-line-add
+{
+    background-color: var(--code-highlight-bg);
+}
+
+.config-line-add:before
+{
+    content: "+ ";
+}
+
+.config-line-remove
+{
+    background-color: var(--code-error-bg);
+}
+
+.config-line-remove:before
+{
+    content: "- ";
 }
 
 .admonition
