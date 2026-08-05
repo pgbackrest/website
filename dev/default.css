@@ -489,9 +489,10 @@ a.menu-link:hover, a.menu-link:active
 
 .section2-header
 {
-    border-left: 3px solid var(--accent);
-    padding: .05rem 0 .05rem .7rem;
-    margin-bottom: .5rem;
+    width: fit-content;
+    border-bottom: 1.5px solid var(--accent);
+    padding: 0 0 .35rem 0;
+    margin-bottom: .7rem;
     font-size: 1.3125rem;
     font-weight: 650;
     letter-spacing: -.015em;
