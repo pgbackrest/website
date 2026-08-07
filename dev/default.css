@@ -158,7 +158,9 @@ a[id]
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: .85rem;
+
+    row-gap: .425rem;
+
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
@@ -185,11 +187,28 @@ a[id]
     white-space: nowrap;
 }
 
+.page-header::before, .page-header::after
+{
+    content: "";
+    flex: 1 0 0;
+}
+
+.page-header::before
+{
+    order: 1;
+    flex-basis: .85rem;
+}
+
 .page-header-subtitle
 {
-    margin-left: auto;
+    order: 2;
     color: var(--text-muted);
     font-size: 1.25rem;
+}
+
+.page-header::after
+{
+    order: 3;
 }
 
 .page-menu
@@ -1099,7 +1118,7 @@ pre
     .page-header
     {
         padding-top: 1.5rem;
-        padding-bottom: 1rem;
+        padding-bottom: .5rem;
     }
 
     .page-header-title
@@ -1110,7 +1129,6 @@ pre
     .page-header-subtitle
     {
         flex-basis: 100%;
-        margin-left: 0;
     }
 
     .section2-header
