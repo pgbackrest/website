@@ -1126,7 +1126,7 @@ Azure Repository Key Type (<span class="id">--repo-azure-key-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Azure repository key type.
 </div><div class="section-body-text">
-The following types are supported for authorization:
+The following authorization types are supported:
 </div><ul class="list-unordered"><li class="list-unordered">
 <span class="id">shared</span> - Shared key
 </li><li class="list-unordered">
@@ -1258,7 +1258,7 @@ GCS Repository Key Type (<span class="id">--repo-gcs-key-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 GCS repository key type.
 </div><div class="section-body-text">
-The following types are supported for authorization:
+The following authorization types are supported:
 </div><ul class="list-unordered"><li class="list-unordered">
 <span class="id">auto</span> - Authorize using the instance service account.
 </li><li class="list-unordered">
@@ -1446,7 +1446,15 @@ Archive Retention Type (<span class="id">--repo-retention-archive-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 Backup type for WAL retention.
 </div><div class="section-body-text">
-If set to <span class="br-setting">full</span> <span class="backrest">pgBackRest</span> will keep archive logs for the number of full backups defined by <span class="br-setting">repo-retention-archive</span>. If set to <span class="br-setting">diff</span> (differential) <span class="backrest">pgBackRest</span> will keep archive logs for the number of full and differential backups defined by <span class="br-setting">repo-retention-archive</span>, meaning if the last backup taken was a full backup, it will be counted as a differential for the purpose of repo-retention. If set to <span class="br-setting">incr</span> (incremental) <span class="backrest">pgBackRest</span> will keep archive logs for the number of full, differential, and incremental backups defined by <span class="br-setting">repo-retention-archive</span>. It is recommended that this setting not be changed from the default which will only expire WAL in conjunction with expiring full backups.
+The following backup types are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">full</span> - <span class="backrest">pgBackRest</span> will keep archive logs for the number of full backups defined by <span class="br-setting">repo-retention-archive</span>.
+</li><li class="list-unordered">
+<span class="id">diff</span> - (differential) <span class="backrest">pgBackRest</span> will keep archive logs for the number of full and differential backups defined by <span class="br-setting">repo-retention-archive</span>, meaning if the last backup taken was a full backup, it will be counted as a differential for the purpose of repo-retention.
+</li><li class="list-unordered">
+<span class="id">incr</span> - (incremental) <span class="backrest">pgBackRest</span> will keep archive logs for the number of full, differential, and incremental backups defined by <span class="br-setting">repo-retention-archive</span>.
+</li></ul><div class="section-body-text">
+It is recommended that this setting not be changed from the default which will only expire WAL in conjunction with expiring full backups.
 </div>
 <pre class="code-block" tabindex="0">default: full
 example: repo1-retention-archive-type=diff</pre>
@@ -1483,10 +1491,12 @@ Retention type for full backups.
 </div><div class="section-body-text">
 Determines whether the <span class="br-setting">repo-retention-full</span> setting represents a time period (days) or count of full backups to keep.
 </div><div class="section-body-text">
-If set to <span class="br-setting">time</span> then full backups older than <span class="br-setting">repo-retention-full</span> will be removed from the repository if there is at least one other backup that is equal to or greater than the <span class="br-setting">repo-retention-full</span> setting. For example, if <span class="br-setting">repo-retention-full</span> is 30 (days) and there are 2 full backups: one 25 days old and one 35 days old, no full backups will be expired because expiring the 35 day old backup would leave only the 25 day old backup, which would violate the 30 day retention policy of having at least one backup 30 days old before an older one can be expired. Archived WAL older than the oldest full backup remaining will be automatically expired unless <span class="br-setting">repo-retention-archive-type</span> and <span class="br-setting">repo-retention-archive</span> are explicitly set.
-</div><div class="section-body-text">
-If set to <span class="br-setting">count</span> then full backups that exceed <span class="br-setting">repo-retention-full</span> will be expired. For example, if <span class="br-setting">repo-retention-full</span> is <span class="br-setting">4</span> and a fifth full backup is completed, then the oldest full backup will be expired to keep the count at 4.
-</div><div class="section-body-text">
+The following retention types are supported:
+</div><ul class="list-unordered"><li class="list-unordered">
+<span class="id">time</span> - full backups older than <span class="br-setting">repo-retention-full</span> will be removed from the repository if there is at least one other backup that is equal to or greater than the <span class="br-setting">repo-retention-full</span> setting. For example, if <span class="br-setting">repo-retention-full</span> is 30 (days) and there are 2 full backups: one 25 days old and one 35 days old, no full backups will be expired because expiring the 35 day old backup would leave only the 25 day old backup, which would violate the 30 day retention policy of having at least one backup 30 days old before an older one can be expired. Archived WAL older than the oldest full backup remaining will be automatically expired unless <span class="br-setting">repo-retention-archive-type</span> and <span class="br-setting">repo-retention-archive</span> are explicitly set.
+</li><li class="list-unordered">
+<span class="id">count</span> - full backups that exceed <span class="br-setting">repo-retention-full</span> will be expired. For example, if <span class="br-setting">repo-retention-full</span> is <span class="br-setting">4</span> and a fifth full backup is completed, then the oldest full backup will be expired to keep the count at 4.
+</li></ul><div class="section-body-text">
 Note that a backup must be successfully completed before it will be considered for retention. For example, if <span class="br-setting">repo-retention-full-type</span> is <span class="br-setting">count</span> and <span class="br-setting">repo-retention-full</span> is <span class="br-setting">2</span>, then there must be 3 complete full backups before the oldest will be expired.
 </div>
 <pre class="code-block" tabindex="0">default: count
@@ -1545,7 +1555,7 @@ S3 Repository Key Type (<span class="id">--repo-s3-key-type</span>)
 </div></div><div class="section-body"><div class="section-body-text">
 S3 repository key type.
 </div><div class="section-body-text">
-The following types are supported:
+The following authorization types are supported:
 </div><ul class="list-unordered"><li class="list-unordered">
 <span class="id">shared</span> - Shared keys
 </li><li class="list-unordered">
@@ -1689,7 +1699,7 @@ SFTP Repository Host Key Hash Type (<span class="id">--repo-sftp-host-key-hash-t
 </div></div><div class="section-body"><div class="section-body-text">
 SFTP repository host key hash type.
 </div><div class="section-body-text">
-SFTP repository host key hash type. Declares the hash type to be used to compute the digest of the remote system's host key on SSH startup. Newer versions of <span class="id">libssh2</span> support <span class="id">sha256</span> in addition to md5 and sha1.
+SFTP repository host key hash type. Declares the hash type to be used to compute the digest of the remote system's host key on SSH startup. Allowed values are <span class="id">md5</span>, <span class="id">sha1</span>, and <span class="id">sha256</span>, though <span class="id">sha256</span> is only supported by newer versions of <span class="id">libssh2</span>.
 </div>
 <pre class="code-block" tabindex="0">example: repo1-sftp-host-key-hash-type=sha256</pre>
 </div></div><div class="section2"><a id="section-repository/option-repo-sftp-host-port"></a><div class="section2-header"><div class="section2-title">
