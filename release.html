@@ -34,8 +34,8 @@ Table of Contents
 Introduction
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#current">
 Current Stable Release
-</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.59.2">
-v2.59.2 Release Notes
+</a></div><div class="section2-toc"><div class="section2-toc-title"><a href="#2.59.3">
+v2.59.3 Release Notes
 </a></div></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#supported">
 Stable Releases
 </a></div></div><div class="section1-toc"><div class="section1-toc-title"><a href="#unsupported">
@@ -50,6 +50,22 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.59.3"></a><div class="section2-header"><div class="section2-title">
+v2.59.3 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Weak Encryption Subkey Bug
+</div><div class="section2-subsubtitle">
+Released October 4, 2026
+</div><div class="section-body-text">
+<b>IMPORTANT NOTE</b>: In prior versions it was possible for weak encryption subkeys and salts to be generated if there was an error accessing system random data. See <a href="news.html#weak-encryption">Weak Encryption Subkeys and Salts</a> for more information.
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Fix possible checksum error loading encrypted info and manifest files. (<i>Fixed by j0uinim. Reviewed by David Steele.</i>)
+</li><li class="list-unordered">
+Fix possible weak encryption subkeys/salts. (<i>Fixed by j0uinim. Reviewed by David Steele, Stefan Fercot, Douglas J Hunley.</i>)
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.59.2"></a><div class="section2-header"><div class="section2-title">
 v2.59.2 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -74,9 +90,7 @@ Fix <span class="cmd">annotate</span> command on a remote encrypted repository. 
 <b> Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
 <span class="host">PostgreSQL 19beta4</span> support.
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.59.1"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.59.1"></a><div class="section2-header"><div class="section2-title">
 v2.59.1 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 PostgreSQL 19beta3 Support
@@ -3461,5 +3475,5 @@ The <span class="file">backup.manifest</span> is being written as <span class="i
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated September 27, 2026
+Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 4, 2026
 </div></body></html>
