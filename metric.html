@@ -1,18 +1,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
 <title>pgBackRest - Metrics
 </title><meta http-equiv="Content-Type" content="text/html;charset=utf-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 <meta property="og:site_name" content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore"></meta>
 <meta property="og:title" content="pgBackRest - Metrics"></meta>
 <meta property="og:type" content="website"></meta>
 <link rel="icon" href="logo.svg" type="image/svg+xml"></link>
+<meta property="og:image" content="https://pgbackrest.org/card.png"></meta>
 <meta property="og:image:type" content="image/png"></meta>
-<meta property="og:image" content="https://pgbackrest.org/logo.png"></meta>
+<meta property="og:image:width" content="1200"></meta>
+<meta property="og:image:height" content="630"></meta>
+<meta property="og:image:alt" content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore"></meta>
+<meta name="twitter:card" content="summary_large_image"></meta>
 <meta name="description" content="pgBackRest project metrics."></meta>
 <meta property="og:description" content="pgBackRest project metrics."></meta>
-<link rel="stylesheet" href="default.css" type="text/css"></link>
+<link rel="stylesheet" href="default.css?v=27b4dc4a" type="text/css"></link>
+<script src="default.js?v=c642056a" defer="defer"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
-</head><body><div class="page-header"><div class="page-header-title">
+</head><body><div class="page-header"><a class="page-header-logo" href="/"><span class="page-header-logo-name">
+pgBackRest
+</span></a><div class="page-header-title">
 pgBackRest
 </div><div class="page-header-subtitle">
 Metrics
@@ -30,11 +38,9 @@ Commands
 News
 </a></div><div class="menu"><a class="menu-link" href="faq.html">
 FAQ
-</a></div></div></div><div class="page-toc"><div class="page-toc-header"><div class="page-toc-title">
-Table of Contents
-</div></div><div class="page-toc-body"><div class="section1-toc"><div class="section1-toc-number"></div><div class="section1-toc-title"><a href="#code-coverage">
-Code Coverage
-</a></div></div></div></div><div class="page-body"><div class="section1"><a id="code-coverage"></a><div class="section1-header"><div class="section1-number"></div><div class="section1-title">
+</a></div><div class="menu"><span class="menu-current">
+Metrics
+</span></div></div></div><div class="page-body"><div class="section1"><a id="code-coverage"></a><div class="section1-header"><div class="section1-title">
 Code Coverage
 </div></div><div class="section-body"><div class="section-body-text">
 <span class="backrest">pgBackRest</span> aims to have complete function/branch/line coverage for the core C code in <span class="path">/src</span>.
@@ -51,46 +57,6 @@ Branches
 </th><th class="table-header-right">
 Lines
 </th></tr><tr class="table-row"><td class="table-data-left">
-build/common
-</td><td class="table-data-right">
-32/32 (100.00%)
-</td><td class="table-data-right">
-72/72 (100.00%)
-</td><td class="table-data-right">
-268/268 (100.00%)
-</td></tr><tr class="table-row"><td class="table-data-left">
-build/config
-</td><td class="table-data-right">
-39/39 (100.00%)
-</td><td class="table-data-right">
-564/564 (100.00%)
-</td><td class="table-data-right">
-1142/1142 (100.00%)
-</td></tr><tr class="table-row"><td class="table-data-left">
-build/error
-</td><td class="table-data-right">
-6/6 (100.00%)
-</td><td class="table-data-right">
-22/22 (100.00%)
-</td><td class="table-data-right">
-71/71 (100.00%)
-</td></tr><tr class="table-row"><td class="table-data-left">
-build/help
-</td><td class="table-data-right">
-13/13 (100.00%)
-</td><td class="table-data-right">
-138/138 (100.00%)
-</td><td class="table-data-right">
-265/265 (100.00%)
-</td></tr><tr class="table-row"><td class="table-data-left">
-build/postgres
-</td><td class="table-data-right">
-8/8 (100.00%)
-</td><td class="table-data-right">
-58/58 (100.00%)
-</td><td class="table-data-right">
-149/149 (100.00%)
-</td></tr><tr class="table-row"><td class="table-data-left">
 command
 </td><td class="table-data-right">
 17/17 (100.00%)
@@ -105,7 +71,7 @@ command/annotate
 </td><td class="table-data-right">
 12/12 (100.00%)
 </td><td class="table-data-right">
-31/31 (100.00%)
+30/30 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/archive
 </td><td class="table-data-right">
@@ -113,7 +79,7 @@ command/archive
 </td><td class="table-data-right">
 98/98 (100.00%)
 </td><td class="table-data-right">
-189/189 (100.00%)
+191/191 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/archive/get
 </td><td class="table-data-right">
@@ -121,7 +87,7 @@ command/archive/get
 </td><td class="table-data-right">
 208/208 (100.00%)
 </td><td class="table-data-right">
-447/447 (100.00%)
+441/441 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/archive/push
 </td><td class="table-data-right">
@@ -129,23 +95,23 @@ command/archive/push
 </td><td class="table-data-right">
 148/148 (100.00%)
 </td><td class="table-data-right">
-365/365 (100.00%)
+369/369 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/backup
 </td><td class="table-data-right">
-50/50 (100.00%)
+52/52 (100.00%)
 </td><td class="table-data-right">
-790/790 (100.00%)
+844/844 (100.00%)
 </td><td class="table-data-right">
-1641/1641 (100.00%)
+1716/1716 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/check
 </td><td class="table-data-right">
 13/13 (100.00%)
 </td><td class="table-data-right">
-106/106 (100.00%)
+108/108 (100.00%)
 </td><td class="table-data-right">
-214/214 (100.00%)
+216/216 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/control
 </td><td class="table-data-right">
@@ -157,11 +123,11 @@ command/control
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/expire
 </td><td class="table-data-right">
-11/11 (100.00%)
+13/13 (100.00%)
 </td><td class="table-data-right">
-274/274 (100.00%)
+300/300 (100.00%)
 </td><td class="table-data-right">
-392/392 (100.00%)
+423/423 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/help
 </td><td class="table-data-right">
@@ -177,7 +143,7 @@ command/info
 </td><td class="table-data-right">
 430/430 (100.00%)
 </td><td class="table-data-right">
-748/748 (100.00%)
+743/743 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/local
 </td><td class="table-data-right">
@@ -197,19 +163,19 @@ command/remote
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/repo
 </td><td class="table-data-right">
-9/9 (100.00%)
+7/7 (100.00%)
 </td><td class="table-data-right">
-110/110 (100.00%)
+106/106 (100.00%)
 </td><td class="table-data-right">
-195/195 (100.00%)
+182/182 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/restore
 </td><td class="table-data-right">
 37/37 (100.00%)
 </td><td class="table-data-right">
-726/726 (100.00%)
+720/720 (100.00%)
 </td><td class="table-data-right">
-1350/1350 (100.00%)
+1337/1337 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/server
 </td><td class="table-data-right">
@@ -223,25 +189,25 @@ command/stanza
 </td><td class="table-data-right">
 5/5 (100.00%)
 </td><td class="table-data-right">
-106/106 (100.00%)
+128/128 (100.00%)
 </td><td class="table-data-right">
-125/125 (100.00%)
+147/147 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 command/verify
 </td><td class="table-data-right">
-22/22 (100.00%)
+21/21 (100.00%)
 </td><td class="table-data-right">
-366/366 (100.00%)
+372/372 (100.00%)
 </td><td class="table-data-right">
-733/733 (100.00%)
+737/737 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 common
 </td><td class="table-data-right">
-146/146 (100.00%)
+160/160 (100.00%)
 </td><td class="table-data-right">
-624/624 (100.00%)
+690/690 (100.00%)
 </td><td class="table-data-right">
-1350/1350 (100.00%)
+1521/1521 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 common/compress
 </td><td class="table-data-right">
@@ -285,11 +251,11 @@ common/compress/zst
 </td></tr><tr class="table-row"><td class="table-data-left">
 common/crypto
 </td><td class="table-data-right">
-32/32 (100.00%)
+38/38 (100.00%)
 </td><td class="table-data-right">
-88/88 (100.00%)
+94/94 (100.00%)
 </td><td class="table-data-right">
-424/424 (100.00%)
+458/458 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 common/error
 </td><td class="table-data-right">
@@ -298,6 +264,14 @@ common/error
 66/66 (100.00%)
 </td><td class="table-data-right">
 179/179 (100.00%)
+</td></tr><tr class="table-row"><td class="table-data-left">
+common/format
+</td><td class="table-data-right">
+27/27 (100.00%)
+</td><td class="table-data-right">
+90/90 (100.00%)
+</td><td class="table-data-right">
+284/284 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 common/io
 </td><td class="table-data-right">
@@ -319,9 +293,9 @@ common/io/http
 </td><td class="table-data-right">
 58/58 (100.00%)
 </td><td class="table-data-right">
-292/292 (100.00%)
+294/294 (100.00%)
 </td><td class="table-data-right">
-685/685 (100.00%)
+688/688 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 common/io/socket
 </td><td class="table-data-right">
@@ -329,31 +303,31 @@ common/io/socket
 </td><td class="table-data-right">
 110/110 (100.00%)
 </td><td class="table-data-right">
-339/339 (100.00%)
+340/340 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 common/io/tls
 </td><td class="table-data-right">
-37/37 (100.00%)
+35/35 (100.00%)
 </td><td class="table-data-right">
 122/122 (100.00%)
 </td><td class="table-data-right">
-409/409 (100.00%)
+385/385 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 common/type
 </td><td class="table-data-right">
 335/335 (100.00%)
 </td><td class="table-data-right">
-922/922 (100.00%)
+936/936 (100.00%)
 </td><td class="table-data-right">
-3123/3123 (100.00%)
+3147/3147 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 config
 </td><td class="table-data-right">
-93/93 (100.00%)
+96/96 (100.00%)
 </td><td class="table-data-right">
-1025/1026 (99.90%)
+1035/1036 (99.90%)
 </td><td class="table-data-right">
-1649/1649 (100.00%)
+1675/1675 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 db
 </td><td class="table-data-right">
@@ -365,19 +339,19 @@ db
 </td></tr><tr class="table-row"><td class="table-data-left">
 info
 </td><td class="table-data-right">
-48/48 (100.00%)
+57/57 (100.00%)
 </td><td class="table-data-right">
-240/240 (100.00%)
+286/286 (100.00%)
 </td><td class="table-data-right">
-712/712 (100.00%)
+836/836 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 info/manifest
 </td><td class="table-data-right">
-10/10 (100.00%)
+46/46 (100.00%)
 </td><td class="table-data-right">
-132/132 (100.00%)
+696/696 (100.00%)
 </td><td class="table-data-right">
-303/303 (100.00%)
+1329/1329 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 postgres
 </td><td class="table-data-right">
@@ -385,7 +359,7 @@ postgres
 </td><td class="table-data-right">
 128/128 (100.00%)
 </td><td class="table-data-right">
-333/333 (100.00%)
+330/330 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 postgres/interface
 </td><td class="table-data-right">
@@ -397,27 +371,27 @@ postgres/interface
 </td></tr><tr class="table-row"><td class="table-data-left">
 protocol
 </td><td class="table-data-right">
-60/60 (100.00%)
+61/61 (100.00%)
 </td><td class="table-data-right">
-266/266 (100.00%)
+268/268 (100.00%)
 </td><td class="table-data-right">
-860/860 (100.00%)
+865/865 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 storage
 </td><td class="table-data-right">
-68/68 (100.00%)
+84/84 (100.00%)
 </td><td class="table-data-right">
-304/304 (100.00%)
+382/382 (100.00%)
 </td><td class="table-data-right">
-759/759 (100.00%)
+948/948 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 storage/azure
 </td><td class="table-data-right">
-26/26 (100.00%)
+27/27 (100.00%)
 </td><td class="table-data-right">
-162/162 (100.00%)
+164/164 (100.00%)
 </td><td class="table-data-right">
-487/487 (100.00%)
+502/502 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 storage/cifs
 </td><td class="table-data-right">
@@ -429,11 +403,11 @@ storage/cifs
 </td></tr><tr class="table-row"><td class="table-data-left">
 storage/gcs
 </td><td class="table-data-right">
-34/34 (100.00%)
+36/36 (100.00%)
 </td><td class="table-data-right">
-176/176 (100.00%)
+198/198 (100.00%)
 </td><td class="table-data-right">
-574/574 (100.00%)
+685/685 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 storage/posix
 </td><td class="table-data-right">
@@ -445,19 +419,19 @@ storage/posix
 </td></tr><tr class="table-row"><td class="table-data-left">
 storage/remote
 </td><td class="table-data-right">
-40/40 (100.00%)
+51/51 (100.00%)
 </td><td class="table-data-right">
-128/128 (100.00%)
+148/148 (100.00%)
 </td><td class="table-data-right">
-568/568 (100.00%)
+671/671 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 storage/s3
 </td><td class="table-data-right">
-31/31 (100.00%)
+32/32 (100.00%)
 </td><td class="table-data-right">
 200/200 (100.00%)
 </td><td class="table-data-right">
-661/661 (100.00%)
+678/678 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 storage/sftp
 </td><td class="table-data-right">
@@ -465,17 +439,17 @@ storage/sftp
 </td><td class="table-data-right">
 408/408 (100.00%)
 </td><td class="table-data-right">
-762/762 (100.00%)
+763/763 (100.00%)
 </td></tr><tr class="table-row"><td class="table-data-left">
 TOTAL
 </td><td class="table-data-right">
-1705/1705 (100.00%)
+1733/1733 (100.00%)
 </td><td class="table-data-right">
-10616/10618 (99.98%)
+10784/10786 (99.98%)
 </td><td class="table-data-right">
-25148/25148 (100.00%)
+25462/25462 (100.00%)
 </td></tr></table><div class="section-body-text">
 The C unit test modules in <span class="path">/test/src/module</span> also have complete function/line coverage but are not included in the report.
 </div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 4, 2026
+Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 17, 2026
 </div></body></html>

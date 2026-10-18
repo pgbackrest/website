@@ -1,22 +1,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
 <title>pgBackRest - Reliable PostgreSQL Backup &amp; Restore
 </title><meta http-equiv="Content-Type" content="text/html;charset=utf-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 <meta property="og:site_name" content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore"></meta>
 <meta property="og:title" content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore"></meta>
 <meta property="og:type" content="website"></meta>
 <link rel="icon" href="logo.svg" type="image/svg+xml"></link>
+<meta property="og:image" content="https://pgbackrest.org/card.png"></meta>
 <meta property="og:image:type" content="image/png"></meta>
-<meta property="og:image" content="https://pgbackrest.org/logo.png"></meta>
+<meta property="og:image:width" content="1200"></meta>
+<meta property="og:image:height" content="630"></meta>
+<meta property="og:image:alt" content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore"></meta>
+<meta name="twitter:card" content="summary_large_image"></meta>
 <meta name="description" content="pgBackRest is a reliable backup and restore solution for PostgreSQL that seamlessly scales up to the largest databases and workloads."></meta>
 <meta property="og:description" content="pgBackRest is a reliable backup and restore solution for PostgreSQL that seamlessly scales up to the largest databases and workloads."></meta>
-<link rel="stylesheet" href="default.css" type="text/css"></link>
+<link rel="stylesheet" href="default.css?v=27b4dc4a" type="text/css"></link>
+<script src="default.js?v=c642056a" defer="defer"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
-</head><body><div class="page-header"><div class="page-header-title">
+</head><body><div class="page-header"><div class="page-header-logo"><span class="page-header-logo-name">
+pgBackRest
+</span></div><div class="page-header-title">
 pgBackRest
 </div><div class="page-header-subtitle">
 Reliable PostgreSQL Backup & Restore
-</div></div><div class="page-menu"><div class="menu-body"><div class="menu"><a class="menu-link" href="user-guide-index.html">
+</div></div><div class="page-menu"><div class="menu-body"><div class="menu"><span class="menu-current">
+Home
+</span></div><div class="menu"><a class="menu-link" href="user-guide-index.html">
 User Guides
 </a></div><div class="menu"><a class="menu-link" href="release.html">
 Releases
@@ -30,32 +40,28 @@ News
 FAQ
 </a></div><div class="menu"><a class="menu-link" href="metric.html">
 Metrics
-</a></div></div></div><div class="page-body"><div class="section1"><a id="introduction"></a><div class="section1-header"><div class="section1-title">
-Introduction
+</a></div></div></div><div class="page-body"><div class="section1 section-aside"><a id="sponsors"></a><div class="section1-header"><div class="section1-title">
+Sponsors
 </div></div><div class="section-body"><div class="section-body-text">
+<span class="backrest">pgBackRest</span> would not exist without sponsorship: new features, bug fixes, contribution reviews, community support, and maintenance all take considerable time. Please consider a <a href="https://github.com/sponsors/dwsteele">sponsorship</a> if you use <span class="backrest">pgBackRest</span> in your enterprise.
+</div><div class="sponsor-list"><div class="sponsor"><a href="https://aws.amazon.com"><img class="sponsor-img sponsor-img-light" src="sponsor/aws-light.svg" alt="AWS" width="80"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/aws-dark.svg" alt="AWS" width="80"></img></a></div><div class="sponsor"><a href="https://supabase.com"><img class="sponsor-img sponsor-img-light" src="sponsor/supabase-light.svg" alt="Supabase" width="200"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/supabase-dark.svg" alt="Supabase" width="200"></img></a></div><div class="sponsor"><a href="https://pgedge.com"><img class="sponsor-img sponsor-img-light" src="sponsor/pgedge-light.svg" alt="pgEdge" width="155"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/pgedge-dark.svg" alt="pgEdge" width="155"></img></a></div><div class="sponsor"><a href="https://tigerdata.com"><img class="sponsor-img sponsor-img-light" src="sponsor/tigerdata-light.svg" alt="Tiger Data" width="180"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/tigerdata-dark.svg" alt="Tiger Data" width="180"></img></a></div><div class="sponsor"><a href="https://percona.com"><img class="sponsor-img sponsor-img-light" src="sponsor/percona-light.svg" alt="Percona" width="185"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/percona-dark.svg" alt="Percona" width="185"></img></a></div><div class="sponsor"><a href="https://eon.io"><img class="sponsor-img sponsor-img-light" src="sponsor/eon.svg" alt="Eon" width="90"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/eon.svg" alt="Eon" width="90"></img></a></div><div class="sponsor"><a href="https://xata.io"><img class="sponsor-img sponsor-img-light" src="sponsor/xata-light.svg" alt="Xata" width="120"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/xata-dark.svg" alt="Xata" width="120"></img></a></div><div class="sponsor"><a href="https://dalibo.com"><img class="sponsor-img sponsor-img-light" src="sponsor/dalibo.svg" alt="Dalibo" width="150"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/dalibo.svg" alt="Dalibo" width="150"></img></a></div><div class="sponsor"><a href="https://dataegret.com/"><img class="sponsor-img sponsor-img-light" src="sponsor/dataegret-light.svg" alt="Data Egret" width="165"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/dataegret-dark.svg" alt="Data Egret" width="165"></img></a></div></div><div class="section-body-text">
+We are grateful to our sponsors for investing in open-source infrastructure that benefits the entire <span class="postgres">PostgreSQL</span> community.
+</div><div class="section-body-text">
+Past sponsors: <a href="https://crunchydata.com">Crunchy Data</a>, <a href="https://resonate.com">Resonate</a>.
+</div></div></div><div class="section1"><a id="introduction"></a><div class="section-body"><div class="section-body-text">
 <span class="backrest">pgBackRest</span> is a reliable backup and restore solution for <span class="postgres">PostgreSQL</span> that seamlessly scales up to the largest databases and workloads.
 </div><div class="section-body-text">
-<span class="backrest">pgBackRest</span> <a href="https://github.com/pgbackrest/pgbackrest/releases/tag/release/2.59.3">v2.59.3</a> is the current stable release. Release notes are on the <a href="release.html">Releases</a> page.
+<span class="backrest">pgBackRest</span> <a href="https://github.com/pgbackrest/pgbackrest/releases/tag/release/2.60.0">v2.60.0</a> is the current stable release. Release notes are on the <a href="release.html">Releases</a> page.
 </div><div class="section-body-text">
 Please give us a star on <a href="https://github.com/pgbackrest/pgbackrest">GitHub</a> if you like <span class="backrest">pgBackRest</span>!
 </div></div></div><div class="section1"><a id="news"></a><div class="section1-header"><div class="section1-title">
 News
 </div></div><div class="section-body"><div class="section-body-text">
+<b>October 18, 2026</b> - <a href="news.html#release-2-60-0"><span class="backrest">pgBackRest</span> 2.60.0 Released</a>
+</div><div class="section-body-text">
 <b>October 4, 2026</b> - <a href="news.html#weak-encryption">Weak Encryption Subkeys and Salts</a>
 </div><div class="section-body-text">
-<b>October 4, 2026</b> - <a href="news.html#release-2-59-3">pgBackRest 2.59.3 Released</a>
-</div><div class="section-body-text">
-<b>September 27, 2026</b> - <a href="news.html#release-2-59-2">pgBackRest 2.59.2 Released</a>
-</div></div></div><div class="section1"><a id="sponsors"></a><div class="section1-header"><div class="section1-title">
-Sponsors
-</div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> would not exist without sponsorship. Writing new features, fixing bugs, reviewing contributions, answering questions from the community, and maintenance all take a considerable amount of time. Please consider a <a href="https://github.com/sponsors/dwsteele">sponsorship</a> if you use <span class="backrest">pgBackRest</span> in your enterprise.
-</div><div class="section-body-text">
-Our sponsors:
-</div><div class="sponsor-list"><div class="sponsor"><a href="https://aws.amazon.com"><img class="sponsor-img sponsor-img-light" src="sponsor/aws-light.svg" alt="AWS" width="80"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/aws-dark.svg" alt="AWS" width="80"></img></a></div><div class="sponsor"><a href="https://supabase.com"><img class="sponsor-img sponsor-img-light" src="sponsor/supabase-light.svg" alt="Supabase" width="200"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/supabase-dark.svg" alt="Supabase" width="200"></img></a></div><div class="sponsor"><a href="https://pgedge.com"><img class="sponsor-img sponsor-img-light" src="sponsor/pgedge-light.svg" alt="pgEdge" width="155"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/pgedge-dark.svg" alt="pgEdge" width="155"></img></a></div><div class="sponsor"><a href="https://tigerdata.com"><img class="sponsor-img sponsor-img-light" src="sponsor/tigerdata-light.svg" alt="Tiger Data" width="180"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/tigerdata-dark.svg" alt="Tiger Data" width="180"></img></a></div><div class="sponsor"><a href="https://percona.com"><img class="sponsor-img sponsor-img-light" src="sponsor/percona-light.svg" alt="Percona" width="185"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/percona-dark.svg" alt="Percona" width="185"></img></a></div><div class="sponsor"><a href="https://eon.io"><img class="sponsor-img sponsor-img-light" src="sponsor/eon.svg" alt="Eon" width="90"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/eon.svg" alt="Eon" width="90"></img></a></div><div class="sponsor"><a href="https://xata.io"><img class="sponsor-img sponsor-img-light" src="sponsor/xata-light.svg" alt="Xata" width="120"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/xata-dark.svg" alt="Xata" width="120"></img></a></div><div class="sponsor"><a href="https://dalibo.com"><img class="sponsor-img sponsor-img-light" src="sponsor/dalibo.svg" alt="Dalibo" width="150"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/dalibo.svg" alt="Dalibo" width="150"></img></a></div><div class="sponsor"><a href="https://dataegret.com/"><img class="sponsor-img sponsor-img-light" src="sponsor/dataegret-light.svg" alt="Data Egret" width="165"></img><img class="sponsor-img sponsor-img-dark" src="sponsor/dataegret-dark.svg" alt="Data Egret" width="165"></img></a></div></div><div class="section-body-text">
-We are grateful to our sponsors for investing in open-source infrastructure that benefits the entire <span class="postgres">PostgreSQL</span> community.
-</div><div class="section-body-text">
-Past sponsors: <a href="https://crunchydata.com">Crunchy Data</a>, <a href="https://resonate.com">Resonate</a>.
+<b>October 4, 2026</b> - <a href="news.html#release-2-59-3"><span class="backrest">pgBackRest</span> 2.59.3 Released</a>
 </div></div></div><div class="section1"><a id="features"></a><div class="section1-header"><div class="section1-title">
 Features
 </div></div><div class="section-body"><div class="section2"><a id="features/parallel-backup-restore"></a><div class="section2-header"><div class="section2-title">
@@ -70,6 +76,10 @@ A custom protocol allows <span class="backrest">pgBackRest</span> to backup, res
 Multiple Repositories
 </div></div><div class="section-body"><div class="section-body-text">
 Multiple repositories allow, for example, a local repository with minimal retention for fast restores and a remote repository with a longer retention for redundancy and access across the enterprise.
+</div></div></div><div class="section2"><a id="features/backup-standby"></a><div class="section2-header"><div class="section2-title">
+Backup from Standby
+</div></div><div class="section-body"><div class="section-body-text">
+Backups can be made from a standby to reduce load on the primary. Only the few files that are not replicated are copied from the primary.
 </div></div></div><div class="section2"><a id="features/backup-types"></a><div class="section2-header"><div class="section2-title">
 Full, Differential, & Incremental Backups (at File or Block Level)
 </div></div><div class="section-body"><div class="section-body-text">
@@ -91,7 +101,7 @@ Page Checksums
 </div></div><div class="section-body"><div class="section-body-text">
 If page checksums are enabled <span class="backrest">pgBackRest</span> will validate the checksums for every file that is copied during a backup. All page checksums are validated during a full backup and checksums in files that have changed are validated during differential and incremental backups.
 </div><div class="section-body-text">
-Validation failures do not stop the backup process, but warnings with details of exactly which pages have failed validation are output to the console and file log.
+Validation failures do not stop the backup process, but warnings with details of exactly which pages have failed validation are output to the console and file log. By default restore errors when the backup has invalid page checksums and expire will not leave a backup with invalid page checksums as the oldest backup.
 </div><div class="section-body-text">
 This feature allows page-level corruption to be detected early, before backups that contain valid copies of the data have expired.
 </div></div></div><div class="section2"><a id="features/backup-resume"></a><div class="section2-header"><div class="section2-title">
@@ -104,6 +114,10 @@ Streaming Compression & Checksums
 Compression and checksum calculations are performed in stream while files are being copied to the repository, whether the repository is located locally or remotely.
 </div><div class="section-body-text">
 If the repository is on a repository host, compression is performed on the <span class="postgres">PostgreSQL</span> host and files are transmitted in a compressed format and simply stored on the repository host. When compression is disabled a lower level of compression is utilized to make efficient use of available bandwidth while keeping CPU cost to a minimum.
+</div></div></div><div class="section2"><a id="features/file-bundling"></a><div class="section2-header"><div class="section2-title">
+File Bundling
+</div></div><div class="section-body"><div class="section-body-text">
+Small files are combined into bundles in the repository so fewer files are created during backup. This is especially effective on object stores.
 </div></div></div><div class="section2"><a id="features/delta-restore"></a><div class="section2-header"><div class="section2-title">
 Delta Restore
 </div></div><div class="section-body"><div class="section-body-text">
@@ -124,10 +138,10 @@ Tablespace & Link Support
 Tablespaces are fully supported and on restore tablespaces can be remapped to any location. It is also possible to remap all tablespaces to one location with a single command which is useful for development restores.
 </div><div class="section-body-text">
 File and directory links are supported for any file or directory in the <span class="postgres">PostgreSQL</span> cluster. When restoring it is possible to restore all links to their original locations, remap some or all links, or restore some or all links as normal files or directories within the cluster directory.
-</div></div></div><div class="section2"><a id="features/object-store-support"></a><div class="section2-header"><div class="section2-title">
-S3, Azure, and GCS Compatible Object Store Support
+</div></div></div><div class="section2"><a id="features/repo-storage"></a><div class="section2-header"><div class="section2-title">
+S3, Azure, GCS, and SFTP Support
 </div></div><div class="section-body"><div class="section-body-text">
-<span class="backrest">pgBackRest</span> repositories can be located in <span class="host">S3</span>, <span class="host">Azure</span>, and GCS compatible object stores to allow for virtually unlimited capacity and retention.
+<span class="backrest">pgBackRest</span> repositories can be located in <span class="host">S3</span>, <span class="host">Azure</span>, and <span class="host">GCS</span> compatible object stores to allow for virtually unlimited capacity and retention. Repositories can also be stored on an <span class="host">SFTP</span> server. Object store credentials can be retrieved automatically in cloud environments using a variety of authentication methods.
 </div></div></div><div class="section2"><a id="features/encryption"></a><div class="section2-header"><div class="section2-title">
 Encryption
 </div></div><div class="section-body"><div class="section-body-text">
@@ -137,7 +151,7 @@ Ransomware & Malware Protection
 </div></div><div class="section-body"><div class="section-body-text">
 When the repository is stored on versioned object storage, <span class="backrest">pgBackRest</span> can read the repository as it was at a point-in-time. If backups are deleted or corrupted by accident, malware, or ransomware, a target time can be used to recover data from before the damage occurred.
 </div><div class="section-body-text">
-Versioning is supported by <span class="host">S3</span>, <span class="host">Azure</span>, and GCS compatible object stores. Object locking for <span class="host">S3</span> and soft delete for <span class="host">GCS</span> or <span class="host">Azure</span> can provide additional protection against tampering.
+Versioning is supported by <span class="host">S3</span>, <span class="host">Azure</span>, and <span class="host">GCS</span> compatible object stores. Object locking for <span class="host">S3</span> and soft delete for <span class="host">GCS</span> or <span class="host">Azure</span> can provide additional protection against tampering.
 </div></div></div><div class="section2"><a id="features/postgres-compatibility"></a><div class="section2-header"><div class="section2-title">
 Compatibility with ten versions of <span class="postgres">PostgreSQL</span>
 </div></div><div class="section-body"><div class="section-body-text">
@@ -152,11 +166,11 @@ Getting Started
 <a href="command.html">Command reference</a> for command-line operations.
 </li><li class="list-unordered">
 <a href="configuration.html">Configuration reference</a> for creating <span class="backrest">pgBackRest</span> configurations.
-</li></ul></div></div><div class="section1"><a id="contributions"></a><div class="section1-header"><div class="section1-title">
+</li></ul></div></div><div class="section1 section-after-aside"><a id="contributions"></a><div class="section1-header"><div class="section1-title">
 Contributions
 </div></div><div class="section-body"><div class="section-body-text">
-Contributions to <span class="backrest">pgBackRest</span> are always welcome! Please see our <a href="https://github.com/pgbackrest/pgbackrest/blob/main/CONTRIBUTING.md">Contributing Guidelines</a> for details on how to contribute features, improvements or issues.
-</div></div></div><div class="section1"><a id="support"></a><div class="section1-header"><div class="section1-title">
+Contributions to <span class="backrest">pgBackRest</span> are always welcome! Please see our <a href="https://github.com/pgbackrest/pgbackrest/blob/main/CONTRIBUTING.md">Contributing Guidelines</a> for details on how to contribute features, improvements, or issues.
+</div></div></div><div class="section1 section-after-aside"><a id="support"></a><div class="section1-header"><div class="section1-title">
 Support
 </div></div><div class="section-body"><div class="section-body-text">
 <span class="backrest">pgBackRest</span> is completely free and open source under the <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT</a> license. You may use it for personal or commercial purposes without any restrictions whatsoever. Bug reports are taken very seriously and will be addressed as quickly as possible. Please report bugs <a href="https://github.com/pgbackrest/pgbackrest/issues">here</a>.
@@ -165,5 +179,5 @@ Creating a robust disaster recovery policy with proper replication and backup st
 </div><div class="section-body-text">
 Our <a href="#sponsors">sponsors</a> offer products and services that include <span class="backrest">pgBackRest</span> support and can help with your disaster recovery needs.
 </div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 4, 2026
+Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 17, 2026
 </div></body></html>

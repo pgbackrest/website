@@ -1,18 +1,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
 <title>pgBackRest - News
 </title><meta http-equiv="Content-Type" content="text/html;charset=utf-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 <meta property="og:site_name" content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore"></meta>
 <meta property="og:title" content="pgBackRest - News"></meta>
 <meta property="og:type" content="website"></meta>
 <link rel="icon" href="logo.svg" type="image/svg+xml"></link>
+<meta property="og:image" content="https://pgbackrest.org/card.png"></meta>
 <meta property="og:image:type" content="image/png"></meta>
-<meta property="og:image" content="https://pgbackrest.org/logo.png"></meta>
+<meta property="og:image:width" content="1200"></meta>
+<meta property="og:image:height" content="630"></meta>
+<meta property="og:image:alt" content="pgBackRest - Reliable PostgreSQL Backup &amp; Restore"></meta>
+<meta name="twitter:card" content="summary_large_image"></meta>
 <meta name="description" content="News"></meta>
 <meta property="og:description" content="News"></meta>
-<link rel="stylesheet" href="default.css" type="text/css"></link>
+<link rel="stylesheet" href="default.css?v=27b4dc4a" type="text/css"></link>
+<script src="default.js?v=c642056a" defer="defer"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VKCRNV73H1"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VKCRNV73H1');</script>
-</head><body><div class="page-header"><div class="page-header-title">
+</head><body><div class="page-header"><a class="page-header-logo" href="/"><span class="page-header-logo-name">
+pgBackRest
+</span></a><div class="page-header-title">
 pgBackRest
 </div><div class="page-header-subtitle">
 News
@@ -26,11 +34,65 @@ Releases
 Configuration
 </a></div><div class="menu"><a class="menu-link" href="command.html">
 Commands
-</a></div><div class="menu"><a class="menu-link" href="faq.html">
+</a></div><div class="menu"><span class="menu-current">
+News
+</span></div><div class="menu"><a class="menu-link" href="faq.html">
 FAQ
 </a></div><div class="menu"><a class="menu-link" href="metric.html">
 Metrics
-</a></div></div></div><div class="page-body"><div class="section1"><a id="weak-encryption"></a><div class="section1-header"><div class="section1-title">
+</a></div></div></div><div class="page-body"><div class="section1"><a id="release-2-60-0"></a><div class="section1-header"><div class="section1-title">
+<span class="backrest">pgBackRest</span> 2.60.0 Released
+</div></div><div class="section-body"><div class="section-body-text">
+<b>October 18, 2026</b>
+</div><div class="section-body-text">
+The <span class="backrest">pgBackRest</span> community is pleased to announce the release of <a href="https://pgbackrest.org">pgBackRest</a> 2.60.0, the latest version of the reliable, easy-to-use backup and restore solution that can seamlessly scale up to the largest databases and workloads.
+</div><div class="section-body-text">
+<span class="backrest">pgBackRest</span> supports a robust set of features for managing your backup and recovery infrastructure, including: parallel backup/restore, full/differential/incremental backups, block incremental backup, multiple repositories, delta restore, parallel asynchronous archiving, malware/ransomware protection, per-file checksums, page checksums (when enabled) validated during backup, multiple compression types, encryption, partial/failed backup resume, backup from standby, tablespace and link support, S3/Azure/GCS/SFTP support, backup expiration, local/remote operation via SSH or TLS, flexible configuration, and more.
+</div><div class="section-body-text">
+<span class="backrest">pgBackRest</span> can be installed from the <a href="https://yum.postgresql.org">PostgreSQL Yum Repository</a> or the <a href="https://apt.postgresql.org">PostgreSQL APT Repository</a> and packages are also available for many other distributions. Source code can be downloaded from <a href="release.html">releases</a>.
+</div><div class="section2"><a id="release-2-60-0/feature"></a><div class="section2-header"><div class="section2-title">
+Significant New Features and Improvements
+</div></div><div class="section-body"><ul class="list-unordered"><li class="list-unordered">
+Add checksum-page-error option to error on invalid page checksums (Andrew Pogrebnoi)
+</li><li class="list-unordered">
+Support for GCS Workload Identity Federation (Adol Rodriguez)
+</li><li class="list-unordered">
+Prefetch multi-file/range reads from object stores (David Steele)
+</li><li class="list-unordered">
+Reduce keep-alive requests to remote processes (David Steele)
+</li><li class="list-unordered">
+Retry Azure batch sub-requests missing from the response (David Steele)
+</li><li class="list-unordered">
+Reduce the manifest checks made when reconstructing backup.info (David Steele)
+</li><li class="list-unordered">
+Support building on illumos (Kalevi Kolttonen)
+</li><li class="list-unordered">
+Support OpenSSL 4 (David Steele)
+</li><li class="list-unordered">
+Modernize the website (David Steele, Jan Wieremjewicz)
+</li></ul><div class="section-body-text">
+See the <a href="release.html#2.60.0">2.60.0 Release Notes</a> for additional features and improvements.
+</div></div></div><div class="section2"><a id="release-2-60-0/note"></a><div class="section2-header"><div class="section2-title">
+Important Notes
+</div></div><div class="section-body"><ul class="list-unordered"><li class="list-unordered">
+The restore command will now error and stop if any restored file contains an invalid page checksum, which leaves the cluster incomplete and unable to start, so the restore must be rerun. The expire command will now refuse to expire if the oldest retained backup would contain checksum errors, which also prevents archive from being expired in that repository. Set checksum-page-error=n to warn instead of erroring.
+</li><li class="list-unordered">
+Building from a git checkout requires PyYAML instead of libyaml. The distribution tarball includes the generated code and requires neither.
+</li><li class="list-unordered">
+<span class="postgres">PostgreSQL</span> 19rc1 is supported by v2.59.2 and later, including this release.
+</li></ul></div></div><div class="section2"><a id="release-2-60-0/link"></a><div class="section2-header"><div class="section2-title">
+Links
+</div></div><div class="section-body"><ul class="list-unordered"><li class="list-unordered">
+<a href="https://pgbackrest.org">Website</a>
+</li><li class="list-unordered">
+<a href="user-guide-index.html">User Guides</a>
+</li><li class="list-unordered">
+<a href="release.html">Release Notes</a>
+</li></ul></div></div><div class="section2"><a id="release-2-60-0/Sponsorship"></a><div class="section2-header"><div class="section2-title">
+Sponsorship
+</div></div><div class="section-body"><div class="section-body-text">
+This release was made possible by the generous sponsorship of <a href="https://aws.amazon.com">AWS</a>, <a href="https://supabase.com">Supabase</a>, <a href="https://pgedge.com">pgEdge</a>, <a href="https://tigerdata.com">Tiger Data</a>, <a href="https://percona.com">Percona</a>, <a href="https://eon.io">Eon</a>, <a href="https://xata.io">Xata</a>, <a href="https://dalibo.com">Dalibo</a>, and <a href="https://dataegret.com/">Data Egret</a>.
+</div></div></div></div></div><div class="section1"><a id="weak-encryption"></a><div class="section1-header"><div class="section1-title">
 Weak Encryption Subkeys and Salts
 </div></div><div class="section-body"><div class="section-body-text">
 <b>October 4, 2026</b>
@@ -53,7 +115,7 @@ Check Subkeys
 </div></div><div class="section-body"><div class="section-body-text">
 Run the following on a host that has access to the repository, with <span class="id">STANZA</span> set to the stanza name. Add <span class="br-setting">--repo</span> to the <span class="cmd">pgbackrest</span> commands to check a repository other than the first one.
 </div>
-<pre class="code-block">STANZA=demo
+<pre class="code-block" tabindex="0">STANZA=demo
 
 for file in archive/$STANZA/archive.info backup/$STANZA/backup.info; do
     for key in $(pgbackrest --stanza=$STANZA repo-get $file | grep '^cipher-pass=' | grep -oE '[A-Za-z0-9+/]{64}'); do
@@ -319,5 +381,5 @@ I imagine at some point <span class="backrest">pgBackRest</span> will be forked,
 </div><div class="section-body-text">
 Again, many thanks to all the <span class="backrest">pgBackRest</span> contributors over the years. It was a pleasure working with you!
 </div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 4, 2026
+Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 18, 2026
 </div></body></html>
