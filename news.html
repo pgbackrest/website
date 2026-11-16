@@ -40,7 +40,49 @@ News
 FAQ
 </a></div><div class="menu"><a class="menu-link" href="metric.html">
 Metrics
-</a></div></div></div><div class="page-body"><div class="section1"><a id="release-2-60-0"></a><div class="section1-header"><div class="section1-title">
+</a></div></div></div><div class="page-body"><div class="section1"><a id="release-2-60-1"></a><div class="section1-header"><div class="section1-title">
+<span class="backrest">pgBackRest</span> 2.60.1 Released
+</div></div><div class="section-body"><div class="section-body-text">
+<b>November 16, 2026</b>
+</div><div class="section-body-text">
+The <span class="backrest">pgBackRest</span> community is pleased to announce the release of <a href="https://pgbackrest.org">pgBackRest</a> 2.60.1, the latest version of the reliable, easy-to-use backup and restore solution that can seamlessly scale up to the largest databases and workloads.
+</div><div class="section-body-text">
+<span class="backrest">pgBackRest</span> supports a robust set of features for managing your backup and recovery infrastructure, including: parallel backup/restore, full/differential/incremental backups, block incremental backup, multiple repositories, delta restore, parallel asynchronous archiving, malware/ransomware protection, per-file checksums, page checksums (when enabled) validated during backup, multiple compression types, encryption, partial/failed backup resume, backup from standby, tablespace and link support, S3/Azure/GCS/SFTP support, backup expiration, local/remote operation via SSH or TLS, flexible configuration, and more.
+</div><div class="section-body-text">
+<span class="backrest">pgBackRest</span> can be installed from the <a href="https://yum.postgresql.org">PostgreSQL Yum Repository</a> or the <a href="https://apt.postgresql.org">PostgreSQL APT Repository</a> and packages are also available for many other distributions. Source code can be downloaded from <a href="release.html">releases</a>.
+</div><div class="section2"><a id="release-2-60-1/feature"></a><div class="section2-header"><div class="section2-title">
+Bug Fixes
+</div></div><div class="section-body"><ul class="list-unordered"><li class="list-unordered">
+Fix annotate saving backup.info to the default repository (David Steele)
+</li><li class="list-unordered">
+Fix possible block incremental restore failure on SFTP storage (David Steele)
+</li><li class="list-unordered">
+Fix use of SFTP file handles after a reconnect (David Steele)
+</li><li class="list-unordered">
+Fix excessive memory use by the memory context free list (Vasiliy Koshkin)
+</li><li class="list-unordered">
+Do not lower a minimum TLS version set by the OpenSSL config (David Steele)
+</li><li class="list-unordered">
+Fix reporting of OpenSSL errors (David Steele)
+</li></ul><div class="section-body-text">
+See the <a href="release.html#2.60.1">2.60.1 Release Notes</a> for additional fixes and improvements.
+</div></div></div><div class="section2"><a id="release-2-60-1/note"></a><div class="section2-header"><div class="section2-title">
+Important Notes
+</div></div><div class="section-body"><ul class="list-unordered"><li class="list-unordered">
+<span class="postgres">PostgreSQL</span> 19rc2 is supported by v2.59.2 and later, including this release.
+</li></ul></div></div><div class="section2"><a id="release-2-60-1/link"></a><div class="section2-header"><div class="section2-title">
+Links
+</div></div><div class="section-body"><ul class="list-unordered"><li class="list-unordered">
+<a href="https://pgbackrest.org">Website</a>
+</li><li class="list-unordered">
+<a href="user-guide-index.html">User Guides</a>
+</li><li class="list-unordered">
+<a href="release.html">Release Notes</a>
+</li></ul></div></div><div class="section2"><a id="release-2-60-1/Sponsorship"></a><div class="section2-header"><div class="section2-title">
+Sponsorship
+</div></div><div class="section-body"><div class="section-body-text">
+This release was made possible by the generous sponsorship of <a href="https://aws.amazon.com">AWS</a>, <a href="https://supabase.com">Supabase</a>, <a href="https://pgedge.com">pgEdge</a>, <a href="https://tigerdata.com">Tiger Data</a>, <a href="https://percona.com">Percona</a>, <a href="https://eon.io">Eon</a>, <a href="https://xata.io">Xata</a>, <a href="https://dalibo.com">Dalibo</a>, and <a href="https://dataegret.com/">Data Egret</a>.
+</div></div></div></div></div><div class="section1"><a id="release-2-60-0"></a><div class="section1-header"><div class="section1-title">
 <span class="backrest">pgBackRest</span> 2.60.0 Released
 </div></div><div class="section-body"><div class="section-body-text">
 <b>October 18, 2026</b>
@@ -381,5 +423,5 @@ I imagine at some point <span class="backrest">pgBackRest</span> will be forked,
 </div><div class="section-body-text">
 Again, many thanks to all the <span class="backrest">pgBackRest</span> contributors over the years. It was a pleasure working with you!
 </div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 18, 2026
+Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated November 16, 2026
 </div></body></html>

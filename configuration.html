@@ -295,7 +295,7 @@ Repository Storage Tag
 </a></div></div><div class="section2-toc"><div class="section2-toc-title"><a href="#section-repository/option-repo-storage-upload-chunk-size">
 Repository Storage Upload Chunk Size
 </a></div></div><div class="section2-toc"><div class="section2-toc-title"><a href="#section-repository/option-repo-storage-verify-tls">
-Repository Storage Certificate Verify
+Repository Storage TLS Verify
 </a></div></div><div class="section2-toc"><div class="section2-toc-title"><a href="#section-repository/option-repo-symlink">
 Repository Symlink
 </a></div></div><div class="section2-toc"><div class="section2-toc-title"><a href="#section-repository/option-repo-target-time">
@@ -909,7 +909,7 @@ All TLS connections between the <span class="backrest">pgBackRest</span> client 
 </div><div class="admonition"><div class="note">
 NOTE:
 </div><div class="note-text">
-The absolute minimum security level for any transport connection is TLSv1.2.
+The absolute minimum security level for any transport connection is TLSv1.2 unless <span class="br-option">repo-storage-verify-tls=n</span>.
 </div></div><div class="section-body-text">
 The accepted cipher suites can be adjusted if need arises. The example is reasonable choice unless you have specific security requirements. If unset (the default), the default of the underlying <span class="host">OpenSSL</span> library applies.
 </div>
@@ -923,7 +923,7 @@ All TLS connections between the <span class="backrest">pgBackRest</span> client 
 </div><div class="admonition"><div class="note">
 NOTE:
 </div><div class="note-text">
-The absolute minimum security level for any transport connection is TLSv1.2.
+The absolute minimum security level for any transport connection is TLSv1.2 unless <span class="br-option">repo-storage-verify-tls=n</span>.
 </div></div><div class="section-body-text">
 The accepted cipher suites can be adjusted if need arises. If unset (the default), the default of the underlying <span class="host">OpenSSL</span> library applies.
 </div>
@@ -1859,11 +1859,13 @@ allow range (depending on repo-type):
 
 example: repo1-storage-upload-chunk-size=16MiB</pre>
 </div></div><div class="section2"><a id="section-repository/option-repo-storage-verify-tls"></a><div class="section2-header"><div class="section2-title">
-Repository Storage Certificate Verify (<span class="id">--repo-storage-verify-tls</span>)
+Repository Storage TLS Verify (<span class="id">--repo-storage-verify-tls</span>)
 </div></div><div class="section-body"><div class="section-body-text">
-Repository storage certificate verify.
+Repository storage TLS verify.
 </div><div class="section-body-text">
 This option provides the ability to enable/disable verification of the storage (e.g. S3, Azure) server TLS certificate. Disabling should only be used for testing or other scenarios where a certificate has been self-signed.
+</div><div class="section-body-text">
+Disabling also removes the TLSv1.2 minimum and ignores the <span class="br-option">tls-cipher-12</span> and <span class="br-option">tls-cipher-13</span> options for repository storage connections.
 </div>
 <pre class="code-block" tabindex="0">default: y
 example: repo1-storage-verify-tls=n</pre>
@@ -2262,5 +2264,5 @@ The database user name used when connecting to <span class="postgres">PostgreSQL
 </div>
 <pre class="code-block" tabindex="0">example: pg1-user=backupuser</pre>
 </div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 17, 2026
+Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated November 16, 2026
 </div></body></html>

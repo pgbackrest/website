@@ -50,6 +50,53 @@ Documentation for the <span class="host">v1</span> release can be found <a href=
 The notes for a release may also contain <q>Additional Notes</q> but changes in this section are only to documentation or the test suite and have no direct impact on the <span class="backrest">pgBackRest</span> codebase.
 </div><div class="section-body"></div></div><div class="section1"><a id="current"></a><div class="section1-header"><div class="section1-title">
 Current Stable Release
+</div></div><div class="section-body"><div class="section2"><a id="2.60.1"></a><div class="section2-header"><div class="section2-title">
+v2.60.1 Release Notes
+</div></div><div class="section-body"><div class="section2-subtitle">
+Annotate and SFTP Fixes
+</div><div class="section2-subsubtitle">
+Released November 16, 2026
+</div><div class="section-body-text">
+<b> Bug Fixes:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Fix <span class="cmd">annotate</span> saving <span class="file">backup.info</span> to the default repository. (<i>Reviewed by Stefan Fercot, Douglas J Hunley.</i>)
+<details class="list-detail"><summary class="list-detail-toggle" title="Details" aria-label="Details"></summary>
+<div class="list-detail-text">When <span class="br-option">repo</span> was not specified, the <span class="cmd">annotate</span> command searched each repository for the backup set but saved the updated <span class="file">backup.info</span> to the default repository. Annotating a backup set that was not in the default repository replaced the <span class="file">backup.info</span> of the default repository with the <span class="file">backup.info</span> of the repository where the backup set was found. If the default repository was encrypted, the key required to read its backups was lost, so those backups could no longer be restored.</div>
+<div class="list-detail-ref"><span class="list-detail-ref-item">Pull request <a href="https://github.com/pgbackrest/pgbackrest/pull/2916">#2916</a></span><span class="list-detail-ref-item">Commit <a href="https://github.com/pgbackrest/pgbackrest/commit/7e85613080ac66effda6392b0e2604739a5bc310"><span class="id">7e85613</span></a></span></div></details>
+</li><li class="list-unordered">
+Fix possible block incremental restore failure on <span class="host">SFTP</span> storage. (<i>Reviewed by Douglas J Hunley. Reported by Fineline19.</i>)
+<details class="list-detail"><summary class="list-detail-toggle" title="Details" aria-label="Details"></summary>
+<div class="list-detail-text">Each super block read left a file open on the server until the session ended. A restore could reach the open file limit of the server and fail with an error such as <q>sftp errno [4]</q> or <q>client state is 'response' but expected 'idle'</q>. Super block reads are now closed before they are freed.</div>
+<div class="list-detail-ref"><span class="list-detail-ref-item">Issue <a href="https://github.com/pgbackrest/pgbackrest/issues/2884">#2884</a></span><span class="list-detail-ref-item">Pull request <a href="https://github.com/pgbackrest/pgbackrest/pull/2902">#2902</a></span><span class="list-detail-ref-item">Commit <a href="https://github.com/pgbackrest/pgbackrest/commit/01a2575828e81dc3237ca68f4752665c8e0ef2ad"><span class="id">01a2575</span></a></span></div></details>
+</li><li class="list-unordered">
+Fix use of <span class="host">SFTP</span> file handles after a reconnect. (<i>Reviewed by Douglas J Hunley.</i>)
+<details class="list-detail"><summary class="list-detail-toggle" title="Details" aria-label="Details"></summary>
+<div class="list-detail-text">A reconnect freed the session while other files could still be open on it and the next read or write of one of those files used freed memory. These now fail with <q>connection was lost</q>, which allows the job to be retried.</div>
+<div class="list-detail-ref"><span class="list-detail-ref-item">Issue <a href="https://github.com/pgbackrest/pgbackrest/issues/2884">#2884</a></span><span class="list-detail-ref-item">Pull request <a href="https://github.com/pgbackrest/pgbackrest/pull/2903">#2903</a></span><span class="list-detail-ref-item">Commit <a href="https://github.com/pgbackrest/pgbackrest/commit/0a1a924dc1a68272ec9ece181c6c9128f27638fc"><span class="id">0a1a924</span></a></span></div></details>
+</li><li class="list-unordered">
+Fix excessive memory use by the memory context free list. (<i>Fixed by Vasiliy Koshkin. Reviewed by David Steele, Douglas J Hunley.</i>)
+<details class="list-detail"><summary class="list-detail-toggle" title="Details" aria-label="Details"></summary>
+<div class="list-detail-text">The free list retained freed allocations of 64KiB or more for reuse. Buffers that grow as data is written, e.g. object store upload buffers, and allocations that did not repeat filled the list without being reused. Each process could retain up to 64MiB so memory use increased significantly with a high <span class="br-option">process-max</span>. Only allocations of <span class="br-option">buffer-size</span> are now retained.</div>
+<div class="list-detail-ref"><span class="list-detail-ref-item">Issue <a href="https://github.com/pgbackrest/pgbackrest/issues/2911">#2911</a></span><span class="list-detail-ref-item">Pull request <a href="https://github.com/pgbackrest/pgbackrest/pull/2912">#2912</a></span><span class="list-detail-ref-item">Commit <a href="https://github.com/pgbackrest/pgbackrest/commit/8173be12b4a336338df7754ee7498930cbea01e9"><span class="id">8173be1</span></a></span></div></details>
+</li><li class="list-unordered">
+Do not lower a minimum TLS version set by the <span class="host">OpenSSL</span> config. (<i>Reviewed by Douglas J Hunley, Stefan Fercot.</i>)
+<details class="list-detail"><summary class="list-detail-toggle" title="Details" aria-label="Details"></summary>
+<div class="list-detail-text">The minimum TLS version was set to 1.2 after the <span class="host">OpenSSL</span> config was applied. This lowered a higher minimum such as <span class="id">MinProtocol = TLSv1.3</span> so TLS 1.2 connections were still allowed. The minimum is now set only when the minimum from the config is lower than TLS 1.2.</div>
+<div class="list-detail-ref"><span class="list-detail-ref-item">Issue <a href="https://github.com/pgbackrest/pgbackrest/issues/2889">#2889</a></span><span class="list-detail-ref-item">Pull request <a href="https://github.com/pgbackrest/pgbackrest/pull/2899">#2899</a></span><span class="list-detail-ref-item">Commit <a href="https://github.com/pgbackrest/pgbackrest/commit/18ca629b829cdc315b2cc19240940051599015e3"><span class="id">18ca629</span></a></span></div></details>
+</li><li class="list-unordered">
+Fix reporting of <span class="host">OpenSSL</span> errors. (<i>Reviewed by Douglas J Hunley, Stefan Fercot.</i>)
+<details class="list-detail"><summary class="list-detail-toggle" title="Details" aria-label="Details"></summary>
+<div class="list-detail-text">An error queued by the <span class="host">OpenSSL</span> config or left over from an earlier failure could be reported instead of the actual failure, e.g. <q>ssl command section not found</q> for an invalid <span class="br-option">tls-cipher-12</span> value. System errors such as a missing CA file reported <q>no details available</q> with <span class="host">OpenSSL</span> >= 3.0 and now report the system error message.</div>
+<div class="list-detail-ref"><span class="list-detail-ref-item">Issue <a href="https://github.com/pgbackrest/pgbackrest/issues/2889">#2889</a></span><span class="list-detail-ref-item">Pull request <a href="https://github.com/pgbackrest/pgbackrest/pull/2900">#2900</a></span><span class="list-detail-ref-item">Commit <a href="https://github.com/pgbackrest/pgbackrest/commit/382c8d2937a4197a2188860426c210df89ae577c"><span class="id">382c8d2</span></a></span></div></details>
+</li></ul><div class="section-body-text">
+<b>Documentation Improvements:</b>
+</div><ul class="list-unordered"><li class="list-unordered">
+Document TLS settings skipped when <span class="br-setting">repo-storage-verify-tls=n</span>.
+<details class="list-detail"><summary class="list-detail-toggle" title="Details" aria-label="Details"></summary>
+<div class="list-detail-text">With <span class="br-option">repo-storage-verify-tls=n</span> the TLSv1.2 minimum is not set and the <span class="br-option">tls-cipher-12</span> and <span class="br-option">tls-cipher-13</span> options are ignored for repository storage connections.</div>
+<div class="list-detail-ref"><span class="list-detail-ref-item">Commit <a href="https://github.com/pgbackrest/pgbackrest/commit/4457d84d89d6dd8a7717dd2872d89df4af302b83"><span class="id">4457d84</span></a></span></div></details>
+</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
+Stable Releases
 </div></div><div class="section-body"><div class="section2"><a id="2.60.0"></a><div class="section2-header"><div class="section2-title">
 v2.60.0 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
@@ -200,9 +247,7 @@ Allow test user names that adduser on Debian rejects. (<i>Contributed by Stefan 
 <details class="list-detail"><summary class="list-detail-toggle" title="Details" aria-label="Details"></summary>
 <div class="list-detail-text">The test container is built with the same user name as the host user. Debian's <span class="file">adduser</span> rejects names that contain a dot, e.g. <span class="id">first.last</span>, so the container build failed on Debian-based images for these users.</div>
 <div class="list-detail-ref"><span class="list-detail-ref-item">Issue <a href="https://github.com/pgbackrest/pgbackrest/issues/2858">#2858</a></span><span class="list-detail-ref-item">Pull request <a href="https://github.com/pgbackrest/pgbackrest/pull/2859">#2859</a></span><span class="list-detail-ref-item">Commit <a href="https://github.com/pgbackrest/pgbackrest/commit/ce19dae6a2d6ab3665374ead04c270fd45d563fb"><span class="id">ce19dae</span></a></span></div></details>
-</li></ul></div></div></div></div><div class="section1"><a id="supported"></a><div class="section1-header"><div class="section1-title">
-Stable Releases
-</div></div><div class="section-body"><div class="section2"><a id="2.59.3"></a><div class="section2-header"><div class="section2-title">
+</li></ul></div></div><div class="section2"><a id="2.59.3"></a><div class="section2-header"><div class="section2-title">
 v2.59.3 Release Notes
 </div></div><div class="section-body"><div class="section2-subtitle">
 Weak Encryption Subkey Bug
@@ -263,7 +308,7 @@ Fix <span class="cmd">annotate</span> command on a remote encrypted repository. 
 </li></ul><div class="section-body-text">
 <b> Features:</b>
 </div><ul class="list-unordered"><li class="list-unordered">
-<span class="host">PostgreSQL 19beta4/rc1</span> support.
+<span class="host">PostgreSQL 19beta4/rc1/rc2</span> support.
 <details class="list-detail"><summary class="list-detail-toggle" title="Details" aria-label="Details"></summary>
 <div class="list-detail-text"><span class="postgres">PostgreSQL</span> 19beta4 reverted online page checksum changes, so the page checksum version is again limited to 0 and 1. It also changed the <span class="file">pg_control</span> version and the WAL page magic number.</div>
 <div class="list-detail-ref"><span class="list-detail-ref-item">Commit <a href="https://github.com/pgbackrest/pgbackrest/commit/89eae839d5ca79591aaea8157f437688c3b53df4"><span class="id">89eae83</span></a></span></div></details>
@@ -4909,5 +4954,5 @@ The <span class="file">backup.manifest</span> is being written as <span class="i
 </div><ul class="list-unordered"><li class="list-unordered">
 Absolutely no documentation (outside the code). Well, excepting these release notes.
 </li></ul></div></div></div></div></div><div class="page-footer">
-Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated October 18, 2026
+Copyright &copy; 2015-2026, The PostgreSQL Global Development Group, <a href="https://github.com/pgbackrest/pgbackrest/blob/main/LICENSE">MIT License</a>. Updated November 16, 2026
 </div></body></html>
